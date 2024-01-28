@@ -3,6 +3,7 @@ import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
 // 2. buildscript 추가
 buildscript {
 	ext {
+		queryDslVersion = "5.0.0"
 		restdocsApiSpecVersion = '0.18.2'
 	}
 }
@@ -91,6 +92,12 @@ dependencies {
 	// swagger
 	swaggerUI 'org.webjars:swagger-ui:4.11.1'
 
+	// querydsl
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
 	modules {
 		module("org.codehaus.groovy:groovy") {
 			replacedBy("org.apache.groovy:groovy", "conflicts in current rest-assured version")
@@ -105,6 +112,10 @@ def querydslDir = 'src/main/generated'
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
 }
 
 // 10. openapi3가 먼저 실행 - doFrist를 통한 Header 설정
@@ -154,4 +165,12 @@ tasks.register('copyPrivate', Copy) {
 		from "${generateSwaggerUISample.outputDir}"
 		into "${rootDir}/build/resources/main/static/docs/"
 	}
+}
+
+sourceSets {
+	main.java.srcDirs += [ querydslDir ]
+}
+
+clean{
+	delete file(querydslDir)
 }
