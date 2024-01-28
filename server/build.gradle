@@ -102,6 +102,10 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
+	// validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.2'
+
+
 	modules {
 		module("org.codehaus.groovy:groovy") {
 			replacedBy("org.apache.groovy:groovy", "conflicts in current rest-assured version")

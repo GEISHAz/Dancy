@@ -71,6 +71,36 @@ public class StartApiTest extends ApiTest {
         assertThat(jsonPath.getString("address")).contains(dongwooAddr);
     }
 
+    @Test
+    void spring_validation_검증_성공_200(){
+        TestSaveRequest request = request_생성("dongwoo", "daegu");
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(request)
+                .when()
+                .post("/start/test/valid")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void spring_validation_주소_누락_400(){
+        TestSaveRequest request = request_생성("dongwoo", null);
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(request)
+                .when()
+                .post("/start/test/valid")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .log().all().extract();
+    }
+
     void test_entity_저장(String name, String address){
         TestSaveRequest request = request_생성(name, address);
 
