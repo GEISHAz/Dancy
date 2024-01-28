@@ -1,7 +1,24 @@
+import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
+
+// 2. buildscript 추가
+buildscript {
+	ext {
+		restdocsApiSpecVersion = '0.18.2'
+	}
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.2'
 	id 'io.spring.dependency-management' version '1.1.4'
+
+	// 새로운 추가
+	id "org.asciidoctor.jvm.convert" version "3.3.2"
+
+	// 3. openAPI 플러그인 추가 -> Spring Rest Docs 의 결과물을 openAPI3 스펙으로 변환하는 플러그인
+	id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
+	// 4. swaggerUI 플러그인 추가 -> openAPI3 스펙 기반으로 SwaggerUI 생성
+	id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'com.ssafy'
@@ -19,6 +36,27 @@ configurations {
 
 repositories {
 	mavenCentral()
+}
+
+// 5. 생성된 API 스펙이 어느 위치에 있는지 지정
+// openAPI3 스펙을 SwaggerUI로 생성하기 위해서는, 해당 스펙이 어디에 위치해 있는지 지정해 주어야 한다.
+// 아래 구문에서, 위치를 지정해 준다.
+swaggerSources {
+	sample {
+		setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
+	}
+}
+
+// 6. openapi3 스펙 생성시 설정 정보
+openapi3 {
+	servers = [
+			//{ url = "http://배포중인 주소" },
+			{ url = "http://localhost:8080" } // 이렇게 List 형태로 여러 server 를 지정해 줄 수 있다.
+	]
+	title = "SSAFY DANCY API" // API 문서 이름
+	description = "SSAFY 공통프로젝트 DANCY 에서 사용할 API 문서입니다." // API 상세 정보
+	version = "0.0.1" // API 버전
+	format = "yaml" // 생성될 openAPI3 스펙 파일 타입(여기서는 yaml)
 }
 
 dependencies {
@@ -42,8 +80,78 @@ dependencies {
 	// rest-assured
 	testImplementation 'io.rest-assured:rest-assured:5.3.0'
 
+	// restdocs
+	testImplementation "com.epages:restdocs-api-spec-restassured:${restdocsApiSpecVersion}"
+	testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
+	testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
+
+	// openapi
+	testImplementation 'com.epages:restdocs-api-spec-mockmvc:' + restdocsApiSpecVersion
+
+	// swagger
+	swaggerUI 'org.webjars:swagger-ui:4.11.1'
+
+	modules {
+		module("org.codehaus.groovy:groovy") {
+			replacedBy("org.apache.groovy:groovy", "conflicts in current rest-assured version")
+		}
+		module("org.codehaus.groovy:groovy-xml") {
+			replacedBy("org.apache.groovy:groovy-xml", "conflicts in current rest-assured version")
+		}
+	}
 }
+
+def querydslDir = 'src/main/generated'
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// 10. openapi3가 먼저 실행 - doFrist를 통한 Header 설정
+// 이 부분을 통해, opanAPI3 가 먼저 생성되고, 생성된 스펙에 구문을 추가하여 Authorization 에 토큰을 추가할 수 있게 한다.
+// 기존 docs에서 requestHeader()로 작성한 테스트코드를 Header로 인식을 하여 입력칸이 생기기는 하나, 실제로 보내지진 않는다.
+// 결국 Authorization과 같은 헤더 타입에 토큰을 넣기 위해선 스펙안에 토큰을 넣는 코드를 따로 정의 해주어야 한다.
+
+// 해당 로직의 과정 중에서 doFrist 메서드를 통해 생성된 openAPI3 스펙에 마지막 구문에 헤더 관련 설정을 추가해준다.
+// 이는 openAPI3 스펙에 준수하여 모든 API에 Authorization 헤더에 토큰을 넣을 수 있게 설정해준다.
+
+// 참고로 doLast로 하면 해당 구문을 추가하기 전에 SwaggerUI가 생성되기에 적용이 안되니 꼭 doFirst 메서드를 사용하자.
+tasks.withType(GenerateSwaggerUI) {
+	dependsOn 'openapi3'
+	doFirst {
+		def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.yaml")
+
+		def securitySchemesContent =  "  securitySchemes:\n" +  \
+                                      "    APIKey:\n" +  \
+                                      "      type: apiKey\n" +  \
+                                      "      name: Authorization\n" +  \
+                                      "      in: header\n" + \
+                                      "security:\n" +
+				"  - APIKey: []  # Apply the security scheme here"
+
+		swaggerUIFile.append securitySchemesContent
+	}
+}
+
+// 11. 생성된 openapi3 스펙을 기반으로 SwaggerUISample 생성 및 static/docs 패키지에 복사
+// bootJar이 실행되기전 generateSwaggerUISample 을 실행하여 생성되어있는 openAPI3 스펙을 SwaggerUI로 생성하여
+// main/resources/static/docs에 복사한다.
+// 참고로 복사가 된다 한들 local 에서는 보이지 않으니 주의하자.
+bootJar {
+	println("bootJar start")
+	dependsOn generateSwaggerUISample
+	print("${generateSwaggerUISample.outputDir}")
+	from("${generateSwaggerUISample.outputDir}") {
+		into "static/docs"
+	}
+}
+
+// 미완성. 아직 시도 중인 Part
+tasks.register('copyPrivate', Copy) {
+	print("try copy")
+	dependsOn generateSwaggerUISample
+	copy {
+		from "${generateSwaggerUISample.outputDir}"
+		into "${rootDir}/build/resources/main/static/docs/"
+	}
 }
