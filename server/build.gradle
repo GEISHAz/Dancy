@@ -39,6 +39,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	// rest-assured
+	testImplementation 'io.rest-assured:rest-assured:5.3.0'
+
 }
 
 tasks.named('test') {
