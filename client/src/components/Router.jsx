@@ -4,19 +4,19 @@ import Practice from "../pages/Practice";
 import Stage from "../pages/Stage";
 import Profile from "../pages/Profile";
 import Login from "../pages/Login";
-import SignUp from "../pages/Signup";
+import SignUp from "../pages/SignUp";
 
 export default function Router() {
-    return (
-        <>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/practice" element={<Practice />} />
-                <Route path="/stage" element={<Stage />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUp/>} />
-            </Routes>
-        </>
-    )
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/practice" element={<Practice />} />
+        <Route path="/stage" element={<Stage />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp/>} />
+      </Routes>
+    </>
+  )
 }
