@@ -1,4 +1,4 @@
-package com.ssafy.dancy.service;
+package com.ssafy.dancy.service.user;
 
 import com.ssafy.dancy.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
