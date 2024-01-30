@@ -29,9 +29,18 @@ public class RedisRepository {
     }
 
     public void saveVerifySuccess(String targetEmail, int timeLimit){
-        String key = String.format("%s:%s", EMAIL_VERIFY_SUCCESS_PREFIX, targetEmail);
+        String key = getVerifySuccessKey(targetEmail);
         saveKeyValue(key, "1", timeLimit);
     }
+    public Boolean checkVerifiedEmail(String targetEmail){
+        return redisTemplate.hasKey(getVerifySuccessKey(targetEmail));
+    }
+
+    private static String getVerifySuccessKey(String targetEmail) {
+        return String.format("%s:%s", EMAIL_VERIFY_SUCCESS_PREFIX, targetEmail);
+    }
+
+
 
     public String saveKeyValue(String key, String value, int limitMinute){
         ValueOperations<Object, Object> valueOperations = redisTemplate.opsForValue();

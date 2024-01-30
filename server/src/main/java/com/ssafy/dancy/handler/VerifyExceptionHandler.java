@@ -1,6 +1,6 @@
 package com.ssafy.dancy.handler;
 
-import com.ssafy.dancy.exception.user.UserAlreadyExistException;
+import com.ssafy.dancy.exception.verify.EmailNotVerifiedException;
 import com.ssafy.dancy.exception.verify.VerifyCodeNotFoundException;
 import com.ssafy.dancy.exception.verify.VerifyCodeNotMatchException;
 import com.ssafy.dancy.message.response.ErrorResponse;
@@ -26,5 +26,11 @@ public class VerifyExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public List<ErrorResponse> verifyCodeNotMatchExceptionHandler(VerifyCodeNotMatchException e){
         return makeErrorResponse(e, "verifyCode");
+    }
+
+    @ExceptionHandler(EmailNotVerifiedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public List<ErrorResponse> emailNotVerifiedExceptionHandler(EmailNotVerifiedException e){
+        return makeErrorResponse(e, "email");
     }
 }
