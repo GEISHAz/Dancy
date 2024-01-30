@@ -5,7 +5,7 @@ export default function SearchBar(){
   
   return (
     <div className="w-[232px] h-[38px] relative">
-      <div className="w-[232px] h-[38px] left-0 top-0 absolute bg-white rounded-[20px] border-2 border-neutral-800" />
+      <div className="w-[232px] h-[38px] left-0 absolute bg-white rounded-[20px] border-2 border-neutral-800" />
       <input
         type="text"
         className="w-[180px] h-[38px] left-[4px] top-0 absolute placeholder-mainblack bg-transparent border-0 outline-none pl-3"
