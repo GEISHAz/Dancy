@@ -89,6 +89,9 @@ dependencies {
 
 	// redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	// springboot starter mail
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.0.5'
 }
 
 // 6. openapi3 스펙 생성시 설정 정보
