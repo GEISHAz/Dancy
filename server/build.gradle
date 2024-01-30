@@ -92,6 +92,9 @@ dependencies {
 
 	// springboot starter mail
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.0.5'
+
+	// jasypt-spring-boot-starter
+	implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.5'
 }
 
 // 6. openapi3 스펙 생성시 설정 정보
@@ -158,6 +161,7 @@ tasks.register("ext") {
 }
 
 tasks.named('test') {
+	systemProperty "JASYPT_KEY", System.getProperty("JASYPT_KEY")
 	useJUnitPlatform()
 
 	outputs.dir 'snippetsDir'
