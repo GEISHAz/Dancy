@@ -1,8 +1,8 @@
 import { styled } from "styled-components";
-import GoogleImg from '../assets/socialLogin/socialGoogle.png'
-import KakaoImg from '../assets/socialLogin/socialKakao.png'
-import NaverImg from '../assets/socialLogin/socialNaver.png'
-import DancyImg from '../assets/DancyLogo.png'
+import GoogleImg from '../../assets/socialLogin/socialGoogle.png'
+import KakaoImg from '../../assets/socialLogin/socialKakao.png'
+import NaverImg from '../../assets/socialLogin/socialNaver.png'
+import DancyImg from '../../assets/DancyLogo.png'
 
 export const Container = styled.div`
   display: flex;

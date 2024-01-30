@@ -3,7 +3,7 @@ import Home from "../pages/Home";
 import Practice from "../pages/Practice";
 import Stage from "../pages/Stage";
 import Profile from "../pages/Profile";
-import Login from "../pages/Login";
+import Login from "./Login/LoginForm";
 import SignUp from "../pages/Signup";
 
 export default function Router() {
