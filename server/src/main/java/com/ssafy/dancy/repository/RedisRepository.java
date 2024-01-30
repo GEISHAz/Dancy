@@ -16,10 +16,21 @@ public class RedisRepository {
     private final RedisTemplate<Object, Object> redisTemplate;
 
     private static final String EMAIL_VERIFY_PREFIX = "VERIFY";
+    private static final String EMAIL_VERIFY_SUCCESS_PREFIX = "SUCCESS";
 
     public String saveEmailVerifyCode(String targetEmail, String code, int timeLimit){
         String key = String.format("%s:%s", EMAIL_VERIFY_PREFIX, targetEmail);
         return saveKeyValue(key, code, timeLimit);
+    }
+
+    public String getEmailVerifyCode(String targetEmail){
+        String key = String.format("%s:%s", EMAIL_VERIFY_PREFIX, targetEmail);
+        return (String)redisTemplate.opsForValue().get(key);
+    }
+
+    public void saveVerifySuccess(String targetEmail, int timeLimit){
+        String key = String.format("%s:%s", EMAIL_VERIFY_SUCCESS_PREFIX, targetEmail);
+        saveKeyValue(key, "1", timeLimit);
     }
 
     public String saveKeyValue(String key, String value, int limitMinute){
