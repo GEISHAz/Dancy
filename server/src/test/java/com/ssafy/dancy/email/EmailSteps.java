@@ -1,6 +1,6 @@
 package com.ssafy.dancy.email;
 
-import com.ssafy.dancy.message.request.SendEmailRequest;
+import com.ssafy.dancy.message.request.email.SendEmailRequest;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,7 +1,6 @@
 package com.ssafy.dancy.controller;
 
-import com.ssafy.dancy.message.request.SendEmailRequest;
-import com.ssafy.dancy.message.request.VerifyEmailRequest;
+import com.ssafy.dancy.message.request.email.SendEmailRequest;
 import com.ssafy.dancy.service.EmailService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

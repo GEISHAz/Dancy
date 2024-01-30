@@ -1,4 +1,4 @@
-package com.ssafy.dancy.message.request;
+package com.ssafy.dancy.message.request.email;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

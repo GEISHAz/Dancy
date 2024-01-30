@@ -1,5 +1,6 @@
 package com.ssafy.dancy.service.user;
 
+import com.ssafy.dancy.exception.user.UserInfoNotMatchException;
 import com.ssafy.dancy.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> new UserInfoNotMatchException("아이디나 비밀번호가 일치하지 않습니다."));
     }
 }
