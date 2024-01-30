@@ -2,20 +2,25 @@ package com.ssafy.dancy.service.user;
 
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.exception.user.UserAlreadyExistException;
+import com.ssafy.dancy.exception.user.UserInfoNotMatchException;
 import com.ssafy.dancy.exception.verify.EmailNotVerifiedException;
+import com.ssafy.dancy.message.request.auth.LoginUserRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.message.response.user.SignUpResultResponse;
 import com.ssafy.dancy.repository.RedisRepository;
 import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.type.AuthType;
 import com.ssafy.dancy.type.Gender;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,5 +59,15 @@ public class UserService {
                 .email(registeredUser.getEmail())
                 .nickname(registeredUser.getNickname())
                 .build();
+    }
+
+    public User login(LoginUserRequest request){
+        Optional<User> foundUser = userRepository.findByEmail(request.email());
+
+        if(foundUser.isEmpty() || !passwordEncoder.matches(request.password(), foundUser.get().getPassword())){
+            throw new UserInfoNotMatchException("아이디나 패스워드가 일치하지 않습니다.");
+        }
+
+        return foundUser.get();
     }
 }
