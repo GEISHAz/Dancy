@@ -2,6 +2,11 @@ package com.ssafy.dancy.auth;
 
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
+import io.restassured.RestAssured;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,4 +40,22 @@ public class AuthSteps {
                 .password(password)
                 .build();
     }
+
+    public static ExtractableResponse<Response> 로그인요청(LoginUserRequest request){
+        return RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(request)
+                .when()
+                .post("/auth/login")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+    }
+
+    public String 로그인액세스토큰정보(LoginUserRequest request){
+        ExtractableResponse<Response> loginResponse = 로그인요청(request);
+        return loginResponse.body().jsonPath().getString("accessToken");
+    }
+
 }
