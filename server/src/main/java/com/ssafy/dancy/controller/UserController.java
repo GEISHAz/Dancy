@@ -3,6 +3,7 @@ package com.ssafy.dancy.controller;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.message.response.user.SignUpResultResponse;
 import com.ssafy.dancy.service.user.UserService;
+import com.ssafy.dancy.type.Role;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -21,6 +24,6 @@ public class UserController {
 
     @PostMapping("/signup")
     public SignUpResultResponse signup(@Valid @ModelAttribute SignUpRequest request){
-       return userService.signup(request);
+       return userService.signup(request, Set.of(Role.USER));
     }
 }

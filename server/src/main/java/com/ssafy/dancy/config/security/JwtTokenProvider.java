@@ -31,7 +31,7 @@ public class JwtTokenProvider {
 
     private String secretKey;
 
-    public JwtTokenProvider(@Value("$jwt.secret.key}")String secretKey,
+    public JwtTokenProvider(@Value("${jwt.secret.key}")String secretKey,
                             UserDetailsService userDetailsService, UserRepository userRepository){
         this.secretKey = secretKey;
         this.userDetailsService = userDetailsService;

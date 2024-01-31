@@ -11,16 +11,16 @@ import com.ssafy.dancy.repository.RedisRepository;
 import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.type.AuthType;
 import com.ssafy.dancy.type.Gender;
-import jakarta.servlet.http.HttpServletResponse;
+import com.ssafy.dancy.type.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +31,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public SignUpResultResponse signup(SignUpRequest request) {
+    public SignUpResultResponse signup(SignUpRequest request, Set<Role> roles) {
         userRepository.findByEmail(request.email()).ifPresent(
                 (user) -> {throw new UserAlreadyExistException("이미 가입된 이메일입니다.");}
         );
@@ -47,7 +47,7 @@ public class UserService {
         User user = User.builder()
                 .email(request.email())
                 .nickname(request.nickname())
-                .password(encodedPassword)
+                .accountPw(encodedPassword)
                 .gender(Gender.valueOf(request.gender()))
                 .birthDate(Date.valueOf(parsedDate))
                 .authType(AuthType.valueOf(request.authType()))
@@ -64,10 +64,13 @@ public class UserService {
     public User login(LoginUserRequest request){
         Optional<User> foundUser = userRepository.findByEmail(request.email());
 
-        if(foundUser.isEmpty() || !passwordEncoder.matches(request.password(), foundUser.get().getPassword())){
-            throw new UserInfoNotMatchException("아이디나 패스워드가 일치하지 않습니다.");
-        }
 
-        return foundUser.get();
+        if(foundUser.isPresent()){
+            User user = foundUser.get();
+            if(passwordEncoder.matches(request.password(), user.getAccountPw())){
+                return user;
+            }
+        }
+        throw new UserInfoNotMatchException("아이디나 패스워드가 일치하지 않습니다.");
     }
 }

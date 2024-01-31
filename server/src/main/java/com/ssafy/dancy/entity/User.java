@@ -27,7 +27,7 @@ public class User implements UserDetails {
     private String email;
 
     @Column(nullable = false)
-    private String password;
+    private String accountPw;
 
     @Column(length = 6, nullable = false)
     @Enumerated(EnumType.STRING)
