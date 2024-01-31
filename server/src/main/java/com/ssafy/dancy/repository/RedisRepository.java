@@ -17,10 +17,11 @@ public class RedisRepository {
 
     private static final String EMAIL_VERIFY_PREFIX = "VERIFY";
     private static final String EMAIL_VERIFY_SUCCESS_PREFIX = "SUCCESS";
+    private static final String REFRESH_TOKEN_PREFIX = "RT";
 
     public String saveEmailVerifyCode(String targetEmail, String code, int timeLimit){
         String key = String.format("%s:%s", EMAIL_VERIFY_PREFIX, targetEmail);
-        return saveKeyValue(key, code, timeLimit);
+        return saveKeyValue(key, code, timeLimit, TimeUnit.MINUTES);
     }
 
     public String getEmailVerifyCode(String targetEmail){
@@ -30,19 +31,28 @@ public class RedisRepository {
 
     public void saveVerifySuccess(String targetEmail, int timeLimit){
         String key = getVerifySuccessKey(targetEmail);
-        saveKeyValue(key, "1", timeLimit);
+        saveKeyValue(key, "1", timeLimit, TimeUnit.MINUTES);
     }
     public Boolean checkVerifiedEmail(String targetEmail){
         return redisTemplate.hasKey(getVerifySuccessKey(targetEmail));
+    }
+
+    public void saveRefreshToken(String email, String token, int timeLimit){
+        String key = getRefreshTokenKey(email);
+        saveKeyValue(key, token, timeLimit, TimeUnit.DAYS);
     }
 
     private static String getVerifySuccessKey(String targetEmail) {
         return String.format("%s:%s", EMAIL_VERIFY_SUCCESS_PREFIX, targetEmail);
     }
 
-    public String saveKeyValue(String key, String value, int limitMinute){
-        redisTemplate.opsForValue().set(key, value, limitMinute, TimeUnit.MINUTES);
-        log.info("key: {}, value: {} 로 {} 분간 redis 저장", key, value, limitMinute);
+    private static String getRefreshTokenKey(String email){
+        return String.format("%s:%s", REFRESH_TOKEN_PREFIX, email);
+    }
+
+    private String saveKeyValue(String key, String value, int limitMinute, TimeUnit timeUnit){
+        redisTemplate.opsForValue().set(key, value, limitMinute, timeUnit);
+        log.info("key: {}, value: {} 로 {} 간 redis 저장", key, value, limitMinute);
 
         return String.format("%s -> %s", key, value);
     }

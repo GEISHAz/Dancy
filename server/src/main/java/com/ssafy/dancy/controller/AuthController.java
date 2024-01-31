@@ -26,7 +26,7 @@ public class AuthController {
     @PostMapping("/login")
     public JwtTokenResponse login(@Valid @RequestBody LoginUserRequest request, HttpServletResponse response){
         User user = userService.login(request);
-//        jwtTokenProvider.setRefreshTokenForClient(response, user);
+        jwtTokenProvider.setRefreshTokenForClient(response, user);
 
         return jwtTokenProvider.makeJwtTokenResponse(user);
     }
