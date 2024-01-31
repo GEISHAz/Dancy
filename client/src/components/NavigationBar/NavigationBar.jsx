@@ -2,10 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import Notification from './Notification';
-import { PageButton, NavHome, NavPractice, NavStage, NavProfile, NavArea, NavRed, NavTextArea, NavLeft, NavRight, NavLeftContainer, NavSignUp, NavLogin, Square, AlertButton } from './NavigationBar.styeld'
-
-
-
+import { PageButton, NavHome, NavPractice, NavStage, NavProfile, NavArea, NavRed, NavTextArea, NavLeft, NavRight, NavLeftContainer, NavSignUp, NavLogin, Square, AlertButton } from './NavigationBar.style'
 
 export default function Navbar() {
   const [activeButton, setActiveButton] = useState('');

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NotificationImage, DropdownContainer, NotificationTitle, DropdownMenu, DropdownMenuContainer, DropdownItemContainer, DropdownItem, ProfileImage, NotificationContent, UserName, NotificationText, TimeStamp } from './Notification.styled';
+import { NotificationImage, DropdownContainer, NotificationTitle, DropdownMenu, DropdownMenuContainer, DropdownItemContainer, DropdownItem, ProfileImage, NotificationContent, UserName, NotificationText, TimeStamp } from './Notification.style';
 import { useSpring, animated } from 'react-spring';
 import { Link } from "react-router-dom";
 
@@ -21,7 +21,8 @@ export default function Notification() {
   const dropdownItems = Array(7).fill({
     username: "south.hyun_99",
     notification: "님이 회원님의 게시물을 좋아합니다.",
-    created_at: new Date()
+    user_id: "1021555",
+    created_at: new Date(),
   });
 
   // 현재 시간 기준으로 작성된 시간 차이
@@ -86,7 +87,7 @@ export default function Notification() {
                 {dropdownItems.map((item, index) => (
                   <DropdownItemContainer key={index}>
                     <DropdownItem>
-                      <Link to={`/profile/${item.username}`} onClick={handleClick}>
+                      <Link to={`/profile/${item.user_id}`} onClick={handleClick}>
                         <ProfileImage src="/src/assets/profileimage.png" />
                       </Link>
                       <NotificationContent>

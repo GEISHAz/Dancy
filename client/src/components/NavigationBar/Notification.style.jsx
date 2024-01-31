@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const NotificationImage = styled.img`
   cursor: pointer;
+  background-color: transparent;
 `;
 
 export const DropdownContainer = styled.div`

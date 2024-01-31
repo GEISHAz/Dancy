@@ -109,7 +109,9 @@ export const Square = styled.div`
   margin: 3px;
   z-index: -1;
   text-align: center;
+  background-color: white;
 `;
+
 export const AlertButton = styled.div`
   cursor: pointer;
   margin-right: 48px;
