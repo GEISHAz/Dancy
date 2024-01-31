@@ -21,7 +21,7 @@ public class StartController {
 
     private final TestService testService;
 
-    @Value("${JASYPT_KEY")
+    @Value("${JASYPT_KEY}")
     String jasyptKey;
 
     @GetMapping("/hello")
