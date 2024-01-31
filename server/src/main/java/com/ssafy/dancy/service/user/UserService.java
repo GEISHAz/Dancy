@@ -51,6 +51,7 @@ public class UserService {
                 .gender(Gender.valueOf(request.gender()))
                 .birthDate(Date.valueOf(parsedDate))
                 .authType(AuthType.valueOf(request.authType()))
+                .roles(roles)
                 .build();
 
         User registeredUser = userRepository.save(user);
