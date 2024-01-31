@@ -27,7 +27,7 @@ public class User implements UserDetails {
     private String email;
 
     @Column(nullable = false)
-    private String accountPw;
+    private String password;
 
     @Column(length = 6, nullable = false)
     @Enumerated(EnumType.STRING)
@@ -64,7 +64,7 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return this.password;
     }
 
     @Override

@@ -47,7 +47,7 @@ public class UserService {
         User user = User.builder()
                 .email(request.email())
                 .nickname(request.nickname())
-                .accountPw(encodedPassword)
+                .password(encodedPassword)
                 .gender(Gender.valueOf(request.gender()))
                 .birthDate(Date.valueOf(parsedDate))
                 .authType(AuthType.valueOf(request.authType()))
@@ -64,13 +64,9 @@ public class UserService {
     public User login(LoginUserRequest request){
         Optional<User> foundUser = userRepository.findByEmail(request.email());
 
-
-        if(foundUser.isPresent()){
-            User user = foundUser.get();
-            if(passwordEncoder.matches(request.password(), user.getAccountPw())){
-                return user;
-            }
+        if(foundUser.isEmpty() || !passwordEncoder.matches(request.password(), foundUser.get().getPassword())){
+            throw new UserInfoNotMatchException("아이디나 패스워드가 일치하지 않습니다.");
         }
-        throw new UserInfoNotMatchException("아이디나 패스워드가 일치하지 않습니다.");
+        return foundUser.get();
     }
 }
