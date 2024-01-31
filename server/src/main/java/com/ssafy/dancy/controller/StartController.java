@@ -20,7 +20,7 @@ public class StartController {
     private final TestService testService;
 
 //    @Value("${JASYPT_KEY")
-    String jasyptKey = "temp";
+    String jasyptKey = "temp2";
 
     @GetMapping("/hello")
     public String hello(){
