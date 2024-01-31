@@ -1,6 +1,9 @@
 package com.ssafy.dancy.service;
 
 import com.ssafy.dancy.exception.user.UserAlreadyExistException;
+import com.ssafy.dancy.exception.verify.VerifyCodeNotFoundException;
+import com.ssafy.dancy.exception.verify.VerifyCodeNotMatchException;
+import com.ssafy.dancy.message.response.email.EmailVerifyResponse;
 import com.ssafy.dancy.repository.RedisRepository;
 import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.util.VerifyCodeMaker;
@@ -21,10 +24,7 @@ public class EmailService {
     private static final int VERIFY_EMAIL_TIME_LIMIT = 30;
 
     public void sendVerifyCode(String targetEmail){
-        boolean checkUserExists = userRepository.existsByEmail(targetEmail);
-        if(checkUserExists){
-            throw new UserAlreadyExistException("이미 가입된 이메일 계정입니다.");
-        }
+        checkUserExist(targetEmail);
 
         String title = "DANCY 서비스 가입 이메일 인증코드입니다.";
         String code = codeMaker.makeVerifyCode();
@@ -33,7 +33,28 @@ public class EmailService {
         sendEmail(targetEmail, title, makeBody(code));
     }
 
-    public void sendEmail(String targetEmail, String title, String body){
+
+    public EmailVerifyResponse checkJoinVerifyCode(String targetEmail, String verifyCode){
+        checkUserExist(targetEmail);
+
+        String storedVerifyCode = redisRepository.getEmailVerifyCode(targetEmail);
+        if(storedVerifyCode == null){
+            throw new VerifyCodeNotFoundException("인증코드가 저장되어 있지 않습니다.");
+        }
+
+        if(!storedVerifyCode.equals(verifyCode)){
+            throw new VerifyCodeNotMatchException("인증번호가 일치하지 않습니다.");
+        }
+
+        redisRepository.saveVerifySuccess(targetEmail, VERIFY_EMAIL_TIME_LIMIT);
+
+        return EmailVerifyResponse.builder()
+                .targetEmail(targetEmail)
+                .verified(true)
+                .build();
+    }
+
+    private void sendEmail(String targetEmail, String title, String body){
         SimpleMailMessage emailForm = createEmailForm(targetEmail, title, body);
         emailSender.send(emailForm);
     }
@@ -51,4 +72,12 @@ public class EmailService {
     private String makeBody(String code){
         return String.format("가입 창에 인증번호를 입력해 주세요! \n\nDANCY 의 인증코드 : %s", code);
     }
+
+    private void checkUserExist(String targetEmail) {
+        boolean checkUserExists = userRepository.existsByEmail(targetEmail);
+        if(checkUserExists){
+            throw new UserAlreadyExistException("이미 가입된 이메일 계정입니다.");
+        }
+    }
+
 }

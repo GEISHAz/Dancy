@@ -1,6 +1,7 @@
 package com.ssafy.dancy.email;
 
 import com.ssafy.dancy.message.request.email.SendEmailRequest;
+import com.ssafy.dancy.message.request.email.VerifyEmailRequest;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,6 +19,13 @@ public class EmailSteps {
     public SendEmailRequest 이메일_헝식_아닌정보_생성(){
         return SendEmailRequest.builder()
                 .targetEmail(invalidEmail)
+                .build();
+    }
+
+    public VerifyEmailRequest 인증번호_정보_생성(String code){
+        return VerifyEmailRequest.builder()
+                .targetEmail(targetEmail)
+                .verifyCode(code)
                 .build();
     }
 }

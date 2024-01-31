@@ -16,15 +16,32 @@ public class RedisRepository {
     private final RedisTemplate<Object, Object> redisTemplate;
 
     private static final String EMAIL_VERIFY_PREFIX = "VERIFY";
+    private static final String EMAIL_VERIFY_SUCCESS_PREFIX = "SUCCESS";
 
     public String saveEmailVerifyCode(String targetEmail, String code, int timeLimit){
         String key = String.format("%s:%s", EMAIL_VERIFY_PREFIX, targetEmail);
         return saveKeyValue(key, code, timeLimit);
     }
 
+    public String getEmailVerifyCode(String targetEmail){
+        String key = String.format("%s:%s", EMAIL_VERIFY_PREFIX, targetEmail);
+        return (String)redisTemplate.opsForValue().get(key);
+    }
+
+    public void saveVerifySuccess(String targetEmail, int timeLimit){
+        String key = getVerifySuccessKey(targetEmail);
+        saveKeyValue(key, "1", timeLimit);
+    }
+    public Boolean checkVerifiedEmail(String targetEmail){
+        return redisTemplate.hasKey(getVerifySuccessKey(targetEmail));
+    }
+
+    private static String getVerifySuccessKey(String targetEmail) {
+        return String.format("%s:%s", EMAIL_VERIFY_SUCCESS_PREFIX, targetEmail);
+    }
+
     public String saveKeyValue(String key, String value, int limitMinute){
-        ValueOperations<Object, Object> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(key, value, limitMinute, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(key, value, limitMinute, TimeUnit.MINUTES);
         log.info("key: {}, value: {} 로 {} 분간 redis 저장", key, value, limitMinute);
 
         return String.format("%s -> %s", key, value);

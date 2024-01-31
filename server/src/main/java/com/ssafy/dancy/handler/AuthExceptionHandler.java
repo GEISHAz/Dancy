@@ -20,4 +20,10 @@ public class AuthExceptionHandler {
     public List<ErrorResponse> userAlreadyExistExceptionHandler(UserAlreadyExistException e){
         return makeErrorResponse(e, "email");
     }
+
+    @ExceptionHandler(UserInfoNotMatchException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public List<ErrorResponse> userInfoNotMatchExceptionHandler(UserInfoNotMatchException e){
+        return makeErrorResponse(e, "email");
+    }
 }

@@ -1,13 +1,15 @@
 package com.ssafy.dancy.config.security;
 
+import com.ssafy.dancy.entity.User;
+import com.ssafy.dancy.message.response.auth.JwtTokenResponse;
 import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.type.JwtCode;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
+import com.ssafy.dancy.type.Role;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.Date;
+import java.util.Set;
 
 @Component
 @Slf4j
@@ -27,7 +31,7 @@ public class JwtTokenProvider {
 
     private String secretKey;
 
-    public JwtTokenProvider(@Value("$jwt.secret.key}")String secretKey,
+    public JwtTokenProvider(@Value("${jwt.secret.key}")String secretKey,
                             UserDetailsService userDetailsService, UserRepository userRepository){
         this.secretKey = secretKey;
         this.userDetailsService = userDetailsService;
@@ -50,10 +54,8 @@ public class JwtTokenProvider {
             return JwtCode.DENIED;
         }
 
-        Key encodedKey = getKeyFromBase64EncodedKey(secretKey);
-
         try{
-            Jwts.parserBuilder().setSigningKey(encodedKey).build().parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
             return JwtCode.ACCESS;
         }catch(ExpiredJwtException e){
             return JwtCode.EXPIRED;
@@ -77,10 +79,51 @@ public class JwtTokenProvider {
 
     private String getUserPrimaryKey(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(getKeyFromBase64EncodedKey(secretKey))
+                .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public String makeRefreshToken(String email){ // 이따가 마저 완성할 것.
+        Claims claims = Jwts.claims().setSubject(email);
+        Date now = new Date();
+
+        String token = Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + refreshTokenValidTime))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+
+        return token;
+    }
+
+    public void setRefreshTokenForClient(HttpServletResponse response, User user) {
+
+    }
+
+    public JwtTokenResponse makeJwtTokenResponse(User user) {
+        String accessToken = makeAccessToken(user.getEmail(), user.getRoles());
+        return JwtTokenResponse.builder()
+                .accessToken(accessToken)
+                .tokenType(tokenType)
+                .authType(user.getAuthType())
+                .build();
+    }
+
+    private String makeAccessToken(String email, Set<Role> roles) {
+        Claims claims = Jwts.claims().setSubject(email);
+        claims.put("roles", roles);
+
+        Date now = new Date();
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + tokenValidTime))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
     }
 }
