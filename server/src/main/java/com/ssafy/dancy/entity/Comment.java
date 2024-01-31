@@ -47,6 +47,7 @@ public class Comment {
     @Column(nullable = false)
     private Article article;
 
+    @ColumnDefault("-1")
     @Column(nullable = false)
     private int parentId;
 
