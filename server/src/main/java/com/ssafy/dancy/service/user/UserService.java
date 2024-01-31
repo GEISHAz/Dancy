@@ -12,6 +12,7 @@ import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.type.AuthType;
 import com.ssafy.dancy.type.Gender;
 import com.ssafy.dancy.type.Role;
+import com.ssafy.dancy.util.FileStoreUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final RedisRepository redisRepository;
     private final PasswordEncoder passwordEncoder;
+    private final FileStoreUtil fileStoreUtil;
 
+    private static final String PROFILE_IMAGE_TARGET = "profileImage";
 
     public SignUpResultResponse signup(SignUpRequest request, Set<Role> roles) {
         userRepository.findByEmail(request.email()).ifPresent(
@@ -44,6 +47,8 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(request.password());
         LocalDate parsedDate = LocalDate.parse(request.birthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
+        String profileImageUrl = fileStoreUtil.uploadProfileImageToS3(request.profileImage(), PROFILE_IMAGE_TARGET);
+
         User user = User.builder()
                 .email(request.email())
                 .nickname(request.nickname())
@@ -52,6 +57,7 @@ public class UserService {
                 .birthDate(Date.valueOf(parsedDate))
                 .authType(AuthType.valueOf(request.authType()))
                 .roles(roles)
+                .profileImageUrl(profileImageUrl)
                 .build();
 
         User registeredUser = userRepository.save(user);

@@ -118,10 +118,48 @@
           }
         }
       }
+    },
+    "/user/signup" : {
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "회원가입",
+        "description" : "회원 가입을 처리하는 API 입니다.<br>성공적으로 회원가입이 이루어진 경우, 200 OK 와 함께 이메일과 닉네임 정보가 반환됩니다.<br>검증 로직에 맞지 않는 입력값을 넣었을 때, 400 Bad Request 가 반환됩니다. <br>이메일 검증이 이루어지지 않은 사용자가 가입을 시도할 경우, 403 Forbidden 이 반환됩니다.<br>이때, 이메일 인증 이후 30분 이상 가입이 진행되지 않았을 경우, 인증이 취소된 것으로 간주되며<br>새로 인증을 진행해야 합니다.<br>이미 가입된 이메일의 경우, 409 Conflict 가 반환됩니다.",
+        "operationId" : "user_api_test/회원가입_성공_200/",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-signup-835260490"
+                },
+                "examples" : {
+                  "user_api_test/회원가입_성공_200/" : {
+                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"nickname\" : \"dongw\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components" : {
     "schemas" : {
+      "user-signup-835260490" : {
+        "type" : "object",
+        "properties" : {
+          "nickname" : {
+            "type" : "string",
+            "description" : "가입한 닉네임"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "가입한 이메일"
+          }
+        }
+      },
       "email-verify-send1357172838" : {
         "required" : [ "targetEmail" ],
         "type" : "object",

@@ -16,8 +16,8 @@ public class AuthSteps {
     public static final String nickname = "dongw";
     public static final String password = "Test1122!";
     public static final String birthDate = "2000-01-01";
-    static final String gender = "MALE";
-    static final String authType = "DANCY";
+    public static final String gender = "MALE";
+    public static final String authType = "DANCY";
 
 
 
