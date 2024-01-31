@@ -3,7 +3,7 @@ package com.ssafy.dancy.controller;
 import com.ssafy.dancy.message.request.email.SendEmailRequest;
 import com.ssafy.dancy.message.request.email.VerifyEmailRequest;
 import com.ssafy.dancy.message.response.email.EmailVerifyResponse;
-import com.ssafy.dancy.service.EmailService;
+import com.ssafy.dancy.service.email.EmailService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

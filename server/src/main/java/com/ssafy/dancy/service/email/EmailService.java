@@ -1,4 +1,4 @@
-package com.ssafy.dancy.service;
+package com.ssafy.dancy.service.email;
 
 import com.ssafy.dancy.exception.user.UserAlreadyExistException;
 import com.ssafy.dancy.exception.verify.VerifyCodeNotFoundException;

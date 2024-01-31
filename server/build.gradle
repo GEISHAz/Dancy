@@ -95,6 +95,11 @@ dependencies {
 
 	// jasypt-spring-boot-starter
 	implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.5'
+
+	// AWS
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.429'
+	implementation 'com.amazonaws:aws-java-sdk-secretsmanager:1.12.429'
+	implementation 'com.amazonaws:aws-encryption-sdk-java:2.4.0'
 }
 
 // 6. openapi3 스펙 생성시 설정 정보
