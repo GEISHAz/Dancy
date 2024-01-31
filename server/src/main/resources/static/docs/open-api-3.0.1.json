@@ -1,0 +1,187 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "SSAFY DANCY API",
+    "description" : "SSAFY 공통프로젝트 DANCY 에서 사용할 API 문서입니다.",
+    "version" : "0.0.1"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:8080"
+  } ],
+  "tags" : [ ],
+  "paths" : {
+    "/email/verify/check" : {
+      "post" : {
+        "tags" : [ "email" ],
+        "summary" : "이메일 가입 인증번호 검증",
+        "description" : "이메일 가입 인증번호 코드를 검증하는 API 입니다.<br>서버에 저장된 인증 코드와 입력한 인증 코드가 일치할 때, 200 OK 가 반환됩니다.<br>이후, 회원가입을 진행할 수 있으며, 30분 이내에 가입하지 않을 시 이메일 인증을 다시 진행해야 합니다. <br>가입하려는 이메일 계정이, 이메일 형식을 하고 있지 않을 경우 400 Bad Request 가 반환됩니다.<br>이메일 인증번호가 일치하지 않을 경우, 403 Forbidden 이 반환됩니다.<br>가입하려는 이메일 계정에 인증코드가 전송되어 있지 않거나, 시간이 30분 이상 지나 만료된 코드의 경우<br>404 Not Found 가 반환됩니다.<br>이미 가입된 이메일로 검증을 시도할 경우, 409 Conflict 가 반환됩니다.",
+        "operationId" : "email_api_test/이메일_인증번호_확인_성공_200/",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/email-verify-check1025472966"
+              },
+              "examples" : {
+                "email_api_test/이메일_인증번호_확인_성공_200/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"ndw8200@naver.com\",\r\n  \"verifyCode\" : \"123456\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/email-verify-check-123477478"
+                },
+                "examples" : {
+                  "email_api_test/이메일_인증번호_확인_성공_200/" : {
+                    "value" : "{\r\n  \"targetEmail\" : \"ndw8200@naver.com\",\r\n  \"verified\" : true\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email/verify/send" : {
+      "post" : {
+        "tags" : [ "email" ],
+        "summary" : "이메일 가입 인증번호 전송",
+        "description" : "이메일 가입 인증번호 코드를 전송하는 API 입니다.<br>이미 생성된 계정이 아닐 때, 200 OK 와 함께 이메일이 해당 계정으로 전송됩니다.<br>이메일이 전송될 때, 서버에 인증번호 정보가 저장되어 있습니다. 인증번호의 유효기간은 30분 입니다. <br>가입하려는 이메일 계정이, 이메일 형식을 하고 있지 않을 경우 400 Bad Request 가 반환됩니다.<br>이미 가입된 이메일의 경우, 409 Conflict 가 반환됩니다.",
+        "operationId" : "email_api_test/이메일_가입_인증번호_전송_",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/email-verify-send1357172838"
+              },
+              "examples" : {
+                "email_api_test/이메일_가입_인증번호_전송_이메일_형식_아님_400/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"asdf\"\r\n}"
+                },
+                "email_api_test/이메일_가입_인증번호_전송_테스트_성공_200/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"ndw8200@naver.com\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/email-verify-send-1708490688"
+                },
+                "examples" : {
+                  "email_api_test/이메일_가입_인증번호_전송_이메일_형식_아님_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"이메일 형식이 아닙니다.\",\r\n  \"errorType\" : \"Email\",\r\n  \"fieldName\" : \"targetEmail\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200"
+          }
+        }
+      }
+    },
+    "/start/hello" : {
+      "get" : {
+        "tags" : [ "start" ],
+        "summary" : "시작 API",
+        "description" : "시작 테스트 입니다.",
+        "operationId" : "start_api_test/start_테스트/",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "text/plain;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/start-hello486549215"
+                },
+                "examples" : {
+                  "start_api_test/start_테스트/" : {
+                    "value" : "Hello Dancy!GumiD210!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "email-verify-send1357172838" : {
+        "required" : [ "targetEmail" ],
+        "type" : "object",
+        "properties" : {
+          "targetEmail" : {
+            "type" : "string",
+            "description" : "인증번호를 보내려는 이메일"
+          }
+        }
+      },
+      "email-verify-check1025472966" : {
+        "required" : [ "targetEmail", "verifyCode" ],
+        "type" : "object",
+        "properties" : {
+          "verifyCode" : {
+            "type" : "string",
+            "description" : "들어온 인증번호"
+          },
+          "targetEmail" : {
+            "type" : "string",
+            "description" : "인증번호를 보낸 이메일"
+          }
+        }
+      },
+      "email-verify-check-123477478" : {
+        "type" : "object",
+        "properties" : {
+          "targetEmail" : {
+            "type" : "string",
+            "description" : "인증 번호를 보낸 이메일"
+          },
+          "verified" : {
+            "type" : "boolean",
+            "description" : "인증 확인"
+          }
+        }
+      },
+      "email-verify-send-1708490688" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "fieldName" : {
+              "type" : "string",
+              "description" : "에러난 필드이름"
+            },
+            "errorType" : {
+              "type" : "string",
+              "description" : "에러타입"
+            },
+            "message" : {
+              "type" : "string",
+              "description" : "에러메세지"
+            }
+          }
+        }
+      },
+      "start-hello486549215" : {
+        "type" : "object"
+      }
+    }
+  }
+}
