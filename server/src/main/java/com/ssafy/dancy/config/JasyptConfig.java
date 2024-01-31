@@ -6,11 +6,13 @@ import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
+@PropertySource("classpath:jasypt.properties")
 public class JasyptConfig {
 
-    @Value("${JASYPT_KEY}")
+    @Value("${jasypt.key}")
     private String key;
 
     private static final String ALGORITHM = "PBEWithMD5AndDES";
