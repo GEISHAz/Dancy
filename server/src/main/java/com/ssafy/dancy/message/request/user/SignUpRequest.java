@@ -8,7 +8,9 @@ import com.ssafy.dancy.message.annotation.user.Password;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import org.springframework.web.multipart.MultipartFile;
+
 
 public record SignUpRequest(
         @Email
@@ -36,4 +38,9 @@ public record SignUpRequest(
         @ImageFile
         MultipartFile profileImage
 ) {
+
+        @Builder
+        public SignUpRequest{
+
+        }
 }

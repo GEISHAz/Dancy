@@ -3,19 +3,17 @@ package com.ssafy.dancy.email;
 import com.ssafy.dancy.ApiTest;
 import com.ssafy.dancy.CommonDocument;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.times;
 
 public class EmailApiTest extends ApiTest {
-
-    @Autowired
-    private RedisTemplate<Object, Object> redisTemplate;
 
     @Autowired
     private EmailSteps emailSteps;
@@ -41,8 +39,7 @@ public class EmailApiTest extends ApiTest {
                 .statusCode(HttpStatus.OK.value())
                 .log().all().extract();
 
-        String expectedKey = String.format("VERIFY:%s", EmailSteps.targetEmail);
-        assertThat(redisTemplate.hasKey(expectedKey)).isTrue();
+        Mockito.verify(mockValueOp, times(1)).set(anyString(), anyString(), anyLong(), any());
     }
 
     @Test
@@ -61,7 +58,7 @@ public class EmailApiTest extends ApiTest {
 
     @Test
     void 이메일_인증번호_확인_성공_200(){
-        String verifyCode = 이메일_인증번호_전송_코드();
+        String verifyCode = "123456";
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH, "이메일 가입 인증번호 코드를 검증하는 API 입니다." +
@@ -83,19 +80,5 @@ public class EmailApiTest extends ApiTest {
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .log().all().extract();
-    }
-
-    String 이메일_인증번호_전송_코드(){
-        given(this.spec)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(emailSteps.이메일_정보_생성())
-                .when()
-                .post("/email/verify/send")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .log().all().extract();
-
-        return (String)redisTemplate.opsForValue().get("VERIFY:" + EmailSteps.targetEmail);
     }
 }

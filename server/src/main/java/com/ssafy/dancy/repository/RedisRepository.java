@@ -40,11 +40,8 @@ public class RedisRepository {
         return String.format("%s:%s", EMAIL_VERIFY_SUCCESS_PREFIX, targetEmail);
     }
 
-
-
     public String saveKeyValue(String key, String value, int limitMinute){
-        ValueOperations<Object, Object> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(key, value, limitMinute, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(key, value, limitMinute, TimeUnit.MINUTES);
         log.info("key: {}, value: {} 로 {} 분간 redis 저장", key, value, limitMinute);
 
         return String.format("%s -> %s", key, value);

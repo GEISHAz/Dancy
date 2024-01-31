@@ -29,11 +29,11 @@ public class JwtTokenProvider {
     private final UserRepository userRepository;
     private final UserDetailsService userDetailsService;
 
-    private Key secretKey;
+    private String secretKey;
 
     public JwtTokenProvider(@Value("$jwt.secret.key}")String secretKey,
                             UserDetailsService userDetailsService, UserRepository userRepository){
-        this.secretKey = getKeyFromBase64EncodedKey(secretKey);
+        this.secretKey = secretKey;
         this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
     }
@@ -94,7 +94,7 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + refreshTokenValidTime))
-                .signWith(secretKey,SignatureAlgorithm.HS256)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
 
         return token;
@@ -123,7 +123,7 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + tokenValidTime))
-                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 }
