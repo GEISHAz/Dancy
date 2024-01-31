@@ -3,8 +3,8 @@ package com.ssafy.dancy.type;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-    USER("USER", "유저권한"),
-    ADMIN("ADMIN", "관리자권한");
+    USER("ROLE_USER", "유저권한"),
+    ADMIN("ROLE_ADMIN", "관리자권한");
 
     private String authority;
     private String description;
@@ -16,6 +16,6 @@ public enum Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return null;
+        return authority;
     }
 }
