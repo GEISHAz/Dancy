@@ -13,6 +13,7 @@ import {
   KakaoLogo,
 } from "./SelectJoinMethod.style";
 import EmailImg from "../../assets/join/email.png";
+import DancyImg from "../../assets/join/BigLogo.png";
 
 export const SelectJoinArea = styled.div`
   width: 100%;
@@ -49,7 +50,9 @@ export default function SelectJoinMethod() {
   return (
     <SelectJoinArea>
       <LogoArea>
-        <JoinLogo />
+        <JoinLogo>
+          <img src={DancyImg}></img>
+        </JoinLogo>
       </LogoArea>
       <TextArea>
         <WelcomeTitle>Dancy에 오신 것을 환영합니다!</WelcomeTitle>
