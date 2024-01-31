@@ -7,7 +7,7 @@ pipeline{
                 dir('server'){
                     script{
                         sh 'chmod +x gradlew'
-                        sh './gradlew clean build '
+                        sh './gradlew clean build -DJASYPT_KEY=testkey'
                         sh 'chmod +x ./docker_install.sh'
                         sh './docker_install.sh'
                     }
@@ -18,7 +18,7 @@ pipeline{
             steps{
                 dir('server'){
                     script{
-                        sh 'docker build -t backend-jenkins -DJASYPT_KEY=testkey.'
+                        sh 'docker build -t backend-jenkins .'
                         sh 'docker rm -f backend-jenkins'
                         sh 'docker run -d --name backend-jenkins -p 8080:8080 backend-jenkins'
                     }
