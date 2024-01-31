@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,14 @@ public class AuthController {
         jwtTokenProvider.setRefreshTokenForClient(response, user);
 
         return jwtTokenProvider.makeJwtTokenResponse(user);
+    }
+
+    @PostMapping("/logout")
+    public void logout(@AuthenticationPrincipal User user, HttpServletResponse response){
+        if(user != null){
+            userService.logout(user);
+        }
+        jwtTokenProvider.removeRefreshTokenForClient(response);
     }
 
 }

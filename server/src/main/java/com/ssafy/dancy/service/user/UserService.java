@@ -76,4 +76,8 @@ public class UserService {
         }
         return foundUser.get();
     }
+
+    public void logout(User user) {
+        redisRepository.logoutProcess(user, 15);
+    }
 }

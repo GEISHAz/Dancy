@@ -140,4 +140,17 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
+
+    public void removeRefreshTokenForClient(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", null)
+                .maxAge(0)
+                // 보안 설정
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("None")
+                .build();
+
+        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+    }
 }
