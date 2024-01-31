@@ -9,12 +9,15 @@ export const ProfileIntroBox = styled.div`
 	background-color: #fbf3ed;
 	display: flex;
 	flex-direction: column;
-	align-items:center;
-	padding-left: 60px;
-	padding-right: 60px;
-	padding-top: 70px;
+  justify-content:center;
+  align-items:center;
 	gap: 33px;
 `
+
+export const Wrap = styled.div`
+  align-self:center;
+`
+
 export const ProfileRound = styled.div`
 	width: 166px;
 	height: 166px;
