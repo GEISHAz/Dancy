@@ -39,7 +39,8 @@ export const JoinChoiceTitle = styled.div`
 export const JoinBtnContainer = styled.button`
   width: 500px;
   height: 60px;
-  border: 1px solid black;
+  border: 1px solid;
+  border-color: black;
   border-radius: 5px;
   background-color: white;
   margin: 8px;
