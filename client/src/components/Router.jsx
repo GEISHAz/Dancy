@@ -5,6 +5,7 @@ import Stage from "../pages/Stage";
 import Profile from "../pages/Profile";
 import Login from "./Login/LoginForm";
 import SignUp from "../pages/SignUp";
+import VideoDetail from "../pages/VideoDetail";
 
 export default function Router() {
   return (
@@ -13,9 +14,11 @@ export default function Router() {
         <Route path="/" element={<Home />} />
         <Route path="/practice" element={<Practice />} />
         <Route path="/stage" element={<Stage />} />
-        <Route path="/profile/:username" element={<Profile/>} />
+        <Route path="/profile/:user_id" element={<Profile/>} />
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp/>} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/detail/:video_id" element={<VideoDetail />} />
+        
       </Routes>
     </>
   )
