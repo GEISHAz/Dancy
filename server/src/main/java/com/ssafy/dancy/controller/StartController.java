@@ -28,7 +28,6 @@ public class StartController {
     public String hello(){
         return "Hello Dancy!"+
                 jasyptKey;
-
     }
 
     @GetMapping("/test/querydsl/{name}")
