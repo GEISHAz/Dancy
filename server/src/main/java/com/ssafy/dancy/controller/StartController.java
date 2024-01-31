@@ -6,6 +6,7 @@ import com.ssafy.dancy.service.TestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +19,13 @@ public class StartController {
 
     private final TestService testService;
 
+//    @Value("${JASYPT_KEY")
+    String jasyptKey = "temp";
+
     @GetMapping("/hello")
     public String hello(){
-        return "Hello Dancy!";
+        return "Hello Dancy!"+
+                jasyptKey;
     }
 
     @GetMapping("/test/querydsl/{name}")
