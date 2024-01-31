@@ -10,6 +10,45 @@
   } ],
   "tags" : [ ],
   "paths" : {
+    "/auth/login" : {
+      "post" : {
+        "tags" : [ "auth" ],
+        "summary" : "로그인",
+        "description" : "로그인을 진행하는 API 입니다.<br>로그인에 성공한다면, 200 OK 와 함께 Access Token 과 Refresh Token, 인증타입, 토큰타입 정보가 반환됩니다.<br>아이디나 비밀번호가 일치하지 않는다면, 404 Not Found 가 반환됩니다.",
+        "operationId" : "auth_api_test/로그인성공_200/",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth-login-83566640"
+              },
+              "examples" : {
+                "auth_api_test/로그인성공_200/" : {
+                  "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"password\" : \"Test1122!\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-login328342784"
+                },
+                "examples" : {
+                  "auth_api_test/로그인성공_200/" : {
+                    "value" : "{\r\n  \"accessToken\" : \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA2NzE0NjkyLCJleHAiOjE3MDY3MTY0OTJ9.gWaqWYy7OzyjQJEFO7BOV70XBFFmKszEjnaA81vi3yg\",\r\n  \"tokenType\" : \"Bearer\",\r\n  \"authType\" : \"DANCY\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/email/verify/check" : {
       "post" : {
         "tags" : [ "email" ],
@@ -118,10 +157,65 @@
           }
         }
       }
+    },
+    "/user/signup" : {
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "회원가입",
+        "description" : "회원 가입을 처리하는 API 입니다.<br>성공적으로 회원가입이 이루어진 경우, 200 OK 와 함께 이메일과 닉네임 정보가 반환됩니다.<br>검증 로직에 맞지 않는 입력값을 넣었을 때, 400 Bad Request 가 반환됩니다. <br>이메일 검증이 이루어지지 않은 사용자가 가입을 시도할 경우, 403 Forbidden 이 반환됩니다.<br>이때, 이메일 인증 이후 30분 이상 가입이 진행되지 않았을 경우, 인증이 취소된 것으로 간주되며<br>새로 인증을 진행해야 합니다.<br>이미 가입된 이메일의 경우, 409 Conflict 가 반환됩니다.",
+        "operationId" : "user_api_test/회원가입_성공_200/",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-signup-835260490"
+                },
+                "examples" : {
+                  "user_api_test/회원가입_성공_200/" : {
+                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"nickname\" : \"dongw\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components" : {
     "schemas" : {
+      "user-signup-835260490" : {
+        "type" : "object",
+        "properties" : {
+          "nickname" : {
+            "type" : "string",
+            "description" : "가입한 닉네임"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "가입한 이메일"
+          }
+        }
+      },
+      "auth-login328342784" : {
+        "type" : "object",
+        "properties" : {
+          "authType" : {
+            "type" : "string",
+            "description" : "인증 타입"
+          },
+          "tokenType" : {
+            "type" : "string",
+            "description" : "토큰 타입"
+          },
+          "accessToken" : {
+            "type" : "string",
+            "description" : "access token"
+          }
+        }
+      },
       "email-verify-send1357172838" : {
         "required" : [ "targetEmail" ],
         "type" : "object",
@@ -129,6 +223,20 @@
           "targetEmail" : {
             "type" : "string",
             "description" : "인증번호를 보내려는 이메일"
+          }
+        }
+      },
+      "auth-login-83566640" : {
+        "required" : [ "email", "password" ],
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "비밀번호"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "아이디"
           }
         }
       },

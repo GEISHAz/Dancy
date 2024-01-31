@@ -2,6 +2,7 @@ package com.ssafy.dancy.config.security;
 
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.response.auth.JwtTokenResponse;
+import com.ssafy.dancy.repository.RedisRepository;
 import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.type.JwtCode;
 import com.ssafy.dancy.type.Role;
@@ -12,6 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,14 +31,16 @@ public class JwtTokenProvider {
 
     private final UserRepository userRepository;
     private final UserDetailsService userDetailsService;
+    private final RedisRepository redisRepository;
 
     private String secretKey;
 
     public JwtTokenProvider(@Value("${jwt.secret.key}")String secretKey,
-                            UserDetailsService userDetailsService, UserRepository userRepository){
+                            UserDetailsService userDetailsService, UserRepository userRepository, RedisRepository redisRepository){
         this.secretKey = secretKey;
         this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
+        this.redisRepository = redisRepository;
     }
 
     public static long tokenValidTime = 30 * 60 * 1000L; // 30분
@@ -86,7 +91,7 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    public String makeRefreshToken(String email){ // 이따가 마저 완성할 것.
+    public String makeRefreshToken(String email){
         Claims claims = Jwts.claims().setSubject(email);
         Date now = new Date();
 
@@ -97,11 +102,20 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
 
+        redisRepository.saveRefreshToken(email, token, 15);
         return token;
     }
 
     public void setRefreshTokenForClient(HttpServletResponse response, User user) {
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", makeRefreshToken(user.getEmail()))
+                .maxAge(refreshTokenValidTime / 1000)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("None")
+                .build();
 
+        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 
     public JwtTokenResponse makeJwtTokenResponse(User user) {
