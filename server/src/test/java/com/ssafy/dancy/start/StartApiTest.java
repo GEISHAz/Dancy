@@ -1,19 +1,40 @@
 package com.ssafy.dancy.start;
 
 import com.ssafy.dancy.ApiTest;
+import com.ssafy.dancy.auth.AuthSteps;
 import com.ssafy.dancy.message.request.TestSaveRequest;
+import com.ssafy.dancy.message.request.user.SignUpRequest;
+import com.ssafy.dancy.service.user.UserService;
+import com.ssafy.dancy.type.Role;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+
+import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StartApiTest extends ApiTest {
+
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AuthSteps authSteps;
+
+    private SignUpRequest signUpRequest;
+
+    @BeforeEach
+    void settings(){
+        signUpRequest = authSteps.회원가입정보_생성();
+        userService.signup(signUpRequest, Set.of(Role.USER));
+    }
 
 
     @Test
@@ -98,6 +119,32 @@ public class StartApiTest extends ApiTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 로그인_정보_기본_가져오기세팅_테스트(){
+
+        final String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+
+        given(this.spec)
+                .header("AUTH-TOKEN", token)
+                .when()
+                .get("/start/test/userinfo")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 로그인_정보_기본_토큰없음_401(){
+        given(this.spec)
+                .when()
+                .get("/start/test/userinfo")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .log().all().extract();
     }
 

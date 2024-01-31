@@ -45,7 +45,9 @@ public class WebSecurityConfig {
                 .sessionManagement(manage -> manage.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS
                 ))
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/start/test/userinfo").hasRole("USER")
+                        .anyRequest().permitAll())
                 .exceptionHandling(config ->
                         config.authenticationEntryPoint(authenticationEntryPoint()).
                                 accessDeniedHandler(jwtAccessDeniedHandler))
