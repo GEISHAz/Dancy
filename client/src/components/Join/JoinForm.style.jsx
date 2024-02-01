@@ -123,6 +123,7 @@ export const FormInput = styled.input`
   padding: 10px;
   font-family: "NYJ Gothic L";
   font-size: 16px;
+  align-self: flex-start;
 
   &:focus {
     outline: 2px solid #e23e59;
@@ -138,5 +139,3 @@ export const InputNoticeText = styled.div`
   line-height: nomal;
   color: #e2030f;
 `;
-
-
