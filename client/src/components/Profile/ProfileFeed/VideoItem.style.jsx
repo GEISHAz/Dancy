@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import thumImg from '../../../assets/profileFeed/archiveThumb.png'
 
 export const ItemCotainer = styled.div`
   display: flex;
@@ -13,8 +14,9 @@ export const ItemThumb = styled.div`
   height: 150px;
   border: 1px solid black;
   border-radius: 10px;
-  background-image: url(${(props) => { props.src}});
-  background-size: contain;
+  /* background-image: url(${(props) => { props.src}}); */
+  background-image: url(${thumImg});
+  background-size: 200px;
 `
 
 export const ItemTitle = styled.div`

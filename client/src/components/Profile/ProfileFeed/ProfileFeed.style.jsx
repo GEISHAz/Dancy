@@ -5,7 +5,7 @@ export const FeedContainer = styled.div`
 `
 
 export const FeedHeader = styled.div`
-	height: 120px;
+	height: 85px;
 	border: 1px solid black;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
@@ -20,9 +20,10 @@ export const FeedHeader = styled.div`
 
 export const Archive = styled.div`
 	font-family: 'NYJ Gothic B';
-  font-size: px;
+  font-size: 18px;
 	color: #434343;
 	display: flex;
+	margin-left: 2px;
 `
 
 export const BtnBox = styled.div`
@@ -32,6 +33,7 @@ export const BtnBox = styled.div`
 
 export const BtnContainer = styled.div`
 	position: relative;
+	scale: 0.85;
 `
 
 export const ArchiveBtn = styled.button`
@@ -92,13 +94,12 @@ export const FeedBody = styled.div`
 	background-color: #FFFFFF;
   padding: 40px;
   
-  overflow: scroll;
+  overflow-y: scroll;
   &::-webkit-scrollbar {
     width: 10px;
-    
   }
   &::-webkit-scrollbar-thumb {
     border-radius: 20px;
-    background: #F9405E;
+    background: #ff8791;
   }
 `
