@@ -8,12 +8,14 @@ import com.ssafy.dancy.repository.RedisRepository;
 import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.util.VerifyCodeMaker;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmailService {
 
     private final JavaMailSender emailSender;
@@ -24,12 +26,16 @@ public class EmailService {
     private static final int VERIFY_EMAIL_TIME_LIMIT = 30;
 
     public void sendVerifyCode(String targetEmail){
+        log.info("유저 있는지 확인");
         checkUserExist(targetEmail);
 
         String title = "DANCY 서비스 가입 이메일 인증코드입니다.";
         String code = codeMaker.makeVerifyCode();
 
+        log.info("레디스 저장 시도");
         redisRepository.saveEmailVerifyCode(targetEmail, code, VERIFY_EMAIL_TIME_LIMIT);
+
+        log.info("이메일 전송 시도");
         sendEmail(targetEmail, title, makeBody(code));
     }
 
