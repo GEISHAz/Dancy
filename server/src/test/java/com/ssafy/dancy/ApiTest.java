@@ -3,19 +3,28 @@ package com.ssafy.dancy;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Answers;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.data.redis.core.RedisKeyValueAdapter;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
@@ -34,6 +43,8 @@ public class ApiTest {
     protected RedisKeyValueAdapter adapter;
     @MockBean
     protected ValueOperations<Object, Object> mockValueOp;
+    @MockBean
+    protected JavaMailSender mailSender;
 
 
     @LocalServerPort
@@ -46,7 +57,7 @@ public class ApiTest {
     void setUp(){
         if(RestAssured.port == RestAssured.UNDEFINED_PORT){
             RestAssured.port = port;
-            databaseCleanup.init();
+            databaseCleanup.afterPropertiesSet();
         }
 
         databaseCleanup.truncateAllTables();
@@ -55,6 +66,12 @@ public class ApiTest {
         Mockito.when(redisTemplate.opsForValue().get(anyString())).thenReturn("123456");
         Mockito.doNothing().when(mockValueOp).set(anyString(), anyString(), anyLong(), any());
         Mockito.when(redisTemplate.delete(anyString())).thenReturn(true);
+        Mockito.doNothing().when(mailSender).send(any(SimpleMailMessage.class));
+    }
+
+    @AfterEach
+    void resetMocks(){
+        Mockito.reset(redisTemplate, adapter, mockValueOp, mailSender);
     }
 
     @BeforeEach

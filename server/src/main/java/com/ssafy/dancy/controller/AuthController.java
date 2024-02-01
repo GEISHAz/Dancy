@@ -2,7 +2,9 @@ package com.ssafy.dancy.controller;
 
 import com.ssafy.dancy.config.security.JwtTokenProvider;
 import com.ssafy.dancy.entity.User;
+import com.ssafy.dancy.message.request.auth.ChangePasswordRequest;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
+import com.ssafy.dancy.message.request.user.UserDeleteRequest;
 import com.ssafy.dancy.message.response.auth.JwtTokenResponse;
 import com.ssafy.dancy.service.user.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,10 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -40,4 +39,21 @@ public class AuthController {
         jwtTokenProvider.removeRefreshTokenForClient(response);
     }
 
+    @PutMapping("/change")
+    public void changeUserPassword(@AuthenticationPrincipal User user,
+                                   @Valid @RequestBody ChangePasswordRequest request,
+                                   HttpServletResponse response){
+
+        userService.changePassword(user, request);
+        jwtTokenProvider.removeRefreshTokenForClient(response);
+    }
+
+    @DeleteMapping("")
+    public void deleteUser(@AuthenticationPrincipal User user,
+                           @RequestBody UserDeleteRequest request,
+                           HttpServletResponse response){
+
+        userService.deleteUser(user, request.password());
+        jwtTokenProvider.removeRefreshTokenForClient(response);
+    }
 }
