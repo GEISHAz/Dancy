@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource("classpath:jasypt.properties")
+@PropertySource("classpath:application-prod.properties")
 public class JasyptConfig {
 
     @Value("${jasypt.key}")

@@ -7,7 +7,7 @@ pipeline{
                 dir('server'){
                     script{
                         sh 'chmod +x gradlew'
-                        sh "sed -i 's/\${JASYPT_KEY}/${JASYPT_KEY}/' ./src/main/resources/jasypt.properties"
+                        sh "sed -i 's/\${JASYPT_KEY}/${JASYPT_KEY}/' ./src/main/resources/application-prod.properties"
                         sh './gradlew clean build'
                         sh 'chmod +x ./docker_install.sh'
                         sh './docker_install.sh'
