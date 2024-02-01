@@ -3,13 +3,10 @@ package com.ssafy.dancy.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @Entity
 @Builder
@@ -30,27 +27,29 @@ public class Article {
     @Column(nullable = false)
     private String articleContent;
 
-    @Column(nullable = false)
+    @Column //(nullable = false)
     private String thumbnailImageUrl;
 
-    @Column(nullable = false)
+    @Column //(nullable = false)
     private String thumbnailVideoUrl;
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private Long view;
+    @Builder.Default
+    private Long view = 0L;
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private int articleLike;
+    @Builder.Default
+    private int articleLike = 0;
 
-    @Column(columnDefinition = "TIMESTAMP", nullable = false)
+    @Column(columnDefinition = "TIMESTAMP") //, nullable = false)
     @CreatedDate
     private LocalDateTime createdDate;
 
-    @ManyToOne(optional = false)
+    @ManyToOne //(optional = false)
     private User user;
 
-    @OneToOne(optional = false)
+    @OneToOne // (optional = false)
     private Video video;
 }
