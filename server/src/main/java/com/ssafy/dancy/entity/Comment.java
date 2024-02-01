@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-//@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(AuditingEntityListener.class)
 public class Comment {
 
     @Id
@@ -30,14 +30,15 @@ public class Comment {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private Integer commentLike;
+    @Builder.Default
+    private Integer commentLike = 0;
 
     @CreatedDate
-    @Column(columnDefinition = "TIMESTAMP", nullable = false)
+    @Column(columnDefinition = "TIMESTAMP") //, nullable = false)
     private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @Column(columnDefinition = "TIMESTAMP", nullable = false)
+    @Column(columnDefinition = "TIMESTAMP") //, nullable = false)
     private LocalDateTime updatedDate;
 
     @ManyToOne(optional = false)
@@ -48,6 +49,7 @@ public class Comment {
 
     @ColumnDefault("-1")
     @Column(nullable = false)
-    private Long parentId;
+    @Builder.Default
+    private Long parentId = -1L;
 
 }
