@@ -5,12 +5,14 @@ import NaverImg from '../../assets/socialLogin/socialNaver.png'
 import DancyImg from '../../assets/DancyLogo.png'
 
 export const Container = styled.div`
+  height: 900px;
   display: flex;
   justify-content: center;
-  margin-top: 3.5rem;
-  margin-bottom: 3.5rem;
-  padding-top: 3.5rem;
-  padding-bottom: 3.5rem;
+  align-items: center;
+  /* margin-top: 3.5rem; */
+  /* margin-bottom: 3.5rem; */
+  /* padding-top: 3.5rem; */
+  /* padding-bottom: 3.5rem; */
 `
 
 export const DancyLogo = styled.div`
@@ -82,7 +84,7 @@ export const LoginButton = styled.button`
 export const ExplainJoinFindPw = styled.div`
   color: #6C6C6C;
   font-family: "NYJ Gothic L";
-  font-size: 12px;
+  font-size: 14px;
 `
 
 export const GoJoinFindPw = styled.div`
@@ -145,4 +147,8 @@ export const ModalBtn = styled.button`
   &:hover {
     background-color: #C0354C;
   }
+`
+
+export const FeedContainer = styled.div`
+
 `
