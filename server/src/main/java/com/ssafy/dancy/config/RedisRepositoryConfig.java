@@ -1,6 +1,7 @@
 package com.ssafy.dancy.config;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,12 +14,14 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @RequiredArgsConstructor
 @Configuration
 @EnableRedisRepositories
+@Slf4j
 public class RedisRepositoryConfig {
 
     private final RedisProperties redisProperties;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory(){
+        log.info("현재 레디스 접속 : {}, {}", redisProperties.getHost(), redisProperties.getPort());
         return new LettuceConnectionFactory(redisProperties.getHost(), redisProperties.getPort());
     }
 

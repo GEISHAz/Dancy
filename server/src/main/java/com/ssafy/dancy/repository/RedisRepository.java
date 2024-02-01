@@ -65,7 +65,9 @@ public class RedisRepository {
     }
 
     private String saveKeyValue(String key, String value, int limitMinute, TimeUnit timeUnit){
+
         ValueOperations<Object, Object> operation = redisTemplate.opsForValue();
+        log.info("레디스 템플릿 : redisTemplate : {}", operation);
         try{ // 미봉책. 나중에 더 상세히 파 볼 것.
             operation.set(key, value, limitMinute, timeUnit);
             log.info("key: {}, value: {} 로 {} 간 redis 저장", key, value, limitMinute);
