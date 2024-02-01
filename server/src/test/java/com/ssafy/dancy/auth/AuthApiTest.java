@@ -10,7 +10,6 @@ import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
 import com.ssafy.dancy.user.UserDocument;
 import io.restassured.matcher.RestAssuredMatchers;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -171,6 +170,67 @@ public class AuthApiTest extends ApiTest {
                 .body(authSteps.비밀번호_변경_비밀번호틀림())
                 .when()
                 .put("/auth/change")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 회원탈퇴_성공_200(){
+
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, "회원 탈퇴 API 입니다." +
+                                "<br>올바른 비밀번호를 입력했을 때, 200 OK 와 함께 회원 탈퇴 처리되며, 로그아웃됩니다." +
+                                "<br>프론트앤드 영역에서 Access Token 을 직접 삭제시켜 주어야 합니다." +
+                                "<br>AUTH_TOKEN 이 유효하지 않거나, 값이 없을 경우 401 Unauthorized 가 반환됩니다." +
+                                "<br>기존 패스워드와 일치하지 않을 경우, 403 Forbidden 과 함께 패스워드가 일치하지 않는다는 메세지가 반환됩니다.",
+                        "회원 탈퇴",
+                        CommonDocument.AccessTokenHeader, UserDocument.userDeleteRequestField))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("AUTH-TOKEN", token)
+                .body(authSteps.회원탈퇴_유저_비밀번호_입력())
+                .when()
+                .delete("/auth")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .cookie("refreshToken", RestAssuredMatchers.detailedCookie().maxAge(0))
+                .log().all().extract();
+
+        assertThat(userRepository.findByEmail(AuthSteps.email)).isEmpty();
+    }
+
+    @Test
+    void 회원탈퇴_토큰없음_401(){
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(authSteps.회원탈퇴_유저_비밀번호_입력())
+                .when()
+                .delete("/auth")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 회원탈퇴_비밀번호불일치_403(){
+
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH,
+                        UserDocument.userDeleteRequestField,
+                        CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("AUTH-TOKEN", token)
+                .body(authSteps.회원탈퇴_유저_잘못된_비밀번호())
+                .when()
+                .delete("/auth")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.FORBIDDEN.value())

@@ -4,6 +4,7 @@ import com.ssafy.dancy.config.security.JwtTokenProvider;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.request.auth.ChangePasswordRequest;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
+import com.ssafy.dancy.message.request.user.UserDeleteRequest;
 import com.ssafy.dancy.message.response.auth.JwtTokenResponse;
 import com.ssafy.dancy.service.user.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,6 +45,15 @@ public class AuthController {
                                    HttpServletResponse response){
 
         userService.changePassword(user, request);
+        jwtTokenProvider.removeRefreshTokenForClient(response);
+    }
+
+    @DeleteMapping("")
+    public void deleteUser(@AuthenticationPrincipal User user,
+                           @RequestBody UserDeleteRequest request,
+                           HttpServletResponse response){
+
+        userService.deleteUser(user, request.password());
         jwtTokenProvider.removeRefreshTokenForClient(response);
     }
 }

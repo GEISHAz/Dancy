@@ -3,6 +3,7 @@ package com.ssafy.dancy.auth;
 import com.ssafy.dancy.message.request.auth.ChangePasswordRequest;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
+import com.ssafy.dancy.message.request.user.UserDeleteRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -79,6 +80,18 @@ public class AuthSteps {
         return ChangePasswordRequest.builder()
                 .currentPassword(wrongPassword)
                 .newPassword(newPassword)
+                .build();
+    }
+
+    public UserDeleteRequest 회원탈퇴_유저_비밀번호_입력(){
+        return UserDeleteRequest.builder()
+                .password(password)
+                .build();
+    }
+
+    public UserDeleteRequest 회원탈퇴_유저_잘못된_비밀번호(){
+        return UserDeleteRequest.builder()
+                .password(newPassword)
                 .build();
     }
 }

@@ -47,6 +47,11 @@ public class UserDocument {
                     .attributes(required()).description("바꾸고자 하는 패스워드")
     );
 
+    public static final Snippet userDeleteRequestField = requestFields(
+            fieldWithPath("password").type(JsonFieldType.STRING)
+                    .attributes(required()).description("현재 비밀번호")
+    );
+
     public static final Snippet updateUserResponseField = responseFields(
             fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
             fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임")

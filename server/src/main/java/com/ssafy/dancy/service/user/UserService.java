@@ -136,14 +136,23 @@ public class UserService {
     }
 
     public void changePassword(User user, ChangePasswordRequest request) {
-        if(!passwordEncoder.matches(request.currentPassword(), user.getPassword())){
-            throw new UserPasswordNotMatchException("기존 비밀번호가 일치하지 않습니다.");
-        }
+        checkPassword(request.currentPassword(), user.getPassword());
 
         String newEncodedPassword = passwordEncoder.encode(request.newPassword());
         user.setPassword(newEncodedPassword);
         userRepository.save(user);
 
         logout(user);
+    }
+
+    public void deleteUser(User user, String password) {
+        checkPassword(password, user.getPassword());
+        userRepository.delete(user);
+    }
+
+    private void checkPassword(String inputPassword, String userPassword){
+        if(!passwordEncoder.matches(inputPassword, userPassword)){
+            throw new UserPasswordNotMatchException("기존 비밀번호가 일치하지 않습니다.");
+        }
     }
 }
