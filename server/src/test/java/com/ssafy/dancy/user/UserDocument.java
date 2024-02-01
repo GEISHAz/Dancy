@@ -6,8 +6,8 @@ import org.springframework.restdocs.snippet.Snippet;
 import static com.ssafy.dancy.DocumentFormatProvider.required;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 
 public class UserDocument {
     public static final Snippet signUpRequestField = requestParts(
@@ -29,5 +29,9 @@ public class UserDocument {
     public static final Snippet signUpResponseField = responseFields(
             fieldWithPath("email").type(JsonFieldType.STRING).description("가입한 이메일"),
             fieldWithPath("nickname").type(JsonFieldType.STRING).description("가입한 닉네임")
+    );
+
+    public static final Snippet nicknameField = pathParameters(
+            parameterWithName("nickname").attributes(required()).description("닉네임")
     );
 }

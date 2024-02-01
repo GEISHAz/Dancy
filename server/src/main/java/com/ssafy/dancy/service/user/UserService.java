@@ -1,6 +1,7 @@
 package com.ssafy.dancy.service.user;
 
 import com.ssafy.dancy.entity.User;
+import com.ssafy.dancy.exception.user.DuplicateNicknameException;
 import com.ssafy.dancy.exception.user.UserAlreadyExistException;
 import com.ssafy.dancy.exception.user.UserInfoNotMatchException;
 import com.ssafy.dancy.exception.verify.EmailNotVerifiedException;
@@ -68,6 +69,12 @@ public class UserService {
                 .build();
     }
 
+    public void checkDuplicateNickname(String nickname){
+        if(userRepository.existsByNickname(nickname)){
+            throw new DuplicateNicknameException("중복되는 닉네임입니다.");
+        }
+    }
+
     public User login(LoginUserRequest request){
         Optional<User> foundUser = userRepository.findByEmail(request.email());
 
@@ -80,4 +87,6 @@ public class UserService {
     public void logout(User user) {
         redisRepository.logoutProcess(user, 15);
     }
+
+
 }

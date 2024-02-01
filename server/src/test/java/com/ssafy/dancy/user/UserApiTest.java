@@ -2,9 +2,13 @@ package com.ssafy.dancy.user;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.ssafy.dancy.ApiTest;
+import com.ssafy.dancy.CommonDocument;
 import com.ssafy.dancy.auth.AuthSteps;
 import com.ssafy.dancy.entity.User;
+import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.repository.UserRepository;
+import com.ssafy.dancy.service.user.UserService;
+import com.ssafy.dancy.type.Role;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -17,9 +21,11 @@ import org.springframework.http.MediaType;
 
 import java.awt.*;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.allOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 
@@ -29,10 +35,12 @@ public class UserApiTest extends ApiTest {
     private AuthSteps authSteps;
     @Autowired
     private UserRepository userRepository;
-
     @MockBean
     private AmazonS3 amazonS3;
+    @Autowired
+    private UserService userService;
 
+    private SignUpRequest signUpRequest;
 
     @Test
     void 회원가입_성공_200(){
@@ -70,5 +78,38 @@ public class UserApiTest extends ApiTest {
 
         Mockito.verify(amazonS3, times(1)).putObject(Mockito.any());
         Mockito.verify(redisTemplate, times(1)).hasKey(Mockito.any());
+    }
+
+    @Test
+    void 닉네임_중복체크_성공_200(){
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, "닉네임 중복검사를 수행하는 API 입니다." +
+                                "<br>닉네임이 기존 가입된 닉네임과 중복되지 않았을 경우, 200 OK 만 반환됩니다." +
+                                "<br>이미 가입되어 중복되는 경우, 409 Conflict 가 반환됩니다.",
+                        "닉네임 중복체크",
+                        UserDocument.nicknameField))
+                .pathParams("nickname", "newNickname")
+                .when()
+                .get("/user/exists/{nickname}")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 닉네임_중복체크_중복_409(){
+        signUpRequest = authSteps.회원가입정보_생성();
+        userService.signup(signUpRequest, Set.of(Role.USER));
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, UserDocument.nicknameField, CommonDocument.ErrorResponseFields))
+                .pathParams("nickname", AuthSteps.nickname)
+                .when()
+                .get("/user/exists/{nickname}")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CONFLICT.value())
+                .log().all().extract();
     }
 }
