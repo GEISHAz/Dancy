@@ -8,9 +8,11 @@ import com.ssafy.dancy.exception.user.UserPasswordNotMatchException;
 import com.ssafy.dancy.exception.verify.EmailNotVerifiedException;
 import com.ssafy.dancy.message.request.auth.ChangePasswordRequest;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
+import com.ssafy.dancy.message.request.user.ChangeProfileImageRequest;
 import com.ssafy.dancy.message.request.user.IntroduceTextChangeRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.message.response.user.ChangeIntroduceResponse;
+import com.ssafy.dancy.message.response.user.ChangedProfileImageResponse;
 import com.ssafy.dancy.message.response.user.UpdatedUserResponse;
 import com.ssafy.dancy.message.response.user.UserDetailInfoResponse;
 import com.ssafy.dancy.repository.RedisRepository;
@@ -147,6 +149,8 @@ public class UserService {
 
     public void deleteUser(User user, String password) {
         checkPassword(password, user.getPassword());
+        logout(user);
+
         userRepository.delete(user);
     }
 
@@ -154,5 +158,16 @@ public class UserService {
         if(!passwordEncoder.matches(inputPassword, userPassword)){
             throw new UserPasswordNotMatchException("기존 비밀번호가 일치하지 않습니다.");
         }
+    }
+
+    public ChangedProfileImageResponse changeProfileImage(User user, ChangeProfileImageRequest request) {
+        String profileImageUrl = fileStoreUtil.uploadProfileImageToS3(request.profileImage(), PROFILE_IMAGE_TARGET);
+        user.setProfileImageUrl(profileImageUrl);
+
+        User savedUser = userRepository.save(user);
+        return ChangedProfileImageResponse.builder()
+                .email(savedUser.getEmail())
+                .profileImageUrl(savedUser.getProfileImageUrl())
+                .build();
     }
 }

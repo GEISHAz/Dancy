@@ -289,4 +289,74 @@ public class UserApiTest extends ApiTest {
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .log().all().extract();
     }
+
+    @Test
+    void 유저프로필사진_수정_성공_200(){
+        Mockito.doReturn(null).when(amazonS3).putObject(Mockito.any());
+
+        signUpRequest = authSteps.회원가입정보_생성();
+        userService.signup(signUpRequest, Set.of(Role.USER));
+
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+
+        ExtractableResponse<Response> response = given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, "유저 프로필 사진을 수정하는 API 입니다." +
+                                "<br>성공적으로 프로필 사진이 수정된 경우, 200 OK 와 함께 이메일과 프로필 이미지 URL 이 반환됩니다." +
+                                "<br>프로필 이미지가 지정된 사진 확장자명으로 되어 있는 파일이 아닐 경우, 400 Bad Request 가 반환되며 " +
+                                "<br>아래와 같은 메세지를 반환받습니다. " +
+                                "<br>AUTH-TOKEN 이 유효하지 않거나, 값이 없을 경우 401 Unauthorized 가 반환됩니다.",
+                        "유저프로필사진수정",
+                        CommonDocument.AccessTokenHeader,
+                        UserDocument.changeProfileImageRequestField,
+                        UserDocument.changeProfileImageResponseField))
+                .header("AUTH-TOKEN", token)
+                .multiPart(UserSteps.프로필_이미지_간단생성())
+                .when()
+                .put("/user/profile_image")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+
+        JsonPath jsonPath = response.jsonPath();
+        User foundUser = userRepository.findByEmail(AuthSteps.email).get();
+        assertThat(foundUser.getProfileImageUrl()).isEqualTo(jsonPath.getString("profileImageUrl"));
+        Mockito.verify(amazonS3, times(1)).putObject(Mockito.any());
+    }
+
+    @Test
+    void 유저프로필사진_수정_다른확장자파일_400(){
+        signUpRequest = authSteps.회원가입정보_생성();
+        userService.signup(signUpRequest, Set.of(Role.USER));
+
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH,
+                        CommonDocument.AccessTokenHeader,
+                        UserDocument.changeProfileImageRequestField,
+                        CommonDocument.ErrorResponseFields))
+                .header("AUTH-TOKEN", token)
+                .multiPart(UserSteps.텍스트_파일_생성("test", "ㅎㅇㅎㅇ"))
+                .when()
+                .put("/user/profile_image")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 유저프로필사진_수정_토큰없음_401(){
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH))
+                .multiPart(UserSteps.프로필_이미지_간단생성())
+                .when()
+                .put("/user/profile_image")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .log().all().extract();
+    }
 }

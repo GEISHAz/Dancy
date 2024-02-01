@@ -52,6 +52,10 @@ public class UserDocument {
                     .attributes(required()).description("현재 비밀번호")
     );
 
+    public static final Snippet changeProfileImageRequestField = requestParts(
+            partWithName("profileImage").description("프로필에 등록하는 이미지 파일들입니다. 한 장 등록할 수 있습니다.")
+    );
+
     public static final Snippet updateUserResponseField = responseFields(
             fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
             fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임")
@@ -68,6 +72,11 @@ public class UserDocument {
             fieldWithPath("birthDate").type(JsonFieldType.STRING).description("생년월일"),
             fieldWithPath("introduceText").type(JsonFieldType.STRING).description("소개메세지"),
             fieldWithPath("profileImageUrl").type(JsonFieldType.VARIES).description("프로필이미지URL")
+    );
+
+    public static final Snippet changeProfileImageResponseField = responseFields(
+            fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+            fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("프로필이미지URL")
     );
 
 }
