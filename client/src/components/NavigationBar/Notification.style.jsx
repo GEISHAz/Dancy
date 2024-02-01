@@ -11,6 +11,7 @@ export const DropdownContainer = styled.div`
 	top: 20px;
   height: 100%;
   cursor: auto;
+  box-shadow: 0px 6px 6px rgba(0, 0, 0, 1);
 `;
 
 

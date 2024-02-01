@@ -46,12 +46,12 @@ const cardDetails = [
 const colors = ["#fffbe5", "#d8fcf6", "#dfe5fe"]; 
 
 export default function CustomCard() {
-  const cards = [...Array(100)].map((_, index) => {
+  const cards = [...Array(12)].map((_, index) => {
     // 줄 별로 색상 선택
     const color = colors[Math.floor(index / 3) % colors.length];
     
     return (
-      <Link to='/detail/:video_id'>
+      <Link to={`/detail/${index}`} key={index}>
         <CardContainer key={index}>
           <CardUpperContainer src="/src/assets/thumbnail.png" />
           <CardLowerContainer color={color}>
@@ -72,6 +72,8 @@ export default function CustomCard() {
     );
   });
 
-  return <>{cards}</>;
+  return (
+    <>{cards}</>
+  );
 }
 
