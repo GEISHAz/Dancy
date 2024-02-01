@@ -1,5 +1,6 @@
 package com.ssafy.dancy.auth;
 
+import com.ssafy.dancy.message.request.auth.ChangePasswordRequest;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import io.restassured.RestAssured;
@@ -15,6 +16,8 @@ public class AuthSteps {
     public static final String email = "ndw8200@naver.com";
     public static final String nickname = "dongw";
     public static final String password = "Test1122!";
+    public static final String newPassword = "Asdf1234!!";
+    public static final String wrongPassword = "asdfasdf";
     public static final String birthDate = "2000-01-01";
     public static final String gender = "MALE";
     public static final String authType = "DANCY";
@@ -58,4 +61,24 @@ public class AuthSteps {
         return loginResponse.body().jsonPath().getString("accessToken");
     }
 
+    public ChangePasswordRequest 비밀번호_변경_요청생성(){
+        return ChangePasswordRequest.builder()
+                .currentPassword(password)
+                .newPassword(newPassword)
+                .build();
+    }
+
+    public ChangePasswordRequest 비밀번호_변경_조건불만족(){
+        return ChangePasswordRequest.builder()
+                .currentPassword(password)
+                .newPassword(wrongPassword)
+                .build();
+    }
+
+    public ChangePasswordRequest 비밀번호_변경_비밀번호틀림(){
+        return ChangePasswordRequest.builder()
+                .currentPassword(wrongPassword)
+                .newPassword(newPassword)
+                .build();
+    }
 }

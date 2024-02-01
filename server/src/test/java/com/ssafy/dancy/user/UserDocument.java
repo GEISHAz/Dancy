@@ -40,6 +40,13 @@ public class UserDocument {
                     .attributes(required()).description("바꾸고자 하는 소개 메세지")
     );
 
+    public static final Snippet changePasswordRequestField = requestFields(
+            fieldWithPath("currentPassword").type(JsonFieldType.STRING)
+                    .attributes(required()).description("현재 패스워드"),
+            fieldWithPath("newPassword").type(JsonFieldType.STRING)
+                    .attributes(required()).description("바꾸고자 하는 패스워드")
+    );
+
     public static final Snippet updateUserResponseField = responseFields(
             fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
             fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임")

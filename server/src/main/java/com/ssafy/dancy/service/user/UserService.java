@@ -4,7 +4,9 @@ import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.exception.user.DuplicateNicknameException;
 import com.ssafy.dancy.exception.user.UserAlreadyExistException;
 import com.ssafy.dancy.exception.user.UserInfoNotMatchException;
+import com.ssafy.dancy.exception.user.UserPasswordNotMatchException;
 import com.ssafy.dancy.exception.verify.EmailNotVerifiedException;
+import com.ssafy.dancy.message.request.auth.ChangePasswordRequest;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
 import com.ssafy.dancy.message.request.user.IntroduceTextChangeRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
@@ -131,5 +133,17 @@ public class UserService {
                         .introduceText(user.getIntroduceText())
                         .profileImageUrl(user.getProfileImageUrl())
                         .build();
+    }
+
+    public void changePassword(User user, ChangePasswordRequest request) {
+        if(!passwordEncoder.matches(request.currentPassword(), user.getPassword())){
+            throw new UserPasswordNotMatchException("기존 비밀번호가 일치하지 않습니다.");
+        }
+
+        String newEncodedPassword = passwordEncoder.encode(request.newPassword());
+        user.setPassword(newEncodedPassword);
+        userRepository.save(user);
+
+        logout(user);
     }
 }
