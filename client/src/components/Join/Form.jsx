@@ -43,6 +43,17 @@ export const InputContainer = styled.div`
   position: relative;
 `;
 
+export const RadioContainer = styled.div`
+  display: flex;
+  font-family: "NYJ Gothic B";
+  font-size: 16px;
+  gap: 12px;
+
+  input {
+    accent-color: #f9405e;
+  }
+`;
+
 export default function FormArea() {
   const [inputValue, setInputValue] = useState("");
   const [showWarning, setShowWarning] = useState(false);
@@ -82,9 +93,7 @@ export default function FormArea() {
           </JF.InputNoticeText>
         </InputContainer>
         <EnterArea>
-          <JF.MustNoticeText>
-            영문자, 숫자, 특수문자를 조합하여
-          </JF.MustNoticeText>
+          <JF.MustNoticeText>영문자, 숫자, 특수문자를 조합하여</JF.MustNoticeText>
           <JF.MustNoticeText>입력해주세요. (8자 이상)</JF.MustNoticeText>
         </EnterArea>
       </FormDetailArea>
@@ -103,8 +112,10 @@ export default function FormArea() {
       <FormDetailArea>
         <JF.MustIcon />
         <JF.FormCategory margin="99px">성별</JF.FormCategory>
-        <input type="radio" name="gender" value="male" /> 남성
-        <input type="radio" name="gender" value="female" /> 여성
+        <RadioContainer>
+          <input type="radio" name="gender" value="male" /> 남성
+          <input type="radio" name="gender" value="female" /> 여성
+        </RadioContainer>
       </FormDetailArea>
       <FormDetailArea>
         <JF.MustIcon />
