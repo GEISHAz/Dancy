@@ -17,6 +17,6 @@ public class CommonDocument {
     );
 
     public static final Snippet AccessTokenHeader = requestHeaders(
-            headerWithName("X-AUTH-TOKEN").attributes(required()).description("access token")
+            headerWithName("AUTH-TOKEN").attributes(required()).description("access token")
     );
 }

@@ -82,7 +82,8 @@ public class AuthApiTest extends ApiTest {
                 .cookie("refreshToken", RestAssuredMatchers.detailedCookie().maxAge(0))
                 .log().all().extract();
 
-        Mockito.verify(redisTemplate, times(1)).delete(any());
-        Mockito.verify(mockValueOp, times(1)).set(anyString(), anyString(), anyLong(), any());
+        Mockito.verify(redisTemplate, times(1)).delete(anyString());
+        Mockito.verify(mockValueOp, times(2)).set(anyString(), anyString(), anyLong(), any());
+        // 로그인 할 때 한번 저장, 로그아웃할 때 블랙리스트 한번 저장
     }
 }
