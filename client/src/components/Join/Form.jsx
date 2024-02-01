@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
 import * as JF from "./JoinForm.style";
-
 // 전체 폼 구성
 export const JoinFormArea = styled.div`
   display: flex;
@@ -43,6 +42,7 @@ export const InputContainer = styled.div`
   position: relative;
 `;
 
+// 라디오 ㅂ
 export const RadioContainer = styled.div`
   display: flex;
   font-family: "NYJ Gothic B";
