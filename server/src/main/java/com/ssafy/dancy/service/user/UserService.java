@@ -1,18 +1,27 @@
 package com.ssafy.dancy.service.user;
 
 import com.ssafy.dancy.entity.User;
+import com.ssafy.dancy.exception.user.DuplicateNicknameException;
 import com.ssafy.dancy.exception.user.UserAlreadyExistException;
 import com.ssafy.dancy.exception.user.UserInfoNotMatchException;
+import com.ssafy.dancy.exception.user.UserPasswordNotMatchException;
 import com.ssafy.dancy.exception.verify.EmailNotVerifiedException;
+import com.ssafy.dancy.message.request.auth.ChangePasswordRequest;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
+import com.ssafy.dancy.message.request.user.IntroduceTextChangeRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
-import com.ssafy.dancy.message.response.user.SignUpResultResponse;
+import com.ssafy.dancy.message.response.user.ChangeIntroduceResponse;
+import com.ssafy.dancy.message.response.user.UpdatedUserResponse;
+import com.ssafy.dancy.message.response.user.UserDetailInfoResponse;
 import com.ssafy.dancy.repository.RedisRepository;
 import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.type.AuthType;
 import com.ssafy.dancy.type.Gender;
 import com.ssafy.dancy.type.Role;
 import com.ssafy.dancy.util.FileStoreUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,7 +43,7 @@ public class UserService {
 
     private static final String PROFILE_IMAGE_TARGET = "profileImage";
 
-    public SignUpResultResponse signup(SignUpRequest request, Set<Role> roles) {
+    public UpdatedUserResponse signup(SignUpRequest request, Set<Role> roles) {
         userRepository.findByEmail(request.email()).ifPresent(
                 (user) -> {throw new UserAlreadyExistException("이미 가입된 이메일입니다.");}
         );
@@ -62,10 +71,16 @@ public class UserService {
 
         User registeredUser = userRepository.save(user);
 
-        return SignUpResultResponse.builder()
+        return UpdatedUserResponse.builder()
                 .email(registeredUser.getEmail())
                 .nickname(registeredUser.getNickname())
                 .build();
+    }
+
+    public void checkDuplicateNickname(String nickname){
+        if(userRepository.existsByNickname(nickname)){
+            throw new DuplicateNicknameException("중복되는 닉네임입니다.");
+        }
     }
 
     public User login(LoginUserRequest request){
@@ -79,5 +94,65 @@ public class UserService {
 
     public void logout(User user) {
         redisRepository.logoutProcess(user, 15);
+    }
+
+
+    public UpdatedUserResponse changeNickname(User user, String nickname) {
+
+        if(userRepository.existsByNickname(nickname)){
+            throw new DuplicateNicknameException("중복되는 닉네임입니다.");
+        }
+
+        user.setNickname(nickname);
+        userRepository.save(user);
+
+        return UpdatedUserResponse.builder()
+                .email(user.getEmail())
+                .nickname(nickname)
+                .build();
+    }
+
+    public ChangeIntroduceResponse changeIntroduceText(User user, IntroduceTextChangeRequest request) {
+        user.setIntroduceText(request.introduceText());
+        User updatedUser = userRepository.save(user);
+
+        return ChangeIntroduceResponse.builder()
+                .email(updatedUser.getEmail())
+                .introduceText(updatedUser.getIntroduceText())
+                .build();
+    }
+
+    public UserDetailInfoResponse getOwnDetailInfo(User user) {
+
+        String birthDateAsString = user.getBirthDate().toString().split(" ")[0];
+
+        return UserDetailInfoResponse.builder()
+                        .email(user.getEmail())
+                        .nickname(user.getNickname())
+                        .birthDate(birthDateAsString)
+                        .introduceText(user.getIntroduceText())
+                        .profileImageUrl(user.getProfileImageUrl())
+                        .build();
+    }
+
+    public void changePassword(User user, ChangePasswordRequest request) {
+        checkPassword(request.currentPassword(), user.getPassword());
+
+        String newEncodedPassword = passwordEncoder.encode(request.newPassword());
+        user.setPassword(newEncodedPassword);
+        userRepository.save(user);
+
+        logout(user);
+    }
+
+    public void deleteUser(User user, String password) {
+        checkPassword(password, user.getPassword());
+        userRepository.delete(user);
+    }
+
+    private void checkPassword(String inputPassword, String userPassword){
+        if(!passwordEncoder.matches(inputPassword, userPassword)){
+            throw new UserPasswordNotMatchException("기존 비밀번호가 일치하지 않습니다.");
+        }
     }
 }

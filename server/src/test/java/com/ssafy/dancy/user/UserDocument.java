@@ -1,13 +1,13 @@
 package com.ssafy.dancy.user;
 
+import org.mockito.exceptions.verification.SmartNullPointerException;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 
 import static com.ssafy.dancy.DocumentFormatProvider.required;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 
 public class UserDocument {
     public static final Snippet signUpRequestField = requestParts(
@@ -26,8 +26,49 @@ public class UserDocument {
             partWithName("profileImage").description("프로필에 등록하는 이미지 파일들입니다. 한 장 등록할 수 있습니다.")
     );
 
-    public static final Snippet signUpResponseField = responseFields(
-            fieldWithPath("email").type(JsonFieldType.STRING).description("가입한 이메일"),
-            fieldWithPath("nickname").type(JsonFieldType.STRING).description("가입한 닉네임")
+    public static final Snippet nicknamePathField = pathParameters(
+            parameterWithName("nickname").attributes(required()).description("닉네임")
     );
+
+    public static final Snippet nicknameBodyField = requestFields(
+            fieldWithPath("nickname").type(JsonFieldType.STRING)
+                    .attributes(required()).description("변경하고자 하는 닉네임")
+    );
+
+    public static final Snippet introduceTextField = requestFields(
+            fieldWithPath("introduceText").type(JsonFieldType.STRING)
+                    .attributes(required()).description("바꾸고자 하는 소개 메세지")
+    );
+
+    public static final Snippet changePasswordRequestField = requestFields(
+            fieldWithPath("currentPassword").type(JsonFieldType.STRING)
+                    .attributes(required()).description("현재 패스워드"),
+            fieldWithPath("newPassword").type(JsonFieldType.STRING)
+                    .attributes(required()).description("바꾸고자 하는 패스워드")
+    );
+
+    public static final Snippet userDeleteRequestField = requestFields(
+            fieldWithPath("password").type(JsonFieldType.STRING)
+                    .attributes(required()).description("현재 비밀번호")
+    );
+
+    public static final Snippet updateUserResponseField = responseFields(
+            fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+            fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임")
+    );
+
+    public static final Snippet updateIntroduceResponseField = responseFields(
+            fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+            fieldWithPath("introduceText").type(JsonFieldType.STRING).description("닉네임")
+    );
+
+    public static final Snippet userDetailInfoResponseField = responseFields(
+            fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+            fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
+            fieldWithPath("birthDate").type(JsonFieldType.STRING).description("생년월일"),
+            fieldWithPath("introduceText").type(JsonFieldType.STRING).description("소개메세지"),
+            fieldWithPath("profileImageUrl").type(JsonFieldType.VARIES).description("프로필이미지URL")
+    );
+
 }
+

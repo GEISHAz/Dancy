@@ -4,6 +4,7 @@ import com.ssafy.dancy.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
@@ -64,9 +65,11 @@ public class RedisRepository {
     }
 
     private String saveKeyValue(String key, String value, int limitMinute, TimeUnit timeUnit){
-        redisTemplate.opsForValue().set(key, value, limitMinute, timeUnit);
-        log.info("key: {}, value: {} 로 {} 간 redis 저장", key, value, limitMinute);
-
+        ValueOperations<Object, Object> operation = redisTemplate.opsForValue();
+        try{ // 미봉책. 나중에 더 상세히 파 볼 것.
+            operation.set(key, value, limitMinute, timeUnit);
+            log.info("key: {}, value: {} 로 {} 간 redis 저장", key, value, limitMinute);
+        }catch(NullPointerException ignored){}
         return String.format("%s -> %s", key, value);
     }
 }

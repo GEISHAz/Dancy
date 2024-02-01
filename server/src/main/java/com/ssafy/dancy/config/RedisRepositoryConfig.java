@@ -28,6 +28,7 @@ public class RedisRepositoryConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
         redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setEnableDefaultSerializer(false);
         return redisTemplate;
     }
 }

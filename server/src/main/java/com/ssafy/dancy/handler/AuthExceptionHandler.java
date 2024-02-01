@@ -2,6 +2,7 @@ package com.ssafy.dancy.handler;
 
 import com.ssafy.dancy.exception.user.UserAlreadyExistException;
 import com.ssafy.dancy.exception.user.UserInfoNotMatchException;
+import com.ssafy.dancy.exception.user.UserPasswordNotMatchException;
 import com.ssafy.dancy.message.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,5 +26,11 @@ public class AuthExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public List<ErrorResponse> userInfoNotMatchExceptionHandler(UserInfoNotMatchException e){
         return makeErrorResponse(e, "email");
+    }
+
+    @ExceptionHandler(UserPasswordNotMatchException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public List<ErrorResponse> userPasswordNotMatchException(UserPasswordNotMatchException e){
+        return makeErrorResponse(e, "currentPassword");
     }
 }
