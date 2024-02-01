@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Builder
@@ -17,7 +18,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Getter
 @Setter
-@EntityListeners(AuditingEntityListener.class)
+//@EntityListeners(AuditingEntityListener.class)
 public class Comment {
 
     @Id
@@ -29,25 +30,24 @@ public class Comment {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private int commentLike;
+    private Integer commentLike;
 
     @CreatedDate
     @Column(columnDefinition = "TIMESTAMP", nullable = false)
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
     @Column(columnDefinition = "TIMESTAMP", nullable = false)
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
 
-    @ManyToOne
-    @Column(nullable = false)
+    @ManyToOne(optional = false)
     private User user;
 
-    @ManyToOne
-    @Column(nullable = false)
+    @ManyToOne(optional = false)
     private Article article;
 
+    @ColumnDefault("-1")
     @Column(nullable = false)
-    private int parentId;
+    private Long parentId;
 
 }

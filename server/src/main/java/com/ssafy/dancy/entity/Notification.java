@@ -1,6 +1,6 @@
 package com.ssafy.dancy.entity;
 
-import com.ssafy.dancy.entity.PK.NotificationPK;
+import com.ssafy.dancy.type.NotificationContentType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Builder
-@IdClass(NotificationPK.class)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Notification {
@@ -20,23 +19,20 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long notificationId;
 
-    @Id
-    @ManyToOne
-    private User authorUserId;
+    @ManyToOne(optional = false)
+    private User authorUser;
 
-    @Id
-    @ManyToOne
-    private User targetUserId;
+    @ManyToOne(optional = false)
+    private User targetUser;
 
-    @Column(nullable = false,length = 10)
+    @Column(nullable = false,length = 20)
     @Enumerated(EnumType.STRING)
-    private String contentType;
+    private NotificationContentType contentType;
 
     @Column(nullable = false)
     private String notificationContent;
 
-    @ManyToOne
-    @Column(nullable = false)
+    @ManyToOne(optional = false)
     private Article article;
 
     @CreatedDate
