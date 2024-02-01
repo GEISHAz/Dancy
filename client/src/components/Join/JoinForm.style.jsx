@@ -102,7 +102,7 @@ export const MustIcon = styled.div`
 // 필수 입력 안내 text
 export const MustNoticeText = styled.div`
   color: #6f6f6f;
-  font-family: "NYJ Gothic L";
+  font-family: "NanumSquareRound";
   font-size: 16px;
   line-height: normal;
 `;
