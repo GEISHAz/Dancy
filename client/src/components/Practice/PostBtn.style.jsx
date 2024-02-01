@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const PostBtn = styled.button`
-	width: 280px;
+	width: 295px;
 	height: 49px;
 	color: white;
 	font-family: 'NYJ Gothic B';

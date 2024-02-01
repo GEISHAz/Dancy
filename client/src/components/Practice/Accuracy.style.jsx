@@ -12,17 +12,35 @@ export const BgImg = styled.div`
 export const SectionInfo = styled.div`
 	position: absolute;
 	top: 124px;
-	left: 22px;
+	left: 25px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
 `
 
 export const ErrorIdx = styled.div`
+	width: 28px;
+	height: 28px;
 	border: 1px solid black;
-	background-color: #000000;
-	width: 10px;
-	height: 10px;
+  border-radius: 7px;
+	background-color: #C0FFF4;
+  text-align: center;
+  font-family: 'NYJ Gothic B';
+  font-size: 16px;
 `
 
-export const ErrorTxt = styled.div`
+export const ErrorSec = styled.div`
+  width: 130px;
 	font-family: 'NanumSquareRound';
-	font-size: 16px;
+	font-size: 18px;
+  font-weight: bold;
+  text-align:center;
+`
+
+export const ErrorAccu = styled.div`
+  width: 35px;
+	font-family: 'NanumSquareRound';
+	font-size: 18px;
+  font-weight: bold;
+  text-align:center;
 `
