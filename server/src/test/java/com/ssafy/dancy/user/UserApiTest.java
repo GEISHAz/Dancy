@@ -196,6 +196,7 @@ public class UserApiTest extends ApiTest {
                                 "<br>토큰을 헤더에 입력하지 않았을 경우, 401 Unauthorized 가 반환됩니다. " +
                                 "<br>50자 이상 소개이거나, 공백 소개메세지가 입력되면 400 Bad Request 가 반환됩니다.",
                         "소개메세지변경",
+                        CommonDocument.AccessTokenHeader,
                         UserDocument.introduceTextField, UserDocument.updateIntroduceResponseField))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", token)
@@ -219,8 +220,8 @@ public class UserApiTest extends ApiTest {
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
 
         given(this.spec)
-//                .filter(document(DEFAULT_RESTDOC_PATH,
-//                        UserDocument.introduceTextField, CommonDocument.ErrorResponseFields))
+                .filter(document(DEFAULT_RESTDOC_PATH,
+                        UserDocument.introduceTextField, CommonDocument.ErrorResponseFields))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", token)
                 .body(userSteps.소개_메세지_과다())
@@ -240,6 +241,49 @@ public class UserApiTest extends ApiTest {
                 .body(userSteps.소개_메세지_변경요청_생성())
                 .when()
                 .put("/user/introduce")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 자기상세정보조회_성공_200(){
+        signUpRequest = authSteps.회원가입정보_생성();
+        userService.signup(signUpRequest, Set.of(Role.USER));
+
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+
+        ExtractableResponse<Response> response = given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, "자신의 상세 정보를 가져오는 API 입니다." +
+                                "<br>토큰을 입력하면, 200 OK 와 함께 해당 유저의 상세정보가 반환됩니다." +
+                                "<br>토큰을 헤더에 입력하지 않았을 경우, 401 Unauthorized 가 반환됩니다. ",
+                        "자기정보상세조회",
+                        CommonDocument.AccessTokenHeader,
+                        UserDocument.userDetailInfoResponseField))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("AUTH-TOKEN", token)
+                .when()
+                .get("/user/details")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+
+        JsonPath jsonPath = response.jsonPath();
+
+        User user = userRepository.findByEmail(AuthSteps.email).get();
+        assertThat(user.getNickname()).isEqualTo(jsonPath.getString("nickname"));
+        assertThat(user.getIntroduceText()).isEqualTo(jsonPath.getString("introduceText"));
+        assertThat(user.getProfileImageUrl()).isEqualTo(jsonPath.getString("profileImageUrl"));
+    }
+
+    @Test
+    void 자기상세정보조회_토큰없음_401(){
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH))
+                .when()
+                .get("/user/details")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.UNAUTHORIZED.value())

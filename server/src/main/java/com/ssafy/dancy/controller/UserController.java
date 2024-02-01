@@ -7,6 +7,7 @@ import com.ssafy.dancy.message.request.user.NicknameRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.message.response.user.ChangeIntroduceResponse;
 import com.ssafy.dancy.message.response.user.UpdatedUserResponse;
+import com.ssafy.dancy.message.response.user.UserDetailInfoResponse;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
 import jakarta.validation.Valid;
@@ -42,9 +43,14 @@ public class UserController {
         return userService.changeNickname(user, request.nickname());
     }
 
-    @PutMapping(value = "/introduce")
+    @PutMapping("/introduce")
     public ChangeIntroduceResponse changeIntroduceText(@AuthenticationPrincipal User user,
                                                        @Valid @RequestBody IntroduceTextChangeRequest request){
         return userService.changeIntroduceText(user, request);
+    }
+
+    @GetMapping("/details")
+    public UserDetailInfoResponse getOwnDetailInfo(@AuthenticationPrincipal User user){
+        return userService.getOwnDetailInfo(user);
     }
 }

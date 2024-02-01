@@ -10,6 +10,7 @@ import com.ssafy.dancy.message.request.user.IntroduceTextChangeRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.message.response.user.ChangeIntroduceResponse;
 import com.ssafy.dancy.message.response.user.UpdatedUserResponse;
+import com.ssafy.dancy.message.response.user.UserDetailInfoResponse;
 import com.ssafy.dancy.repository.RedisRepository;
 import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.type.AuthType;
@@ -117,5 +118,18 @@ public class UserService {
                 .email(updatedUser.getEmail())
                 .introduceText(updatedUser.getIntroduceText())
                 .build();
+    }
+
+    public UserDetailInfoResponse getOwnDetailInfo(User user) {
+
+        String birthDateAsString = user.getBirthDate().toString().split(" ")[0];
+
+        return UserDetailInfoResponse.builder()
+                        .email(user.getEmail())
+                        .nickname(user.getNickname())
+                        .birthDate(birthDateAsString)
+                        .introduceText(user.getIntroduceText())
+                        .profileImageUrl(user.getProfileImageUrl())
+                        .build();
     }
 }
