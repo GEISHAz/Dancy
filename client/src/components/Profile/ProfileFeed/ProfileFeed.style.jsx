@@ -99,7 +99,7 @@ export const FeedBody = styled.div`
     width: 10px;
   }
   &::-webkit-scrollbar-thumb {
-    border-radius: 20px;
+    border-radius: 10px;
     background: #ff8791;
   }
 `

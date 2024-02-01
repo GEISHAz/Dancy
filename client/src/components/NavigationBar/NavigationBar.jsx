@@ -19,8 +19,8 @@ export default function Navbar() {
           <Square>Home</Square>
         </NavLeftContainer>
         <NavLeftContainer>
-          <NavPractice onClick={() => setActiveButton('Practice')} $active={activeButton === 'Practice'}>
-          <Link to="/practice">Practice</Link>
+          <NavPractice onClick={() => setActiveButton('Create')} $active={activeButton === 'Create'}>
+          <Link to="/create">Practice</Link>
           </NavPractice>
           <Square />
         </NavLeftContainer>
