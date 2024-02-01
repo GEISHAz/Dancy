@@ -9,6 +9,7 @@ import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
+import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -19,11 +20,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import javax.print.attribute.standard.Media;
 import java.util.Optional;
 import java.util.Set;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
+import static io.restassured.RestAssured.config;
 import static io.restassured.RestAssured.given;
+import static io.restassured.config.EncoderConfig.encoderConfig;
 import static org.assertj.core.api.Assertions.allOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
@@ -176,6 +180,69 @@ public class UserApiTest extends ApiTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CONFLICT.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 소개메세지_변경_성공_200(){
+        signUpRequest = authSteps.회원가입정보_생성();
+        userService.signup(signUpRequest, Set.of(Role.USER));
+
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, "소개 메세지를 변경하는 API 입니다.." +
+                                "<br>성공적으로 소개 메세지가 변경되었을 때, 200 OK 와 함께 계정 이메일과 소개 메세지 정보가 반환됩니다." +
+                                "<br>토큰을 헤더에 입력하지 않았을 경우, 401 Unauthorized 가 반환됩니다. " +
+                                "<br>50자 이상 소개이거나, 공백 소개메세지가 입력되면 400 Bad Request 가 반환됩니다.",
+                        "소개메세지변경",
+                        UserDocument.introduceTextField, UserDocument.updateIntroduceResponseField))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("AUTH-TOKEN", token)
+                .body(userSteps.소개_메세지_변경요청_생성())
+                .when()
+                .put("/user/introduce")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+
+        User user = userRepository.findByEmail(AuthSteps.email).get();
+        assertThat(user.getIntroduceText()).isEqualTo(UserSteps.introduceText);
+    }
+
+    @Test
+    void 소개매세지_50자이상_400(){
+        signUpRequest = authSteps.회원가입정보_생성();
+        userService.signup(signUpRequest, Set.of(Role.USER));
+
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+
+        given(this.spec)
+//                .filter(document(DEFAULT_RESTDOC_PATH,
+//                        UserDocument.introduceTextField, CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("AUTH-TOKEN", token)
+                .body(userSteps.소개_메세지_과다())
+                .when()
+                .put("/user/introduce")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 소개매세지_토큰없음_401(){
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(userSteps.소개_메세지_변경요청_생성())
+                .when()
+                .put("/user/introduce")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .log().all().extract();
     }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.dancy.user;
 
+import org.mockito.exceptions.verification.SmartNullPointerException;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 
@@ -25,11 +26,6 @@ public class UserDocument {
             partWithName("profileImage").description("프로필에 등록하는 이미지 파일들입니다. 한 장 등록할 수 있습니다.")
     );
 
-    public static final Snippet updateUserResponseField = responseFields(
-            fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-            fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임")
-    );
-
     public static final Snippet nicknamePathField = pathParameters(
             parameterWithName("nickname").attributes(required()).description("닉네임")
     );
@@ -38,5 +34,21 @@ public class UserDocument {
             fieldWithPath("nickname").type(JsonFieldType.STRING)
                     .attributes(required()).description("변경하고자 하는 닉네임")
     );
+
+    public static final Snippet introduceTextField = requestFields(
+            fieldWithPath("introduceText").type(JsonFieldType.STRING)
+                    .attributes(required()).description("바꾸고자 하는 소개 메세지")
+    );
+
+    public static final Snippet updateUserResponseField = responseFields(
+            fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+            fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임")
+    );
+
+    public static final Snippet updateIntroduceResponseField = responseFields(
+            fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+            fieldWithPath("introduceText").type(JsonFieldType.STRING).description("닉네임")
+    );
+
 }
 

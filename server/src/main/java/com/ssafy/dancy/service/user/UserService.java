@@ -6,7 +6,9 @@ import com.ssafy.dancy.exception.user.UserAlreadyExistException;
 import com.ssafy.dancy.exception.user.UserInfoNotMatchException;
 import com.ssafy.dancy.exception.verify.EmailNotVerifiedException;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
+import com.ssafy.dancy.message.request.user.IntroduceTextChangeRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
+import com.ssafy.dancy.message.response.user.ChangeIntroduceResponse;
 import com.ssafy.dancy.message.response.user.UpdatedUserResponse;
 import com.ssafy.dancy.repository.RedisRepository;
 import com.ssafy.dancy.repository.UserRepository;
@@ -104,6 +106,16 @@ public class UserService {
         return UpdatedUserResponse.builder()
                 .email(user.getEmail())
                 .nickname(nickname)
+                .build();
+    }
+
+    public ChangeIntroduceResponse changeIntroduceText(User user, IntroduceTextChangeRequest request) {
+        user.setIntroduceText(request.introduceText());
+        User updatedUser = userRepository.save(user);
+
+        return ChangeIntroduceResponse.builder()
+                .email(updatedUser.getEmail())
+                .introduceText(updatedUser.getIntroduceText())
                 .build();
     }
 }

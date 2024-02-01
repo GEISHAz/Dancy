@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.Customizer;
@@ -49,6 +50,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/start/test/userinfo").hasRole("USER")
                         .requestMatchers("/auth/logout").hasRole("USER")
                         .requestMatchers("/user/nickname").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT,"/user/introduce").hasRole("USER")
                         .anyRequest().permitAll())
                 .exceptionHandling(config ->
                         config.authenticationEntryPoint(authenticationEntryPoint()).

@@ -40,7 +40,7 @@
                 },
                 "examples" : {
                   "auth_api_test/로그인성공_200/" : {
-                    "value" : "{\r\n  \"accessToken\" : \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA2Nzc3NTk5LCJleHAiOjE3MDY3NzkzOTl9.FztpYW-ga6_C6vyNe9KcIcAxosOOWpKd4jHAfJjWpxk\",\r\n  \"tokenType\" : \"Bearer\",\r\n  \"authType\" : \"DANCY\"\r\n}"
+                    "value" : "{\r\n  \"accessToken\" : \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA2Nzg1OTk1LCJleHAiOjE3MDY3ODc3OTV9.BYF4LDVJf5-pSuFjPeuWJq5oyCWZObrVbKHJu3_uNSE\",\r\n  \"tokenType\" : \"Bearer\",\r\n  \"authType\" : \"DANCY\"\r\n}"
                   }
                 }
               }
@@ -63,7 +63,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA2Nzc3NTk4LCJleHAiOjE3MDY3NzkzOTh9.l04t21qGg8ueC2UdgJ4s3zNIE9AeIKpMWlXewWvZPSU"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA2Nzg1OTk0LCJleHAiOjE3MDY3ODc3OTR9.s7tJpn8QZUDQx4lEUPoM5iurLFjNA0igjADE7o6kcHY"
         } ],
         "responses" : {
           "200" : {
@@ -181,6 +181,63 @@
         }
       }
     },
+    "/user/introduce" : {
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "소개메세지변경",
+        "description" : "소개 메세지를 변경하는 API 입니다..<br>성공적으로 소개 메세지가 변경되었을 때, 200 OK 와 함께 계정 이메일과 소개 메세지 정보가 반환됩니다.<br>토큰을 헤더에 입력하지 않았을 경우, 401 Unauthorized 가 반환됩니다. <br>50자 이상 소개이거나, 공백 소개메세지가 입력되면 400 Bad Request 가 반환됩니다.",
+        "operationId" : "user_api_test/소개",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/user-introduce1696629381"
+              },
+              "examples" : {
+                "user_api_test/소개매세지_토큰없음_401/" : {
+                  "value" : "{\r\n  \"introduceText\" : \"Hello!\"\r\n}"
+                },
+                "user_api_test/소개메세지_변경_성공_200/" : {
+                  "value" : "{\r\n  \"introduceText\" : \"Hello!\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/start-hello486549215"
+                },
+                "examples" : {
+                  "user_api_test/소개매세지_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-introduce-199180118"
+                },
+                "examples" : {
+                  "user_api_test/소개메세지_변경_성공_200/" : {
+                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"introduceText\" : \"Hello!\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/nickname" : {
       "put" : {
         "tags" : [ "user" ],
@@ -195,7 +252,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA2Nzc3NjAzLCJleHAiOjE3MDY3Nzk0MDN9.Iwfh9sN2Zv0lAu_3yhgXsqKnlo2V2JlHaN6BUUJjsAY"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA2Nzg1OTk5LCJleHAiOjE3MDY3ODc3OTl9.Negk6oyllThGI4CJ-m-gb6oq75k0AalHBkUm6DFItto"
         } ],
         "requestBody" : {
           "content" : {
@@ -382,6 +439,16 @@
           }
         }
       },
+      "user-introduce1696629381" : {
+        "required" : [ "introduceText" ],
+        "type" : "object",
+        "properties" : {
+          "introduceText" : {
+            "type" : "string",
+            "description" : "바꾸고자 하는 소개 메세지"
+          }
+        }
+      },
       "user-signup2062416360" : {
         "type" : "object",
         "properties" : {
@@ -419,6 +486,19 @@
           "verified" : {
             "type" : "boolean",
             "description" : "인증 확인"
+          }
+        }
+      },
+      "user-introduce-199180118" : {
+        "type" : "object",
+        "properties" : {
+          "introduceText" : {
+            "type" : "string",
+            "description" : "닉네임"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "이메일"
           }
         }
       },

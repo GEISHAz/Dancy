@@ -1,9 +1,11 @@
 package com.ssafy.dancy.user;
 
+import com.ssafy.dancy.message.request.user.IntroduceTextChangeRequest;
 import com.ssafy.dancy.message.request.user.NicknameRequest;
 import com.ssafy.dancy.type.CustomMultipartFile;
 import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.specification.MultiPartSpecification;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,10 +20,28 @@ import java.nio.file.Files;
 public class UserSteps {
 
     public static final String toChangeNickname = "asdf";
+    public static final String introduceText = "Hello!";
+
+    public static final String tooLongIntroduceText =
+            "Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!" +
+                    "Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!" +
+                    "Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!";
 
     public NicknameRequest 닉네임_변경요청_생성(String nickname){
         return NicknameRequest.builder()
                 .nickname(nickname)
+                .build();
+    }
+
+    public IntroduceTextChangeRequest 소개_메세지_변경요청_생성(){
+        return IntroduceTextChangeRequest.builder()
+                .introduceText(introduceText)
+                .build();
+    }
+
+    public IntroduceTextChangeRequest 소개_메세지_과다(){
+        return IntroduceTextChangeRequest.builder()
+                .introduceText(tooLongIntroduceText)
                 .build();
     }
 
