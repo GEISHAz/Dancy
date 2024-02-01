@@ -19,6 +19,7 @@ export const FormTitle = styled.div`
   font-family: "NYJ Gothic B";
   font-size: 28px;
   font-weight: 400;
+  margin-left: 16px;
 `;
 
 // 프로필 사진 로고
@@ -42,6 +43,7 @@ export const ProfileLogo = styled(ProfileAvatar)`
     width: 60%;
     height: 60%;
   }
+  margin-right: ${(props) => props.margin || "0px"};
 `;
 
 //프로필 사진 안내 text
@@ -112,6 +114,7 @@ export const FormCategory = styled.div`
   font-size: 20px;
   font-weight: 400;
   line-height: normal;
+  margin-right: ${(props) => props.margin || '5px'};
 `;
 
 // form input
