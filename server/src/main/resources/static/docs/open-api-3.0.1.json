@@ -40,11 +40,34 @@
                 },
                 "examples" : {
                   "auth_api_test/로그인성공_200/" : {
-                    "value" : "{\r\n  \"accessToken\" : \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA2NzE0NjkyLCJleHAiOjE3MDY3MTY0OTJ9.gWaqWYy7OzyjQJEFO7BOV70XBFFmKszEjnaA81vi3yg\",\r\n  \"tokenType\" : \"Bearer\",\r\n  \"authType\" : \"DANCY\"\r\n}"
+                    "value" : "{\r\n  \"accessToken\" : \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA2Nzc3NTk5LCJleHAiOjE3MDY3NzkzOTl9.FztpYW-ga6_C6vyNe9KcIcAxosOOWpKd4jHAfJjWpxk\",\r\n  \"tokenType\" : \"Bearer\",\r\n  \"authType\" : \"DANCY\"\r\n}"
                   }
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/auth/logout" : {
+      "post" : {
+        "tags" : [ "auth" ],
+        "summary" : "로그아웃",
+        "description" : "로그아웃을 진행하는 API 입니다.<br>로그아웃에 성공한다면, 200 OK 와 함께 Refresh Token 을 가지고 있는 Cookie 가 삭제됩니다.<br>프론트앤드 영역에서 Access Token 을 직접 삭제시켜 주어야 합니다.<br>AUTH-TOKEN 을 입력하지 않았을 때, 401 Unauthorized 가 반환됩니다.",
+        "operationId" : "auth_api_test/로그아웃_refresh_token_cookie_제거_200/",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA2Nzc3NTk4LCJleHAiOjE3MDY3NzkzOTh9.l04t21qGg8ueC2UdgJ4s3zNIE9AeIKpMWlXewWvZPSU"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
           }
         }
       }
@@ -117,7 +140,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/email-verify-send-1708490688"
+                  "$ref" : "#/components/schemas/user-nickname-1708490688"
                 },
                 "examples" : {
                   "email_api_test/이메일_가입_인증번호_전송_이메일_형식_아님_400/" : {
@@ -158,6 +181,91 @@
         }
       }
     },
+    "/user/nickname" : {
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "닉네임변경",
+        "description" : "닉네임 변경을 처리하는 API 입니다..<br>성공적으로 닉네임이 변경되었을 때, 200 OK 와 함께 계정 이메일과 닉네임 정보가 반환됩니다.<br>토큰을 헤더에 입력하지 않았을 경우, 401 Unauthorized 가 반환됩니다. <br>중복되는 닉네임이 존재했을 경우, 409 Conflict 가 반환됩니다.",
+        "operationId" : "user_api_test/닉네임_변경_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA2Nzc3NjAzLCJleHAiOjE3MDY3Nzk0MDN9.Iwfh9sN2Zv0lAu_3yhgXsqKnlo2V2JlHaN6BUUJjsAY"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/user-nickname-520340433"
+              },
+              "examples" : {
+                "user_api_test/닉네임_변경_닉네임중복_409/" : {
+                  "value" : "{\r\n  \"nickname\" : \"dongw\"\r\n}"
+                },
+                "user_api_test/닉네임_변경_성공_200/" : {
+                  "value" : "{\r\n  \"nickname\" : \"asdf\"\r\n}"
+                },
+                "user_api_test/닉네임_변경_토큰없음_401/" : {
+                  "value" : "{\r\n  \"nickname\" : \"asdf\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "409" : {
+            "description" : "409",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-nickname-1708490688"
+                },
+                "examples" : {
+                  "user_api_test/닉네임_변경_닉네임중복_409/" : {
+                    "value" : "[ {\r\n  \"message\" : \"중복되는 닉네임입니다.\",\r\n  \"errorType\" : \"DuplicateNicknameException\",\r\n  \"fieldName\" : \"nickname\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-signup2062416360"
+                },
+                "examples" : {
+                  "user_api_test/닉네임_변경_성공_200/" : {
+                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"nickname\" : \"asdf\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/start-hello486549215"
+                },
+                "examples" : {
+                  "user_api_test/닉네임_변경_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/signup" : {
       "post" : {
         "tags" : [ "user" ],
@@ -170,7 +278,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/user-signup-835260490"
+                  "$ref" : "#/components/schemas/user-signup2062416360"
                 },
                 "examples" : {
                   "user_api_test/회원가입_성공_200/" : {
@@ -182,23 +290,47 @@
           }
         }
       }
+    },
+    "/user/exists/{nickname}" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "닉네임 중복체크",
+        "description" : "닉네임 중복검사를 수행하는 API 입니다.<br>닉네임이 기존 가입된 닉네임과 중복되지 않았을 경우, 200 OK 만 반환됩니다.<br>이미 가입되어 중복되는 경우, 409 Conflict 가 반환됩니다.",
+        "operationId" : "user_api_test/닉네임_중복체크_",
+        "parameters" : [ {
+          "name" : "nickname",
+          "in" : "path",
+          "description" : "닉네임",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          },
+          "409" : {
+            "description" : "409",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-nickname-1708490688"
+                },
+                "examples" : {
+                  "user_api_test/닉네임_중복체크_중복_409/" : {
+                    "value" : "[ {\r\n  \"message\" : \"중복되는 닉네임입니다.\",\r\n  \"errorType\" : \"DuplicateNicknameException\",\r\n  \"fieldName\" : \"nickname\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components" : {
     "schemas" : {
-      "user-signup-835260490" : {
-        "type" : "object",
-        "properties" : {
-          "nickname" : {
-            "type" : "string",
-            "description" : "가입한 닉네임"
-          },
-          "email" : {
-            "type" : "string",
-            "description" : "가입한 이메일"
-          }
-        }
-      },
       "auth-login328342784" : {
         "type" : "object",
         "properties" : {
@@ -226,6 +358,16 @@
           }
         }
       },
+      "user-nickname-520340433" : {
+        "required" : [ "nickname" ],
+        "type" : "object",
+        "properties" : {
+          "nickname" : {
+            "type" : "string",
+            "description" : "변경하고자 하는 닉네임"
+          }
+        }
+      },
       "auth-login-83566640" : {
         "required" : [ "email", "password" ],
         "type" : "object",
@@ -237,6 +379,19 @@
           "email" : {
             "type" : "string",
             "description" : "아이디"
+          }
+        }
+      },
+      "user-signup2062416360" : {
+        "type" : "object",
+        "properties" : {
+          "nickname" : {
+            "type" : "string",
+            "description" : "닉네임"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "이메일"
           }
         }
       },
@@ -267,7 +422,7 @@
           }
         }
       },
-      "email-verify-send-1708490688" : {
+      "user-nickname-1708490688" : {
         "type" : "array",
         "items" : {
           "type" : "object",

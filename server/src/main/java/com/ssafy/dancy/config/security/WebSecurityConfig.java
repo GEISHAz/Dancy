@@ -47,6 +47,8 @@ public class WebSecurityConfig {
                 ))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/start/test/userinfo").hasRole("USER")
+                        .requestMatchers("/auth/logout").hasRole("USER")
+                        .requestMatchers("/user/nickname").hasRole("USER")
                         .anyRequest().permitAll())
                 .exceptionHandling(config ->
                         config.authenticationEntryPoint(authenticationEntryPoint()).

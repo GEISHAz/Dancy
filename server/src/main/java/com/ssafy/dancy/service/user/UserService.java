@@ -7,13 +7,16 @@ import com.ssafy.dancy.exception.user.UserInfoNotMatchException;
 import com.ssafy.dancy.exception.verify.EmailNotVerifiedException;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
-import com.ssafy.dancy.message.response.user.SignUpResultResponse;
+import com.ssafy.dancy.message.response.user.UpdatedUserResponse;
 import com.ssafy.dancy.repository.RedisRepository;
 import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.type.AuthType;
 import com.ssafy.dancy.type.Gender;
 import com.ssafy.dancy.type.Role;
 import com.ssafy.dancy.util.FileStoreUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,7 +38,7 @@ public class UserService {
 
     private static final String PROFILE_IMAGE_TARGET = "profileImage";
 
-    public SignUpResultResponse signup(SignUpRequest request, Set<Role> roles) {
+    public UpdatedUserResponse signup(SignUpRequest request, Set<Role> roles) {
         userRepository.findByEmail(request.email()).ifPresent(
                 (user) -> {throw new UserAlreadyExistException("이미 가입된 이메일입니다.");}
         );
@@ -63,7 +66,7 @@ public class UserService {
 
         User registeredUser = userRepository.save(user);
 
-        return SignUpResultResponse.builder()
+        return UpdatedUserResponse.builder()
                 .email(registeredUser.getEmail())
                 .nickname(registeredUser.getNickname())
                 .build();
@@ -89,4 +92,18 @@ public class UserService {
     }
 
 
+    public UpdatedUserResponse changeNickname(User user, String nickname) {
+
+        if(userRepository.existsByNickname(nickname)){
+            throw new DuplicateNicknameException("중복되는 닉네임입니다.");
+        }
+
+        user.setNickname(nickname);
+        userRepository.save(user);
+
+        return UpdatedUserResponse.builder()
+                .email(user.getEmail())
+                .nickname(nickname)
+                .build();
+    }
 }

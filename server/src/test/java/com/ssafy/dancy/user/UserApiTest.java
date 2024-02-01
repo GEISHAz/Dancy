@@ -19,7 +19,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import java.awt.*;
 import java.util.Optional;
 import java.util.Set;
 
@@ -33,6 +32,8 @@ public class UserApiTest extends ApiTest {
 
     @Autowired
     private AuthSteps authSteps;
+    @Autowired
+    private UserSteps userSteps;
     @Autowired
     private UserRepository userRepository;
     @MockBean
@@ -55,7 +56,7 @@ public class UserApiTest extends ApiTest {
                                 "<br>새로 인증을 진행해야 합니다." +
                                 "<br>이미 가입된 이메일의 경우, 409 Conflict 가 반환됩니다.",
                         "회원가입",
-                        UserDocument.signUpRequestField, UserDocument.signUpResponseField))
+                        UserDocument.signUpRequestField, UserDocument.updateUserResponseField))
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                 .multiPart("email", AuthSteps.email)
                 .multiPart("nickname", AuthSteps.nickname)
@@ -87,7 +88,7 @@ public class UserApiTest extends ApiTest {
                                 "<br>닉네임이 기존 가입된 닉네임과 중복되지 않았을 경우, 200 OK 만 반환됩니다." +
                                 "<br>이미 가입되어 중복되는 경우, 409 Conflict 가 반환됩니다.",
                         "닉네임 중복체크",
-                        UserDocument.nicknameField))
+                        UserDocument.nicknamePathField))
                 .pathParams("nickname", "newNickname")
                 .when()
                 .get("/user/exists/{nickname}")
@@ -103,10 +104,75 @@ public class UserApiTest extends ApiTest {
         userService.signup(signUpRequest, Set.of(Role.USER));
 
         given(this.spec)
-                .filter(document(DEFAULT_RESTDOC_PATH, UserDocument.nicknameField, CommonDocument.ErrorResponseFields))
+                .filter(document(DEFAULT_RESTDOC_PATH, UserDocument.nicknamePathField, CommonDocument.ErrorResponseFields))
                 .pathParams("nickname", AuthSteps.nickname)
                 .when()
                 .get("/user/exists/{nickname}")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CONFLICT.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 닉네임_변경_성공_200(){
+        signUpRequest = authSteps.회원가입정보_생성();
+        userService.signup(signUpRequest, Set.of(Role.USER));
+
+        final String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, "닉네임 변경을 처리하는 API 입니다.." +
+                        "<br>성공적으로 닉네임이 변경되었을 때, 200 OK 와 함께 계정 이메일과 닉네임 정보가 반환됩니다." +
+                        "<br>토큰을 헤더에 입력하지 않았을 경우, 401 Unauthorized 가 반환됩니다. " +
+                        "<br>중복되는 닉네임이 존재했을 경우, 409 Conflict 가 반환됩니다.",
+                "닉네임변경",
+                UserDocument.nicknameBodyField, UserDocument.updateUserResponseField))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("AUTH-TOKEN", token)
+                .body(userSteps.닉네임_변경요청_생성(UserSteps.toChangeNickname))
+                .when()
+                .put("/user/nickname")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+
+        User user = userRepository.findByEmail(AuthSteps.email).get();
+        assertThat(user.getNickname()).isEqualTo(UserSteps.toChangeNickname);
+    }
+
+    @Test
+    void 닉네임_변경_토큰없음_401(){
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(userSteps.닉네임_변경요청_생성(UserSteps.toChangeNickname))
+                .when()
+                .put("/user/nickname")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 닉네임_변경_닉네임중복_409(){
+        signUpRequest = authSteps.회원가입정보_생성();
+        userService.signup(signUpRequest, Set.of(Role.USER));
+
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH,
+                        CommonDocument.AccessTokenHeader,
+                        UserDocument.nicknameBodyField,
+                        CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("AUTH-TOKEN", token)
+                .body(userSteps.닉네임_변경요청_생성(AuthSteps.nickname))
+                .when()
+                .put("/user/nickname")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CONFLICT.value())
