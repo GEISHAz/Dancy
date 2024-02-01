@@ -46,7 +46,7 @@ public class ApiTest {
     void setUp(){
         if(RestAssured.port == RestAssured.UNDEFINED_PORT){
             RestAssured.port = port;
-            databaseCleanup.init();
+            databaseCleanup.afterPropertiesSet();
         }
 
         databaseCleanup.truncateAllTables();
