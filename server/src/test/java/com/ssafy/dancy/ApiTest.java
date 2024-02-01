@@ -54,7 +54,7 @@ public class ApiTest {
         Mockito.doReturn(mockValueOp).when(redisTemplate).opsForValue();
         Mockito.when(redisTemplate.opsForValue().get(anyString())).thenReturn("123456");
         Mockito.doNothing().when(mockValueOp).set(anyString(), anyString(), anyLong(), any());
-        Mockito.doReturn(true).when(redisTemplate).delete(any());
+        Mockito.when(redisTemplate.delete(anyString())).thenReturn(true);
     }
 
     @BeforeEach
