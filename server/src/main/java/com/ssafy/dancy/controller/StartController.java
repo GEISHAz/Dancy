@@ -21,13 +21,9 @@ public class StartController {
 
     private final TestService testService;
 
-    @Value("${JASYPT_KEY}")
-    String jasyptKey;
-
     @GetMapping("/hello")
     public String hello(){
-        return "Hello Dancy!"+
-                jasyptKey;
+        return "Hello Dancy!";
     }
 
     @GetMapping("/test/querydsl/{name}")
