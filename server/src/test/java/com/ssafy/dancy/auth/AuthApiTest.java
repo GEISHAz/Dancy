@@ -255,7 +255,9 @@ public class AuthApiTest extends ApiTest {
                                 "<br>403 Forbidden 과 함께 인증 코드가 일치하지 않는다는 메세지가 반환됩니다." +
                                 "<br>저장된 인증코드가 존재하지 않을 경우, 404 Not Found 가 반환됩니다." +
                                 "<br>인증번호 입력을 5번 틀린 사용자가, 해당 시스템을 이용하려고 할 때 406 Not Acceptable 과 함께 아래 메세지를 입력받습니다." +
-                                "<br>소셜 로그인 계정일 경우, 409 Conflict 가 반환됩니다,",
+                                "<br>소셜 로그인 계정일 경우, 409 Conflict 가 반환됩니다." +
+                                "<br>현재, 404, 406, 409 Code 가 나가는 케이스의 경우, 테스트하기 어려운 케이스이기 때문에" +
+                                "<br>노션에 직접 해당 테스트 검증 결과를 추후 남겨 두겠습니다.",
                         "회원 탈퇴",
                         EmailDocument.codeVerifyRequestField, AuthDocument.JwtTokenResponseField))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
