@@ -86,9 +86,6 @@ const CustomModal = ({ isOpen, onClose, onSubmit }) => {
     newPin[index] = value;
     setPin(newPin);
 
-
-    console.log(value.length);
-
     if (value !== "" && index < pin.length - 1) {
       // 입력이 있고, 마지막 자리가 아니면 다음 ref로 포커스 이동
       pinRefs.current[index + 1].current.focus();
@@ -110,6 +107,13 @@ const CustomModal = ({ isOpen, onClose, onSubmit }) => {
     }
   };
 
+  const handleOverlayClick = (e) => {
+    // 모달 배경 클릭 시 모달을 닫음
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   useEffect(() => {
     // 모달이 열릴 때 첫 번째 div로 포커스 이동
     if (isOpen) {
@@ -125,7 +129,7 @@ const CustomModal = ({ isOpen, onClose, onSubmit }) => {
   }, [isOpen]);
 
   return (
-    <ModalOverlay isOpen={isOpen}>
+    <ModalOverlay isOpen={isOpen} onClick={handleOverlayClick}>
       <ModalContainer>
         <ModalContent>
           <ModalTitle>인증번호 입력</ModalTitle>

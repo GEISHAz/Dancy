@@ -101,9 +101,8 @@ export default function FormArea() {
         <JF.FormBtn onClick={openModal}>인증하기</JF.FormBtn>
         {/* CustomModal 컴포넌트를 렌더링하고 isOpen, onClose, onSubmit을 props로 전달 */}
         <CustomModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handlePinSubmit} />
-
         {/* PIN이 제출되면 해당 내용을 출력 */}
-        {submittedPin && <p>PIN submitted: {submittedPin}</p>}
+        {submittedPin && <p>인증번호: {submittedPin}</p>}
       </FormDetailArea>
       <FormDetailArea>
         <JF.MustIcon />
