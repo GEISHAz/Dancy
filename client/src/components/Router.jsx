@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
+import Create from "../pages/Create";
 import Practice from "../pages/Practice";
 import Stage from "../pages/Stage";
 import Profile from "../pages/Profile";
@@ -14,6 +15,7 @@ export default function Router({ cardDetails }) {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/create" element={<Create />} />
         <Route path="/practice" element={<Practice />} />
         <Route path="/stage" element={<Stage />} />
         <Route path="/profile/:user_id" element={<Profile />} />

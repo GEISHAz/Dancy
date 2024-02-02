@@ -1,5 +1,4 @@
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-// import LoginModal from './LoginModal.jsx';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import * as L from './LoginForm.style.jsx';
 
@@ -10,7 +9,6 @@ export default function Login() {
 	}
 
 	return (
-		
 		<L.Container>
 			{isOpen && (
         <L.ModalBackdrop>
@@ -69,7 +67,7 @@ export default function Login() {
 
 					<div className="flex flex-row items-center gap-x-2 justify-end">
 						<L.ExplainJoinFindPw>비밀번호를 잊어버리셨나요?</L.ExplainJoinFindPw>
-						<L.GoJoinFindPw><Link to=''>비밀번호 찾기</Link></L.GoJoinFindPw>
+						<L.GoJoinFindPw><Link to='/'>비밀번호</Link></L.GoJoinFindPw>
 					</div>
 				</div>
 			</div>
