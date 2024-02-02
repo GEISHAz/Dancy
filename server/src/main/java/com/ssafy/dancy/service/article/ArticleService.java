@@ -8,6 +8,8 @@ import com.ssafy.dancy.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
@@ -21,6 +23,11 @@ public class ArticleService {
 //
 //                .build();
 //    }
+
+
+    public List<Article> findAllArticle(){
+        return articleRepository.findAll();
+    }
 
     public Long insertArticle(User user, ArticleRequestDto dto) {
         Article article = Article.builder()
