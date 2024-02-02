@@ -60,8 +60,23 @@ export const InputBox = styled.input`
   }
 `;
 
-export const AutoLogin = styled(InputTitle)`
-  font-size: 14px;
+export const AutoLoginChkBox = styled.input.attrs({ 
+  type: 'checkbox' })`
+	accent-color: #ff919a;
+	transform: scale(1.2);
+	/* outline-color: black; */
+`
+
+// export const AutoLogin = styled(InputTitle)`
+//   font-size: 16px;
+// `
+export const AutoLogin = styled.label`
+  color: #000;
+  font-family: "NYJ Gothic B";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 `
 
 export const LoginButton = styled.button`

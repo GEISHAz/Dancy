@@ -60,7 +60,7 @@ export const Toggle = styled.div`
 `
 
 export const OnOffTxt = styled.div`
-  font-family: 'NYJ Gothic L';
+  font-family: 'NYJ Gothic B';
   font-size: 20px;
 `
 
@@ -69,7 +69,7 @@ export const OnOffBtnContain = styled.div`
   height: 34px;
   text-align: center;
   margin: 50px auto;
-	z-index: -1;
+	/* z-index: -1; */
 `
 
 export const OnOffSwitch = styled.input.attrs({ 

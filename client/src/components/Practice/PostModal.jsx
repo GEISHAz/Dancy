@@ -6,14 +6,17 @@ export default function PostModal ({ getData }) {
 	const postData = () => {
 		getData(data)
 	}
-
+	
 	const navigate = useNavigate();
 	const postHandler = () => {
 		navigate(`/stage`)
 	};
-
+	
 	return (
-		<P.ModalBackdrop onClick={postData}>
+		<P.Modal>
+			<P.ModalBackdrop onClick={postData} />
+			{/* </P.ModalBackdrop> */}
+
 			<P.ModalWrap>
 				<P.ModalView>
 					<P.BigTitle>POST</P.BigTitle>
@@ -54,6 +57,6 @@ export default function PostModal ({ getData }) {
 
 				<P.ModalPost onClick={postHandler}>게시하기</P.ModalPost>
 			</P.ModalWrap>
-	</P.ModalBackdrop>
+		</P.Modal>
 	)
 }

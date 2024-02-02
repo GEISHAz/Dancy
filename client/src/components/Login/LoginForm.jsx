@@ -40,9 +40,9 @@ export default function Login() {
 				<div className="flex flex-row justify-between">
 
 					{/* 자동로그인 체크박스 */}
-					<div className="flex flex-row items-center gap-x-1">
-						<input type="checkbox" />
-						<L.AutoLogin>자동 로그인</L.AutoLogin>
+					<div className="flex flex-row items-center gap-x-2">
+						<L.AutoLoginChkBox id='autologin' />
+						<L.AutoLogin for='autologin'>자동 로그인</L.AutoLogin>
 					</div>
 
 					{/* 소셜로그인 아이콘 */}

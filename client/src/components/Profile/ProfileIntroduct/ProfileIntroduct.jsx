@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import * as P from './ProfileIntroduct.style';
 
 
@@ -11,7 +12,11 @@ export default function ProfileIntroduct({Profile}) {
 				<P.ProfileImg />
 			</P.ProfileRound>
 			
-			<P.UserName>{Profile.nickName}</P.UserName>
+			<P.UserWrap>
+				<P.UserName>{Profile.nickName}</P.UserName>
+				<Link to='/setting'><P.SettingBtn /></Link>
+			</P.UserWrap>
+
 			
 			<P.FollowBox>
 				<div>

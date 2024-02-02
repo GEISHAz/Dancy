@@ -1,10 +1,6 @@
 import styled from "styled-components";
 import Note from '../../assets/Practice/accuracyBgImg.png'
 
-export const Wrap = styled.div`
-	z-index: -1;
-`
-
 export const BgImg = styled.div`
 	width: 295px;
 	height: 551px;
