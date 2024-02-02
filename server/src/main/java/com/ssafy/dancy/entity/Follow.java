@@ -1,10 +1,7 @@
 package com.ssafy.dancy.entity;
 
 import com.ssafy.dancy.entity.PK.FollowPK;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -17,11 +14,11 @@ import lombok.*;
 public class Follow {
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User fromUser;
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User toUser;
 
 }
