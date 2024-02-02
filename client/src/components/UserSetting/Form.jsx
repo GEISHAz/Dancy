@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
-import * as JF from "./JoinForm.style";
-import CustomModal from "./PinModal";
+import * as JF from "./SettingForm.style";
+import CustomModal from "./PhotoModal";
 
 // 전체 폼 구성
 export const JoinFormArea = styled.div`
@@ -50,6 +50,7 @@ export const RadioContainer = styled.div`
   font-family: "NYJ Gothic B";
   font-size: 16px;
   gap: 12px;
+  margin-right: ${(props) => props.margin || "0px"};
 
   input {
     accent-color: #f9405e;
@@ -96,57 +97,43 @@ export default function FormArea() {
       </NoticeArea>
       <FormDetailArea>
         <JF.MustIcon />
-        <JF.FormCategory margin="76px">E-mail</JF.FormCategory>
-        <JF.FormInput type="email"></JF.FormInput>
-        <JF.FormBtn onClick={openModal}>인증하기</JF.FormBtn>
-        {/* CustomModal 컴포넌트를 렌더링하고 isOpen, onClose, onSubmit을 props로 전달 */}
-        <CustomModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handlePinSubmit} />
-        {/* PIN이 제출되면 해당 내용을 출력 */}
-        {submittedPin && <p>인증번호: {submittedPin}</p>}
+        <JF.FormCategory margin="72px">닉네임</JF.FormCategory>
+        <JF.FormInput type="text"></JF.FormInput>
+        <JF.FormBtn onClick={openModal}>중복 체크</JF.FormBtn>
       </FormDetailArea>
       <FormDetailArea>
-        <JF.MustIcon />
-        <JF.FormCategory margin="62px">비밀번호</JF.FormCategory>
+        <JF.MustIcon visibility='hidden'/>
+        <JF.FormCategory margin="36px">상태메세지</JF.FormCategory>
         <InputContainer>
           <JF.FormInput
-            type="password"
-            value={inputValue}
-            onChange={inputChangeHandler}
+            type="text"
           ></JF.FormInput>
-          <JF.InputNoticeText show={showWarning}>
-            형식을 만족하지 않는 비밀번호입니다.
-          </JF.InputNoticeText>
         </InputContainer>
-        <EnterArea>
-          <JF.MustNoticeText>영문자, 숫자, 특수문자를 조합하여</JF.MustNoticeText>
-          <JF.MustNoticeText>입력해주세요. (8자 이상)</JF.MustNoticeText>
-        </EnterArea>
       </FormDetailArea>
       <FormDetailArea>
         <JF.MustIcon />
-        <JF.FormCategory margin="19px">비밀번호 확인</JF.FormCategory>
+        <JF.FormCategory margin="68px">E-mail
+        </JF.FormCategory>
         <InputContainer>
-          <JF.FormInput type="password"></JF.FormInput>
+          <JF.FormInput type="email"></JF.FormInput>
         </InputContainer>
       </FormDetailArea>
       <FormDetailArea>
         <JF.MustIcon />
-        <JF.FormCategory margin="62px">생년월일</JF.FormCategory>
+        <JF.FormCategory margin="54px">생년월일</JF.FormCategory>
         <JF.FormInput type="date"></JF.FormInput>
       </FormDetailArea>
       <FormDetailArea>
         <JF.MustIcon />
-        <JF.FormCategory margin="99px">성별</JF.FormCategory>
-        <RadioContainer>
+        <JF.FormCategory margin="91px">성별</JF.FormCategory>
+        <RadioContainer margin = "104.1px">
           <input type="radio" name="gender" value="male" /> 남성
           <input type="radio" name="gender" value="female" /> 여성
         </RadioContainer>
+        <JF.FormBtn width = "167px">비번번호 변경</JF.FormBtn>
       </FormDetailArea>
       <FormDetailArea>
-        <JF.MustIcon />
-        <JF.FormCategory margin="80px">닉네임</JF.FormCategory>
-        <JF.FormInput></JF.FormInput>
-        <JF.FormBtn>중복 확인</JF.FormBtn>
+        <JF.QuitText>회원 탈퇴</JF.QuitText>
       </FormDetailArea>
     </JoinFormArea>
   );
