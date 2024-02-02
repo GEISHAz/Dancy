@@ -86,14 +86,25 @@ const CustomModal = ({ isOpen, onClose, onSubmit }) => {
     newPin[index] = value;
     setPin(newPin);
 
+
+    console.log(value.length);
+
     if (value !== "" && index < pin.length - 1) {
       // 입력이 있고, 마지막 자리가 아니면 다음 ref로 포커스 이동
       pinRefs.current[index + 1].current.focus();
     }
 
-    // 입력이 마지막 자리까지 완료되면 onSubmit 호출
-    if (index === 5 && value !== "") {
-      const pinValue = newPin.join("");
+    if (value !== "" && index === pin.length - 1) {
+      // 마지막 자리에 도달하면 focus를 해제
+      pinRefs.current[index].current.blur();
+      return;
+    }
+  };
+
+  const handleSubmit = () => {
+    // 핀 번호가 모두 입력되었는지 확인
+    if (pin.every((digit) => digit !== "")) {
+      const pinValue = pin.join("");
       onSubmit(pinValue);
       onClose();
     }
@@ -124,7 +135,9 @@ const CustomModal = ({ isOpen, onClose, onSubmit }) => {
                 key={index}
                 contentEditable
                 ref={pinRefs.current[index]}
-                onInput={(e) => handlePinChange(index, e.currentTarget.innerText)}
+                onInput={(e) =>
+                  handlePinChange(index, e.currentTarget.innerText)
+                }
               >
                 {digit}
               </PinInput>
@@ -132,7 +145,7 @@ const CustomModal = ({ isOpen, onClose, onSubmit }) => {
           </PinInputContainer>
         </ModalContent>
         <ModalButtonContainer>
-          <ModalButton onClick={onClose}>인증 완료</ModalButton>
+          <ModalButton onClick={handleSubmit}>인증 완료</ModalButton>
         </ModalButtonContainer>
       </ModalContainer>
     </ModalOverlay>
