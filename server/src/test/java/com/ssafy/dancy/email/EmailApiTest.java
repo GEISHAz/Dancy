@@ -2,11 +2,18 @@ package com.ssafy.dancy.email;
 
 import com.ssafy.dancy.ApiTest;
 import com.ssafy.dancy.CommonDocument;
+import com.ssafy.dancy.auth.AuthSteps;
+import com.ssafy.dancy.message.request.user.SignUpRequest;
+import com.ssafy.dancy.service.user.UserService;
+import com.ssafy.dancy.type.Role;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mail.SimpleMailMessage;
+
+import java.util.Set;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static io.restassured.RestAssured.given;
@@ -15,8 +22,16 @@ import static org.mockito.Mockito.times;
 
 public class EmailApiTest extends ApiTest {
 
+
+    @Autowired
+    private UserService userService;
+
     @Autowired
     private EmailSteps emailSteps;
+    @Autowired
+    private AuthSteps authSteps;
+
+    private SignUpRequest signUpRequest;
 
     @Test
     void 이메일_가입_인증번호_전송_테스트_성공_200(){
@@ -81,4 +96,87 @@ public class EmailApiTest extends ApiTest {
                 .statusCode(HttpStatus.OK.value())
                 .log().all().extract();
     }
+
+    @Test
+    void 비밀번호_찾기_이메일_전송_성공_200(){
+
+        signUpRequest = authSteps.회원가입정보_생성();
+        userService.signup(signUpRequest, Set.of(Role.USER));
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, "계정 이메일에 비밀번호 찾기를 전송하는 API 입니다." +
+                                "<br>정상적으로 비밀번호 찾기 이메일이 전송되었을 때, 200 OK 가 반환됩니다." +
+                                "<br>전송하려는 이메일 계정이 이메일 형식을 띠고 있지 않는다면, 400 Bad Request 가 반환됩니다." +
+                                "<br>가입된 이메일이 아닐 경우, 404 Not Found 가 반환됩니다." +
+                                "<br>인증번호 입력을 5번 틀린 사용자가, 해당 시스템을 이용하려고 할 때 406 Not Acceptable 이 반환됩니다." +
+                                "<br>자체 로그인 계정이 아닌 경우, 409 Conflict 가 반환됩니다.",
+                        "비밀번호 찾기 이메일 전송",
+                        EmailDocument.targetEmailRequestField))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(emailSteps.이메일_정보_생성())
+                .when()
+                .post("email/password/send")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+
+        // hasKey() : 회원가입 시 한번, BLOCK 조회할 때 한번 -> 2번
+        Mockito.verify(redisTemplate, times(2)).hasKey(anyString());
+        Mockito.verify(mockValueOp, times(1)).set(anyString(), anyString(), anyLong(), any());
+        Mockito.verify(mailSender, times(1)).send(any(SimpleMailMessage.class));
+    }
+
+    @Test
+    void 비밀번호_찾기_이메일_전송_이메일형식_400(){
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, EmailDocument.targetEmailRequestField,
+                        CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(emailSteps.이메일_헝식_아닌정보_생성())
+                .when()
+                .post("email/password/send")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 비밀번호_찾기_가입된이메일_아님_404(){
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, EmailDocument.targetEmailRequestField,
+                        CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(emailSteps.이메일_정보_생성())
+                .when()
+                .post("email/password/send")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .log().all().extract();
+    }
+
+//    @Test
+//    void 비밀번호_찾기_인증번호_검증_성공_200(){
+//        given(this.spec)
+//                .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                .body()
+//                .when()
+//                .post("/auth/password/check")
+//                .then()
+//                .assertThat()
+//                .statusCode(HttpStatus.OK.value())
+//                .log().all().extract();
+//    }
+//
+//    @Test
+//    void 비밀번호_찾기_인증번호_검증_불일치_403(){
+//
+//    }
+//
+//    @Test
+//    void 비밀번호_찾기_인증번호_없음_404(){
+//
+//    }
 }
