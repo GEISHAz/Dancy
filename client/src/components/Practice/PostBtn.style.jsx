@@ -9,4 +9,8 @@ export const PostBtn = styled.button`
 	border: 1px solid black;
 	border-radius: 10px;
 	background-color: #F9405E;
+
+	&:hover {
+	background-color: #ba2841;
+	}
 `

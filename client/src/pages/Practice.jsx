@@ -2,6 +2,8 @@ import Accuracy from "../components/Practice/Accuracy"
 import PostBtn from "../components/Practice/PostBtn"
 import Video from "../components/Practice/Video"
 import VideoBtn from "../components/Practice/VideoBtn"
+import { useState } from 'react';
+import PostModal from "../components/Practice/PostModal"
 
 export default function Practice() {
   const videoInfo = {
@@ -15,9 +17,16 @@ export default function Practice() {
       {key: 6, section: '02:23 ~ 03:27', accuracy: 36},
     ]
   }
-  
+
+	const [isOpen, setIsOpen] = useState(false);
+	const getData = childData => {
+		setIsOpen(childData);
+	};
+	
   return (
     <div className="flex justify-center mt-14 gap-x-4">
+			{isOpen && (<PostModal getData={getData}/>)}
+
 			<div className="flex flex-col gap-y-5">
 				<Video />
 				<VideoBtn avgAccuracy={videoInfo.avgAccuracy} />
@@ -25,7 +34,7 @@ export default function Practice() {
 			
 			<div className="flex flex-col gap-y-5 justify-between">
 				<Accuracy errorList={videoInfo.errorList} />
-				<PostBtn />
+				<PostBtn getData={getData} />
 			</div>
 		</div>
   )

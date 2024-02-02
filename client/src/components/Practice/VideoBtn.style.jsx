@@ -69,6 +69,7 @@ export const OnOffBtnContain = styled.div`
   height: 34px;
   text-align: center;
   margin: 50px auto;
+	z-index: -1;
 `
 
 export const OnOffSwitch = styled.input.attrs({ 

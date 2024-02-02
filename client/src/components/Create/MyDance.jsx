@@ -8,7 +8,7 @@ export default function MyDance () {
 
 		<M.UploadBox> 
 			<input type="file" />
-			<M.UploadBtn src='src/assets/Practice/uploadBtn.png' />
+			<M.UploadBtn src='src/assets/Create/uploadBtn.png' />
 			<M.UploadTxt>영상을 업로드 해주세요.</M.UploadTxt>
 		</M.UploadBox>
 	</M.Wrap>
