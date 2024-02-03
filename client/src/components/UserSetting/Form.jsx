@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
 import * as JF from "./SettingForm.style";
-import CustomModal from "./PhotoModal";
+import QuitModal from "./QuitModal";
 
 // 전체 폼 구성
 export const JoinFormArea = styled.div`
@@ -91,7 +91,7 @@ export default function FormArea() {
         <JF.MustIcon />
         <JF.FormCategory margin="72px">닉네임</JF.FormCategory>
         <JF.FormInput type="text"></JF.FormInput>
-        <JF.FormBtn onClick={openModal}>중복 체크</JF.FormBtn>
+        <JF.FormBtn>중복 체크</JF.FormBtn>
       </FormDetailArea>
       <FormDetailArea>
         <JF.MustIcon visibility="hidden" />
@@ -122,7 +122,9 @@ export default function FormArea() {
         <JF.FormBtn width="167px">비번번호 변경</JF.FormBtn>
       </FormDetailArea>
       <FormDetailArea>
-        <JF.QuitText>회원 탈퇴</JF.QuitText>
+        <JF.QuitText onClick={openModal}>회원 탈퇴</JF.QuitText>
+        {/* PhotoModal 컴포넌트를 렌더링하고 isOpen, onClose을 props로 전달 */}
+        <QuitModal isOpen={isModalOpen} onClose={closeModal} />
       </FormDetailArea>
       <FormDetailArea>
         <JF.RegisterBtn margin="217px">완료</JF.RegisterBtn>

@@ -44,7 +44,7 @@ export default function FormHeader() {
         <JF.PhotoNotice>(확장자: jpg, jpeg, png, svg)</JF.PhotoNotice>
       </EnterArea>
       <JF.FormBtn onClick={openModal}>사진 변경</JF.FormBtn>
-      {/* PhotoModal 컴포넌트를 렌더링하고 isOpen, onClose, onSubmit을 props로 전달 */}
+      {/* PhotoModal 컴포넌트를 렌더링하고 isOpen, onClose을 props로 전달 */}
       <PhotoModal isOpen={isModalOpen} onClose={closeModal} />
     </Header>
   );
