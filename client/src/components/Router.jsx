@@ -9,6 +9,7 @@ import Login from "./Login/LoginForm";
 import SignUp from "../pages/SignUp";
 import SearchResult from "../pages/SearchResult";
 import VideoDetail from "../pages/VideoDetail";
+import UserSetting from "../pages/UserSetting";
 
 export default function Router({ cardDetails }) {
   return (
@@ -26,7 +27,9 @@ export default function Router({ cardDetails }) {
         <Route path="/results" element={<SearchResult cardDetails={cardDetails} />} />
         {/* VideoDetail 페이지의 라우트 추가 */}
         <Route path="/detail" element={<VideoDetail />} />
+        {/* UserSetting 페이지의 라우트 추가 */}
+        <Route path="/setting" element={<UserSetting />} />
       </Routes>
     </>
-  )
+  );
 }
