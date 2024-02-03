@@ -71,7 +71,7 @@ export const FormBtn = styled.button`
   }
 `;
 
-// 가입하기 버튼
+// 완료 버튼
 export const RegisterBtn = styled.button`
   width: 167px;
   height: 46px;

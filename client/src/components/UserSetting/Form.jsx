@@ -61,7 +61,6 @@ export default function FormArea() {
   const [inputValue, setInputValue] = useState("");
   const [showWarning, setShowWarning] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달의 열림/닫힘 상태를 관리
-  const [submittedPin, setSubmittedPin] = useState(""); // 모달에서 제출된 PIN을 저장
 
   // 모달을 열기 위한 함수
   const openModal = () => {
@@ -71,13 +70,6 @@ export default function FormArea() {
   // 모달을 닫기 위한 함수
   const closeModal = () => {
     setIsModalOpen(false);
-  };
-
-  // 모달에서 PIN이 제출됐을 때 실행되는 함수
-  const handlePinSubmit = (pin) => {
-    console.log(`Submitted PIN: ${pin}`);
-    setSubmittedPin(pin); // 제출된 PIN을 상태값에 저장
-    closeModal(); // PIN이 제출되면 모달을 닫음
   };
 
   const inputChangeHandler = (e) => {

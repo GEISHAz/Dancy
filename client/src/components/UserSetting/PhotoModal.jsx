@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import AddImgLogo from "../../assets/UserSetting/AddImgIcon.png";
 
 const ModalOverlay = styled.div`
   display: ${(props) => (props.isOpen ? "flex" : "none")};
@@ -14,48 +15,54 @@ const ModalOverlay = styled.div`
   z-index: 100;
 `;
 
+// 모달 전체의 정렬 설정
 const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
 
+// 모달 전체
 const ModalContent = styled.div`
   background-color: #fffdfb;
   border: 1px solid black;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
-  width: 595px;
-  height: 524px;
+  width: 590px;
+  height: 455px;
   text-align: center;
-`;
-
-const ModalTitle = styled.div`
-  font-family: "NYJ Gothic L";
-  font-size: 32px;
-  color: black;
-  margin-top: 40px;
-  margin-bottom: 36px;
-`;
-
-const PinInputContainer = styled.div`
   display: flex;
-  justify-content: center;
-  margin-bottom: 56px;
+  flex-direction: column;
+  align-items: center;
 `;
 
-const PinInput = styled.div`
-  width: 60px;
-  height: 70px;
-  margin: 0 5px;
-  text-align: center;
+// 모달 제목
+const ModalTitle = styled.div`
   font-family: "NYJ Gothic B";
-  font-size: 40px;
-  border: 1px solid black;
-  border-radius: 5px;
+  font-size: 28px;
+  color: black;
+  margin-top: 43px;
+  margin-bottom: 45px;
+`;
+
+// 사진 첨부 공간(점선)
+const ImportContainer = styled.div`
+  border: 1.5px dashed black;
+  border-radius: 15px;
+  width: 460px;
+  height: 280px;
+  display: flex;
   background-color: white;
-  // 포커스 효과 제거
-  outline: none;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 45px;
+`;
+
+const ImportLogo = styled.div`
+  width: 144px;
+  height: 132px;
+  object-fit: cover;
 `;
 
 const ModalButtonContainer = styled.div`
@@ -70,43 +77,14 @@ const ModalButton = styled.button`
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   background-color: #f9405e;
-  width: 549px;
+  width: 590px;
   height: 66px;
   color: white;
   font-family: "NYJ Gothic B";
   font-size: 20px;
 `;
 
-const CustomModal = ({ isOpen, onClose, onSubmit }) => {
-  const [pin, setPin] = useState(["", "", "", "", "", ""]);
-  const pinRefs = useRef(pin.map(() => React.createRef()));
-
-  const handlePinChange = (index, value) => {
-    const newPin = [...pin];
-    newPin[index] = value;
-    setPin(newPin);
-
-    if (value !== "" && index < pin.length - 1) {
-      // 입력이 있고, 마지막 자리가 아니면 다음 ref로 포커스 이동
-      pinRefs.current[index + 1].current.focus();
-    }
-
-    if (value !== "" && index === pin.length - 1) {
-      // 마지막 자리에 도달하면 focus를 해제
-      pinRefs.current[index].current.blur();
-      return;
-    }
-  };
-
-  const handleSubmit = () => {
-    // 핀 번호가 모두 입력되었는지 확인
-    if (pin.every((digit) => digit !== "")) {
-      const pinValue = pin.join("");
-      onSubmit(pinValue);
-      onClose();
-    }
-  };
-
+const PhotoModal = ({ isOpen, onClose }) => {
   const handleOverlayClick = (e) => {
     // 모달 배경 클릭 시 모달을 닫음
     if (e.target === e.currentTarget) {
@@ -114,46 +92,23 @@ const CustomModal = ({ isOpen, onClose, onSubmit }) => {
     }
   };
 
-  useEffect(() => {
-    // 모달이 열릴 때 첫 번째 div로 포커스 이동
-    if (isOpen) {
-      pinRefs.current[0].current.focus();
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
-    // 모달이 닫힐 때 pin 상태 초기화
-    if (!isOpen) {
-      setPin(["", "", "", "", "", ""]);
-    }
-  }, [isOpen]);
-
   return (
     <ModalOverlay isOpen={isOpen} onClick={handleOverlayClick}>
       <ModalContainer>
         <ModalContent>
-          <ModalTitle>인증번호 입력</ModalTitle>
-          <PinInputContainer>
-            {pin.map((digit, index) => (
-              <PinInput
-                key={index}
-                contentEditable
-                ref={pinRefs.current[index]}
-                onInput={(e) =>
-                  handlePinChange(index, e.currentTarget.innerText)
-                }
-              >
-                {digit}
-              </PinInput>
-            ))}
-          </PinInputContainer>
+          <ModalTitle>프로필 사진 변경</ModalTitle>
+          <ImportContainer>
+            <ImportLogo>
+              <img src={AddImgLogo}></img>
+            </ImportLogo>
+          </ImportContainer>
         </ModalContent>
         <ModalButtonContainer>
-          <ModalButton onClick={handleSubmit}>인증 완료</ModalButton>
+          <ModalButton>변경 완료</ModalButton>
         </ModalButtonContainer>
       </ModalContainer>
     </ModalOverlay>
   );
 };
 
-export default CustomModal;
+export default PhotoModal;
