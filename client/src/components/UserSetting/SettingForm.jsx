@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import DancyImg from "../../assets/join/BigLogo.png";
-import * as JF from "./SettingForm.style";
+import * as SF from "./SettingForm.style";
 import Form from "./Form";
 import FormHeader from "./FormHeader";
 
@@ -53,10 +53,10 @@ export default function SettingForm() {
       <AlignArea>
         <LogoArea>
           <CenterContainer>
-            <JF.JoinLogo>
+            <SF.JoinLogo>
               <img src={DancyImg}></img>
-            </JF.JoinLogo>
-            <JF.FormTitle>회원 상세정보</JF.FormTitle>
+            </SF.JoinLogo>
+            <SF.FormTitle>회원 상세정보</SF.FormTitle>
           </CenterContainer>
         </LogoArea>
         <ContextArea>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
-import * as JF from "./SettingForm.style";
+import * as SF from "./SettingForm.style";
 import QuitModal from "./QuitModal";
 import ChangePwdModal from "./ChangePwdModal";
 
@@ -93,55 +93,55 @@ export default function FormArea() {
   return (
     <JoinFormArea>
       <NoticeArea>
-        <JF.MustNoticeText>(&nbsp;</JF.MustNoticeText>
-        <JF.MustIcon />
-        <JF.MustNoticeText>&nbsp;)는 필수 입력 값입니다.</JF.MustNoticeText>
+        <SF.MustNoticeText>(&nbsp;</SF.MustNoticeText>
+        <SF.MustIcon />
+        <SF.MustNoticeText>&nbsp;)는 필수 입력 값입니다.</SF.MustNoticeText>
       </NoticeArea>
       <FormDetailArea>
-        <JF.MustIcon />
-        <JF.FormCategory margin="72px">닉네임</JF.FormCategory>
-        <JF.FormInput type="text"></JF.FormInput>
-        <JF.FormBtn>중복 체크</JF.FormBtn>
+        <SF.MustIcon />
+        <SF.FormCategory margin="72px">닉네임</SF.FormCategory>
+        <SF.FormInput type="text"></SF.FormInput>
+        <SF.FormBtn>중복 체크</SF.FormBtn>
       </FormDetailArea>
       <FormDetailArea>
-        <JF.MustIcon visibility="hidden" />
-        <JF.FormCategory margin="36px">상태메세지</JF.FormCategory>
+        <SF.MustIcon visibility="hidden" />
+        <SF.FormCategory margin="36px">상태메세지</SF.FormCategory>
         <InputContainer>
-          <JF.FormInput type="text"></JF.FormInput>
+          <SF.FormInput type="text"></SF.FormInput>
         </InputContainer>
       </FormDetailArea>
       <FormDetailArea>
-        <JF.MustIcon />
-        <JF.FormCategory margin="68px">E-mail</JF.FormCategory>
+        <SF.MustIcon />
+        <SF.FormCategory margin="68px">E-mail</SF.FormCategory>
         <InputContainer>
-          <JF.FormInput type="email"></JF.FormInput>
+          <SF.FormInput type="email"></SF.FormInput>
         </InputContainer>
       </FormDetailArea>
       <FormDetailArea>
-        <JF.MustIcon />
-        <JF.FormCategory margin="54px">생년월일</JF.FormCategory>
-        <JF.FormInput type="date"></JF.FormInput>
+        <SF.MustIcon />
+        <SF.FormCategory margin="54px">생년월일</SF.FormCategory>
+        <SF.FormInput type="date"></SF.FormInput>
       </FormDetailArea>
       <FormDetailArea>
-        <JF.MustIcon />
-        <JF.FormCategory margin="91px">성별</JF.FormCategory>
+        <SF.MustIcon />
+        <SF.FormCategory margin="91px">성별</SF.FormCategory>
         <RadioContainer margin="104.1px">
           <input type="radio" name="gender" value="male" /> 남성
           <input type="radio" name="gender" value="female" /> 여성
         </RadioContainer>
-        <JF.FormBtn width="167px" onClick={openChangePwdModal}>
+        <SF.FormBtn width="167px" onClick={openChangePwdModal}>
           비밀번호 변경
-        </JF.FormBtn>
+        </SF.FormBtn>
         {/*ChangePwdModal 컴포넌트를 렌더링하고 isOpen, onClose을 props로 전달 */}
         <ChangePwdModal isOpen={isChangePwdModalOpen} onClose={closeChangePwdModal} />
       </FormDetailArea>
       <FormDetailArea>
-        <JF.QuitText onClick={openQuitModal}>회원 탈퇴</JF.QuitText>
+        <SF.QuitText onClick={openQuitModal}>회원 탈퇴</SF.QuitText>
         {/* QuitModal 컴포넌트를 렌더링하고 isOpen, onClose을 props로 전달 */}
         <QuitModal isOpen={isQuitModalOpen} onClose={closeQuitModal} />
       </FormDetailArea>
       <FormDetailArea>
-        <JF.RegisterBtn margin="217px">완료</JF.RegisterBtn>
+        <SF.RegisterBtn margin="217px">완료</SF.RegisterBtn>
       </FormDetailArea>
     </JoinFormArea>
   );

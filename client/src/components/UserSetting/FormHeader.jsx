@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
-import * as JF from "./SettingForm.style";
+import * as SF from "./SettingForm.style";
 import DefaultImg from "../../assets/join/picture.png";
 import PhotoModal from "./PhotoModal";
 
@@ -36,14 +36,14 @@ export default function FormHeader() {
 
   return (
     <Header>
-      <JF.ProfileLogo margin="35px">
+      <SF.ProfileLogo margin="35px">
         <img src={DefaultImg}></img>
-      </JF.ProfileLogo>
+      </SF.ProfileLogo>
       <EnterArea margin="114px">
-        <JF.PhotoNotice>프로필 사진은 10MB 이하의 파일만 업로드할 수 있습니다.</JF.PhotoNotice>
-        <JF.PhotoNotice>(확장자: jpg, jpeg, png, svg)</JF.PhotoNotice>
+        <SF.PhotoNotice>프로필 사진은 10MB 이하의 파일만 업로드할 수 있습니다.</SF.PhotoNotice>
+        <SF.PhotoNotice>(확장자: jpg, jpeg, png, svg)</SF.PhotoNotice>
       </EnterArea>
-      <JF.FormBtn onClick={openModal}>사진 변경</JF.FormBtn>
+      <SF.FormBtn onClick={openModal}>사진 변경</SF.FormBtn>
       {/* PhotoModal 컴포넌트를 렌더링하고 isOpen, onClose을 props로 전달 */}
       <PhotoModal isOpen={isModalOpen} onClose={closeModal} />
     </Header>
