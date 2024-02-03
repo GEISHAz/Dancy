@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import * as JF from "./SettingForm.style";
 import QuitModal from "./QuitModal";
+import ChangePwdModal from "./ChangePwdModal";
 
 // 전체 폼 구성
 export const JoinFormArea = styled.div`
@@ -60,16 +61,25 @@ export const RadioContainer = styled.div`
 export default function FormArea() {
   const [inputValue, setInputValue] = useState("");
   const [showWarning, setShowWarning] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달의 열림/닫힘 상태를 관리
+  const [isChangePwdModalOpen, setIsChangePwdModalOpen] = useState(false);
+  const [isQuitModalOpen, setIsQuitModalOpen] = useState(false);
 
-  // 모달을 열기 위한 함수
-  const openModal = () => {
-    setIsModalOpen(true);
+  // 각 모달을 열기 위한 함수
+  const openChangePwdModal = () => {
+    setIsChangePwdModalOpen(true);
   };
 
-  // 모달을 닫기 위한 함수
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const openQuitModal = () => {
+    setIsQuitModalOpen(true);
+  };
+
+  // 각 모달을 닫기 위한 함수
+  const closeChangePwdModal = () => {
+    setIsChangePwdModalOpen(false);
+  };
+
+  const closeQuitModal = () => {
+    setIsQuitModalOpen(false);
   };
 
   const inputChangeHandler = (e) => {
@@ -119,12 +129,16 @@ export default function FormArea() {
           <input type="radio" name="gender" value="male" /> 남성
           <input type="radio" name="gender" value="female" /> 여성
         </RadioContainer>
-        <JF.FormBtn width="167px">비번번호 변경</JF.FormBtn>
+        <JF.FormBtn width="167px" onClick={openChangePwdModal}>
+          비밀번호 변경
+        </JF.FormBtn>
+        {/*ChangePwdModal 컴포넌트를 렌더링하고 isOpen, onClose을 props로 전달 */}
+        <ChangePwdModal isOpen={isChangePwdModalOpen} onClose={closeChangePwdModal} />
       </FormDetailArea>
       <FormDetailArea>
-        <JF.QuitText onClick={openModal}>회원 탈퇴</JF.QuitText>
-        {/* PhotoModal 컴포넌트를 렌더링하고 isOpen, onClose을 props로 전달 */}
-        <QuitModal isOpen={isModalOpen} onClose={closeModal} />
+        <JF.QuitText onClick={openQuitModal}>회원 탈퇴</JF.QuitText>
+        {/* QuitModal 컴포넌트를 렌더링하고 isOpen, onClose을 props로 전달 */}
+        <QuitModal isOpen={isQuitModalOpen} onClose={closeQuitModal} />
       </FormDetailArea>
       <FormDetailArea>
         <JF.RegisterBtn margin="217px">완료</JF.RegisterBtn>

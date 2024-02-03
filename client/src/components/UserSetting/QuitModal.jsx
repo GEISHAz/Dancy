@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import AddImgLogo from "../../assets/UserSetting/AddImgIcon.png";
 
 const ModalOverlay = styled.div`
   display: ${(props) => (props.isOpen ? "flex" : "none")};
@@ -68,9 +67,14 @@ const QuitTitle = styled.div`
 // 탈퇴 시 필요한 비밀번호
 const QuitInput = styled.input`
   width: 448px;
-  height: 48px;
+  height: 46px;
   border: 1px solid black;
   border-radius: 3px;
+
+  &:focus {
+    outline: 2px solid #e23e59;
+    border: none;
+  }
 `;
 
 const ModalButtonContainer = styled.div`
