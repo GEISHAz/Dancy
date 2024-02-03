@@ -1,5 +1,6 @@
 package com.ssafy.dancy.handler;
 
+import com.ssafy.dancy.exception.user.SocialAccountException;
 import com.ssafy.dancy.exception.user.UserAlreadyExistException;
 import com.ssafy.dancy.exception.user.UserInfoNotMatchException;
 import com.ssafy.dancy.exception.user.UserPasswordNotMatchException;
@@ -33,4 +34,11 @@ public class AuthExceptionHandler {
     public List<ErrorResponse> userPasswordNotMatchException(UserPasswordNotMatchException e){
         return makeErrorResponse(e, "currentPassword");
     }
+
+    @ExceptionHandler(SocialAccountException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public List<ErrorResponse> socialAccountExceptionException(SocialAccountException e){
+        return makeErrorResponse(e, "email");
+    }
+
 }

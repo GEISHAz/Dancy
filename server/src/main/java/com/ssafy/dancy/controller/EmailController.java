@@ -27,4 +27,9 @@ public class EmailController {
         return emailService.checkJoinVerifyCode(request.targetEmail(), request.verifyCode());
     }
 
+    @PostMapping("/password/send")
+    public void sendPasswordFindEmail(@Valid @RequestBody SendEmailRequest request){
+
+    }
+
 }

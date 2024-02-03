@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 @Component
 public class UserSteps {
@@ -54,6 +55,20 @@ public class UserSteps {
             ImageIO.write(image,"png",file);
 
             return createMultipartFileList(file, "profileImage");
+        }catch(IOException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static MultiPartSpecification 텍스트_파일_생성(String filename, String inputContent){
+        try{
+            String fileFullName = filename + ".txt";
+            File targetFile = new File(System.getProperty("java.io.tmpdir"), fileFullName);
+
+            Path path = targetFile.toPath();
+            Files.write(path, inputContent.getBytes());
+            return createMultipartFileList(targetFile, "profileImage");
         }catch(IOException e){
             e.printStackTrace();
             return null;

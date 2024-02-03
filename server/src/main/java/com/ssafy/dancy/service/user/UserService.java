@@ -1,16 +1,15 @@
 package com.ssafy.dancy.service.user;
 
 import com.ssafy.dancy.entity.User;
-import com.ssafy.dancy.exception.user.DuplicateNicknameException;
-import com.ssafy.dancy.exception.user.UserAlreadyExistException;
-import com.ssafy.dancy.exception.user.UserInfoNotMatchException;
-import com.ssafy.dancy.exception.user.UserPasswordNotMatchException;
+import com.ssafy.dancy.exception.user.*;
 import com.ssafy.dancy.exception.verify.EmailNotVerifiedException;
 import com.ssafy.dancy.message.request.auth.ChangePasswordRequest;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
+import com.ssafy.dancy.message.request.user.ChangeProfileImageRequest;
 import com.ssafy.dancy.message.request.user.IntroduceTextChangeRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.message.response.user.ChangeIntroduceResponse;
+import com.ssafy.dancy.message.response.user.ChangedProfileImageResponse;
 import com.ssafy.dancy.message.response.user.UpdatedUserResponse;
 import com.ssafy.dancy.message.response.user.UserDetailInfoResponse;
 import com.ssafy.dancy.repository.RedisRepository;
@@ -86,10 +85,17 @@ public class UserService {
     public User login(LoginUserRequest request){
         Optional<User> foundUser = userRepository.findByEmail(request.email());
 
-        if(foundUser.isEmpty() || !passwordEncoder.matches(request.password(), foundUser.get().getPassword())){
-            throw new UserInfoNotMatchException("아이디나 패스워드가 일치하지 않습니다.");
+        if(foundUser.isPresent()){
+            User user = foundUser.get();
+            if(AuthType.isSocialAccount(user)){
+                throw new SocialAccountException("소셜 로그인을 진행해야 하는 계정입니다.");
+            }
+            if(passwordEncoder.matches(request.password(), foundUser.get().getPassword())){
+                return user;
+            }
         }
-        return foundUser.get();
+
+        throw new UserInfoNotMatchException("아이디나 패스워드가 일치하지 않습니다.");
     }
 
     public void logout(User user) {
@@ -136,6 +142,11 @@ public class UserService {
     }
 
     public void changePassword(User user, ChangePasswordRequest request) {
+
+        if(AuthType.isSocialAccount(user)){
+            throw new SocialAccountException("소셜 로그인 아이디입니다.");
+        }
+
         checkPassword(request.currentPassword(), user.getPassword());
 
         String newEncodedPassword = passwordEncoder.encode(request.newPassword());
@@ -147,6 +158,8 @@ public class UserService {
 
     public void deleteUser(User user, String password) {
         checkPassword(password, user.getPassword());
+        logout(user);
+
         userRepository.delete(user);
     }
 
@@ -154,5 +167,16 @@ public class UserService {
         if(!passwordEncoder.matches(inputPassword, userPassword)){
             throw new UserPasswordNotMatchException("기존 비밀번호가 일치하지 않습니다.");
         }
+    }
+
+    public ChangedProfileImageResponse changeProfileImage(User user, ChangeProfileImageRequest request) {
+        String profileImageUrl = fileStoreUtil.uploadProfileImageToS3(request.profileImage(), PROFILE_IMAGE_TARGET);
+        user.setProfileImageUrl(profileImageUrl);
+
+        User savedUser = userRepository.save(user);
+        return ChangedProfileImageResponse.builder()
+                .email(savedUser.getEmail())
+                .profileImageUrl(savedUser.getProfileImageUrl())
+                .build();
     }
 }

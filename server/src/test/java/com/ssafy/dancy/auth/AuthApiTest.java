@@ -201,6 +201,9 @@ public class AuthApiTest extends ApiTest {
                 .log().all().extract();
 
         assertThat(userRepository.findByEmail(AuthSteps.email)).isEmpty();
+        Mockito.verify(redisTemplate, times(1)).delete(anyString());
+        Mockito.verify(mockValueOp, times(2)).set(anyString(), anyString(), anyLong(), any());
+        // 로그인 할때 set 한번, 회원탈퇴 시 로그아웃 때 한번
     }
 
     @Test

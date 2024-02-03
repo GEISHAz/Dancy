@@ -77,7 +77,7 @@ public class CommentApiTest extends ApiTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .pathParam("articleId",1)
                 .when()
-                .get("/comment")
+                .get("/comment/{articleId}")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())

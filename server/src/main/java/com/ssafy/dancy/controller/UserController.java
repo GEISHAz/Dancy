@@ -2,10 +2,12 @@ package com.ssafy.dancy.controller;
 
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.annotation.user.Nickname;
+import com.ssafy.dancy.message.request.user.ChangeProfileImageRequest;
 import com.ssafy.dancy.message.request.user.IntroduceTextChangeRequest;
 import com.ssafy.dancy.message.request.user.NicknameRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.message.response.user.ChangeIntroduceResponse;
+import com.ssafy.dancy.message.response.user.ChangedProfileImageResponse;
 import com.ssafy.dancy.message.response.user.UpdatedUserResponse;
 import com.ssafy.dancy.message.response.user.UserDetailInfoResponse;
 import com.ssafy.dancy.service.user.UserService;
@@ -52,5 +54,11 @@ public class UserController {
     @GetMapping("/details")
     public UserDetailInfoResponse getOwnDetailInfo(@AuthenticationPrincipal User user){
         return userService.getOwnDetailInfo(user);
+    }
+
+    @PutMapping("/profile_image")
+    public ChangedProfileImageResponse changeProfileImage(@AuthenticationPrincipal User user,
+                                                          @Valid @ModelAttribute ChangeProfileImageRequest request){
+        return userService.changeProfileImage(user, request);
     }
 }
