@@ -102,18 +102,15 @@ export default function FormArea() {
         <JF.FormBtn onClick={openModal}>중복 체크</JF.FormBtn>
       </FormDetailArea>
       <FormDetailArea>
-        <JF.MustIcon visibility='hidden'/>
+        <JF.MustIcon visibility="hidden" />
         <JF.FormCategory margin="36px">상태메세지</JF.FormCategory>
         <InputContainer>
-          <JF.FormInput
-            type="text"
-          ></JF.FormInput>
+          <JF.FormInput type="text"></JF.FormInput>
         </InputContainer>
       </FormDetailArea>
       <FormDetailArea>
         <JF.MustIcon />
-        <JF.FormCategory margin="68px">E-mail
-        </JF.FormCategory>
+        <JF.FormCategory margin="68px">E-mail</JF.FormCategory>
         <InputContainer>
           <JF.FormInput type="email"></JF.FormInput>
         </InputContainer>
@@ -126,14 +123,17 @@ export default function FormArea() {
       <FormDetailArea>
         <JF.MustIcon />
         <JF.FormCategory margin="91px">성별</JF.FormCategory>
-        <RadioContainer margin = "104.1px">
+        <RadioContainer margin="104.1px">
           <input type="radio" name="gender" value="male" /> 남성
           <input type="radio" name="gender" value="female" /> 여성
         </RadioContainer>
-        <JF.FormBtn width = "167px">비번번호 변경</JF.FormBtn>
+        <JF.FormBtn width="167px">비번번호 변경</JF.FormBtn>
       </FormDetailArea>
       <FormDetailArea>
         <JF.QuitText>회원 탈퇴</JF.QuitText>
+      </FormDetailArea>
+      <FormDetailArea>
+        <JF.RegisterBtn margin="217px">완료</JF.RegisterBtn>
       </FormDetailArea>
     </JoinFormArea>
   );

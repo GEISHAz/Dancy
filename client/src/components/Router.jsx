@@ -28,8 +28,8 @@ export default function Router({ cardDetails }) {
         {/* VideoDetail 페이지의 라우트 추가 */}
         <Route path="/detail" element={<VideoDetail />} />
         {/* UserSetting 페이지의 라우트 추가 */}
-        <Route path="/setting" element={<UserSetting/>}/>
+        <Route path="/setting" element={<UserSetting />} />
       </Routes>
     </>
-  )
+  );
 }

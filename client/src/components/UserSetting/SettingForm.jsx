@@ -47,24 +47,6 @@ export const CenterContainer = styled.div`
   align-items: start;
 `;
 
-
-export const EnterArea = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: start;
-  margin-right: ${(props) => props.margin || "0px"};
-`;
-
-export const SubmitArea = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 4rem;
-  margin-bottom: 4rem;
-`;
-
 export default function SettingForm() {
   return (
     <JoinArea>
@@ -79,14 +61,11 @@ export default function SettingForm() {
         </LogoArea>
         <ContextArea>
           <CenterContainer>
-           <FormHeader/>
+            <FormHeader />
             <Form />
           </CenterContainer>
         </ContextArea>
       </AlignArea>
-      <SubmitArea>
-        <JF.RegisterBtn>완료</JF.RegisterBtn>
-      </SubmitArea>
     </JoinArea>
   );
 }

@@ -83,6 +83,7 @@ export const RegisterBtn = styled.button`
   font-family: "NYJ Gothic B";
   font-size: 16px;
   cursor: pointer;
+  margin-left: ${(props) => props.margin || "0px"};
 
   &:hover {
     background-color: #c0354c;
@@ -153,6 +154,7 @@ export const InputNoticeText = styled.div`
 export const QuitText = styled.div`
   font-family: "NYJ Gothic L";
   font-size: 12px;
-  color: #ABABAB;
+  color: #ababab;
   text-decoration: underline;
+  margin-top: 32px;
 `;
