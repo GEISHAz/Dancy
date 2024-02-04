@@ -1,12 +1,16 @@
 import styled from "styled-components";
 
+export const NotificationArea = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 export const NotificationImage = styled.img`
   cursor: pointer;
-  background-color: transparent;
 `;
 
 export const DropdownContainer = styled.div`
-  position: fixed;
+  position: absolute;
   width: 250px;
 	top: 20px;
   height: 100%;
@@ -64,7 +68,6 @@ export const DropdownItem = styled.div`
   align-items: center;
   font-weight: 500;
   cursor: auto;
-
 `;
 
 export const ProfileImage = styled.img`

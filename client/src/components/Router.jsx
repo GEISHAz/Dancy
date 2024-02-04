@@ -7,9 +7,9 @@ import Profile from "../pages/Profile";
 import Login from "./Login/LoginForm";
 import SignUp from "../pages/SignUp";
 import SearchResult from "../pages/SearchResult";
-import VideoDetail from "../pages/VideoDetail";
+import VideoDetailPage from "../pages/VideoDetailPage";
 
-export default function Router({ cardDetails }) {
+export default function Router({ cardDetails, videoDetails }) {
   return (
     <>
       <Routes>
@@ -19,11 +19,11 @@ export default function Router({ cardDetails }) {
         <Route path="/profile/:user_id" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/detail/:video_id" element={<VideoDetail />} />
+        <Route path="/detail/:video_id" element={<VideoDetailPage />} />
         {/* SearchResult 페이지의 라우트 추가 */}
         <Route path="/results" element={<SearchResult cardDetails={cardDetails} />} />
         {/* VideoDetail 페이지의 라우트 추가 */}
-        <Route path="/detail" element={<VideoDetail />} />
+        <Route path="/detail" element={<VideoDetailPage />} />
       </Routes>
     </>
   )

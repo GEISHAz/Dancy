@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import {CardContainer, CardUpperContainer, CardLowerContainer, CardDetailContainer, CardDetailArea, CardProfileImage, CardTitle, CardUserName, CardViewAndDate } from './Card.Style'
 
+
+
 const cardDetails = [
   {
     username: "namhyun._.2",
@@ -45,14 +47,18 @@ const cardDetails = [
 // 사용할 색상 배열
 const colors = ["#fffbe5", "#d8fcf6", "#dfe5fe"]; 
 
-export default function CustomCard() {
-  const cards = [...Array(12)].map((_, index) => {
+export default function Card() {
+  const handleClick = () => {
+    const videoUrl = "your_video_url_here.mp4";
+    onClick(videoUrl)
+  }
+  const cards = [...Array(6)].map((_, index) => {
     // 줄 별로 색상 선택
     const color = colors[Math.floor(index / 3) % colors.length];
     
     return (
       <Link to={`/detail/${index}`} key={index}>
-        <CardContainer key={index}>
+        <CardContainer key={index} onClick={handleClick}>
           <CardUpperContainer src="/src/assets/thumbnail.png" />
           <CardLowerContainer color={color}>
             <CardDetailContainer>

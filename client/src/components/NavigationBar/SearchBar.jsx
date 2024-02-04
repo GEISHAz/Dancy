@@ -13,13 +13,13 @@ export default function SearchBar({ cardDetails }) {
     const searchText = event.target.value;
     setSearchTerm(searchText);
     
-    // 검색어가 비어 있으면 모든 카드를 표시합니다.
+    // 검색어가 비어 있으면 모든 카드를 표시
     if (!searchText.trim()) {
       setSearchResults([]);
       return;
     }
 
-    // 검색어가 포함된 카드만 결과로 표시합니다.
+    // 검색어가 포함된 카드만 결과로 표시
     const filteredResults = cardDetails.filter(card => 
       card.title.toLowerCase().includes(searchText.toLowerCase())
     );

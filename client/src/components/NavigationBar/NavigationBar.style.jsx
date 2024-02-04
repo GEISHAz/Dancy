@@ -53,6 +53,8 @@ export const NavArea = styled.div`
   font-weight: 550;
   color: #252525;
   font-family: 'NanumSquareRound', sans-serif;
+  position: relative;
+  z-index: 1000;
 `;
 
 export const NavRed = styled.div`
@@ -119,7 +121,7 @@ export const AlertButton = styled.div`
 
   img {
     color: #252525;
-    width: 32px;
-    height: 32px;
+    width: 26px;
+    height: 28px;
   }
 `

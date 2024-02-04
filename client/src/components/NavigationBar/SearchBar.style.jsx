@@ -29,7 +29,7 @@ export const SearchBarInput = styled.input`
   letter-spacing: 0;
   
   &::placeholder {
-    letter-spacing: 4px;
+    letter-spacing: 2px;
 		color: gray;
 		font-weight: 500;
   }
