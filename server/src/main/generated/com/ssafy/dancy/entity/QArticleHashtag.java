@@ -24,6 +24,8 @@ public class QArticleHashtag extends EntityPathBase<ArticleHashtag> {
 
     public final QArticle article;
 
+    public final NumberPath<Long> articleHashtagId = createNumber("articleHashtagId", Long.class);
+
     public final QHashtag hashtag;
 
     public QArticleHashtag(String variable) {

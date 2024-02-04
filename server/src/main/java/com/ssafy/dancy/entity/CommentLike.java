@@ -8,16 +8,18 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(CommentLikePK.class)
+
 @Getter
 @Setter
 public class CommentLike {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long commentLikeId;
+
     @ManyToOne
     private Comment comment;
 
-    @Id
     @ManyToOne
     private User user;
 
