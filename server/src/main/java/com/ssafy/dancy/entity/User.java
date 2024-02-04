@@ -6,6 +6,7 @@ import com.ssafy.dancy.type.Gender;
 import com.ssafy.dancy.type.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -51,13 +52,22 @@ public class User implements UserDetails, Serializable {
 
     @Column(nullable = false)
     @Builder.Default
-    public String introduceText = "";
+    private String introduceText = "";
 
     @Column(length = 10)
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @Builder.Default
-    public Set<Role> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
+
+    @ColumnDefault("0")
+    @Builder.Default
+    private int followingCount = 0;
+
+
+    @ColumnDefault("0")
+    @Builder.Default
+    private int followerCount = 0;
 
 
     @Override

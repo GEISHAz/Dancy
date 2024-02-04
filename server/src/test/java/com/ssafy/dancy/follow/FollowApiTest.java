@@ -27,7 +27,7 @@ public class FollowApiTest extends ApiTest {
     @BeforeEach
     void settings(){
         signUpRequest = authSteps.회원가입정보_생성();
-        opponentSignUpRequest = authSteps.회원가입정보_상대방정보생성();
+        opponentSignUpRequest = authSteps.상대방회원가입정보_생성();
         userService.signup(signUpRequest, Set.of(Role.USER));
         userService.signup(opponentSignUpRequest, Set.of(Role.USER));
     }
