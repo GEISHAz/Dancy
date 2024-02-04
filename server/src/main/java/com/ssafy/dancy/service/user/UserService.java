@@ -55,6 +55,10 @@ public class UserService {
             throw new EmailNotVerifiedException("인증받지 않은 이메일이거나, 인증 받은지 30분이 지난 이메일입니다.");
         }
 
+        if(userRepository.existsByNickname(request.nickname())){
+            throw new DuplicateNicknameException("이미 존재하는 닉네임입니다.");
+        }
+
         String encodedPassword = passwordEncoder.encode(request.password());
         LocalDate parsedDate = LocalDate.parse(request.birthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
@@ -209,13 +213,9 @@ public class UserService {
     public void findPassword(User user, String newPassword){
         AuthType.checkSocialAccount(user);
 
-        if(redisRepository.isEmailBlocked(user.getEmail())){
-            throw new VerifySystemBlockException("비밀번호 찾기 시스템을 사용할 수 없는 사용자 계정입니다.");
+        if(!redisRepository.getPasswordFindAuthInfo(user.getEmail())){
+            throw new VerifySystemNotAuthorizedException("비밀번호 찾기 시스템에 의해 인가받지 않은 사용자입니다.");
         }
-
-        redisRepository.getPasswordFindAuthInfo(user.getEmail()).orElseThrow(
-                () -> new VerifySystemNotAuthorizedException("비밀번호 찾기 시스템에 의해 인가받지 않은 사용자입니다.")
-        );
 
         String encodedPassword = passwordEncoder.encode(newPassword);
         user.setPassword(encodedPassword);

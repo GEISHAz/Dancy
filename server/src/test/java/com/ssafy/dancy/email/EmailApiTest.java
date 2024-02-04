@@ -6,6 +6,7 @@ import com.ssafy.dancy.auth.AuthSteps;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
+import com.ssafy.dancy.user.UserSteps;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,38 @@ public class EmailApiTest extends ApiTest {
     }
 
     @Test
+    void 이메일_가입_인증번호_전송_이메일아님_400(){
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH,
+                        EmailDocument.targetEmailRequestField, CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(emailSteps.이메일_헝식_아닌정보_생성())
+                .when()
+                .post("/email/verify/send")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 이메일_가입_인증번호_이미가입_409(){
+        회원가입_미리_생성();
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH,
+                        EmailDocument.targetEmailRequestField, CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(emailSteps.이메일_정보_생성())
+                .when()
+                .post("/email/verify/send")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CONFLICT.value())
+                .log().all().extract();
+    }
+
+    @Test
     void 이메일_가입_인증번호_전송_이메일_형식_아님_400(){
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH, CommonDocument.ErrorResponseFields))
@@ -83,7 +116,8 @@ public class EmailApiTest extends ApiTest {
                                 "<br>이메일 인증번호가 일치하지 않을 경우, 403 Forbidden 이 반환됩니다." +
                                 "<br>가입하려는 이메일 계정에 인증코드가 전송되어 있지 않거나, 시간이 30분 이상 지나 만료된 코드의 경우" +
                                 "<br>404 Not Found 가 반환됩니다." +
-                                "<br>이미 가입된 이메일로 검증을 시도할 경우, 409 Conflict 가 반환됩니다.",
+                                "<br>이미 가입된 이메일로 검증을 시도할 경우, 409 Conflict 가 반환됩니다." +
+                                "<br>404 코드의 경우, 수동 테스트를 진행했고 성공했습니다.",
                         "이메일 가입 인증번호 검증",
                         EmailDocument.codeVerifyRequestField,
                         EmailDocument.emailVerifyResponse))
@@ -94,6 +128,59 @@ public class EmailApiTest extends ApiTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 이메일_인증_이메일형식아님_400(){
+        String verifyCode = "123456";
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, EmailDocument.codeVerifyRequestField,
+                        CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(emailSteps.인증번호_정보_이메일_아님(verifyCode))
+                .when()
+                .post("/email/verify/check")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 이메일_인증_코드불일치_403(){
+        String verifyCode = "654321";
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, EmailDocument.codeVerifyRequestField,
+                        CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(emailSteps.인증번호_정보_생성(verifyCode))
+                .when()
+                .post("/email/verify/check")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 이메일_인증_이미가입_409(){
+
+        회원가입_미리_생성();
+        String verifyCode = "123456";
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, EmailDocument.codeVerifyRequestField,
+                        CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(emailSteps.인증번호_정보_생성(verifyCode))
+                .when()
+                .post("/email/verify/check")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CONFLICT.value())
                 .log().all().extract();
     }
 
@@ -109,7 +196,8 @@ public class EmailApiTest extends ApiTest {
                                 "<br>전송하려는 이메일 계정이 이메일 형식을 띠고 있지 않는다면, 400 Bad Request 가 반환됩니다." +
                                 "<br>가입된 이메일이 아닐 경우, 404 Not Found 가 반환됩니다." +
                                 "<br>인증번호 입력을 5번 틀린 사용자가, 해당 시스템을 이용하려고 할 때 406 Not Acceptable 이 반환됩니다." +
-                                "<br>자체 로그인 계정이 아닌 경우, 409 Conflict 가 반환됩니다.",
+                                "<br>자체 로그인 계정이 아닌 경우, 409 Conflict 가 반환됩니다." +
+                                "<br> 406 Code 의 경우, 테스트 코드를 만들지는 못했지만 수동 테스트를 진행 성공했습니다.",
                         "비밀번호 찾기 이메일 전송",
                         EmailDocument.targetEmailRequestField))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -157,26 +245,19 @@ public class EmailApiTest extends ApiTest {
                 .log().all().extract();
     }
 
-//    @Test
-//    void 비밀번호_찾기_인증번호_검증_성공_200(){
-//        given(this.spec)
-//                .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                .body()
-//                .when()
-//                .post("/auth/password/check")
-//                .then()
-//                .assertThat()
-//                .statusCode(HttpStatus.OK.value())
-//                .log().all().extract();
-//    }
-//
-//    @Test
-//    void 비밀번호_찾기_인증번호_검증_불일치_403(){
-//
-//    }
-//
-//    @Test
-//    void 비밀번호_찾기_인증번호_없음_404(){
-//
-//    }
+    void 회원가입_미리_생성(){
+        given(this.spec)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .multiPart("email", AuthSteps.email)
+                .multiPart("nickname", AuthSteps.nickname)
+                .multiPart("password", AuthSteps.password)
+                .multiPart("birthDate", AuthSteps.birthDate)
+                .multiPart("gender", AuthSteps.gender)
+                .multiPart("authType", AuthSteps.authType)
+                .multiPart(UserSteps.프로필_이미지_간단생성())
+                .when()
+                .post("/user/signup")
+                .then()
+                .log().all().extract();
+    }
 }
