@@ -26,6 +26,7 @@ public class RedisRepository {
     private static final String PASSWORD_FIND_CODE_PREFIX = "PFIND";
     private static final String STACK_WRONG_CODE_PREFIX = "WRONG";
     private static final String EMAIL_BLOCK_PREFIX = "BLOCK";
+    private static final String PASSWORD_FIND_AUTHORIZED_PREFIX = "PFAUTH";
 
     public String saveEmailVerifyCode(String targetEmail, String code, int timeLimit){
         String key = String.format("%s:%s", EMAIL_VERIFY_PREFIX, targetEmail);
@@ -103,6 +104,16 @@ public class RedisRepository {
         redisTemplate.delete(List.of(passwordFindKey, stackWrongCodeKey));
     }
 
+    public void savePasswordFindAuthorizedInfo(String targetEmail, int timeLimit){
+        String authorizedKey = getPasswordFindAuthorizedKey(targetEmail);
+        saveKeyValue(authorizedKey, "AUTH", timeLimit, TimeUnit.MINUTES);
+    }
+
+    public Optional<Boolean> getPasswordFindAuthInfo(String targetEmail){
+        String key = getPasswordFindAuthorizedKey(targetEmail);
+        return Optional.ofNullable(redisTemplate.hasKey(key));
+    }
+
     private static String getVerifySuccessKey(String targetEmail) {
         return String.format("%s:%s", EMAIL_VERIFY_SUCCESS_PREFIX, targetEmail);
     }
@@ -125,6 +136,10 @@ public class RedisRepository {
 
     private static String getBlockEmailKey(String email){
         return String.format("%s:%s", EMAIL_BLOCK_PREFIX, email);
+    }
+
+    private static String getPasswordFindAuthorizedKey(String email){
+        return String.format("%s:%s", PASSWORD_FIND_AUTHORIZED_PREFIX, email);
     }
 
     private String saveKeyValue(String key, String value, int limitMinute, TimeUnit timeUnit){
