@@ -1,9 +1,6 @@
 package com.ssafy.dancy.handler;
 
-import com.ssafy.dancy.exception.user.SocialAccountException;
-import com.ssafy.dancy.exception.user.UserAlreadyExistException;
-import com.ssafy.dancy.exception.user.UserInfoNotMatchException;
-import com.ssafy.dancy.exception.user.UserPasswordNotMatchException;
+import com.ssafy.dancy.exception.user.*;
 import com.ssafy.dancy.message.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -41,4 +38,9 @@ public class AuthExceptionHandler {
         return makeErrorResponse(e, "email");
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public List<ErrorResponse> userNotFoundExceptionHandler(UserNotFoundException e){
+        return makeErrorResponse(e, "email");
+    }
 }

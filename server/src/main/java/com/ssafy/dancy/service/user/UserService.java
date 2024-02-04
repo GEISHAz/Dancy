@@ -3,11 +3,16 @@ package com.ssafy.dancy.service.user;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.exception.user.*;
 import com.ssafy.dancy.exception.verify.EmailNotVerifiedException;
+import com.ssafy.dancy.exception.verify.VerifyCodeNotFoundException;
+import com.ssafy.dancy.exception.verify.VerifyCodeNotMatchException;
+import com.ssafy.dancy.exception.verify.VerifySystemBlockException;
 import com.ssafy.dancy.message.request.auth.ChangePasswordRequest;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
+import com.ssafy.dancy.message.request.email.VerifyEmailRequest;
 import com.ssafy.dancy.message.request.user.ChangeProfileImageRequest;
 import com.ssafy.dancy.message.request.user.IntroduceTextChangeRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
+import com.ssafy.dancy.message.response.auth.JwtTokenResponse;
 import com.ssafy.dancy.message.response.user.ChangeIntroduceResponse;
 import com.ssafy.dancy.message.response.user.ChangedProfileImageResponse;
 import com.ssafy.dancy.message.response.user.UpdatedUserResponse;
@@ -18,8 +23,6 @@ import com.ssafy.dancy.type.AuthType;
 import com.ssafy.dancy.type.Gender;
 import com.ssafy.dancy.type.Role;
 import com.ssafy.dancy.util.FileStoreUtil;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,6 +44,9 @@ public class UserService {
     private final FileStoreUtil fileStoreUtil;
 
     private static final String PROFILE_IMAGE_TARGET = "profileImage";
+
+    private static final Integer BLOCK_USER_TIME = 5;
+    private static final Integer PASSWORD_FIND_INFO_VALID_TIME = 5;
 
     public UpdatedUserResponse signup(SignUpRequest request, Set<Role> roles) {
         userRepository.findByEmail(request.email()).ifPresent(
@@ -87,9 +93,7 @@ public class UserService {
 
         if(foundUser.isPresent()){
             User user = foundUser.get();
-            if(AuthType.isSocialAccount(user)){
-                throw new SocialAccountException("소셜 로그인을 진행해야 하는 계정입니다.");
-            }
+            AuthType.checkSocialAccount(user);
             if(passwordEncoder.matches(request.password(), foundUser.get().getPassword())){
                 return user;
             }
@@ -103,6 +107,7 @@ public class UserService {
     }
 
 
+    @Transactional
     public UpdatedUserResponse changeNickname(User user, String nickname) {
 
         if(userRepository.existsByNickname(nickname)){
@@ -143,9 +148,7 @@ public class UserService {
 
     public void changePassword(User user, ChangePasswordRequest request) {
 
-        if(AuthType.isSocialAccount(user)){
-            throw new SocialAccountException("소셜 로그인 아이디입니다.");
-        }
+        AuthType.checkSocialAccount(user);
 
         checkPassword(request.currentPassword(), user.getPassword());
 
@@ -178,5 +181,30 @@ public class UserService {
                 .email(savedUser.getEmail())
                 .profileImageUrl(savedUser.getProfileImageUrl())
                 .build();
+    }
+
+    public User checkPasswordFindCode(VerifyEmailRequest request) {
+        if(redisRepository.isEmailBlocked(request.targetEmail())){
+            throw new VerifySystemBlockException("비밀번호 찾기 시스템을 사용할 수 없는 사용자 계정입니다.");
+        };
+
+        User user = userRepository.findByEmail(request.targetEmail()).orElseThrow(
+                () -> new UserNotFoundException("해당 계정이 존재하지 않습니다")
+        );
+
+        AuthType.checkSocialAccount(user);
+
+        String savedVerifyCode = redisRepository.getPasswordFindCode(request.targetEmail()).orElseThrow(
+                () -> new VerifyCodeNotFoundException("인증 코드가 존재하지 않습니다.")
+        );
+
+        if(!savedVerifyCode.equals(request.verifyCode())){
+            int wrongCount = redisRepository.stackWrongPasswordFindCode(
+                    request.targetEmail(), PASSWORD_FIND_INFO_VALID_TIME, BLOCK_USER_TIME);
+            throw new VerifyCodeNotMatchException(String.format("인증 코드가 일치하지 않습니다. %d 번 틀렸습니다",wrongCount));
+        }
+
+        redisRepository.deletePasswordFindInfo(request.targetEmail());
+        return user;
     }
 }

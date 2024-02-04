@@ -3,6 +3,7 @@ package com.ssafy.dancy.handler;
 import com.ssafy.dancy.exception.verify.EmailNotVerifiedException;
 import com.ssafy.dancy.exception.verify.VerifyCodeNotFoundException;
 import com.ssafy.dancy.exception.verify.VerifyCodeNotMatchException;
+import com.ssafy.dancy.exception.verify.VerifySystemBlockException;
 import com.ssafy.dancy.message.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,6 +32,12 @@ public class VerifyExceptionHandler {
     @ExceptionHandler(EmailNotVerifiedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public List<ErrorResponse> emailNotVerifiedExceptionHandler(EmailNotVerifiedException e){
+        return makeErrorResponse(e, "email");
+    }
+
+    @ExceptionHandler(VerifySystemBlockException.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public List<ErrorResponse> verifySystemBlockExceptionHandler(VerifySystemBlockException e){
         return makeErrorResponse(e, "email");
     }
 }

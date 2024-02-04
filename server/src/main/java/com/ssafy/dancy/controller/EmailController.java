@@ -2,6 +2,7 @@ package com.ssafy.dancy.controller;
 
 import com.ssafy.dancy.message.request.email.SendEmailRequest;
 import com.ssafy.dancy.message.request.email.VerifyEmailRequest;
+import com.ssafy.dancy.message.response.auth.JwtTokenResponse;
 import com.ssafy.dancy.message.response.email.EmailVerifyResponse;
 import com.ssafy.dancy.service.email.EmailService;
 import jakarta.validation.Valid;
@@ -29,7 +30,6 @@ public class EmailController {
 
     @PostMapping("/password/send")
     public void sendPasswordFindEmail(@Valid @RequestBody SendEmailRequest request){
-
+        emailService.sendPasswordFindCode(request.targetEmail());
     }
-
 }

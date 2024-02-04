@@ -2,6 +2,8 @@ package com.ssafy.dancy.auth;
 
 import com.ssafy.dancy.ApiTest;
 import com.ssafy.dancy.CommonDocument;
+import com.ssafy.dancy.email.EmailDocument;
+import com.ssafy.dancy.email.EmailSteps;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
@@ -33,6 +35,8 @@ public class AuthApiTest extends ApiTest {
     private UserService userService;
     @Autowired
     private AuthSteps authSteps;
+    @Autowired
+    private EmailSteps emailSteps;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -234,6 +238,47 @@ public class AuthApiTest extends ApiTest {
                 .body(authSteps.회원탈퇴_유저_잘못된_비밀번호())
                 .when()
                 .delete("/auth")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 비밀번호_찾기_인증번호_검증_성공_200(){
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, "비밀번호 찾기에서의 이메일 인증번호 검증 API 입니다.." +
+                                "<br>지정된 코드와 일치하는 코드를 입력하는 경우, 200 OK 와 함께 AUTH_TOKEN 을 반환합니다." +
+                                "<br>로그인 처리되는 것은 아니지만, 해당 JWT 코드를 저장해 이후 비밀번호 찾기를 진행할 수 있습니다." +
+                                "<br>이메일에 동봉된 인증코드와 입력한 인증코드가 일치하지 않을 경우, " +
+                                "<br>403 Forbidden 과 함께 인증 코드가 일치하지 않는다는 메세지가 반환됩니다." +
+                                "<br>저장된 인증코드가 존재하지 않을 경우, 404 Not Found 가 반환됩니다." +
+                                "<br>인증번호 입력을 5번 틀린 사용자가, 해당 시스템을 이용하려고 할 때 406 Not Acceptable 과 함께 아래 메세지를 입력받습니다." +
+                                "<br>소셜 로그인 계정일 경우, 409 Conflict 가 반환됩니다." +
+                                "<br>현재, 404, 406, 409 Code 가 나가는 케이스의 경우, 테스트하기 어려운 케이스이기 때문에" +
+                                "<br>노션에 직접 해당 테스트 검증 결과를 추후 남겨 두겠습니다.",
+                        "비밀번호 찾기 인증번호 검증",
+                        EmailDocument.codeVerifyRequestField, AuthDocument.JwtTokenResponseField))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(emailSteps.인증번호_정보_생성("123456"))
+                .when()
+                .post("/auth/password/check")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 비밀번호_찾기_인증번호_불일치_403(){
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, EmailDocument.codeVerifyRequestField
+                ,CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(emailSteps.인증번호_정보_생성("654321"))
+                .when()
+                .post("/auth/password/check")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.FORBIDDEN.value())
