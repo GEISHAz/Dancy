@@ -16,10 +16,10 @@ public class Follow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long followId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User fromUser;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User toUser;
 
 }
