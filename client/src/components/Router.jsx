@@ -10,6 +10,7 @@ import SignUp from "../pages/SignUp";
 import SearchResult from "../pages/SearchResult";
 import VideoDetail from "../pages/VideoDetail";
 import UserSetting from "../pages/UserSetting";
+import FindMyPwd from "../pages/FindMyPwd";
 
 export default function Router({ cardDetails }) {
   return (
@@ -29,6 +30,8 @@ export default function Router({ cardDetails }) {
         <Route path="/detail" element={<VideoDetail />} />
         {/* UserSetting 페이지의 라우트 추가 */}
         <Route path="/setting" element={<UserSetting />} />
+        {/* FindPW 페이지의 라우트 추가 */}
+        <Route path="/findpw" element={<FindMyPwd />} />
       </Routes>
     </>
   );
