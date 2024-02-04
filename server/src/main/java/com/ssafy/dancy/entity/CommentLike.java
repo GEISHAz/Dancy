@@ -18,9 +18,20 @@ public class CommentLike {
     private Long commentLikeId;
 
     @ManyToOne
-    private Comment comment;
-
-    @ManyToOne
     private User user;
 
+    @ManyToOne
+    private Comment comment;
+
+
+
+    @PrePersist
+    private void preMakingCommentLike() {
+        this.comment.setCommentLike(this.comment.getCommentLike() + 1);
+    }
+
+    @PreRemove
+    private void preRemovingCommentLike() {
+        this.comment.setCommentLike(this.comment.getCommentLike() - 1);
+    }
 }
