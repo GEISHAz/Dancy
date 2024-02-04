@@ -16,7 +16,9 @@ import org.springframework.stereotype.Component;
 public class AuthSteps {
 
     public static final String email = "ndw8200@naver.com";
+    public static final String otherEmail = "zetta_byte@naver.com";
     public static final String nickname = "dongw";
+    public static final String otherNickname = "whalesbob";
     public static final String password = "Test1122!";
     public static final String newPassword = "Asdf1234!!";
     public static final String wrongPassword = "asdfasdf";
@@ -43,6 +45,13 @@ public class AuthSteps {
         return LoginUserRequest.builder()
                 .email(email)
                 .password(password)
+                .build();
+    }
+
+    public static LoginUserRequest 로그인요청_잘못된정보생성(){
+        return LoginUserRequest.builder()
+                .email(email)
+                .password(wrongPassword)
                 .build();
     }
 

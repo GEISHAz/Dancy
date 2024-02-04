@@ -109,9 +109,9 @@ public class RedisRepository {
         saveKeyValue(authorizedKey, "AUTH", timeLimit, TimeUnit.MINUTES);
     }
 
-    public Optional<Boolean> getPasswordFindAuthInfo(String targetEmail){
+    public boolean getPasswordFindAuthInfo(String targetEmail){
         String key = getPasswordFindAuthorizedKey(targetEmail);
-        return Optional.ofNullable(redisTemplate.hasKey(key));
+        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
     }
 
     private static String getVerifySuccessKey(String targetEmail) {

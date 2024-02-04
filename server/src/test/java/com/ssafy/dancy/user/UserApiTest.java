@@ -58,7 +58,9 @@ public class UserApiTest extends ApiTest {
                                 "<br>이메일 검증이 이루어지지 않은 사용자가 가입을 시도할 경우, 403 Forbidden 이 반환됩니다." +
                                 "<br>이때, 이메일 인증 이후 30분 이상 가입이 진행되지 않았을 경우, 인증이 취소된 것으로 간주되며" +
                                 "<br>새로 인증을 진행해야 합니다." +
-                                "<br>이미 가입된 이메일의 경우, 409 Conflict 가 반환됩니다.",
+                                "<br>이미 가입된 이메일의 경우, 409 Conflict 가 반환됩니다." +
+                                "<br>닉네임 중복의 경우, 409 Conflict 가 반환됩니다." +
+                                "<br>403 코드의 경우, 수동 테스트를 진행했고, 성공을 확인할 수 있었습니다.",
                         "회원가입",
                         UserDocument.signUpRequestField, UserDocument.updateUserResponseField))
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -83,6 +85,86 @@ public class UserApiTest extends ApiTest {
 
         Mockito.verify(amazonS3, times(1)).putObject(Mockito.any());
         Mockito.verify(redisTemplate, times(1)).hasKey(Mockito.any());
+    }
+
+    @Test
+    void 회원가입_검증로직_미충족_400(){
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, UserDocument.signUpRequestField, CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .multiPart("email", AuthSteps.nickname)
+                .multiPart("nickname", AuthSteps.nickname)
+                .multiPart("password", AuthSteps.password)
+                .multiPart("birthDate", AuthSteps.birthDate)
+                .multiPart("gender", AuthSteps.gender)
+                .multiPart("authType", AuthSteps.authType)
+                .multiPart(UserSteps.프로필_이미지_간단생성())
+                .when()
+                .post("/user/signup")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 회원가입_이미_가입된_이메일_409(){
+        회원가입_미리_생성();
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, UserDocument.signUpRequestField, CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .multiPart("email", AuthSteps.email)
+                .multiPart("nickname", AuthSteps.otherNickname)
+                .multiPart("password", AuthSteps.password)
+                .multiPart("birthDate", AuthSteps.birthDate)
+                .multiPart("gender", AuthSteps.gender)
+                .multiPart("authType", AuthSteps.authType)
+                .multiPart(UserSteps.프로필_이미지_간단생성())
+                .when()
+                .post("/user/signup")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CONFLICT.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 회원가입_이미_존재하는_닉네임_409(){
+        회원가입_미리_생성();
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, UserDocument.signUpRequestField, CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .multiPart("email", AuthSteps.otherEmail)
+                .multiPart("nickname", AuthSteps.nickname)
+                .multiPart("password", AuthSteps.password)
+                .multiPart("birthDate", AuthSteps.birthDate)
+                .multiPart("gender", AuthSteps.gender)
+                .multiPart("authType", AuthSteps.authType)
+                .multiPart(UserSteps.프로필_이미지_간단생성())
+                .when()
+                .post("/user/signup")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CONFLICT.value())
+                .log().all().extract();
+    }
+
+    void 회원가입_미리_생성(){
+        given(this.spec)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .multiPart("email", AuthSteps.email)
+                .multiPart("nickname", AuthSteps.nickname)
+                .multiPart("password", AuthSteps.password)
+                .multiPart("birthDate", AuthSteps.birthDate)
+                .multiPart("gender", AuthSteps.gender)
+                .multiPart("authType", AuthSteps.authType)
+                .multiPart(UserSteps.프로필_이미지_간단생성())
+                .when()
+                .post("/user/signup")
+                .then()
+                .log().all().extract();
     }
 
     @Test

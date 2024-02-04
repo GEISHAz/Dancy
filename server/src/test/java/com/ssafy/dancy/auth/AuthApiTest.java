@@ -79,6 +79,22 @@ public class AuthApiTest extends ApiTest {
     }
 
     @Test
+    void 로그인_정보불일치_404(){
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH,
+                        AuthDocument.LoginUserRequestField, CommonDocument.ErrorResponseFields))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(AuthSteps.로그인요청_잘못된정보생성())
+                .when()
+                .post("/auth/login")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .log().all().extract();
+    }
+
+    @Test
     void 로그아웃_refreshToken_cookie_제거_200(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
 
@@ -101,6 +117,18 @@ public class AuthApiTest extends ApiTest {
         Mockito.verify(redisTemplate, times(1)).delete(anyString());
         Mockito.verify(mockValueOp, times(2)).set(anyString(), anyString(), anyLong(), any());
         // 로그인 할 때 한번 저장, 로그아웃할 때 블랙리스트 한번 저장
+    }
+
+    @Test
+    void 로그아웃_토큰없음_401(){
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH))
+                .when()
+                .post("/auth/logout")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .log().all().extract();
     }
 
 
@@ -312,7 +340,7 @@ public class AuthApiTest extends ApiTest {
         String token = 비밀번호_찾기_토큰가져오기();
 
         given(this.spec)
-                .filter(document(DEFAULT_RESTDOC_PATH, "비밀번호 찾기에서의 최종 비밀번호를 검증하는 API 입니다." +
+                .filter(document(DEFAULT_RESTDOC_PATH, "비밀번호 찾기에서의 최종 비밀번호 변경을 진행하는 API 입니다." +
                                 "<br>비밀번호 찾기에서의 이메일 프로세스를 모두 통과하고, 받아온 토큰과 함께 비밀번호를 최종 변경할 경우," +
                                 "<br>200 OK 와 함께 최종적으로 비밀번호가 변경되게 됩니다." +
                                 "<br>최종적으로 다시 로그인되는 것은 아니며, 이전에 받았던 Token 을 삭제하는 작업이 클라이언트 단에서 필요합니다." +
@@ -320,10 +348,9 @@ public class AuthApiTest extends ApiTest {
                                 "<br>비밀번호는 8자리 이상, 영문, 숫자, 특수문자 조합이어야 하며, 이를 위반하는 경우 400 Bad Request 가 반환됩니다." +
                                 "<br>AUTH-TOKEN 이 유효하지 않거나 값이 없을 경우, 401 Unauthorized 가 반환됩니다." +
                                 "<br>비밀번호 찾기 인증 시스템에서 정상적으로 해당 기능에 대한 허가를 받지 않은 사용자가 해당 API 를 이용할 경우, 403 Forbidden 이 반환됩니다." +
-                                "<br>인증번호 입력을 5번 틀린 사용자가, 해당 시스템을 이용하려고 할 때 406 Not Acceptable 이 반환됩니다." +
                                 "<br>소셜 로그인 계정일 경우, 409 Conflict 가 반환됩니다." +
-                                "<br>현재, 403, 406, 409 Code 가 나가는 케이스의 경우, 테스트하기 어려운 케이스이기 때문에" +
-                                "<br>노션에 직접 해당 테스트 검증 결과를 추후 남겨 두겠습니다.",
+                                "<br>현재, 403, 409 Code 가 나가는 케이스의 경우, 테스트하기 어려운 케이스이기 때문에" +
+                                "<br>테스트를 수동으로 진행했으며, 409 의 경우 소셜 로그인을 구현 후 진행합니다.",
                         "비밀번호 찾기에서의 비밀번호 변경",
                         CommonDocument.AccessTokenHeader,
                         AuthDocument.passwordFindChangeRequestField))

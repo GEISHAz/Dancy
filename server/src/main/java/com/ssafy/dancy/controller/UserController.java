@@ -15,6 +15,7 @@ import com.ssafy.dancy.type.Role;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/signup")
+    @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UpdatedUserResponse signup(@Valid @ModelAttribute SignUpRequest request){
        return userService.signup(request, Set.of(Role.USER));
     }
@@ -56,7 +57,7 @@ public class UserController {
         return userService.getOwnDetailInfo(user);
     }
 
-    @PutMapping("/profile_image")
+    @PutMapping(value = "/profile_image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ChangedProfileImageResponse changeProfileImage(@AuthenticationPrincipal User user,
                                                           @Valid @ModelAttribute ChangeProfileImageRequest request){
         return userService.changeProfileImage(user, request);
