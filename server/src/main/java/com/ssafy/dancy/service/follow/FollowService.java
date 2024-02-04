@@ -20,8 +20,8 @@ public class FollowService {
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
 
-    public List<FollowResponseDto> listFollowings(String fromUserId) {
-        User fromUser = userRepository.findById(fromUserId).orElseThrow(() -> new UserInfoNotMatchException("해당 유저가 팔로잉한 유저를 찾을 수 없습니다."));
+    public List<FollowResponseDto> listFollowings(String nickname) {
+        User fromUser = userRepository.findByNickname(nickname).orElseThrow(() -> new UserInfoNotMatchException("해당 유저가 팔로잉한 유저를 찾을 수 없습니다."));
         List<Follow> list = followRepository.findAllByFromUser(fromUser);
         List<FollowResponseDto> responseList = new ArrayList<>();
         for (Follow u : list) {
@@ -34,8 +34,8 @@ public class FollowService {
         return responseList;
     }
 
-    public List<FollowResponseDto> listFollowers(String toUserId) {
-        User toUser = userRepository.findById(toUserId).orElseThrow(() -> new UserInfoNotMatchException("해당 유저를 팔로우한 유저를 찾을 수 없습니다."));
+    public List<FollowResponseDto> listFollowers(String nickname) {
+        User toUser = userRepository.findByNickname(nickname).orElseThrow(() -> new UserInfoNotMatchException("해당 유저를 팔로우한 유저를 찾을 수 없습니다."));
         List<Follow> list = followRepository.findAllByToUser(toUser);
         List<FollowResponseDto> responseList = new ArrayList<>();
         for (Follow u : list) {
