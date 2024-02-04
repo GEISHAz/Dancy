@@ -22,14 +22,14 @@ public class FollowApiTest extends ApiTest {
     @Autowired
     private UserService userService;
     private SignUpRequest signUpRequest;
-    private SignUpRequest signUpRequest2;
+    private SignUpRequest opponentSignUpRequest;
 
     @BeforeEach
     void settings(){
         signUpRequest = authSteps.회원가입정보_생성();
-        signUpRequest2 = authSteps.회원가입정보_상대방정보생성();
+        opponentSignUpRequest = authSteps.회원가입정보_상대방정보생성();
         userService.signup(signUpRequest, Set.of(Role.USER));
-        userService.signup(signUpRequest2, Set.of(Role.USER));
+        userService.signup(opponentSignUpRequest, Set.of(Role.USER));
     }
 
     @Test
@@ -45,7 +45,7 @@ public class FollowApiTest extends ApiTest {
                 .pathParam("nickname", signUpRequest.nickname())
         .when()
                 // URL 쏘는 자리. get, post, put, patch, delete
-                .get("/follow/get-followings")
+                .get("/follow/get-followings/{nickname}")
         .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -65,7 +65,7 @@ public class FollowApiTest extends ApiTest {
                 .pathParam("nickname", signUpRequest.nickname())
                 .when()
                 // URL 쏘는 자리. get, post, put, patch, delete
-                .get("/follow/get-followers")
+                .get("/follow/get-followers/{nickname}")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -80,7 +80,7 @@ public class FollowApiTest extends ApiTest {
         given(this.spec)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", token)
-                .body(signUpRequest2.nickname())
+                .body(opponentSignUpRequest.nickname())
                 .when()
                 // URL 쏘는 자리. get, post, put, patch, delete
                 .post("/follow/request-follow")
@@ -99,7 +99,7 @@ public class FollowApiTest extends ApiTest {
         given(this.spec)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", token)
-                .body(signUpRequest2.nickname())
+                .body(opponentSignUpRequest.nickname())
                 .when()
                 // URL 쏘는 자리. get, post, put, patch, delete
                 .delete("/follow/request-unfollow")
