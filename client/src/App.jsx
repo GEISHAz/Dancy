@@ -3,6 +3,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import NavigationBar from "./components/NavigationBar/NavigationBar";
 import Router from "./components/Router";
 import Footer from "./components/Footer/Footer";
+import GoCreate from "./components/Footer/GoCreate";
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -37,6 +38,7 @@ export default function App() {
           <Router /> 
         </Content>
 
+        <GoCreate />
         <Footer />
       </RouterProvider>
     </Container>
