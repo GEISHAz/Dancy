@@ -2,6 +2,7 @@ package com.ssafy.dancy.handler;
 
 import com.ssafy.dancy.entity.Article;
 import com.ssafy.dancy.exception.article.ArticleNotFoundException;
+import com.ssafy.dancy.exception.article.ArticleNotOwnerException;
 import com.ssafy.dancy.message.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,4 +22,11 @@ public class ArticleExceptionHandler {
     public List<ErrorResponse> articleNotFoundExceptionHandler(ArticleNotFoundException e){
         return makeErrorResponse(e, "article");
     }
+
+    @ExceptionHandler(ArticleNotOwnerException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public List<ErrorResponse> articleNotOwnerExceptionHandler(ArticleNotOwnerException e){
+        return makeErrorResponse(e, "article");
+    }
+
 }

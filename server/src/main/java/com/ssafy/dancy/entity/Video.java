@@ -26,4 +26,7 @@ public class Video {
 
     @Column(nullable = false)
     private String thumbnailImageUrl;
+
+    @Column
+    private int score;
 }

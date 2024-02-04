@@ -21,6 +21,8 @@ public class QVideo extends EntityPathBase<Video> {
 
     public final StringPath fullVideoUrl = createString("fullVideoUrl");
 
+    public final NumberPath<Integer> score = createNumber("score", Integer.class);
+
     public final StringPath thumbnailImageUrl = createString("thumbnailImageUrl");
 
     public final StringPath thumbnailVideoUrl = createString("thumbnailVideoUrl");

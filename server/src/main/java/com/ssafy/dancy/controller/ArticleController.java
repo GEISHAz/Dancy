@@ -2,12 +2,16 @@ package com.ssafy.dancy.controller;
 
 import com.ssafy.dancy.entity.Article;
 import com.ssafy.dancy.entity.User;
-import com.ssafy.dancy.message.request.ArticleRequestDto;
+import com.ssafy.dancy.message.request.ArticleModifyRequest;
+import com.ssafy.dancy.message.request.ArticleWriteRequest;
 import com.ssafy.dancy.message.response.ArticleResponseDto;
 import com.ssafy.dancy.service.article.ArticleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,23 +20,42 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/stage")
+@Validated
 public class ArticleController {
 
     private final ArticleService articleService;
 
-//    @GetMapping("/{articleId}")
-//    public ArticleResponseDto getArticle(@AuthenticationPrincipal User user, @PathVariable long articleId){
-//        return articleService.getArticle(user,articleId);
-//    }
 
     @GetMapping("")
-    public List<Article> findAllArticle(){
-        log.info("전체 게시물 조회 : {}", articleService.findAllArticle());
-        return articleService.findAllArticle();
+    public List<Article> getAllArticle(){
+        return articleService.getAllArticle();
     }
 
-    @PostMapping
-    public Long insertArticle(@AuthenticationPrincipal User user, @RequestBody ArticleRequestDto dto){
+    @GetMapping("/{articleId}")
+    public ArticleResponseDto getArticle(@AuthenticationPrincipal User user, @PathVariable long articleId){
+        return articleService.getArticle(user,articleId);
+    }
+
+
+    @PostMapping("")
+    public ArticleResponseDto insertArticle(@AuthenticationPrincipal User user, @Valid @RequestBody ArticleWriteRequest dto){
+
         return articleService.insertArticle(user,dto);
     }
+
+    @PutMapping("/{articleId}")
+    public ArticleResponseDto modifyArticle(@AuthenticationPrincipal User user,
+                                            @Valid @RequestBody ArticleModifyRequest dto,
+                                            @PathVariable long articleId){
+
+        return articleService.modifyArticle(user,articleId, dto);
+    }
+
+    @DeleteMapping("/{articleId}")
+    public Long deleteArticle(@AuthenticationPrincipal User user, @PathVariable long articleId){
+
+        return articleService.deleteArticle(user,articleId);
+    }
+
+
 }

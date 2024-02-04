@@ -10,6 +10,170 @@
   } ],
   "tags" : [ ],
   "paths" : {
+    "/auth" : {
+      "delete" : {
+        "tags" : [ "auth" ],
+        "summary" : "회원 탈퇴",
+        "description" : "회원 탈퇴 API 입니다.<br>올바른 비밀번호를 입력했을 때, 200 OK 와 함께 회원 탈퇴 처리되며, 로그아웃됩니다.<br>프론트앤드 영역에서 Access Token 을 직접 삭제시켜 주어야 합니다.<br>AUTH_TOKEN 이 유효하지 않거나, 값이 없을 경우 401 Unauthorized 가 반환됩니다.<br>기존 패스워드와 일치하지 않을 경우, 403 Forbidden 과 함께 패스워드가 일치하지 않는다는 메세지가 반환됩니다.",
+        "operationId" : "auth_api_test/회원탈퇴_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MDQzNzk3LCJleHAiOjE3MDcwNDU1OTd9.psC0HeEJuw_KqGzM_reH0rTQkQ6A-ErVsXKioEhVao8"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth-1994102425"
+              },
+              "examples" : {
+                "auth_api_test/회원탈퇴_비밀번호불일치_403/" : {
+                  "value" : "{\r\n  \"password\" : \"Asdf1234!!\"\r\n}"
+                },
+                "auth_api_test/회원탈퇴_성공_200/" : {
+                  "value" : "{\r\n  \"password\" : \"Test1122!\"\r\n}"
+                },
+                "auth_api_test/회원탈퇴_토큰없음_401/" : {
+                  "value" : "{\r\n  \"password\" : \"Test1122!\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "403" : {
+            "description" : "403",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
+                },
+                "examples" : {
+                  "auth_api_test/회원탈퇴_비밀번호불일치_403/" : {
+                    "value" : "[ {\r\n  \"message\" : \"기존 비밀번호가 일치하지 않습니다.\",\r\n  \"errorType\" : \"UserPasswordNotMatchException\",\r\n  \"fieldName\" : \"currentPassword\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200"
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
+                },
+                "examples" : {
+                  "auth_api_test/회원탈퇴_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/change" : {
+      "put" : {
+        "tags" : [ "auth" ],
+        "summary" : "비밀번호 변경",
+        "description" : "비밀번호를 변경하는 API 입니다.<br>비밀번호 변경에 성공한다면, 200 OK 와 함께 로그아웃 처리됩니다.<br>프론트앤드 영역에서 Access Token 을 직접 삭제시켜 주어야 합니다.<br>바꾸고자 하는 비밀번호가 정규표현식을 만족하지 못하는 경우, 400 Bad Request 와 함께 에러 메세지가 반환됩니다.<br>AUTH_TOKEN 이 유효하지 않거나, 값이 없을 경우 401 Unauthorized 가 반환됩니다.<br>A기존 패스워드와 일치하지 않을 경우, 403 Forbidden 과 함께 패스워드가 일치하지 않는다는 메세지가 반환됩니다.",
+        "operationId" : "auth_api_test/비밀번호변경_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MDQzNzk4LCJleHAiOjE3MDcwNDU1OTh9.D0sBswqoMjlc9IP2lPsg-kucbRey5yLC4A8c7TdYV84"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth-change1195549048"
+              },
+              "examples" : {
+                "auth_api_test/비밀번호변경_비밀번호불일치_403/" : {
+                  "value" : "{\r\n  \"currentPassword\" : \"asdfasdf\",\r\n  \"newPassword\" : \"Asdf1234!!\"\r\n}"
+                },
+                "auth_api_test/비밀번호변경_성공_200/" : {
+                  "value" : "{\r\n  \"currentPassword\" : \"Test1122!\",\r\n  \"newPassword\" : \"Asdf1234!!\"\r\n}"
+                },
+                "auth_api_test/비밀번호변경_정규표현식_불만족_400/" : {
+                  "value" : "{\r\n  \"currentPassword\" : \"Test1122!\",\r\n  \"newPassword\" : \"asdfasdf\"\r\n}"
+                },
+                "auth_api_test/비밀번호변경_토큰없음_401/" : {
+                  "value" : "{\r\n  \"currentPassword\" : \"Test1122!\",\r\n  \"newPassword\" : \"Asdf1234!!\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "403" : {
+            "description" : "403",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
+                },
+                "examples" : {
+                  "auth_api_test/비밀번호변경_비밀번호불일치_403/" : {
+                    "value" : "[ {\r\n  \"message\" : \"기존 비밀번호가 일치하지 않습니다.\",\r\n  \"errorType\" : \"UserPasswordNotMatchException\",\r\n  \"fieldName\" : \"currentPassword\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200"
+          },
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
+                },
+                "examples" : {
+                  "auth_api_test/비밀번호변경_정규표현식_불만족_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"비밀번호는 8자리 이상, 영문, 숫자, 특수문자 조합이어야 합니다.\",\r\n  \"errorType\" : \"Password\",\r\n  \"fieldName\" : \"newPassword\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
+                },
+                "examples" : {
+                  "auth_api_test/비밀번호변경_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/auth/login" : {
       "post" : {
         "tags" : [ "auth" ],
@@ -40,11 +204,34 @@
                 },
                 "examples" : {
                   "auth_api_test/로그인성공_200/" : {
-                    "value" : "{\r\n  \"accessToken\" : \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA2NzUwMzcxLCJleHAiOjE3MDY3NTIxNzF9.SwFLdTUVFW3dUuNFw746_g8VG9vMJChVoNBMfwUxI0s\",\r\n  \"tokenType\" : \"Bearer\",\r\n  \"authType\" : \"DANCY\"\r\n}"
+                    "value" : "{\r\n  \"accessToken\" : \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MDQzNzk4LCJleHAiOjE3MDcwNDU1OTh9.D0sBswqoMjlc9IP2lPsg-kucbRey5yLC4A8c7TdYV84\",\r\n  \"tokenType\" : \"Bearer\",\r\n  \"authType\" : \"DANCY\"\r\n}"
                   }
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/auth/logout" : {
+      "post" : {
+        "tags" : [ "auth" ],
+        "summary" : "로그아웃",
+        "description" : "로그아웃을 진행하는 API 입니다.<br>로그아웃에 성공한다면, 200 OK 와 함께 Refresh Token 을 가지고 있는 Cookie 가 삭제됩니다.<br>프론트앤드 영역에서 Access Token 을 직접 삭제시켜 주어야 합니다.<br>AUTH-TOKEN 을 입력하지 않았을 때, 401 Unauthorized 가 반환됩니다.",
+        "operationId" : "auth_api_test/로그아웃_refresh_token_cookie_제거_200/",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MDQzNzk2LCJleHAiOjE3MDcwNDU1OTZ9.N5kIoxfgjIvor-eNZVVmFwoTTuFLyE19nxzv5HM5y7Q"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
           }
         }
       }
@@ -117,7 +304,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/email-verify-send-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "email_api_test/이메일_가입_인증번호_전송_이메일_형식_아님_400/" : {
@@ -145,11 +332,296 @@
             "content" : {
               "text/plain;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/start-hello486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "start_api_test/start_테스트/" : {
                     "value" : "Hello Dancy!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/details" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "자기정보상세조회",
+        "description" : "자신의 상세 정보를 가져오는 API 입니다.<br>토큰을 입력하면, 200 OK 와 함께 해당 유저의 상세정보가 반환됩니다.<br>토큰을 헤더에 입력하지 않았을 경우, 401 Unauthorized 가 반환됩니다. ",
+        "operationId" : "user_api_test/자기상세정보조회_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MDQzODA3LCJleHAiOjE3MDcwNDU2MDd9.b1E0RmnaZa-lbCcYhdWoGBW6lMoz7M2h3hCI0ugOLSQ"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-details-1087654261"
+                },
+                "examples" : {
+                  "user_api_test/자기상세정보조회_성공_200/" : {
+                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"nickname\" : \"dongw\",\r\n  \"birthDate\" : \"2000-01-01\",\r\n  \"introduceText\" : \"\",\r\n  \"profileImageUrl\" : null\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
+                },
+                "examples" : {
+                  "user_api_test/자기상세정보조회_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/introduce" : {
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "소개메세지변경",
+        "description" : "소개 메세지를 변경하는 API 입니다..<br>성공적으로 소개 메세지가 변경되었을 때, 200 OK 와 함께 계정 이메일과 소개 메세지 정보가 반환됩니다.<br>토큰을 헤더에 입력하지 않았을 경우, 401 Unauthorized 가 반환됩니다. <br>50자 이상 소개이거나, 공백 소개메세지가 입력되면 400 Bad Request 가 반환됩니다.",
+        "operationId" : "user_api_test/소개",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MDQzODA4LCJleHAiOjE3MDcwNDU2MDh9.Ch_4UyNct20WbdUrZ1jpb5SkmPktO3wkNqVaBqoMtNw"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/user-introduce1696629381"
+              },
+              "examples" : {
+                "user_api_test/소개매세지_50자이상_400/" : {
+                  "value" : "{\r\n  \"introduceText\" : \"Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!\"\r\n}"
+                },
+                "user_api_test/소개매세지_토큰없음_401/" : {
+                  "value" : "{\r\n  \"introduceText\" : \"Hello!\"\r\n}"
+                },
+                "user_api_test/소개메세지_변경_성공_200/" : {
+                  "value" : "{\r\n  \"introduceText\" : \"Hello!\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
+                },
+                "examples" : {
+                  "user_api_test/소개매세지_50자이상_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"소개 메세지는 1자 이상 50자 이하여야 합니다.\",\r\n  \"errorType\" : \"Size\",\r\n  \"fieldName\" : \"introduceText\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
+                },
+                "examples" : {
+                  "user_api_test/소개매세지_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-introduce-199180118"
+                },
+                "examples" : {
+                  "user_api_test/소개메세지_변경_성공_200/" : {
+                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"introduceText\" : \"Hello!\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/nickname" : {
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "닉네임변경",
+        "description" : "닉네임 변경을 처리하는 API 입니다..<br>성공적으로 닉네임이 변경되었을 때, 200 OK 와 함께 계정 이메일과 닉네임 정보가 반환됩니다.<br>토큰을 헤더에 입력하지 않았을 경우, 401 Unauthorized 가 반환됩니다. <br>중복되는 닉네임이 존재했을 경우, 409 Conflict 가 반환됩니다.",
+        "operationId" : "user_api_test/닉네임_변경_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MDQzODA3LCJleHAiOjE3MDcwNDU2MDd9.b1E0RmnaZa-lbCcYhdWoGBW6lMoz7M2h3hCI0ugOLSQ"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/user-nickname-520340433"
+              },
+              "examples" : {
+                "user_api_test/닉네임_변경_닉네임중복_409/" : {
+                  "value" : "{\r\n  \"nickname\" : \"dongw\"\r\n}"
+                },
+                "user_api_test/닉네임_변경_성공_200/" : {
+                  "value" : "{\r\n  \"nickname\" : \"asdf\"\r\n}"
+                },
+                "user_api_test/닉네임_변경_토큰없음_401/" : {
+                  "value" : "{\r\n  \"nickname\" : \"asdf\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "409" : {
+            "description" : "409",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
+                },
+                "examples" : {
+                  "user_api_test/닉네임_변경_닉네임중복_409/" : {
+                    "value" : "[ {\r\n  \"message\" : \"중복되는 닉네임입니다.\",\r\n  \"errorType\" : \"DuplicateNicknameException\",\r\n  \"fieldName\" : \"nickname\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-nickname2062416360"
+                },
+                "examples" : {
+                  "user_api_test/닉네임_변경_성공_200/" : {
+                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"nickname\" : \"asdf\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
+                },
+                "examples" : {
+                  "user_api_test/닉네임_변경_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/profile_image" : {
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "유저프로필사진수정",
+        "description" : "유저 프로필 사진을 수정하는 API 입니다.<br>성공적으로 프로필 사진이 수정된 경우, 200 OK 와 함께 이메일과 프로필 이미지 URL 이 반환됩니다.<br>프로필 이미지가 지정된 사진 확장자명으로 되어 있는 파일이 아닐 경우, 400 Bad Request 가 반환되며 <br>아래와 같은 메세지를 반환받습니다. <br>AUTH-TOKEN 이 유효하지 않거나, 값이 없을 경우 401 Unauthorized 가 반환됩니다.",
+        "operationId" : "user_api_test/유저프로필사진_수정_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MDQzODA4LCJleHAiOjE3MDcwNDU2MDh9.Ch_4UyNct20WbdUrZ1jpb5SkmPktO3wkNqVaBqoMtNw"
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
+                },
+                "examples" : {
+                  "user_api_test/유저프로필사진_수정_다른확장자파일_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"입력된 파일이 이미지가 아닙니다.\",\r\n  \"errorType\" : \"ImageFile\",\r\n  \"fieldName\" : \"profileImage\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image1544711743"
+                },
+                "examples" : {
+                  "user_api_test/유저프로필사진_수정_성공_200/" : {
+                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"profileImageUrl\" : \"https://gumid210bucket.s3.ap-northeast-2.amazonaws.com/profileImage/e0596ce2-14a5-4d08-9d18-6c210da67f40.png\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
+                },
+                "examples" : {
+                  "user_api_test/유저프로필사진_수정_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
                   }
                 }
               }
@@ -170,7 +642,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/user-signup-835260490"
+                  "$ref" : "#/components/schemas/user-nickname2062416360"
                 },
                 "examples" : {
                   "user_api_test/회원가입_성공_200/" : {
@@ -182,20 +654,158 @@
           }
         }
       }
+    },
+    "/user/exists/{nickname}" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "닉네임 중복체크",
+        "description" : "닉네임 중복검사를 수행하는 API 입니다.<br>닉네임이 기존 가입된 닉네임과 중복되지 않았을 경우, 200 OK 만 반환됩니다.<br>이미 가입되어 중복되는 경우, 409 Conflict 가 반환됩니다.",
+        "operationId" : "user_api_test/닉네임_중복체크_",
+        "parameters" : [ {
+          "name" : "nickname",
+          "in" : "path",
+          "description" : "닉네임",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          },
+          "409" : {
+            "description" : "409",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
+                },
+                "examples" : {
+                  "user_api_test/닉네임_중복체크_중복_409/" : {
+                    "value" : "[ {\r\n  \"message\" : \"중복되는 닉네임입니다.\",\r\n  \"errorType\" : \"DuplicateNicknameException\",\r\n  \"fieldName\" : \"nickname\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components" : {
     "schemas" : {
-      "user-signup-835260490" : {
+      "user-details-1087654261" : {
+        "type" : "object",
+        "properties" : {
+          "introduceText" : {
+            "type" : "string",
+            "description" : "소개메세지"
+          },
+          "nickname" : {
+            "type" : "string",
+            "description" : "닉네임"
+          },
+          "profileImageUrl" : {
+            "type" : "object",
+            "description" : "프로필이미지URL"
+          },
+          "birthDate" : {
+            "type" : "string",
+            "description" : "생년월일"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "이메일"
+          }
+        }
+      },
+      "email-verify-send1357172838" : {
+        "required" : [ "targetEmail" ],
+        "type" : "object",
+        "properties" : {
+          "targetEmail" : {
+            "type" : "string",
+            "description" : "인증번호를 보내려는 이메일"
+          }
+        }
+      },
+      "auth-1994102425" : {
+        "required" : [ "password" ],
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "현재 비밀번호"
+          }
+        }
+      },
+      "user-nickname2062416360" : {
         "type" : "object",
         "properties" : {
           "nickname" : {
             "type" : "string",
-            "description" : "가입한 닉네임"
+            "description" : "닉네임"
           },
           "email" : {
             "type" : "string",
-            "description" : "가입한 이메일"
+            "description" : "이메일"
+          }
+        }
+      },
+      "user-introduce1696629381" : {
+        "required" : [ "introduceText" ],
+        "type" : "object",
+        "properties" : {
+          "introduceText" : {
+            "type" : "string",
+            "description" : "바꾸고자 하는 소개 메세지"
+          }
+        }
+      },
+      "user-profile_image-1708490688" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "fieldName" : {
+              "type" : "string",
+              "description" : "에러난 필드이름"
+            },
+            "errorType" : {
+              "type" : "string",
+              "description" : "에러타입"
+            },
+            "message" : {
+              "type" : "string",
+              "description" : "에러메세지"
+            }
+          }
+        }
+      },
+      "user-introduce-199180118" : {
+        "type" : "object",
+        "properties" : {
+          "introduceText" : {
+            "type" : "string",
+            "description" : "닉네임"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "이메일"
+          }
+        }
+      },
+      "user-profile_image1544711743" : {
+        "type" : "object",
+        "properties" : {
+          "profileImageUrl" : {
+            "type" : "string",
+            "description" : "프로필이미지URL"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "이메일"
           }
         }
       },
@@ -216,13 +826,13 @@
           }
         }
       },
-      "email-verify-send1357172838" : {
-        "required" : [ "targetEmail" ],
+      "user-nickname-520340433" : {
+        "required" : [ "nickname" ],
         "type" : "object",
         "properties" : {
-          "targetEmail" : {
+          "nickname" : {
             "type" : "string",
-            "description" : "인증번호를 보내려는 이메일"
+            "description" : "변경하고자 하는 닉네임"
           }
         }
       },
@@ -267,27 +877,21 @@
           }
         }
       },
-      "email-verify-send-1708490688" : {
-        "type" : "array",
-        "items" : {
-          "type" : "object",
-          "properties" : {
-            "fieldName" : {
-              "type" : "string",
-              "description" : "에러난 필드이름"
-            },
-            "errorType" : {
-              "type" : "string",
-              "description" : "에러타입"
-            },
-            "message" : {
-              "type" : "string",
-              "description" : "에러메세지"
-            }
+      "auth-change1195549048" : {
+        "required" : [ "currentPassword", "newPassword" ],
+        "type" : "object",
+        "properties" : {
+          "newPassword" : {
+            "type" : "string",
+            "description" : "바꾸고자 하는 패스워드"
+          },
+          "currentPassword" : {
+            "type" : "string",
+            "description" : "현재 패스워드"
           }
         }
       },
-      "start-hello486549215" : {
+      "user-profile_image486549215" : {
         "type" : "object"
       }
     }
