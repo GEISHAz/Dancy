@@ -30,12 +30,12 @@ public class FollowController {
     }
 
     @PostMapping("/request-follow")
-    public String reqFollow (@AuthenticationPrincipal User user,@RequestBody String nickName){
-        return followService.reqFollow(user,nickName);
+    public String doFollow(@AuthenticationPrincipal User user, @RequestBody String toNickname){
+        return followService.doFollow(user,toNickname);
     }
 
     @DeleteMapping("/request-unfollow")
-    public String reqUnFollow (@AuthenticationPrincipal User user,@RequestBody String nickName){
-        return followService.reqUnFollow(user,nickName);
+    public String doUnFollow(@AuthenticationPrincipal User user, @RequestBody String toNickname){
+        return followService.doUnFollow(user,toNickname);
     }
 }
