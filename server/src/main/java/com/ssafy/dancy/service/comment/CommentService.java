@@ -48,6 +48,7 @@ public class CommentService {
 
 
     public void deleteComment(long commentId) {
-        commentRepository.delete(commentRepository.findByCommentId(commentId));
+        // 지울 수 있는 권한이 있는지 확인할 것.
+        commentRepository.deleteByCommentId(commentId);
     }
 }
