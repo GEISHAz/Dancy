@@ -1,6 +1,5 @@
 package com.ssafy.dancy.entity;
 
-import com.ssafy.dancy.entity.PK.ArticleLikePK;
 import jakarta.persistence.*;
 import lombok.*;
 
