@@ -2,11 +2,11 @@ package com.ssafy.dancy.message.response;
 
 import lombok.Builder;
 
-public record ResponseCommentLikeDto(
+public record CommentLikeResponse(
         int commentLike,
         boolean isCommentLiked
 ) {
     @Builder
-    public ResponseCommentLikeDto {
+    public CommentLikeResponse {
     }
 }

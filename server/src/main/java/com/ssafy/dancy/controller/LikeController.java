@@ -2,9 +2,9 @@ package com.ssafy.dancy.controller;
 
 
 import com.ssafy.dancy.entity.User;
-import com.ssafy.dancy.message.response.LikeResponsDto;
-import com.ssafy.dancy.message.response.ResponseArticleLikeDto;
-import com.ssafy.dancy.message.response.ResponseCommentLikeDto;
+import com.ssafy.dancy.message.response.LikeResponse;
+import com.ssafy.dancy.message.response.ArticleLikeResponse;
+import com.ssafy.dancy.message.response.CommentLikeResponse;
 import com.ssafy.dancy.service.like.LikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,17 +22,17 @@ public class LikeController {
     private final LikeService likeService;
 
     @GetMapping("/who-like")
-    public List<LikeResponsDto> getLikeUserList(@RequestBody Long articleId){ //user token 검사 건너뜀
+    public List<LikeResponse> getLikeUserList(@RequestBody Long articleId){ //user token 검사 건너뜀
         return likeService.getLikeUserList(articleId);
     }
 
     @PostMapping("/article-like")
-    public ResponseArticleLikeDto iLikeOrUnLikeArticle(@AuthenticationPrincipal User user,@RequestBody Long articleId){
-        return likeService.iLikeOrUnLikeArticle(user,articleId);
+    public ArticleLikeResponse likeOrUnLikeArticle(@AuthenticationPrincipal User user, @RequestBody Long articleId){
+        return likeService.likeOrUnLikeArticle(user,articleId);
     }
 
     @PostMapping("/comment-like")
-    public ResponseCommentLikeDto iLikeOrUnLikeComment(@AuthenticationPrincipal User user, @RequestBody Long commentId){
-        return likeService.iLikeOrUnLikeComment(user,commentId);
+    public CommentLikeResponse likeOrUnLikeComment(@AuthenticationPrincipal User user, @RequestBody Long commentId){
+        return likeService.likeOrUnLikeComment(user,commentId);
     }
 }
