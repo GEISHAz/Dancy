@@ -22,4 +22,13 @@ public class ArticleLike {
     @ManyToOne
     private Article article;
 
+    @PrePersist
+    private void preMakingArticleLike() {
+        this.article.setArticleLike(this.article.getArticleLike() + 1);
+    }
+
+    @PreRemove
+    private void preRemovingArticleLike() {
+        this.article.setArticleLike(this.article.getArticleLike() - 1);
+    }
 }
