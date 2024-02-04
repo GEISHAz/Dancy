@@ -258,7 +258,7 @@ public class AuthApiTest extends ApiTest {
                                 "<br>소셜 로그인 계정일 경우, 409 Conflict 가 반환됩니다." +
                                 "<br>현재, 404, 406, 409 Code 가 나가는 케이스의 경우, 테스트하기 어려운 케이스이기 때문에" +
                                 "<br>노션에 직접 해당 테스트 검증 결과를 추후 남겨 두겠습니다.",
-                        "회원 탈퇴",
+                        "비밀번호 찾기 인증번호 검증",
                         EmailDocument.codeVerifyRequestField, AuthDocument.JwtTokenResponseField))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(emailSteps.인증번호_정보_생성("123456"))
