@@ -1,6 +1,7 @@
 package com.ssafy.dancy.auth;
 
 import com.ssafy.dancy.message.request.auth.ChangePasswordRequest;
+import com.ssafy.dancy.message.request.auth.FindPasswordRequest;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.message.request.user.UserDeleteRequest;
@@ -92,6 +93,18 @@ public class AuthSteps {
     public UserDeleteRequest 회원탈퇴_유저_잘못된_비밀번호(){
         return UserDeleteRequest.builder()
                 .password(newPassword)
+                .build();
+    }
+
+    public FindPasswordRequest 비밀번호_찾기_새비밀번호_생성(){
+        return FindPasswordRequest.builder()
+                .newPassword(newPassword)
+                .build();
+    }
+
+    public FindPasswordRequest 비밀번호_찾기_비밀번호형식_미준수(){
+        return FindPasswordRequest.builder()
+                .newPassword(wrongPassword)
                 .build();
     }
 }

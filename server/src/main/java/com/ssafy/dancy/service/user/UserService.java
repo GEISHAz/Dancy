@@ -2,10 +2,7 @@ package com.ssafy.dancy.service.user;
 
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.exception.user.*;
-import com.ssafy.dancy.exception.verify.EmailNotVerifiedException;
-import com.ssafy.dancy.exception.verify.VerifyCodeNotFoundException;
-import com.ssafy.dancy.exception.verify.VerifyCodeNotMatchException;
-import com.ssafy.dancy.exception.verify.VerifySystemBlockException;
+import com.ssafy.dancy.exception.verify.*;
 import com.ssafy.dancy.message.request.auth.ChangePasswordRequest;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
 import com.ssafy.dancy.message.request.email.VerifyEmailRequest;
@@ -205,6 +202,23 @@ public class UserService {
         }
 
         redisRepository.deletePasswordFindInfo(request.targetEmail());
+        redisRepository.savePasswordFindAuthorizedInfo(request.targetEmail(), 60);
         return user;
+    }
+
+    public void findPassword(User user, String newPassword){
+        AuthType.checkSocialAccount(user);
+
+        if(redisRepository.isEmailBlocked(user.getEmail())){
+            throw new VerifySystemBlockException("비밀번호 찾기 시스템을 사용할 수 없는 사용자 계정입니다.");
+        }
+
+        redisRepository.getPasswordFindAuthInfo(user.getEmail()).orElseThrow(
+                () -> new VerifySystemNotAuthorizedException("비밀번호 찾기 시스템에 의해 인가받지 않은 사용자입니다.")
+        );
+
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
     }
 }

@@ -3,6 +3,7 @@ package com.ssafy.dancy.controller;
 import com.ssafy.dancy.config.security.JwtTokenProvider;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.request.auth.ChangePasswordRequest;
+import com.ssafy.dancy.message.request.auth.FindPasswordRequest;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
 import com.ssafy.dancy.message.request.email.VerifyEmailRequest;
 import com.ssafy.dancy.message.request.user.UserDeleteRequest;
@@ -62,5 +63,10 @@ public class AuthController {
     public JwtTokenResponse checkPasswordFindCode(@Valid @RequestBody VerifyEmailRequest request){
         User user = userService.checkPasswordFindCode(request);
         return jwtTokenProvider.makeJwtTokenResponse(user);
+    }
+
+    @PostMapping("/password/find")
+    public void findUserPassword(@AuthenticationPrincipal User user, @Valid @RequestBody FindPasswordRequest request){
+        userService.findPassword(user, request.newPassword());
     }
 }

@@ -13,6 +13,10 @@ public class AuthDocument {
             fieldWithPath("password").type(JsonFieldType.STRING).attributes(required()).description("비밀번호")
     );
 
+    public static final Snippet passwordFindChangeRequestField = requestFields(
+            fieldWithPath("newPassword").type(JsonFieldType.STRING).attributes(required()).description("새 비밀번호")
+    );
+
     public static final Snippet JwtTokenResponseField = responseFields(
             fieldWithPath("accessToken").type(JsonFieldType.STRING).description("access token"),
             fieldWithPath("tokenType").type(JsonFieldType.STRING).description("토큰 타입"),
