@@ -13,7 +13,7 @@ import lombok.*;
 public class Follow {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long followId;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -13,7 +13,7 @@ import lombok.*;
 public class ArticleLike {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long articleLikeId;
 
     @ManyToOne

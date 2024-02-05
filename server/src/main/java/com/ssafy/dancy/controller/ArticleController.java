@@ -3,13 +3,12 @@ package com.ssafy.dancy.controller;
 import com.ssafy.dancy.entity.Article;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.request.ArticleModifyRequest;
-import com.ssafy.dancy.message.request.ArticleWriteRequest;
+import com.ssafy.dancy.message.request.ArticleUpdateRequest;
 import com.ssafy.dancy.message.response.ArticleResponseDto;
 import com.ssafy.dancy.service.article.ArticleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +37,7 @@ public class ArticleController {
 
 
     @PostMapping("")
-    public ArticleResponseDto insertArticle(@AuthenticationPrincipal User user, @Valid @RequestBody ArticleWriteRequest dto){
+    public ArticleResponseDto insertArticle(@AuthenticationPrincipal User user, @Valid @RequestBody ArticleUpdateRequest dto){
 
         return articleService.insertArticle(user,dto);
     }

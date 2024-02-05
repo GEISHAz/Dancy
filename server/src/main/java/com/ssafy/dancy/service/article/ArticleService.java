@@ -5,7 +5,7 @@ import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.exception.article.ArticleNotFoundException;
 import com.ssafy.dancy.exception.article.ArticleNotOwnerException;
 import com.ssafy.dancy.message.request.ArticleModifyRequest;
-import com.ssafy.dancy.message.request.ArticleWriteRequest;
+import com.ssafy.dancy.message.request.ArticleUpdateRequest;
 import com.ssafy.dancy.message.response.ArticleResponseDto;
 import com.ssafy.dancy.repository.ArticleRepository;
 import jakarta.transaction.Transactional;
@@ -34,7 +34,7 @@ public class ArticleService {
         return makeArticleResponseDto(article, user);
     }
 
-    public ArticleResponseDto insertArticle(User user, ArticleWriteRequest dto) {
+    public ArticleResponseDto insertArticle(User user, ArticleUpdateRequest dto) {
 
         Article article = Article.builder()
                 .articleTitle(dto.articleTitle())
@@ -43,6 +43,7 @@ public class ArticleService {
                 .thumbnailVideoUrl(dto.video())
                 .user(user)
                 .build();
+
         articleRepository.save(article);
 
         return makeArticleResponseDto(article, user);
@@ -55,7 +56,7 @@ public class ArticleService {
         Article article = articleRepository.findByArticleId(articleId).orElseThrow(() ->
                 new ArticleNotFoundException("게시물을 찾을 수 없습니다."));
 
-        if(!user.getUserId().equals(article.getUser().getUserId())){
+        if(!user.equals(article.getUser())){
             throw new ArticleNotOwnerException("게시물을 수정/삭제할 수 있는 권한이 없습니다.");
         }
 
@@ -70,7 +71,7 @@ public class ArticleService {
         Article article = articleRepository.findByArticleId(articleId).orElseThrow(() ->
                 new ArticleNotFoundException("게시물을 찾을 수 없습니다."));
 
-        if(user.getUserId() != article.getUser().getUserId()){
+        if(!user.equals(article.getUser())){
             throw new ArticleNotOwnerException("게시물을 수정/삭제할 수 있는 권한이 없습니다.");
         }
 
@@ -82,6 +83,7 @@ public class ArticleService {
     public ArticleResponseDto makeArticleResponseDto(Article article, User user){
         return ArticleResponseDto.builder()
                 .articleId(article.getArticleId())
+                .articleTitle(article.getArticleTitle())
                 .articleContent(article.getArticleContent())
                 .articleLike(article.getArticleLike())
                 .thumbnailImageUrl(article.getThumbnailImageUrl())

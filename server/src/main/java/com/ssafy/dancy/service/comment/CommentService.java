@@ -57,14 +57,14 @@ public class CommentService {
 
         if(!comment.getUser().equals(user)){
             throw new NotHavingPermissionException("작성자만이 수정가능합니다.");
-        }else {
-            comment.setCommentContent(content);
-            return CommentResponse
-                    .builder()
-                    .commentId(commentId)
-                    .content(comment.getCommentContent())
-                    .build();
         }
+
+        comment.setCommentContent(content);
+        return CommentResponse
+                .builder()
+                .commentId(commentId)
+                .content(comment.getCommentContent())
+                .build();
     }
 
 
@@ -74,9 +74,8 @@ public class CommentService {
 
         if(!comment.getUser().equals(user)){
             throw new NotHavingPermissionException("작성자만이 수정가능합니다.");
-        }else {
-            commentRepository.delete(comment);
-            return "삭제완료";
         }
+        commentRepository.delete(comment);
+        return "삭제완료";
     }
 }

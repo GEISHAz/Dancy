@@ -1,6 +1,6 @@
 package com.ssafy.dancy.article;
 
-import com.ssafy.dancy.message.request.ArticleWriteRequest;
+import com.ssafy.dancy.message.request.ArticleUpdateRequest;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,9 +11,9 @@ public class ArticleSteps {
 
 
 
-    public ArticleWriteRequest 게시물_생성(){
+    public ArticleUpdateRequest 게시물_생성(){
 
-        return ArticleWriteRequest.builder()
+        return ArticleUpdateRequest.builder()
                 .articleTitle("test_title")
                 .articleContent("test_content")
                 .video("test_video")
@@ -21,10 +21,26 @@ public class ArticleSteps {
                 .build();
     }
 
-    public ArticleWriteRequest 게시물_수정(){
+    public ArticleUpdateRequest 게시물_생성_타이틀공백(){
+        return ArticleUpdateRequest.builder()
+                .articleTitle("")
+                .articleContent("test_content")
+                .video("test_video")
+                .thumbnailImageUrl("test_image")
+                .build();
+    }
 
-        return ArticleWriteRequest.builder()
+    public ArticleUpdateRequest 게시물_수정(){
+
+        return ArticleUpdateRequest.builder()
                 .articleTitle(modifiedTestTitle)
+                .articleContent(modifiedTestContent)
+                .build();
+    }
+
+    public ArticleUpdateRequest 게시물_수정_타이틀공백(){
+        return ArticleUpdateRequest.builder()
+                .articleTitle("")
                 .articleContent(modifiedTestContent)
                 .build();
     }

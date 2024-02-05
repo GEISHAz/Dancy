@@ -12,7 +12,7 @@ import lombok.*;
 public class SavedArticle {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long savedArticleId;
 
     @ManyToOne

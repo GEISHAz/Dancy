@@ -14,7 +14,7 @@ import lombok.*;
 public class CommentLike {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long commentLikeId;
 
     @ManyToOne

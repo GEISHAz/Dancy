@@ -56,6 +56,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/auth").hasRole("USER")
                         .requestMatchers("/user/profile_image").hasRole("USER")
                         .requestMatchers("/stage").hasRole("USER")
+                        .requestMatchers("/stage/**").hasRole("USER")
                         .requestMatchers("/auth/password/find").hasRole("USER")
                         .anyRequest().permitAll())
                 .exceptionHandling(config ->

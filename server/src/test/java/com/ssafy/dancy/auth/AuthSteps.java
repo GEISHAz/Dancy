@@ -64,6 +64,13 @@ public class AuthSteps {
                 .build();
     }
 
+    public static LoginUserRequest 상대방로그인_생성(){
+        return LoginUserRequest.builder()
+                .email(opponentemail)
+                .password(opponentpassword)
+                .build();
+    }
+
     public static LoginUserRequest 로그인요청_잘못된정보생성(){
         return LoginUserRequest.builder()
                 .email(email)
