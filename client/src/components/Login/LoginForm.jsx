@@ -1,12 +1,45 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useRecoilValue } from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import * as L from './LoginForm.style.jsx';
+import { userState, loginState } from '../../recoil/LoginState.js';
+import { login } from '../../api/auth.js'
 
 export default function Login() {
 	const [isOpen, setIsOpen] = useState(false);
+	const navigate = useNavigate();
+
+	const transHandler = () => {
+		openModalHandler()
+		navigate(`/practice`)
+	};
+
 	const openModalHandler = () => {
 		setIsOpen(!isOpen)
 	}
+
+	const [formData, setFormData] = useState({email: '', password: ''})
+	const setUser = useSetRecoilState(userState);
+	const setLogin = useSetRecoilState(loginState)
+
+	const handleChange = (e) => {
+		setFormData({...formData, [e.target.name]: e.target.value});
+	};
+
+	const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const loggedInUser = await login(formData);
+      setLogin(true);
+      setUser(loggedInUser);
+			
+      openModalHandler();
+    } 
+		catch (error) {
+      console.error(error);
+    }
+  };
 
 	return (
 		<L.Container>
@@ -14,9 +47,7 @@ export default function Login() {
         <L.ModalBackdrop>
           <L.ModalView>
             <L.ModalTxt>로그인에 성공했습니다 ♬</L.ModalTxt>
-            <L.ModalBtn onClick={openModalHandler}>
-              <Link to='/'>확인</Link>
-            </L.ModalBtn>
+            <L.ModalBtn onClick={transHandler}>확인</L.ModalBtn>
           </L.ModalView>
         </L.ModalBackdrop>
       )}
@@ -26,14 +57,26 @@ export default function Login() {
 
 				{/* E-mail 입력란 */}
 				<div className='flex flex-col gap-y-1'>
-					<L.InputTitle>E-mail</L.InputTitle>
-					<L.InputBox />
+					<L.InputTitle >E-mail</L.InputTitle>
+					<L.InputBox
+						type='email'
+						name='email'
+						placeholder='Email을 입력해주세요 ♬'
+						value={formData.email}
+						onChange={handleChange}
+					/>
 				</div>
 
 				{/* PW 입력란 */}
 				<div className='flex flex-col gap-y-1'>
 					<L.InputTitle>Password</L.InputTitle>
-					<L.InputBox />
+					<L.InputBox
+						type='password'
+						name='password'
+						placeholder='비밀번호를 입력해주세요 ♬'
+						value={formData.password}
+						onChange={handleChange}
+					/>
 				</div>
 
 				{/* 자동로그인 + 소셜로그인 */}
@@ -42,7 +85,7 @@ export default function Login() {
 					{/* 자동로그인 체크박스 */}
 					<div className="flex flex-row items-center gap-x-2">
 						<L.AutoLoginChkBox id='autologin' />
-						<L.AutoLogin for='autologin'>자동 로그인</L.AutoLogin>
+						<L.AutoLogin htmlFor='autologin'>자동 로그인</L.AutoLogin>
 					</div>
 
 					{/* 소셜로그인 아이콘 */}
@@ -55,7 +98,8 @@ export default function Login() {
 
 
 				{/* 로그인 버튼 */}
-				<L.LoginButton onClick={openModalHandler}>로그인</L.LoginButton>
+				{/* <L.LoginButton onClick={openModalHandler}>로그인</L.LoginButton> */}
+				<L.LoginButton onClick={handleSubmit}>로그인</L.LoginButton>
 				
 
 				{/* 회원가입 + 비밀번호 찾기 */}
