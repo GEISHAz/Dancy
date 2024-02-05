@@ -2,9 +2,15 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import * as P from './ProfileIntroduct.style';
 import FollowModal from './FollowModal';
+import { useRecoilValue } from 'recoil';
+import { userState } from "../../../recoil/LoginState.js";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { userDetails } from '../../../api/user.js';
 
 
 export default function ProfileIntroduct({Profile}) {
+  const user = useRecoilValue(userState)
+  const [userInfo, setUser] = useRecoilState(userState)
 	const followBtnStyle = {
 		backgroundColor: Profile.followed ? '#AABBFF' : '#898989',
 	}
@@ -24,6 +30,23 @@ export default function ProfileIntroduct({Profile}) {
     setIsOpen(true)
   }
 
+  const testHandle = () => {
+    userDetails()
+    .then((res) => {
+      console.log(res.userInfo)
+      const userInfo = res.userInfo
+      setUser(userInfo)
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+      // .then((res) => {
+      //   const userInfo = userDetails();
+      //   setUser(userInfo)
+      //   console.log(userInfo)
+      // })
+  }
+
   const followerData = Profile.follower
   const followingData = Profile.following
 
@@ -33,11 +56,11 @@ export default function ProfileIntroduct({Profile}) {
       
       <P.ProfileIntroBox>
         <P.ProfileRound>
-          <P.ProfileImg />
+          <P.ProfileImg onClick={testHandle} />
         </P.ProfileRound>
         
         <P.UserWrap>
-          <P.UserName>{Profile.nickName}</P.UserName>
+          <P.UserName>{user.nickname}</P.UserName>
           <Link to='/setting'><P.SettingBtn /></Link>
         </P.UserWrap>
 

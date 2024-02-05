@@ -6,10 +6,11 @@ import { atom } from 'recoil';
 export const userState = atom({
 	key: 'userState',
 	default: {
-		token: "",
-		nickName: "",
 		email: "",
-		profileImageUrl: "",
+    nickname: "",
+    birthDate: "",
+    introduceText: "",
+    profileImageUrl: null
 	},
 	// effects_UNSTABLE: [persistAtom],     // 새로 고침이나 페이지 이동과 같은 상황에서도 Recoil 상태를 유지하도록 지속성 부여
 })

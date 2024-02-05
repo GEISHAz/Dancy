@@ -4,6 +4,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import * as L from "./LoginForm.style.jsx";
 import { userState, loginState } from "../../recoil/LoginState.js";
 import { login } from "../../api/auth.js";
+import { userDetails } from "../../api/user.js";
 
 export default function Login() {
   const [isOpen, setIsOpen] = useState(false); // 모달 On/Off 관리
@@ -19,9 +20,11 @@ export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
   const [isEmailCorrect, setIsEmailCorrect] = useState(true);
+  const [userInfo, setUserInfo] = useRecoilState(userState)
 
-  const setUser = useSetRecoilState(userState); // userState에 email, token 저장
+  // const setUser = useSetRecoilState(userState); // userState에 로그인한 회원정보 저장
   const setLogin = useSetRecoilState(loginState); // login유무 저장
+  // const user = useRecoilValue(userState)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,19 +38,45 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     try {
-      const loggedInUser = await login(formData);
+      await login(formData);
       setLogin(true);
-      setUser(loggedInUser);
       navigate("/");
+  
+      // 로그인 이후 user 정보를 가져옴
+      const userDetailsData = await userDetails();
+      console.log("User Details:", userDetailsData);
+      // setUserInfo(userDetailsData.userInfo)
     } catch (error) {
-      const errorMsg = error.response.data[0].message;
-
+      console.error("Login Error:", error);
+      const errorMsg = error.response?.data[0]?.message || "An error occurred";
+  
       setModalTxt(errorMsg);
       openModalHandler();
     }
+    // login(formData)
+    // .then((res) => {
+    //   console.log(res)
+    //   setLogin(true);
+    //   navigate("/");
+    // })
+    // .then(() => {
+    //   const res = userDetails()
+    //   console.log(res)
+    //   // userInfo = res.userInfo
+    //   // setUserInfo(userInfo)
+    // })
+    // .catch((err) => {
+    //   console.error(err)
+    //   const errorMsg = err.response.data[0].message;
+      
+    //   setModalTxt(errorMsg);
+    //   openModalHandler();
+    // })
   };
+
+
 
   const handleEnter = (e) => {
     if (e.key === "Enter") {
