@@ -3,7 +3,7 @@ package com.ssafy.dancy.controller;
 
 import com.ssafy.dancy.entity.Comment;
 import com.ssafy.dancy.entity.User;
-import com.ssafy.dancy.message.request.CommentRequest;
+import com.ssafy.dancy.message.request.comment.CommentRequest;
 import com.ssafy.dancy.message.response.comment.CommentResponse;
 import com.ssafy.dancy.service.comment.CommentService;
 import lombok.RequiredArgsConstructor;

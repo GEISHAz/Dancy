@@ -41,6 +41,6 @@ public class AuthExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public List<ErrorResponse> userNotFoundExceptionHandler(UserNotFoundException e){
-        return makeErrorResponse(e, "email");
+        return makeErrorResponse(e, "user");
     }
 }

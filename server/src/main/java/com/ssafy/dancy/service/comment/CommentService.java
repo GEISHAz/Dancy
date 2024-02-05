@@ -6,7 +6,7 @@ import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.exception.user.NotHavingPermissionException;
 import com.ssafy.dancy.exception.article.ArticleNotFoundException;
 import com.ssafy.dancy.exception.comment.CommentNotFoundException;
-import com.ssafy.dancy.message.request.CommentRequest;
+import com.ssafy.dancy.message.request.comment.CommentRequest;
 import com.ssafy.dancy.message.response.comment.CommentResponse;
 import com.ssafy.dancy.repository.ArticleRepository;
 import com.ssafy.dancy.repository.CommentRepository;
@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

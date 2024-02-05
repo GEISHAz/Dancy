@@ -5,7 +5,7 @@ import lombok.Builder;
 public record FollowResponse(
 
     String profileImageUrl,
-    String nickName
+    String nickname
 ){
     @Builder
     public FollowResponse {

@@ -1,6 +1,6 @@
 package com.ssafy.dancy.comment;
 
-import com.ssafy.dancy.message.request.CommentRequest;
+import com.ssafy.dancy.message.request.comment.CommentRequest;
 import org.springframework.stereotype.Component;
 
 @Component

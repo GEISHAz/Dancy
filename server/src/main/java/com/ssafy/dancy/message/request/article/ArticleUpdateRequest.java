@@ -1,4 +1,4 @@
-package com.ssafy.dancy.message.request;
+package com.ssafy.dancy.message.request.article;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;

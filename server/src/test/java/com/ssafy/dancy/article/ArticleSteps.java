@@ -1,6 +1,6 @@
 package com.ssafy.dancy.article;
 
-import com.ssafy.dancy.message.request.ArticleUpdateRequest;
+import com.ssafy.dancy.message.request.article.ArticleUpdateRequest;
 import org.springframework.stereotype.Component;
 
 @Component

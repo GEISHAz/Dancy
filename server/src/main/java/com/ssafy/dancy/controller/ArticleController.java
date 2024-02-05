@@ -2,8 +2,8 @@ package com.ssafy.dancy.controller;
 
 import com.ssafy.dancy.entity.Article;
 import com.ssafy.dancy.entity.User;
-import com.ssafy.dancy.message.request.ArticleModifyRequest;
-import com.ssafy.dancy.message.request.ArticleUpdateRequest;
+import com.ssafy.dancy.message.request.article.ArticleModifyRequest;
+import com.ssafy.dancy.message.request.article.ArticleUpdateRequest;
 import com.ssafy.dancy.message.response.ArticleResponseDto;
 import com.ssafy.dancy.service.article.ArticleService;
 import jakarta.validation.Valid;

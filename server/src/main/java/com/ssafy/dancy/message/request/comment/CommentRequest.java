@@ -1,4 +1,4 @@
-package com.ssafy.dancy.message.request;
+package com.ssafy.dancy.message.request.comment;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
