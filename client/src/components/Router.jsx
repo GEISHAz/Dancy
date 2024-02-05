@@ -14,7 +14,6 @@ import VideoDetailPage from "../pages/VideoDetailPage";
 import VideoDetail from "../pages/VideoDetail";
 import UserSetting from "../pages/UserSetting";
 import FindMyPwd from "../pages/FindMyPwd";
->>>>>>> 078f46e81bbde549e9c7fe3324f797ba9ae9c21d
 
 export default function Router({ cardDetails, videoDetails }) {
   return (
@@ -39,7 +38,6 @@ export default function Router({ cardDetails, videoDetails }) {
         <Route path="/setting" element={<UserSetting />} />
         {/* FindPW 페이지의 라우트 추가 */}
         <Route path="/findpw" element={<FindMyPwd />} />
->>>>>>> 078f46e81bbde549e9c7fe3324f797ba9ae9c21d
       </Routes>
     </>
   );
