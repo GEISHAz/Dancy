@@ -5,7 +5,7 @@ import lombok.Builder;
 public record MyPageResponse(
 
     String nickname,
-    String introduce_text,
+    String introduceText,
     String profileImageUrl,
     int following,
     int follower,

@@ -57,6 +57,17 @@ public class AuthSteps {
                 .build();
     }
 
+    public SignUpRequest 삼자회원가입정보_생성(){
+        return SignUpRequest.builder()
+                .email(otherEmail)
+                .nickname(otherNickname)
+                .password(password)
+                .gender(gender)
+                .birthDate(birthDate)
+                .authType(authType)
+                .build();
+    }
+
     public static LoginUserRequest 로그인요청생성(){
         return LoginUserRequest.builder()
                 .email(email)

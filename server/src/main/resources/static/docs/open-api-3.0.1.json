@@ -7,6 +7,8 @@
   },
   "servers" : [ {
     "url" : "http://localhost:8080"
+  }, {
+    "url" : "http://i10d210.p.ssafy.io:8080"
   } ],
   "tags" : [ ],
   "paths" : {
@@ -24,7 +26,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzY5LCJleHAiOjE3MDcxMTIxNjl9.iaSaNr1Qw5FAKA7eBleM6LY5MxM_wPEEWXuc1tGpBFY"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTQzLCJleHAiOjE3MDcxNDEzNDN9.ofBJ63sk9tfGqlsnUp0rUTXmk3gKmMqc7Jv6Db5OSmQ"
         } ],
         "requestBody" : {
           "content" : {
@@ -52,7 +54,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "auth_api_test/회원탈퇴_비밀번호불일치_403/" : {
@@ -70,7 +72,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "auth_api_test/회원탈퇴_토큰없음_401/" : {
@@ -97,7 +99,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzcwLCJleHAiOjE3MDcxMTIxNzB9.j5RAVIK1fMryk45IMDT6S_-_xaA1mMjIVpBIsqFDhIs"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTQ0LCJleHAiOjE3MDcxNDEzNDR9.FxPrwI5teck8b2UsyDtCZmt_BxCizKqcp_FJeWiqFHw"
         } ],
         "requestBody" : {
           "content" : {
@@ -128,7 +130,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "auth_api_test/비밀번호변경_비밀번호불일치_403/" : {
@@ -146,7 +148,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "auth_api_test/비밀번호변경_정규표현식_불만족_400/" : {
@@ -161,7 +163,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "auth_api_test/비밀번호변경_토큰없음_401/" : {
@@ -203,7 +205,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "auth_api_test/로그인_정보불일치_404/" : {
@@ -222,7 +224,7 @@
                 },
                 "examples" : {
                   "auth_api_test/로그인성공_200/" : {
-                    "value" : "{\r\n  \"accessToken\" : \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzcwLCJleHAiOjE3MDcxMTIxNzB9.j5RAVIK1fMryk45IMDT6S_-_xaA1mMjIVpBIsqFDhIs\",\r\n  \"tokenType\" : \"Bearer\",\r\n  \"authType\" : \"DANCY\"\r\n}"
+                    "value" : "{\r\n  \"accessToken\" : \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTQ0LCJleHAiOjE3MDcxNDEzNDR9.FxPrwI5teck8b2UsyDtCZmt_BxCizKqcp_FJeWiqFHw\",\r\n  \"tokenType\" : \"Bearer\",\r\n  \"authType\" : \"DANCY\"\r\n}"
                   }
                 }
               }
@@ -245,7 +247,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzY5LCJleHAiOjE3MDcxMTIxNjl9.iaSaNr1Qw5FAKA7eBleM6LY5MxM_wPEEWXuc1tGpBFY"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTQyLCJleHAiOjE3MDcxNDEzNDJ9.niwh5KDcyaffOZsZplMTb3AA079UHoCzKmOSl48yt0w"
         } ],
         "responses" : {
           "200" : {
@@ -256,7 +258,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "auth_api_test/로그아웃_토큰없음_401/" : {
@@ -279,7 +281,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/auth-password-check1025472966"
+                "$ref" : "#/components/schemas/email-verify-check1025472966"
               },
               "examples" : {
                 "auth_api_test/비밀번호_찾기_인증번호_검증_성공_200/" : {
@@ -302,7 +304,7 @@
                 },
                 "examples" : {
                   "auth_api_test/비밀번호_찾기_인증번호_검증_성공_200/" : {
-                    "value" : "{\r\n  \"accessToken\" : \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzcwLCJleHAiOjE3MDcxMTIxNzB9.j5RAVIK1fMryk45IMDT6S_-_xaA1mMjIVpBIsqFDhIs\",\r\n  \"tokenType\" : \"Bearer\",\r\n  \"authType\" : \"DANCY\"\r\n}"
+                    "value" : "{\r\n  \"accessToken\" : \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTQzLCJleHAiOjE3MDcxNDEzNDN9.ofBJ63sk9tfGqlsnUp0rUTXmk3gKmMqc7Jv6Db5OSmQ\",\r\n  \"tokenType\" : \"Bearer\",\r\n  \"authType\" : \"DANCY\"\r\n}"
                   }
                 }
               }
@@ -313,7 +315,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "auth_api_test/비밀번호_찾기_인증번호_불일치_403/" : {
@@ -340,7 +342,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzcxLCJleHAiOjE3MDcxMTIxNzF9.E1c35GOrBxMe9EEQD-Btx1ChZn8NhYhty84KUTB_2DU"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTQ0LCJleHAiOjE3MDcxNDEzNDR9.FxPrwI5teck8b2UsyDtCZmt_BxCizKqcp_FJeWiqFHw"
         } ],
         "requestBody" : {
           "content" : {
@@ -371,7 +373,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "auth_api_test/비밀번호_찾기_비밀번호_변경_토큰없음_401/" : {
@@ -386,7 +388,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "auth_api_test/비밀번호_찾기_비밀번호_변경_패스워드타입아님_400/" : {
@@ -424,7 +426,7 @@
                 },
                 "examples" : {
                   "comment_api_test/댓글_조회/" : {
-                    "value" : "[ {\r\n  \"commentId\" : 1,\r\n  \"content\" : \"fuck\",\r\n  \"createdDate\" : \"2024-02-05T14:19:33.833189\",\r\n  \"commentLike\" : 0,\r\n  \"authorNickname\" : \"dongw\",\r\n  \"articleId\" : 1,\r\n  \"parentId\" : 0\r\n} ]"
+                    "value" : "[ {\r\n  \"commentId\" : 1,\r\n  \"content\" : \"fuck\",\r\n  \"createdDate\" : \"2024-02-05T22:25:47.500842\",\r\n  \"commentLike\" : 0,\r\n  \"authorNickname\" : \"dongw\",\r\n  \"articleId\" : 1,\r\n  \"parentId\" : 0\r\n} ]"
                   }
                 }
               }
@@ -453,7 +455,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzcxLCJleHAiOjE3MDcxMTIxNzF9.E1c35GOrBxMe9EEQD-Btx1ChZn8NhYhty84KUTB_2DU"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTQ1LCJleHAiOjE3MDcxNDEzNDV9.2CKrHDHKt5J7-HwqKNA8p2Yrriqh8zc4F4fc_hnbKAQ"
         } ],
         "requestBody" : {
           "content" : {
@@ -488,7 +490,7 @@
                 },
                 "examples" : {
                   "comment_api_test/댓글_작성_성공_200/" : {
-                    "value" : "{\r\n  \"commentId\" : 1,\r\n  \"content\" : \"fuck\",\r\n  \"createdDate\" : \"2024-02-05T14:19:31.9361849\",\r\n  \"commentLike\" : 0,\r\n  \"authorNickname\" : \"dongw\",\r\n  \"articleId\" : 1,\r\n  \"parentId\" : 0\r\n}"
+                    "value" : "{\r\n  \"commentId\" : 1,\r\n  \"content\" : \"fuck\",\r\n  \"createdDate\" : \"2024-02-05T22:25:45.6158443\",\r\n  \"commentLike\" : 0,\r\n  \"authorNickname\" : \"dongw\",\r\n  \"articleId\" : 1,\r\n  \"parentId\" : 0\r\n}"
                   }
                 }
               }
@@ -499,7 +501,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "comment_api_test/댓글_작성_조건위반_400/" : {
@@ -514,7 +516,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "comment_api_test/댓글_작성_토큰없음_401/" : {
@@ -529,7 +531,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "comment_api_test/댓글_작성_해당게시물없음_404/" : {
@@ -564,7 +566,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzcyLCJleHAiOjE3MDcxMTIxNzJ9.yce8ebTt9rwBk6kVuKQ6_TNBbwUuNvEvuXqrqSFG7yo"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTQ2LCJleHAiOjE3MDcxNDEzNDZ9.46azQfFRUEgx9pliHebsRoNFtcCBK3Si6zE2MvIqnRc"
         } ],
         "requestBody" : {
           "content" : {
@@ -598,7 +600,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "comment_api_test/댓글_수정_검증위반_400/" : {
@@ -613,7 +615,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "comment_api_test/댓글_수정_권한없음_403/" : {
@@ -632,7 +634,7 @@
                 },
                 "examples" : {
                   "comment_api_test/댓글_수정_성공_200/" : {
-                    "value" : "{\r\n  \"commentId\" : 1,\r\n  \"content\" : \"modified Content\",\r\n  \"createdDate\" : \"2024-02-05T14:19:32.857184\",\r\n  \"commentLike\" : 0,\r\n  \"authorNickname\" : \"dongw\",\r\n  \"articleId\" : 1,\r\n  \"parentId\" : 0\r\n}"
+                    "value" : "{\r\n  \"commentId\" : 1,\r\n  \"content\" : \"modified Content\",\r\n  \"createdDate\" : \"2024-02-05T22:25:46.519835\",\r\n  \"commentLike\" : 0,\r\n  \"authorNickname\" : \"dongw\",\r\n  \"articleId\" : 1,\r\n  \"parentId\" : 0\r\n}"
                   }
                 }
               }
@@ -643,7 +645,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "comment_api_test/댓글_수정_토큰없음_401/" : {
@@ -658,7 +660,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "comment_api_test/댓글_수정_해당댓글없음_404/" : {
@@ -691,7 +693,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGxtaW45NzAyQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzczLCJleHAiOjE3MDcxMTIxNzN9.586jJIWX8tltB70FuowlK-dOkav7Ns-tw-sNT54LbcU"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGxtaW45NzAyQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTQ3LCJleHAiOjE3MDcxNDEzNDd9.uLNnaILhOOiK-W-Ay42jJkp7mqBZx-CcFi7GvzEy1J4"
         } ],
         "responses" : {
           "403" : {
@@ -699,7 +701,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "comment_api_test/댓글_삭제_권한없음_403/" : {
@@ -714,7 +716,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "comment_api_test/댓글_삭제_댓글없음_404/" : {
@@ -733,7 +735,7 @@
                 },
                 "examples" : {
                   "comment_api_test/댓글_삭제_성공_200/" : {
-                    "value" : "{\r\n  \"commentId\" : -1,\r\n  \"content\" : \"fuck\",\r\n  \"createdDate\" : \"2024-02-05T14:19:31.674193\",\r\n  \"commentLike\" : 0,\r\n  \"authorNickname\" : \"dongw\",\r\n  \"articleId\" : 1,\r\n  \"parentId\" : 0\r\n}"
+                    "value" : "{\r\n  \"commentId\" : -1,\r\n  \"content\" : \"fuck\",\r\n  \"createdDate\" : \"2024-02-05T22:25:45.357826\",\r\n  \"commentLike\" : 0,\r\n  \"authorNickname\" : \"dongw\",\r\n  \"articleId\" : 1,\r\n  \"parentId\" : 0\r\n}"
                   }
                 }
               }
@@ -744,7 +746,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "comment_api_test/댓글_삭제_토큰없음_401/" : {
@@ -789,7 +791,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "email_api_test/비밀번호_찾기_가입된이메일_아님_404/" : {
@@ -807,7 +809,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "email_api_test/비밀번호_찾기_이메일_전송_이메일형식_400/" : {
@@ -830,7 +832,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/auth-password-check1025472966"
+                "$ref" : "#/components/schemas/email-verify-check1025472966"
               },
               "examples" : {
                 "email_api_test/이메일_인증_이메일형식아님_400/" : {
@@ -855,7 +857,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "email_api_test/이메일_인증_이메일형식아님_400/" : {
@@ -870,7 +872,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "email_api_test/이메일_인증_이미가입_409/" : {
@@ -885,7 +887,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "email_api_test/이메일_인증_코드불일치_403/" : {
@@ -948,7 +950,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "email_api_test/이메일_가입_인증번호_이미가입_409/" : {
@@ -963,7 +965,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "email_api_test/이메일_가입_인증번호_전송_이메일_형식_아님_400/" : {
@@ -996,13 +998,13 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzc3LCJleHAiOjE3MDcxMTIxNzd9.FsaujkoCjEt1QeYGN2kRT0nBhzWcwFgtNpR0xXctx_g"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTUwLCJleHAiOjE3MDcxNDEzNTB9.qntFTbGux5A_G2hNIwAC0T_J1BVIWLjBkk26s7jbspw"
         } ],
         "requestBody" : {
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/follow-request-follow1278808337"
+                "$ref" : "#/components/schemas/follow-request-unfollow1278808337"
               },
               "examples" : {
                 "follow_api_test/팔로우_상대방_닉네임없음_404/" : {
@@ -1024,7 +1026,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "follow_api_test/팔로우_상대방_닉네임없음_404/" : {
@@ -1039,7 +1041,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/follow-request-follow1753370495"
+                  "$ref" : "#/components/schemas/follow-request-unfollow1753370495"
                 },
                 "examples" : {
                   "follow_api_test/팔로우_성공_200/" : {
@@ -1054,7 +1056,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "follow_api_test/팔로우_토큰없음_401/" : {
@@ -1081,13 +1083,13 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzc3LCJleHAiOjE3MDcxMTIxNzd9.FsaujkoCjEt1QeYGN2kRT0nBhzWcwFgtNpR0xXctx_g"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTUxLCJleHAiOjE3MDcxNDEzNTF9.5CdczwbecghqYHG1MP-R4EER9SlKMQeffl7UL8YPhkk"
         } ],
         "requestBody" : {
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/follow-request-follow1278808337"
+                "$ref" : "#/components/schemas/follow-request-unfollow1278808337"
               },
               "examples" : {
                 "follow_api_test/언팔로우/" : {
@@ -1109,7 +1111,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/follow-request-follow1753370495"
+                  "$ref" : "#/components/schemas/follow-request-unfollow1753370495"
                 },
                 "examples" : {
                   "follow_api_test/언팔로우/" : {
@@ -1124,7 +1126,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "follow_api_test/언팔로우_토큰없음_401/" : {
@@ -1139,7 +1141,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "follow_api_test/언팔로우_팔로우정보없음_404/" : {
@@ -1188,7 +1190,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "follow_api_test/팔로우_조회_닉네임없음_404/" : {
@@ -1222,7 +1224,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "follow_api_test/팔로잉_조회_닉네임없음_404/" : {
@@ -1250,6 +1252,265 @@
         }
       }
     },
+    "/like/article-like/{articleId}" : {
+      "post" : {
+        "tags" : [ "like" ],
+        "summary" : "게시글 좋아요 프로세스",
+        "description" : "게시글 좋아요를 등록하고 취소하는 API 입니다.<br>게시글 좋아요 등록이 성공하면, 200 OK 와 함께 해당 게시글의 좋아요 갯수, 자신이 좋아요하는지 여부 정보를 입력받습니다.<br>게시글이 좋아요 되어 있는 상태에서 다시 해당 API 를 호출하면, 200 OK 가 반환되며 좋아요가 취소됩니다.<br>로그인 토큰을 헤더에 입력하지 않고 해당 API 를 호출하면, 401 Unauthorized 가 반환됩니다.<br>존재하지 않는 게시글을 좋아요 요청하면, 404 Not Found 가 반환됩니다.",
+        "operationId" : "like_api_test/게시글_좋아요_",
+        "parameters" : [ {
+          "name" : "articleId",
+          "in" : "path",
+          "description" : "게시물 아이디",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTUxLCJleHAiOjE3MDcxNDEzNTF9.5CdczwbecghqYHG1MP-R4EER9SlKMQeffl7UL8YPhkk"
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
+                },
+                "examples" : {
+                  "like_api_test/게시글_좋아요_게시글없음_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"게시글을 찾을 수 없습니다.\",\r\n  \"errorType\" : \"ArticleNotFoundException\",\r\n  \"fieldName\" : \"article\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
+                },
+                "examples" : {
+                  "like_api_test/게시글_좋아요_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/like-article-like-articleId-1344636820"
+                },
+                "examples" : {
+                  "like_api_test/게시글_좋아요_프로세스_성공_200/" : {
+                    "value" : "{\r\n  \"articleLikeCount\" : 1,\r\n  \"isArticleLiked\" : true\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/like/comment-like/{commentId}" : {
+      "post" : {
+        "tags" : [ "like" ],
+        "summary" : "댓글 좋아요 프로세스",
+        "description" : "댓글 좋아요를 등록하고 취소하는 API 입니다.<br>댓글 좋아요 등록이 성공하면, 200 OK 와 함께 해당 댓글의 좋아요 갯수, 자신이 좋아요하는지 여부 정보를 입력받습니다.<br>댓글이 좋아요 되어 있는 상태에서 다시 해당 API 를 호출하면, 200 OK 가 반환되며 좋아요가 취소됩니다.<br>로그인 토큰을 헤더에 입력하지 않고 해당 API 를 호출하면, 401 Unauthorized 가 반환됩니다.<br>존재하지 않는 댓글을 좋아요 요청하면, 404 Not Found 가 반환됩니다.",
+        "operationId" : "like_api_test/댓글_좋아요_",
+        "parameters" : [ {
+          "name" : "commentId",
+          "in" : "path",
+          "description" : "댓글 아이디",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTUyLCJleHAiOjE3MDcxNDEzNTJ9.KwUOAuLBtU9YEs6MkVwawgYe2qJiRyJGNzmgxbgo75c"
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
+                },
+                "examples" : {
+                  "like_api_test/댓글_좋아요_댓글없음_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"댓글을 찾을 수 없습니다.\",\r\n  \"errorType\" : \"CommentNotFoundException\",\r\n  \"fieldName\" : \"follow\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/like-comment-like-commentId1382993375"
+                },
+                "examples" : {
+                  "like_api_test/댓글_좋아요_성공_200/" : {
+                    "value" : "{\r\n  \"commentLikeCount\" : 1,\r\n  \"isCommentLiked\" : true\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
+                },
+                "examples" : {
+                  "like_api_test/댓글_좋아요_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/like/who-like/{articleId}" : {
+      "get" : {
+        "tags" : [ "like" ],
+        "summary" : "게시글 좋아요 리스트 조회",
+        "description" : "게시글 좋아요를 한 사람의 리스트를 불러오는 API 입니다. <br>존재하는 게시글의 아이디를 path variable 로 전달했을 시, 200 OK 와 함께 좋아요한 사람의 간단한 정보 리스트가 전달됩니다.<br>존재하지 않는 게시글 아이디를 전달했을 시, 404 Not Found 가 전달됩니다.",
+        "operationId" : "like_api_test/게시글_좋아요_",
+        "parameters" : [ {
+          "name" : "articleId",
+          "in" : "path",
+          "description" : "게시물 아이디",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/like-who-like-articleId-1056158686"
+                },
+                "examples" : {
+                  "like_api_test/게시글_좋아요_리스트_200/" : {
+                    "value" : "[ {\r\n  \"profileImageUrl\" : null,\r\n  \"nickname\" : \"dongw\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
+                },
+                "examples" : {
+                  "like_api_test/게시글_좋아요_없는게시글_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"게시글을 찾을 수 없습니다.\",\r\n  \"errorType\" : \"ArticleNotFoundException\",\r\n  \"fieldName\" : \"article\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mypage/{nickname}" : {
+      "get" : {
+        "tags" : [ "mypage" ],
+        "summary" : "SNS 마이페이지",
+        "description" : "마이페이지 정보를 조회하는 API 입니다.<br>여기서 말하는 마이페이지란, 본인 스스로의 상세정보 조회가 아닌 SNS 기능으로의 마이페이지 조회입니다.<br>존재하는 사람의 path variable 로 입력 시, 200 OK 와 함께 SNS 상에서의 상대방 정보와<br>나와의 관계 (ex: 내가 팔로우했는지, 내 개인 계정인지) 여부가 반환됩니다.<br>로그인 토큰 미입력 시, 401 Unauthorized 가 반환됩니다.<br>존재하지 않는 사용자 닉네임을 입력했을 때, 404 Not Found 가 반환됩니다.",
+        "operationId" : "my_page_api_test/마이페이지_",
+        "parameters" : [ {
+          "name" : "nickname",
+          "in" : "path",
+          "description" : "닉네임",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTU0LCJleHAiOjE3MDcxNDEzNTR9.C_26nYLQbnRXVFBo5xkXLgNLyZuRKda7Vi1C4Xm8Lrg"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/mypage-nickname-682177778"
+                },
+                "examples" : {
+                  "my_page_api_test/마이페이지_나자신일때_유저정보조회/" : {
+                    "value" : "{\r\n  \"nickname\" : \"dongw\",\r\n  \"introduceText\" : \"\",\r\n  \"profileImageUrl\" : null,\r\n  \"following\" : 0,\r\n  \"follower\" : 0,\r\n  \"isMine\" : true,\r\n  \"followed\" : false\r\n}"
+                  },
+                  "my_page_api_test/마이페이지_팔로우시_유저정보조회/" : {
+                    "value" : "{\r\n  \"nickname\" : \"maino\",\r\n  \"introduceText\" : \"\",\r\n  \"profileImageUrl\" : null,\r\n  \"following\" : 0,\r\n  \"follower\" : 1,\r\n  \"isMine\" : false,\r\n  \"followed\" : true\r\n}"
+                  },
+                  "my_page_api_test/마이페이지_팔로우아닐시_유저정보조회/" : {
+                    "value" : "{\r\n  \"nickname\" : \"maino\",\r\n  \"introduceText\" : \"\",\r\n  \"profileImageUrl\" : null,\r\n  \"following\" : 0,\r\n  \"follower\" : 0,\r\n  \"isMine\" : false,\r\n  \"followed\" : false\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
+                },
+                "examples" : {
+                  "my_page_api_test/마이페이지_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/stage" : {
       "post" : {
         "tags" : [ "stage" ],
@@ -1264,13 +1525,13 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzY0LCJleHAiOjE3MDcxMTIxNjR9.FwxkTmBGEyV36yfoJEuecXhSeJKqULm4buZT9l_5Yk0"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTM4LCJleHAiOjE3MDcxNDEzMzh9._z4SV2AW4raiAEoFdMWeoHRkRSVEJjcB1tl0iDALIgc"
         } ],
         "requestBody" : {
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/stage-1635408559"
+                "$ref" : "#/components/schemas/stage-articleId-1635408559"
               },
               "examples" : {
                 "article_api_test/게시물_작성_검증위반_400/" : {
@@ -1292,7 +1553,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "article_api_test/게시물_작성_검증위반_400/" : {
@@ -1307,11 +1568,11 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/stage991339425"
+                  "$ref" : "#/components/schemas/stage-articleId991339425"
                 },
                 "examples" : {
                   "article_api_test/게시물_작성_성공_200/" : {
-                    "value" : "{\r\n  \"articleId\" : 1,\r\n  \"articleTitle\" : \"test_title\",\r\n  \"articleContent\" : \"test_content\",\r\n  \"thumbnailImageUrl\" : \"test_image\",\r\n  \"thumbnailVideoUrl\" : \"test_video\",\r\n  \"view\" : 0,\r\n  \"articleLike\" : 0,\r\n  \"createdDate\" : \"2024-02-05T14:19:26.7451936\",\r\n  \"isArticleLiked\" : false,\r\n  \"isAuthorFollowing\" : false,\r\n  \"score\" : 0,\r\n  \"follower\" : 0,\r\n  \"userId\" : 1,\r\n  \"nickname\" : \"dongw\",\r\n  \"profileImageUrl\" : null,\r\n  \"video\" : null\r\n}"
+                    "value" : "{\r\n  \"articleId\" : 1,\r\n  \"articleTitle\" : \"test_title\",\r\n  \"articleContent\" : \"test_content\",\r\n  \"thumbnailImageUrl\" : \"test_image\",\r\n  \"thumbnailVideoUrl\" : \"test_video\",\r\n  \"view\" : 0,\r\n  \"articleLike\" : 0,\r\n  \"createdDate\" : \"2024-02-05T22:25:40.6558045\",\r\n  \"isArticleLiked\" : false,\r\n  \"isAuthorFollowing\" : false,\r\n  \"score\" : 0,\r\n  \"follower\" : 0,\r\n  \"userId\" : 1,\r\n  \"nickname\" : \"dongw\",\r\n  \"profileImageUrl\" : null,\r\n  \"video\" : null\r\n}"
                   }
                 }
               }
@@ -1322,7 +1583,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "article_api_test/게시물_작성_토큰없음_401/" : {
@@ -1357,13 +1618,13 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzY4LCJleHAiOjE3MDcxMTIxNjh9.gIALn4U-RJQbE6lQIg8VYldfsH3wbG20I3fVytSvBT0"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTQyLCJleHAiOjE3MDcxNDEzNDJ9.niwh5KDcyaffOZsZplMTb3AA079UHoCzKmOSl48yt0w"
         } ],
         "requestBody" : {
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/stage-1635408559"
+                "$ref" : "#/components/schemas/stage-articleId-1635408559"
               },
               "examples" : {
                 "article_api_test/게시물_수정/" : {
@@ -1391,11 +1652,11 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/stage991339425"
+                  "$ref" : "#/components/schemas/stage-articleId991339425"
                 },
                 "examples" : {
                   "article_api_test/게시물_수정/" : {
-                    "value" : "{\r\n  \"articleId\" : 1,\r\n  \"articleTitle\" : \"test_title_modified\",\r\n  \"articleContent\" : \"test_content_modified\",\r\n  \"thumbnailImageUrl\" : \"test_image\",\r\n  \"thumbnailVideoUrl\" : \"test_video\",\r\n  \"view\" : 0,\r\n  \"articleLike\" : 0,\r\n  \"createdDate\" : \"2024-02-05T14:19:28.739192\",\r\n  \"isArticleLiked\" : false,\r\n  \"isAuthorFollowing\" : false,\r\n  \"score\" : 0,\r\n  \"follower\" : 0,\r\n  \"userId\" : 1,\r\n  \"nickname\" : \"dongw\",\r\n  \"profileImageUrl\" : null,\r\n  \"video\" : null\r\n}"
+                    "value" : "{\r\n  \"articleId\" : 1,\r\n  \"articleTitle\" : \"test_title_modified\",\r\n  \"articleContent\" : \"test_content_modified\",\r\n  \"thumbnailImageUrl\" : \"test_image\",\r\n  \"thumbnailVideoUrl\" : \"test_video\",\r\n  \"view\" : 0,\r\n  \"articleLike\" : 0,\r\n  \"createdDate\" : \"2024-02-05T22:25:42.420813\",\r\n  \"isArticleLiked\" : false,\r\n  \"isAuthorFollowing\" : false,\r\n  \"score\" : 0,\r\n  \"follower\" : 0,\r\n  \"userId\" : 1,\r\n  \"nickname\" : \"dongw\",\r\n  \"profileImageUrl\" : null,\r\n  \"video\" : null\r\n}"
                   }
                 }
               }
@@ -1406,7 +1667,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "article_api_test/게시물_수정_검증위반_400/" : {
@@ -1421,7 +1682,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "article_api_test/게시물_수정_게시물없음_404/" : {
@@ -1436,7 +1697,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "article_api_test/게시물_수정_권한없음_403/" : {
@@ -1451,7 +1712,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "article_api_test/게시물_수정_토큰없음_401/" : {
@@ -1484,7 +1745,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzY4LCJleHAiOjE3MDcxMTIxNjh9.gIALn4U-RJQbE6lQIg8VYldfsH3wbG20I3fVytSvBT0"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTQyLCJleHAiOjE3MDcxNDEzNDJ9.niwh5KDcyaffOZsZplMTb3AA079UHoCzKmOSl48yt0w"
         } ],
         "responses" : {
           "200" : {
@@ -1492,7 +1753,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "article_api_test/게시물_삭제/" : {
@@ -1507,7 +1768,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "article_api_test/게시물_삭제_게시물없음_404/" : {
@@ -1522,7 +1783,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "article_api_test/게시물_삭제_권한없음_403/" : {
@@ -1537,7 +1798,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "article_api_test/게시물_삭제_토큰없음_401/" : {
@@ -1564,7 +1825,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzgxLCJleHAiOjE3MDcxMTIxODF9.Hbt80A6LcTq6cPMUG--CiMuf-ME2x1npGWg6nCUzXQs"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTU3LCJleHAiOjE3MDcxNDEzNTd9.EvQDmim2RcGpTTfP6--2g_oMffm728bRIpiLK4LeVmQ"
         } ],
         "responses" : {
           "200" : {
@@ -1587,7 +1848,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "user_api_test/자기상세정보조회_토큰없음_401/" : {
@@ -1614,7 +1875,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzgyLCJleHAiOjE3MDcxMTIxODJ9.4nvdabvgk8U1qqtywuu77EkbSgtk2PIf23T_XORyETQ"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTU4LCJleHAiOjE3MDcxNDEzNTh9.BKXy_ZZ81W_OHb3Qh1U1-UbBfrKQhk0Ob4zp6cu_nFQ"
         } ],
         "requestBody" : {
           "content" : {
@@ -1642,7 +1903,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "user_api_test/소개매세지_50자이상_400/" : {
@@ -1657,7 +1918,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "user_api_test/소개매세지_토큰없음_401/" : {
@@ -1699,7 +1960,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzgyLCJleHAiOjE3MDcxMTIxODJ9.4nvdabvgk8U1qqtywuu77EkbSgtk2PIf23T_XORyETQ"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTU4LCJleHAiOjE3MDcxNDEzNTh9.BKXy_ZZ81W_OHb3Qh1U1-UbBfrKQhk0Ob4zp6cu_nFQ"
         } ],
         "requestBody" : {
           "content" : {
@@ -1727,7 +1988,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "user_api_test/닉네임_변경_닉네임중복_409/" : {
@@ -1757,7 +2018,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "user_api_test/닉네임_변경_토큰없음_401/" : {
@@ -1784,7 +2045,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTEwMzgyLCJleHAiOjE3MDcxMTIxODJ9.4nvdabvgk8U1qqtywuu77EkbSgtk2PIf23T_XORyETQ"
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTM5NTU4LCJleHAiOjE3MDcxNDEzNTh9.BKXy_ZZ81W_OHb3Qh1U1-UbBfrKQhk0Ob4zp6cu_nFQ"
         } ],
         "responses" : {
           "400" : {
@@ -1792,7 +2053,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "user_api_test/유저프로필사진_수정_다른확장자파일_400/" : {
@@ -1811,7 +2072,7 @@
                 },
                 "examples" : {
                   "user_api_test/유저프로필사진_수정_성공_200/" : {
-                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"profileImageUrl\" : \"https://gumid210bucket.s3.ap-northeast-2.amazonaws.com/profileImage/08d32d97-234c-4077-b7f5-6468747cfe9e.png\"\r\n}"
+                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"profileImageUrl\" : \"https://gumid210bucket.s3.ap-northeast-2.amazonaws.com/profileImage/3fb9f418-20d6-4750-99b8-ac2aa180fb6a.png\"\r\n}"
                   }
                 }
               }
@@ -1822,7 +2083,7 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/comment-commentId486549215"
+                  "$ref" : "#/components/schemas/user-profile_image486549215"
                 },
                 "examples" : {
                   "user_api_test/유저프로필사진_수정_토큰없음_401/" : {
@@ -1847,7 +2108,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "user_api_test/회원가입_검증로직_미충족_400/" : {
@@ -1877,7 +2138,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "user_api_test/회원가입_이미_가입된_이메일_409/" : {
@@ -1917,7 +2178,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/auth-login-1708490688"
+                  "$ref" : "#/components/schemas/user-profile_image-1708490688"
                 },
                 "examples" : {
                   "user_api_test/닉네임_중복체크_중복_409/" : {
@@ -2063,21 +2324,7 @@
           }
         }
       },
-      "auth-login-83566640" : {
-        "required" : [ "email", "password" ],
-        "type" : "object",
-        "properties" : {
-          "password" : {
-            "type" : "string",
-            "description" : "비밀번호"
-          },
-          "email" : {
-            "type" : "string",
-            "description" : "아이디"
-          }
-        }
-      },
-      "stage-1635408559" : {
+      "stage-articleId-1635408559" : {
         "required" : [ "articleContent", "articleTitle", "thumbnailImageUrl", "video" ],
         "type" : "object",
         "properties" : {
@@ -2096,6 +2343,20 @@
           "video" : {
             "type" : "object",
             "description" : "비디오"
+          }
+        }
+      },
+      "auth-login-83566640" : {
+        "required" : [ "email", "password" ],
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "비밀번호"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "아이디"
           }
         }
       },
@@ -2135,6 +2396,39 @@
           }
         }
       },
+      "mypage-nickname-682177778" : {
+        "type" : "object",
+        "properties" : {
+          "follower" : {
+            "type" : "number",
+            "description" : "팔로워 수"
+          },
+          "introduceText" : {
+            "type" : "string",
+            "description" : "소개 메세지"
+          },
+          "following" : {
+            "type" : "number",
+            "description" : "팔로잉 수"
+          },
+          "nickname" : {
+            "type" : "string",
+            "description" : "닉네임"
+          },
+          "isMine" : {
+            "type" : "boolean",
+            "description" : "본인의 마이페이지인지 여부"
+          },
+          "followed" : {
+            "type" : "boolean",
+            "description" : "본인이 팔로우했는지 여부"
+          },
+          "profileImageUrl" : {
+            "type" : "object",
+            "description" : "프로필 이미지 URL"
+          }
+        }
+      },
       "follow-get-followers-nickname-666951130" : {
         "type" : "array",
         "items" : {
@@ -2151,7 +2445,7 @@
           }
         }
       },
-      "auth-password-check1025472966" : {
+      "email-verify-check1025472966" : {
         "required" : [ "targetEmail", "verifyCode" ],
         "type" : "object",
         "properties" : {
@@ -2165,7 +2459,7 @@
           }
         }
       },
-      "comment-commentId486549215" : {
+      "user-profile_image486549215" : {
         "type" : "object"
       },
       "user-details-1087654261" : {
@@ -2203,7 +2497,7 @@
           }
         }
       },
-      "follow-request-follow1278808337" : {
+      "follow-request-unfollow1278808337" : {
         "required" : [ "nickname" ],
         "type" : "object",
         "properties" : {
@@ -2213,7 +2507,7 @@
           }
         }
       },
-      "auth-login-1708490688" : {
+      "user-profile_image-1708490688" : {
         "type" : "array",
         "items" : {
           "type" : "object",
@@ -2246,7 +2540,49 @@
           }
         }
       },
-      "stage991339425" : {
+      "like-who-like-articleId-1056158686" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "nickname" : {
+              "type" : "string",
+              "description" : "좋아요한 사람의 닉네임"
+            },
+            "profileImageUrl" : {
+              "type" : "object",
+              "description" : "프로필 이미지 URL"
+            }
+          }
+        }
+      },
+      "like-comment-like-commentId1382993375" : {
+        "type" : "object",
+        "properties" : {
+          "isCommentLiked" : {
+            "type" : "boolean",
+            "description" : "해당 사람이 좋아요했는지 현재 여부"
+          },
+          "commentLikeCount" : {
+            "type" : "number",
+            "description" : "해당 댓글의 좋아요 갯수"
+          }
+        }
+      },
+      "like-article-like-articleId-1344636820" : {
+        "type" : "object",
+        "properties" : {
+          "articleLikeCount" : {
+            "type" : "number",
+            "description" : "해당 게시글의 좋아요 갯수"
+          },
+          "isArticleLiked" : {
+            "type" : "boolean",
+            "description" : "해당 사람이 좋아요했는지 현재 여부"
+          }
+        }
+      },
+      "stage-articleId991339425" : {
         "type" : "object",
         "properties" : {
           "articleTitle" : {
@@ -2352,7 +2688,7 @@
           }
         }
       },
-      "follow-request-follow1753370495" : {
+      "follow-request-unfollow1753370495" : {
         "type" : "object",
         "properties" : {
           "followInfoId" : {
