@@ -26,6 +26,10 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath email = createString("email");
 
+    public final NumberPath<Integer> followerCount = createNumber("followerCount", Integer.class);
+
+    public final NumberPath<Integer> followingCount = createNumber("followingCount", Integer.class);
+
     public final EnumPath<com.ssafy.dancy.type.Gender> gender = createEnum("gender", com.ssafy.dancy.type.Gender.class);
 
     public final StringPath introduceText = createString("introduceText");
