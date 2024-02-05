@@ -10,6 +10,7 @@ import com.ssafy.dancy.repository.ArticleRepository;
 import com.ssafy.dancy.repository.CommentLikeRepository;
 import com.ssafy.dancy.repository.CommentRepository;
 import com.ssafy.dancy.repository.ArticleLikeRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -44,23 +45,22 @@ public class LikeService {
         return response;
     }
 
+    @Transactional
     public ArticleLikeResponse likeOrUnLikeArticle(User user, Long articleId) {
         Article article = articleRepository.findByArticleId(articleId).orElseThrow(()
                 -> new ArticleNotFoundException("게시글을 찾을 수 없습니다."));
 
-        Optional<ArticleLike> articleLike =
-                articleLikeRepository.findByUserAndArticle(user, article);
+        Optional<ArticleLike> articleLike = articleLikeRepository.findByUserAndArticle(user, article);
+
         articleLike.ifPresentOrElse(articleLikeRepository::delete,
-                () -> articleLikeRepository.save(ArticleLike
-                        .builder()
+                () -> articleLikeRepository.save(ArticleLike.builder()
                         .article(article)
                         .user(user)
-                        .build())
-        );
+                        .build()));
 
         boolean isLiked = articleLike.isEmpty();
         return ArticleLikeResponse.builder()
-                .articleLike(article.getArticleLike())
+                .articleLikeCount(article.getArticleLike())
                 .isArticleLiked(isLiked)
                 .build();
     }
@@ -80,7 +80,7 @@ public class LikeService {
 
         boolean isLiked = commentLike.isEmpty();
         return CommentLikeResponse.builder()
-                .commentLike(comment.getCommentLike())
+                .commentLikeCount(comment.getCommentLike())
                 .isCommentLiked(isLiked)
                 .build();
     }

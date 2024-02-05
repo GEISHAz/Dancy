@@ -3,7 +3,7 @@ package com.ssafy.dancy.message.response;
 import lombok.Builder;
 
 public record ArticleLikeResponse(
-        int articleLike,
+        int articleLikeCount,
         boolean isArticleLiked
 ) {
     @Builder

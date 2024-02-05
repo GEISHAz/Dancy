@@ -21,18 +21,18 @@ public class LikeController {
 
     private final LikeService likeService;
 
-    @GetMapping("/who-like")
-    public List<LikeResponse> getLikeUserList(@RequestBody Long articleId){ //user token 검사 건너뜀
+    @GetMapping("/who-like/{articleId}")
+    public List<LikeResponse> getLikeUserList(@PathVariable Long articleId){ //user token 검사 건너뜀
         return likeService.getLikeUserList(articleId);
     }
 
-    @PostMapping("/article-like")
-    public ArticleLikeResponse likeOrUnLikeArticle(@AuthenticationPrincipal User user, @RequestBody Long articleId){
+    @PostMapping("/article-like/{articleId}")
+    public ArticleLikeResponse likeOrUnLikeArticle(@AuthenticationPrincipal User user, @PathVariable Long articleId){
         return likeService.likeOrUnLikeArticle(user,articleId);
     }
 
-    @PostMapping("/comment-like")
-    public CommentLikeResponse likeOrUnLikeComment(@AuthenticationPrincipal User user, @RequestBody Long commentId){
+    @PostMapping("/comment-like/{commentId}")
+    public CommentLikeResponse likeOrUnLikeComment(@AuthenticationPrincipal User user, @PathVariable Long commentId){
         return likeService.likeOrUnLikeComment(user,commentId);
     }
 }
