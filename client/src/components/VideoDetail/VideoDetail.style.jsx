@@ -61,7 +61,7 @@ export const VideoUserProfileImage = styled.img`
 `;
 
 export const VideoFollowBtn = styled.button`
-  background-color: ${props => props.$follow ? 'lightgray' : '#aabbff'};
+  background-color: ${props => props.$follow ? 'gray' : '#aabbff'};
   border: 1px solid black;
   border-radius: 50px;
   width: 70px;

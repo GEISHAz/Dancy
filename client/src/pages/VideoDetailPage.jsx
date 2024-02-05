@@ -19,6 +19,7 @@ const VideoDetailPageLayout = styled.div`
 
 
 export default function VideoDetailPage({videoSrc}) {
+	
 	// 새로고침 시 젤 위로 올라가는 기능
 	useEffect(() => {
 		window.onbeforeunload = function pushRefresh() {
