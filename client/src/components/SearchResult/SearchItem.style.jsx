@@ -6,6 +6,7 @@ export const SearchThumbNail = styled.img`
   height: 200px;
   border-radius: 10px;
   border: 1px solid black;
+  margin-right: 36px;
 `;
 
 // 영상 제목
@@ -20,6 +21,7 @@ export const SearchResultCount = styled.div`
   font-family: "NanumSquareRound";
   font-size: 8px;
   color: #6c6c6c;
+  margin-bottom: 10px;
 `;
 
 // 내용
@@ -27,6 +29,7 @@ export const SearchResultContent = styled.div`
   font-family: "NanumSquareRound";
   font-size: 8px;
   color: #434343;
+  margin-bottom: 20px;
 `;
 
 // 유저 프로필

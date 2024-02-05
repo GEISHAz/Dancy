@@ -1,7 +1,6 @@
 import * as RP from "./ResultPage.style";
+import SearchItem from "./SearchItem";
 import { useState } from "react";
-
-const archiveVideos = [];
 
 export default function ResultPage() {
   const nickColor = { color: "#252525" };
@@ -59,13 +58,7 @@ export default function ResultPage() {
           </RP.BtnBox>
         </RP.SearchHeader>
         <RP.FeedBody>
-          {/* 여기에 비디오 목록을 표시하는 코드 추가 */}
-          {archiveVideos.map((video) => (
-            <div key={video.videoId}>
-              <p>{video.articleTitle}</p>
-              {/* 추가 필요: 썸네일 이미지 표시 */}
-            </div>
-          ))}
+          <SearchItem/>
         </RP.FeedBody>
       </RP.SearchContainer>
     </RP.SearchResultArea>

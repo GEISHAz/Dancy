@@ -105,6 +105,7 @@ export const FeedBody = styled.div`
   background-color: #ffffff;
   padding: 40px;
 
+
   overflow-y: scroll;
   &::-webkit-scrollbar {
     width: 10px;
