@@ -1,15 +1,13 @@
 import axios from 'axios';
 import { atom } from 'recoil';
 // import { recoilPersist } from 'recoil-persist';
-
 // const { persistAtom } = recoilPersist();
-// const local = local
 
 export const userState = atom({
 	key: 'userState',
 	default: {
 		token: "",
-		nickNam: "",
+		nickName: "",
 		email: "",
 		profileImageUrl: "",
 	},
