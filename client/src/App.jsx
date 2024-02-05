@@ -9,7 +9,7 @@ export const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    background-color: #fff9f6; /* 원하는 배경색으로 설정 */
+    background-color: #fff9f6;
   }
 
   /* 다른 전역 스타일 추가 가능. */
@@ -30,14 +30,11 @@ export default function App() {
   return (
     <Container>
       <GlobalStyle />
-
       <RouterProvider>
         <NavigationBar />
-
         <Content>
-          <Router /> 
+          <Router />
         </Content>
-
         <GoCreate />
         <Footer />
       </RouterProvider>

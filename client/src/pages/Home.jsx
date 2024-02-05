@@ -1,5 +1,7 @@
+import Context from '../components/Home/MainText';
+
 export default function Home() {
   return (
-    <div>Home Page</div>
+    <Context />
   )
-}
+};

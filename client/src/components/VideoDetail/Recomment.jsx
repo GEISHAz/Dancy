@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import * as R from "./Recomment.style.jsx";
+import { DropdownToggle } from "./Comment.style.jsx";
 
 const Recomments = [
 	{
@@ -44,15 +45,20 @@ const getTimeDifference = (prevDate) => {
 export default function Recomment() {
 	const [like, setLike] = useState(Recomments.map(() => false));
   const [likeCount, setLikeCount] = useState(Recomments.map(() => 0));
+	const [dropdownOpen, setDropdownOpen] = useState(Recomments.map(() => false));
 
-    const handleLike = (index) => {
-			setLike(like.map((state, i) => i === index ? !state : state))
-			if (!like[index]) {
-				setLikeCount(likeCount.map((count, i) => i === index ? count + 1 : count));
-			}	else {
-				setLikeCount(likeCount.map((count, i) => i === index ? count - 1 : count));
-			}
+	const handleLike = (index) => {
+		setLike(like.map((state, i) => i === index ? !state : state))
+		if (!like[index]) {
+			setLikeCount(likeCount.map((count, i) => i === index ? count + 1 : count));
+		}	else {
+			setLikeCount(likeCount.map((count, i) => i === index ? count - 1 : count));
 		}
+	}
+
+	const toggleDropdown = (index) => {
+		setDropdownOpen(dropdownOpen.map((state, i) => i === index ? !state : state));
+	}
 
 	return (
 		<R.RecommentContainer>
@@ -64,10 +70,13 @@ export default function Recomment() {
 							<Link to={`/profile/${recomment.username}`}>
 								<R.RecommentUserName>{recomment.username}</R.RecommentUserName>
 							</Link>
-							<R.RecommentEditDeleteArea>
-								<R.RecommentEditImage src="/src/assets/editimage.png" />
-								<R.RecommentDeleteImage src="/src/assets/deleteimage.png" />
-							</R.RecommentEditDeleteArea>
+							<DropdownToggle onClick={() => toggleDropdown(index)}>⋮</DropdownToggle>
+							{dropdownOpen[index] && (
+								<R.RecommentEditDeleteArea>
+									<R.RecommentEditImage src="/src/assets/editimage.png" />
+									<R.RecommentDeleteImage src="/src/assets/deleteimage.png" />
+								</R.RecommentEditDeleteArea>
+							)}
 						</R.RecommentUserNameArea>
 					<R.RecommentContentArea>
 						<R.RecommentContent>{recomment.content}</R.RecommentContent>
