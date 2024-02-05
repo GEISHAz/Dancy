@@ -11,6 +11,7 @@ export const RecommentContainer = styled.div`
 `
 
 export const RecommentArea = styled.div`
+  position: relative;
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -43,16 +44,30 @@ export const RecommentUserName = styled.div`
 	font-weight: 500;
 `
 
+export const DropdownToggle = styled.div`
+  position: relative;
+  cursor: pointer;
+`
+
 export const RecommentEditDeleteArea = styled.div`
-	display: flex;
+  position: absolute;
+  top: 25px;
+  right: -25px;
+  display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 10px;
   img {
     width: 16px;
     height: 18px;
   }
 `
+
+
 
 export const RecommentEditImage = styled.img`
   cursor: pointer;

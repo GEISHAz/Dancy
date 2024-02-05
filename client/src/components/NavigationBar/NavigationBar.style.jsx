@@ -121,7 +121,7 @@ export const AlertButton = styled.div`
 
   img {
     color: #252525;
-    width: 26px;
-    height: 28px;
+    width: 24px;
+    height: 26px;
   }
 `

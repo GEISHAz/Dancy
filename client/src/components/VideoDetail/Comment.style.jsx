@@ -25,6 +25,7 @@ export const CommentTitleLine = styled.hr`
 `;
 
 export const CommentArea = styled.div`
+  position: relative;
   display: flex;
   flex-direction: row;
   margin: 10px;
@@ -76,7 +77,6 @@ export const CommentEditDeleteArea = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
   background-color: white;
   border: 1px solid #ddd;
   border-radius: 20px;
@@ -95,6 +95,7 @@ export const CommentEditImage = styled.img`
 
 export const CommentDeleteImage = styled.img`
   cursor: pointer;
+  margin-left: 5px;
 `;
 
 export const CommentContentArea = styled.div`

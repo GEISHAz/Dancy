@@ -13,8 +13,6 @@ export default function Home() {
   }
 
   return (
-    <div>
-      {isLogin ? <button onClick={logoutHandler}>로그아웃</button> : <h1>Go Login</h1>}
-    </div>
+    <div>Home Page</div>
   )
-}
+};

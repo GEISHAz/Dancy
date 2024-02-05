@@ -23,12 +23,9 @@ export default function Router({ cardDetails, videoDetails }) {
         <Route path="/profile/:user_id" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/detail/:video_id" element={<VideoDetailPage />} />
-        {/* SearchResult 페이지의 라우트 추가 */}
+        <Route path="/detail/:articleId" element={<VideoDetailPage />}  />
         <Route path="/results" element={<SearchResult cardDetails={cardDetails} />} />
-        {/* UserSetting 페이지의 라우트 추가 */}
         <Route path="/setting" element={<UserSetting />} />
-        {/* FindPW 페이지의 라우트 추가 */}
         <Route path="/findpw" element={<FindMyPwd />} />
       </Routes>
     </>
