@@ -6,22 +6,31 @@ import { userState, loginState } from "../../recoil/LoginState.js";
 import { login } from "../../api/auth.js";
 
 export default function Login() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [modalTxt, setModalTxt] = useState("로그인에 성공했습니다 ♬");
+  const [isOpen, setIsOpen] = useState(false); // 모달 On/Off 관리
+  const [modalTxt, setModalTxt] = useState("로그인에 성공했습니다 ♬"); // 모달 문구 설정
   const navigate = useNavigate();
 
+  // 모달 On/Off 관리
   const openModalHandler = () => {
     setIsOpen(!isOpen);
   };
 
+  // 사용자 로그인 데이터 관리 (id, password)
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
+  const [isEmailCorrect, setIsEmailCorrect] = useState(true);
 
-  const setUser = useSetRecoilState(userState);
-  const setLogin = useSetRecoilState(loginState);
-  // const setFailLogin = useRecoilState(loginFailState);
+  const setUser = useSetRecoilState(userState); // userState에 email, token 저장
+  const setLogin = useSetRecoilState(loginState); // login유무 저장
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (e.target.name === "email") {
+      if (emailRegEx.test(e.target.value)) {
+        setIsEmailCorrect(true);
+      } else {
+        setIsEmailCorrect(false);
+    }}
   };
 
   const handleSubmit = async (e) => {
@@ -41,7 +50,6 @@ export default function Login() {
   };
 
   const handleEnter = (e) => {
-    // e.preventDefault();
     if (e.key === "Enter") {
       handleSubmit(e);
     }
@@ -71,6 +79,9 @@ export default function Login() {
             value={formData.email}
             onChange={handleChange}
           />
+          {isEmailCorrect ? null : (
+            <L.ErrorEmail>이메일 형식이 올바르지 않습니다.</L.ErrorEmail>
+          )}
         </div>
 
         {/* PW 입력란 */}

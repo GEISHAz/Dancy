@@ -60,6 +60,14 @@ export const InputBox = styled.input`
   }
 `;
 
+export const ErrorEmail = styled.div`
+  height: 0;
+  color: #c00000;
+  font-family: 'NYJ Gothic L';
+  font-size: 12px;
+  text-align: end;
+`
+
 export const AutoLoginChkBox = styled.input.attrs({ 
   type: 'checkbox' })`
 	accent-color: #ff919a;
