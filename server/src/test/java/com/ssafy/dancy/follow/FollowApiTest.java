@@ -3,7 +3,10 @@ package com.ssafy.dancy.follow;
 import com.ssafy.dancy.ApiTest;
 import com.ssafy.dancy.CommonDocument;
 import com.ssafy.dancy.auth.AuthSteps;
+import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
+import com.ssafy.dancy.repository.follow.FollowRepository;
+import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +19,8 @@ import java.util.Set;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class FollowApiTest extends ApiTest {
 
@@ -25,27 +30,36 @@ public class FollowApiTest extends ApiTest {
     private AuthSteps authSteps;
     @Autowired
     private UserService userService;
+    @Autowired
+    private FollowRepository followRepository;
+    @Autowired
+    private UserRepository userRepository;
+
     private SignUpRequest signUpRequest;
     private SignUpRequest opponentSignUpRequest;
+    private SignUpRequest otherSignupRequest;
 
     @BeforeEach
     void settings(){
         signUpRequest = authSteps.회원가입정보_생성();
         opponentSignUpRequest = authSteps.상대방회원가입정보_생성();
+//        otherSignupRequest = authSteps.삼자회원가입정보_생성();
         userService.signup(signUpRequest, Set.of(Role.USER));
         userService.signup(opponentSignUpRequest, Set.of(Role.USER));
+//        userService.signup(otherSignupRequest, Set.of(Role.USER));
     }
 
     @Test
     void 팔로잉_조회_성공_200(){
 
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        팔로우_진행(token);
+        팔로우_진행(token, opponentSignUpRequest.nickname());
+//        팔로우_진행(token, otherSignupRequest.nickname());
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH, "특정 계정의 팔로잉 정보를 조회하는 API 입니다." +
                         "<br>존재하는 닉네임을 입력했을 경우, 200 OK 와 함께 그 계정의 팔로잉한 유저 정보를 조회할 수 있습니다." +
-                        "<br>존재하지 않는 계정 닉네임을 입력했을 경우 ,404 Not Found 와 함께 에러 메세지를 반환받습니다.",
+                                "<br>존재하지 않는 계정 닉네임을 입력했을 경우 ,404 Not Found 와 함께 에러 메세지를 반환받습니다.",
                         "팔로잉 정보 조회",
                         FollowDocument.nicknamePathField, FollowDocument.followInfoListResponseField))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -78,7 +92,7 @@ public class FollowApiTest extends ApiTest {
     void 팔로우_조회(){
 
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        팔로우_진행(token);
+        팔로우_진행(token, opponentSignUpRequest.nickname());
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH, "특정 계정의 팔로워 정보를 조회하는 API 입니다." +
@@ -100,7 +114,7 @@ public class FollowApiTest extends ApiTest {
     @Test
     void 팔로우_조회_닉네임없음_404(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        팔로우_진행(token);
+        팔로우_진행(token, opponentSignUpRequest.nickname());
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH,
@@ -141,6 +155,12 @@ public class FollowApiTest extends ApiTest {
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .log().all().extract();
+
+        User opponentUser = userRepository.findByNickname(opponentSignUpRequest.nickname()).get();
+        User fromUser = userRepository.findByEmail(signUpRequest.email()).get();
+
+        assertThat(opponentUser.getFollowerCount()).isEqualTo(1);
+        assertThat(fromUser.getFollowingCount()).isEqualTo(1);
     }
 
     @Test
@@ -180,7 +200,7 @@ public class FollowApiTest extends ApiTest {
     void 언팔로우(){
 
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        팔로우_진행(token);
+        팔로우_진행(token, opponentSignUpRequest.nickname());
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH, "언팔로우를 진행하는 API 입니다." +
@@ -199,12 +219,18 @@ public class FollowApiTest extends ApiTest {
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .log().all().extract();
+
+        User opponentUser = userRepository.findByNickname(opponentSignUpRequest.nickname()).get();
+        User fromUser = userRepository.findByEmail(signUpRequest.email()).get();
+
+        assertThat(opponentUser.getFollowerCount()).isEqualTo(0);
+        assertThat(fromUser.getFollowingCount()).isEqualTo(0);
     }
 
     @Test
     void 언팔로우_토큰없음_401(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        팔로우_진행(token);
+        팔로우_진행(token, opponentSignUpRequest.nickname());
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH))
@@ -238,12 +264,12 @@ public class FollowApiTest extends ApiTest {
                 .log().all().extract();
     }
 
-    void 팔로우_진행(String token) {
+    void 팔로우_진행(String token, String nickname) {
 
         given(this.spec)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", token)
-                .body(followSteps.팔로우_정보_생성(opponentSignUpRequest.nickname()))
+                .body(followSteps.팔로우_정보_생성(nickname))
                 .when()
                 .post("/follow/request-follow")
                 .then()

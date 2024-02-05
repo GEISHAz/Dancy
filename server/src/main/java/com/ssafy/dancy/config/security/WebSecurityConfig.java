@@ -65,6 +65,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/comment/**").hasRole("USER")
                         .requestMatchers("/like/article-like/**").hasRole("USER")
                         .requestMatchers("/like/comment-like/**").hasRole("USER")
+                        .requestMatchers("/mypage/**").hasRole("USER")
                         .anyRequest().permitAll())
                 .exceptionHandling(config ->
                         config.authenticationEntryPoint(authenticationEntryPoint()).
