@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import ProfileImgDefault from "../../../assets/ProfileImgDefault.png";
+import ProfileImgDefault from "../../../assets/profileIntro/ProfileImgDefault.png";
+import settingBtn from "../../../assets/profileIntro/settingBtn.png";
 
 export const ProfileIntroBox = styled.div`
 	width: 320px;
@@ -36,9 +37,22 @@ export const ProfileImg = styled.div`
 	align-self: center;
 `
 
+export const UserWrap = styled.div`
+	display: flex;
+	align-items: center;
+	column-gap: 15px;
+`
+
 export const UserName = styled.div`
 	font-family: 'NYJ Gothic B';
 	font-size: 30px;
+`
+
+export const SettingBtn = styled.button`
+	width: 24px;
+	height: 24px;
+	background-image: url(${settingBtn});
+	background-size: cover;
 `
 
 export const FollowBox = styled.div`

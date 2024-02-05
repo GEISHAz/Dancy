@@ -1,40 +1,70 @@
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import * as P from './ProfileIntroduct.style';
+import FollowModal from './FollowModal';
 
 
 export default function ProfileIntroduct({Profile}) {
 	const followBtnStyle = {
 		backgroundColor: Profile.followed ? '#AABBFF' : '#898989',
 	}
+
+	const [isOpen, setIsOpen] = useState(false);
+	const [isFollower, setFollower] = useState(true);
+	const getData = childData => {
+		setIsOpen(childData);
+	};
+
+  const modalHandler = (what) => {
+    if (what === 'follower') {
+      setFollower(true)
+    } else if (what === 'following'){
+      setFollower(false)
+    }
+    setIsOpen(true)
+  }
+
+  const followerData = Profile.follower
+  const followingData = Profile.following
+
 	return (
-		<P.ProfileIntroBox>
-			<P.ProfileRound>
-				<P.ProfileImg />
-			</P.ProfileRound>
-			
-			<P.UserName>{Profile.nickName}</P.UserName>
-			
-			<P.FollowBox>
-				<div>
-					<P.FollowTitle>팔로워</P.FollowTitle>
-					<P.FollowNum>{Profile.follower}</P.FollowNum>
-				</div>
+    <>
+      {isOpen && (<FollowModal isFollower={isFollower} getData={getData} Profile={isFollower ? followerData : followingData} />)}
+      
+      <P.ProfileIntroBox>
+        <P.ProfileRound>
+          <P.ProfileImg />
+        </P.ProfileRound>
+        
+        <P.UserWrap>
+          <P.UserName>{Profile.nickName}</P.UserName>
+          <Link to='/setting'><P.SettingBtn /></Link>
+        </P.UserWrap>
 
-				<div>
-					<P.FollowTitle>팔로잉</P.FollowTitle>
-					<P.FollowNum>{Profile.following}</P.FollowNum>
-				</div>
-			</P.FollowBox>
+        
+        <P.FollowBox>
+          <div onClick={() => modalHandler('follower')}>
+            <P.FollowTitle>팔로워</P.FollowTitle>
+            <P.FollowNum>{Profile.follower.length}</P.FollowNum>
+          </div>
 
-			<P.FollowBtn style={followBtnStyle}>
-				{Profile.followed ? '팔로우' : '팔로잉'}
-			</P.FollowBtn>
+          <div onClick={() => modalHandler('following')}>
+            <P.FollowTitle>팔로잉</P.FollowTitle>
+            <P.FollowNum>{Profile.following.length}</P.FollowNum>
+          </div>
+        </P.FollowBox>
 
-			<P.Hr />
+        <P.FollowBtn style={followBtnStyle}>
+          {Profile.followed ? '팔로우' : '팔로잉'}
+        </P.FollowBtn>
 
-			<P.IntroTxtBox>
-				<P.IntroTitle>소개글</P.IntroTitle>
-				<P.IntroTxt>{Profile.introduceText}</P.IntroTxt>
-			</P.IntroTxtBox>
-		</P.ProfileIntroBox>
+        <P.Hr />
+
+        <P.IntroTxtBox>
+          <P.IntroTitle>소개글</P.IntroTitle>
+          <P.IntroTxt>{Profile.introduceText}</P.IntroTxt>
+        </P.IntroTxtBox>
+      </P.ProfileIntroBox>
+    </>
 	)
 }
