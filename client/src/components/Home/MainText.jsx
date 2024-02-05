@@ -3,6 +3,7 @@ import { Context, DancyLogo, Text1 } from "./MainText.style";
 
 export default function Main() {
   const ref = useRef();
+  const context = useRef();
   const logo = useRef();
 	const text1 = useRef();
 
@@ -11,6 +12,12 @@ export default function Main() {
       ref.current.classList.add("show");
     }
   }, []);
+
+  const handleContextLoad = () => {
+    if (context.current) {
+      context.current.classList.add("show");
+    } 
+  }
 
   const handleLogoLoad = () => {
     if (logo.current) {
@@ -26,7 +33,7 @@ export default function Main() {
 
   return (
     <>
-      <Context ref={ref} src="/src/assets/title.png" />
+      <Context ref={context} src="/src/assets/title.png" onLoad={handleContextLoad} />
       <DancyLogo ref={logo} src="/src/assets/DancyLogo.png" onLoad={handleLogoLoad}/>
 			<Text1 ref={text1} src="/src/assets/text1.png" onLoad={handletext1} />
     </>

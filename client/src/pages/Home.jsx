@@ -1,6 +1,7 @@
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { loginState } from '../recoil/LoginState.js';
 import { logout } from '../api/auth.js'
+import MainPage from '../components/Home/MainText.jsx'
 
 export default function Home() {
 
@@ -13,6 +14,6 @@ export default function Home() {
   }
 
   return (
-    <div>Home Page</div>
+    <MainPage />
   )
 };

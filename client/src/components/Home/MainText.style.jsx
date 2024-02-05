@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Context = styled.img`
-	position: relative;
+	position: absolute;
   opacity: 0;
 	top: 100px;
 	left: 100px;
@@ -38,7 +38,7 @@ export const Text1 = styled.img`
   transform: translateX(-200px);
 
   &.show {
-    opacity: 1;
+    opacity: 2;
     transform: translateX(0);
   }
 `
