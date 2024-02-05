@@ -2,6 +2,8 @@ import * as P from './ProfileFeed.style'
 import { useState } from 'react'
 import VideoList from './VideoList'
 import NoVideo from './NoVideo'
+import { useRecoilValue } from 'recoil'
+import { userState } from '../../../recoil/LoginState'
 
 const uploadVideos = [
   // {
@@ -110,6 +112,8 @@ const archiveVideos = [
 ]
 
 export default function ProfileFeed ({Profile}) {
+  const user = useRecoilValue(userState)
+
   const nickColor = {color: '#252525'}
 
 	const [isUpload, setIsUpload] = useState(true)
@@ -131,7 +135,7 @@ export default function ProfileFeed ({Profile}) {
 	return (
 		<P.FeedContainer>
 			<P.FeedHeader>
-				<P.Archive><b style={nickColor}>{Profile.nickName}</b>님의 아카이브</P.Archive>
+				<P.Archive><b style={nickColor}>{user.nickname}</b>님의 아카이브</P.Archive>
 
         <P.BtnBox>
           <P.BtnContainer>

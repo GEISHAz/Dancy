@@ -19,3 +19,11 @@ export const privateApi = axios.create({
     'AUTH-TOKEN': `${localStorage.getItem('token')}`,
   },
 });
+
+privateApi.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers['AUTH-TOKEN'] = `${token}`;
+  }
+  return config;
+});

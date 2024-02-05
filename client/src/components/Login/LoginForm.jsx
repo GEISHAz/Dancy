@@ -46,8 +46,8 @@ export default function Login() {
   
       // 로그인 이후 user 정보를 가져옴
       const userDetailsData = await userDetails();
-      console.log("User Details:", userDetailsData);
-      // setUserInfo(userDetailsData.userInfo)
+      console.log("User Details:", userDetailsData.userInfo);
+      setUserInfo(userDetailsData.userInfo)
     } catch (error) {
       console.error("Login Error:", error);
       const errorMsg = error.response?.data[0]?.message || "An error occurred";
