@@ -47,9 +47,9 @@ public class Comment {
     @ManyToOne(optional = false)
     private Article article;
 
-    @ColumnDefault("-1")
+    @ColumnDefault("0")
     @Column(nullable = false)
     @Builder.Default
-    private Long parentId = -1L;
+    private Long parentId = 0L;
 
 }

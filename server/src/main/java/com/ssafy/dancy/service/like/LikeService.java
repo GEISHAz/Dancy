@@ -5,7 +5,7 @@ import com.ssafy.dancy.exception.article.ArticleNotFoundException;
 import com.ssafy.dancy.exception.comment.CommentNotFoundException;
 import com.ssafy.dancy.message.response.LikeResponse;
 import com.ssafy.dancy.message.response.ArticleLikeResponse;
-import com.ssafy.dancy.message.response.CommentLikeResponse;
+import com.ssafy.dancy.message.response.comment.CommentLikeResponse;
 import com.ssafy.dancy.repository.ArticleRepository;
 import com.ssafy.dancy.repository.CommentLikeRepository;
 import com.ssafy.dancy.repository.CommentRepository;
