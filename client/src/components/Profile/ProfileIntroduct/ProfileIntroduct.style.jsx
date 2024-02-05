@@ -28,14 +28,16 @@ export const ProfileRound = styled.div`
 	justify-content: center;
 `
 
-export const ProfileImg = styled.div`
+export const ProfileImg = styled.img.attrs(({ src }) => ({
+  src: src || ProfileImgDefault , alt: 'logo'
+}))`
 	width: 150px;
 	height: 150px;
 	border-radius: 50%;
-	background-image: url(${ProfileImgDefault});
-  background-size: contain;
 	align-self: center;
-`
+  `
+	/* background-image: url(${ProfileImgDefault}); */
+  /* background-size: contain; */
 
 export const UserWrap = styled.div`
 	display: flex;

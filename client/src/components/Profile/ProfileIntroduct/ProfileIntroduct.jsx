@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as P from './ProfileIntroduct.style';
 import FollowModal from './FollowModal';
+import { useRecoilValue } from 'recoil';
+import { userState } from "../../../recoil/LoginState.js";
 
 
 export default function ProfileIntroduct({Profile}) {
+  const user = useRecoilValue(userState)
+
 	const followBtnStyle = {
 		backgroundColor: Profile.followed ? '#AABBFF' : '#898989',
 	}
@@ -33,11 +37,12 @@ export default function ProfileIntroduct({Profile}) {
       
       <P.ProfileIntroBox>
         <P.ProfileRound>
-          <P.ProfileImg />
+          <P.ProfileImg src={user.profileImageUrl} />
+          {/* <P.ProfileImg onClick={testHandle} /> */}
         </P.ProfileRound>
         
         <P.UserWrap>
-          <P.UserName>{Profile.nickName}</P.UserName>
+          <P.UserName>{user.nickname}</P.UserName>
           <Link to='/setting'><P.SettingBtn /></Link>
         </P.UserWrap>
 
@@ -62,7 +67,7 @@ export default function ProfileIntroduct({Profile}) {
 
         <P.IntroTxtBox>
           <P.IntroTitle>소개글</P.IntroTitle>
-          <P.IntroTxt>{Profile.introduceText}</P.IntroTxt>
+          <P.IntroTxt>{user.introduceText}</P.IntroTxt>
         </P.IntroTxtBox>
       </P.ProfileIntroBox>
     </>
