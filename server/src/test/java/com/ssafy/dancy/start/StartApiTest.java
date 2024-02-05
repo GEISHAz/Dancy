@@ -40,8 +40,6 @@ public class StartApiTest extends ApiTest {
     @Test
     void start_테스트(){
         given(this.spec)
-                .filter(document(DEFAULT_RESTDOC_PATH, "시작 테스트 입니다.",
-                        "시작 API", StartDocument.startResponseField))
                 .when()
                 .get("/start/hello")
                 .then()

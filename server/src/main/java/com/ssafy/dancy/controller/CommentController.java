@@ -10,13 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.NoPermissionException;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comment")
-public class CommentControlloer {
+public class CommentController {
 
     private final CommentService commentService;
 
@@ -33,12 +34,12 @@ public class CommentControlloer {
 
     @PutMapping("/{commentId}")
     public void modifyComment(@AuthenticationPrincipal User user,  @PathVariable Long commentId,
-                              @RequestBody String content) {
-        commentService.updateComment(commentId,content);
+                              @RequestBody String content)  {
+        commentService.updateComment(user,commentId,content);
     }
 
     @DeleteMapping("/{commentId}")
     public void removeComment(@AuthenticationPrincipal User user,  @PathVariable Long commentId) {
-        commentService.deleteComment(commentId);
+        commentService.deleteComment(user,commentId);
     }
 }

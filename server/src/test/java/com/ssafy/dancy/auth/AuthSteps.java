@@ -1,6 +1,7 @@
 package com.ssafy.dancy.auth;
 
 import com.ssafy.dancy.message.request.auth.ChangePasswordRequest;
+import com.ssafy.dancy.message.request.auth.FindPasswordRequest;
 import com.ssafy.dancy.message.request.auth.LoginUserRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.message.request.user.UserDeleteRequest;
@@ -15,8 +16,13 @@ import org.springframework.stereotype.Component;
 public class AuthSteps {
 
     public static final String email = "ndw8200@naver.com";
+    public static final String opponentemail = "allmin9702@naver.com";
+    public static final String otherEmail = "zetta_byte@naver.com";
     public static final String nickname = "dongw";
+    public static final String opponentnickname = "maino";
+    public static final String otherNickname = "whalesbob";
     public static final String password = "Test1122!";
+    public static final String opponentpassword = "tlqkf1122!";
     public static final String newPassword = "Asdf1234!!";
     public static final String wrongPassword = "asdfasdf";
     public static final String birthDate = "2000-01-01";
@@ -38,10 +44,30 @@ public class AuthSteps {
                 .build();
     }
 
+
+    public SignUpRequest 상대방회원가입정보_생성(){
+
+        return SignUpRequest.builder()
+                .email(opponentemail)
+                .nickname(opponentnickname)
+                .password(opponentpassword)
+                .gender(gender)
+                .birthDate(birthDate)
+                .authType(authType)
+                .build();
+    }
+
     public static LoginUserRequest 로그인요청생성(){
         return LoginUserRequest.builder()
                 .email(email)
                 .password(password)
+                .build();
+    }
+
+    public static LoginUserRequest 로그인요청_잘못된정보생성(){
+        return LoginUserRequest.builder()
+                .email(email)
+                .password(wrongPassword)
                 .build();
     }
 
@@ -92,6 +118,18 @@ public class AuthSteps {
     public UserDeleteRequest 회원탈퇴_유저_잘못된_비밀번호(){
         return UserDeleteRequest.builder()
                 .password(newPassword)
+                .build();
+    }
+
+    public FindPasswordRequest 비밀번호_찾기_새비밀번호_생성(){
+        return FindPasswordRequest.builder()
+                .newPassword(newPassword)
+                .build();
+    }
+
+    public FindPasswordRequest 비밀번호_찾기_비밀번호형식_미준수(){
+        return FindPasswordRequest.builder()
+                .newPassword(wrongPassword)
                 .build();
     }
 }

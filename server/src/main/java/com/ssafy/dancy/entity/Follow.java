@@ -1,10 +1,6 @@
 package com.ssafy.dancy.entity;
 
-import com.ssafy.dancy.entity.PK.FollowPK;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -13,15 +9,17 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(FollowPK.class)
+
 public class Follow {
 
     @Id
-    @ManyToOne
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long followId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private User fromUser;
 
-    @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User toUser;
 
 }

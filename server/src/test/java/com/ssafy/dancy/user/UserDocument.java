@@ -1,6 +1,5 @@
 package com.ssafy.dancy.user;
 
-import org.mockito.exceptions.verification.SmartNullPointerException;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 
@@ -23,7 +22,7 @@ public class UserDocument {
                     .description("성별입니다. MALE/FEMALE 중 하나로만 입력해야 합니다."),
             partWithName("authType").attributes(required())
                     .description("인증 타입입니다. KAKAO, NAVER, GOOGLE, DANCY 를 제외한 인증 타입은 존재하지 않습니다."),
-            partWithName("profileImage").description("프로필에 등록하는 이미지 파일들입니다. 한 장 등록할 수 있습니다.")
+            partWithName("profileImage").attributes().description("프로필에 등록하는 이미지 파일들입니다. 한 장 등록할 수 있습니다.")
     );
 
     public static final Snippet nicknamePathField = pathParameters(

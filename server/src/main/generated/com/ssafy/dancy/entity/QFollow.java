@@ -22,6 +22,8 @@ public class QFollow extends EntityPathBase<Follow> {
 
     public static final QFollow follow = new QFollow("follow");
 
+    public final NumberPath<Long> followId = createNumber("followId", Long.class);
+
     public final QUser fromUser;
 
     public final QUser toUser;

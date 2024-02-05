@@ -24,6 +24,8 @@ public class QCommentLike extends EntityPathBase<CommentLike> {
 
     public final QComment comment;
 
+    public final NumberPath<Long> commentLikeId = createNumber("commentLikeId", Long.class);
+
     public final QUser user;
 
     public QCommentLike(String variable) {

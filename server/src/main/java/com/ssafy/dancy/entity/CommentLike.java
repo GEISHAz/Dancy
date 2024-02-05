@@ -1,6 +1,6 @@
 package com.ssafy.dancy.entity;
 
-import com.ssafy.dancy.entity.PK.CommentLikePK;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,17 +8,30 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(CommentLikePK.class)
+
 @Getter
 @Setter
 public class CommentLike {
 
     @Id
-    @ManyToOne
-    private Comment comment;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long commentLikeId;
 
-    @Id
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    private Comment comment;
+
+
+
+    @PrePersist
+    private void preMakingCommentLike() {
+        this.comment.setCommentLike(this.comment.getCommentLike() + 1);
+    }
+
+    @PreRemove
+    private void preRemovingCommentLike() {
+        this.comment.setCommentLike(this.comment.getCommentLike() - 1);
+    }
 }
