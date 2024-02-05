@@ -19,3 +19,13 @@ export const login = async (formData) => {
     throw error;
   }
 };
+
+export const logout = async () => {
+  try {
+    localStorage.removeItem("token")
+  } catch (error) {
+    console.error("로그아웃 에러:", error);
+    window.alert(error.message)
+    throw error;
+  }
+}

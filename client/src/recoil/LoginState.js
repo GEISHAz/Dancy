@@ -21,3 +21,8 @@ export const loginState = atom({
 	default: localStorage.getItem("token") ? true : false,
 	// effects_UNSTABLE: [persistAtom],
 })
+
+// export const loginFailState = atom({
+//   key: 'loginFail',
+//   default: { failCnt: 0 }
+// })
