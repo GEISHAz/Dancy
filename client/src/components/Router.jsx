@@ -8,10 +8,7 @@ import Profile from "../pages/Profile";
 import Login from "./Login/LoginForm";
 import SignUp from "../pages/SignUp";
 import SearchResult from "../pages/SearchResult";
-<<<<<<< HEAD
 import VideoDetailPage from "../pages/VideoDetailPage";
-=======
-import VideoDetail from "../pages/VideoDetail";
 import UserSetting from "../pages/UserSetting";
 import FindMyPwd from "../pages/FindMyPwd";
 
@@ -29,11 +26,6 @@ export default function Router({ cardDetails, videoDetails }) {
         <Route path="/detail/:video_id" element={<VideoDetailPage />} />
         {/* SearchResult 페이지의 라우트 추가 */}
         <Route path="/results" element={<SearchResult cardDetails={cardDetails} />} />
-        {/* VideoDetail 페이지의 라우트 추가 */}
-<<<<<<< HEAD
-        <Route path="/detail" element={<VideoDetailPage />} />
-=======
-        <Route path="/detail" element={<VideoDetail />} />
         {/* UserSetting 페이지의 라우트 추가 */}
         <Route path="/setting" element={<UserSetting />} />
         {/* FindPW 페이지의 라우트 추가 */}
