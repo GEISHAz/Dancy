@@ -26,12 +26,12 @@ export const privateApi = axios.create({
   headers: {
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
 });
 
 privateApi.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
+  const token = localStorage.getItem('token');
   config.headers.Authorization = 'Bearer ' + token;
 
   return config;
