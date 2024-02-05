@@ -46,6 +46,7 @@ def compare_video(music_name, sync_frame):
 
     # cap = cv2.VideoCapture(os.path.join(video_path, target_video))
     cap = cv2.VideoCapture(f"./dataset/video/{music_name}_prac.mp4")  # 비디오 한장 캡쳐
+    cap_gt = cv2.VideoCapture(f"./dataset/video/{music_name}_gt.mp4")
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # 비디오 형식 정하기
     fps = cap.get(cv2.CAP_PROP_FPS)  # 비디오 캡쳐 프레임 속도 가져오기
 
@@ -102,7 +103,7 @@ def compare_video(music_name, sync_frame):
         i = 0
         # 비디오 저장할 곳, 형식, 프레임,크기 설정
         while cap.isOpened():
-
+            ret_gt, frame_gt = cap_gt.read()  # GT 비디오에서 1프레임 읽기
             ret, frame = cap.read()
 
             if ret is False: break
@@ -111,9 +112,11 @@ def compare_video(music_name, sync_frame):
             # get frame time and FPS
             # frame_time = cap.get(cv2.CAP_PROP_POS_MSEC)
             resize_frame = cv2.resize(frame, dsize=prac_resize, fx=1, fy=1, interpolation=cv2.INTER_LINEAR)
+            gt_frame_resized = cv2.resize(frame_gt, dsize=prac_resize, fx=1, fy=1, interpolation=cv2.INTER_LINEAR)
 
             # Recolor image to RGB
             image = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)
+            image_gt = cv2.cvtColor(gt_frame_resized, cv2.COLOR_BGR2RGB)
             image.flags.writeable = False
 
             # Make detection
@@ -137,8 +140,7 @@ def compare_video(music_name, sync_frame):
                 prac_temp = prac_temp[1:]
             prac_temp.append(keypoints)
 
-            with open(os.path.join(key_path, gt_path,
-                                   f'{max(int(i * match_frame + sync_frame), 0):0>4}.json')) as json_file:
+            with open(os.path.join(key_path, gt_path,f'{max(int(i * match_frame + sync_frame), 0):0>4}.json')) as json_file:
                 gt_json = json.load(json_file)
 
             if i % (compare_frame) == 0:
@@ -152,11 +154,20 @@ def compare_video(music_name, sync_frame):
 
                 total_eval = [[] for _ in range(len(prac) + 1)]
                 total_eval_diff = [[] for _ in range(len(prac))]
+
                 for j in range(s_p, e_p, 1):
-                    with open(os.path.join(key_path, gt_path, f'{j:0>4}.json')) as json_file:
-                        gt_temp = json.load(json_file)
-                    with open(os.path.join(key_path, gt_path, f'{j - before_frame:0>4}.json')) as json_file:
-                        displace_gt_temp = json.load(json_file)
+                    try:
+                        with open(os.path.join(key_path, gt_path, f'{j:0>4}.json')) as json_file:
+                            gt_temp = json.load(json_file)
+                        with open(os.path.join(key_path, gt_path, f'{j - before_frame:0>4}.json')) as json_file:
+                            displace_gt_temp = json.load(json_file)
+                    except FileNotFoundError:
+                        print(f"Warning: JSON file not found for frame {j}. Skipping...")
+                        continue
+                    except Exception as e:
+                        print(f"Error loading JSON file for frame {j}: {e}")
+                        break
+
                     gt = gt_video.extract_vec_norm_by_small_part(gt_temp)
                     gt_displace_prac = prac_video.extract_vec_norm_by_small_part_diff(displace_gt_temp, gt_temp)
 
@@ -202,7 +213,8 @@ def compare_video(music_name, sync_frame):
 
             array = (np.zeros((gt_inform['frame_height'], gt_inform['frame_width'], 3)) + 255).astype(np.uint8)
             prac_image = prac_video.visual_back_color(image, keypoints, eval_metric)
-            gt_image = gt_video.visual_back_color(array, gt_json, eval_metric)
+            # gt_image = gt_video.visual_back_color(array, gt_json, eval_metric)
+            gt_image = gt_video.visual_back_color(image_gt, gt_json, eval_metric)#
 
             # 두개의 이미지 하나는 스켈레톤, 하나는 연습영상에 스켈레톤 씌워진것을 가로로 병합하는 코드
             image = cv2.hconcat([gt_image, prac_image])
@@ -216,8 +228,14 @@ def compare_video(music_name, sync_frame):
             # :] = imcolor
 
             # 각 이미지에 GT와 정확도 숫자를 표기하는 코드
-            cv2.putText(image, str(int(fps)), (70, 50), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 0), 3)  # FPS 삽입
-            cv2.putText(image, 'GT', (gt_inform['frame_width'] // 2 - 25, 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 3)
+            cv2.putText(image, str(int(fps)), (70, 50), cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 0, 0), 2)  # FPS 삽입
+            cv2.putText(image, 'origin', (gt_inform['frame_width'] // 2 - 25, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 2)
+
+            frames_to_average = 2  # 평균을 내기 위한 프레임 수
+            last_frames_accuracy = eval_graph_y[-1][-frames_to_average:]  # 마지막 30프레임 동안의 정확도 값들
+            average_accuracy = np.mean(last_frames_accuracy)  # 마지막 30프레임 동안의 평균 정확도 계산
+            cv2.putText(image, f'Accuracy: {average_accuracy:.4f}',
+                        (70, 100 + 30 * len(small_name)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
             # 시간이지남에 따라 이미지 frame+1 하는 코드
             i = i + 1
