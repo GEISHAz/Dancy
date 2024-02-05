@@ -60,6 +60,9 @@ public class WebSecurityConfig {
                         .requestMatchers("/auth/password/find").hasRole("USER")
                         .requestMatchers("/follow/request-follow").hasRole("USER")
                         .requestMatchers("/follow/request-unfollow").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/comment/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/comment/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/comment/**").hasRole("USER")
                         .anyRequest().permitAll())
                 .exceptionHandling(config ->
                         config.authenticationEntryPoint(authenticationEntryPoint()).

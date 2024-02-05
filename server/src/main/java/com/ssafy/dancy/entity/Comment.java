@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Builder
@@ -52,4 +53,16 @@ public class Comment {
     @Builder.Default
     private Long parentId = 0L;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return Objects.equals(commentId, comment.commentId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(commentId);
+    }
 }
