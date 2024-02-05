@@ -3,7 +3,9 @@ package com.ssafy.dancy.service.comment;
 import com.ssafy.dancy.entity.Article;
 import com.ssafy.dancy.entity.Comment;
 import com.ssafy.dancy.entity.User;
+import com.ssafy.dancy.exception.user.NotHavingPermissionException;
 import com.ssafy.dancy.exception.article.ArticleNotFoundException;
+import com.ssafy.dancy.exception.comment.CommentNotFoundException;
 import com.ssafy.dancy.message.request.CommentRequestDto;
 import com.ssafy.dancy.repository.ArticleRepository;
 import com.ssafy.dancy.repository.CommentRepository;
@@ -41,13 +43,25 @@ public class CommentService {
     }
 
     @Transactional
-    public void updateComment(long commentId, String content) {
-        Comment comment = commentRepository.findByCommentId(commentId);
+    public void updateComment(User user, long commentId, String content) {
+        Comment comment = commentRepository.findByCommentId(commentId).orElseThrow(
+                () -> new CommentNotFoundException("존재하지 않는 댓글입니다."));
+        if(!comment.getUser().equals(user)){
+            throw new NotHavingPermissionException("작성자만이 수정가능합니다.");
+        }
+
         comment.setCommentContent(content);
     }
 
 
-    public void deleteComment(long commentId) {
-        commentRepository.delete(commentRepository.findByCommentId(commentId));
+    public void deleteComment(User user,long commentId) {
+        Comment comment = commentRepository.findByCommentId(commentId).orElseThrow(
+                () -> new CommentNotFoundException("존재하지 않는 댓글입니다."));
+
+        if(!comment.getUser().equals(user)){
+            throw new NotHavingPermissionException("작성자만이 수정가능합니다.");
+        }
+
+        commentRepository.delete(comment);
     }
 }

@@ -61,9 +61,11 @@ public class ApiTest {
         }
 
         databaseCleanup.truncateAllTables();
-        Mockito.doReturn(true).when(redisTemplate).hasKey(anyString());
+        Mockito.doReturn(false).when(redisTemplate).hasKey(matches("^BLOCK:"));
+        Mockito.doReturn(true).when(redisTemplate).hasKey(matches("^(?!BLOCK:)"));
         Mockito.doReturn(mockValueOp).when(redisTemplate).opsForValue();
-        Mockito.when(redisTemplate.opsForValue().get(anyString())).thenReturn("123456");
+        Mockito.when(redisTemplate.opsForValue().get(matches("^WRONG:"))).thenReturn("1");
+        Mockito.when(redisTemplate.opsForValue().get(matches("^(?!WRONG:)"))).thenReturn("123456");
         Mockito.doNothing().when(mockValueOp).set(anyString(), anyString(), anyLong(), any());
         Mockito.when(redisTemplate.delete(anyString())).thenReturn(true);
         Mockito.doNothing().when(mailSender).send(any(SimpleMailMessage.class));

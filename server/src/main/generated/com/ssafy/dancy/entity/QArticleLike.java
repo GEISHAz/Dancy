@@ -24,6 +24,8 @@ public class QArticleLike extends EntityPathBase<ArticleLike> {
 
     public final QArticle article;
 
+    public final NumberPath<Long> articleLikeId = createNumber("articleLikeId", Long.class);
+
     public final QUser user;
 
     public QArticleLike(String variable) {

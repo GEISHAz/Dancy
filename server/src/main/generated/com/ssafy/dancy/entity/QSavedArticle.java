@@ -24,6 +24,8 @@ public class QSavedArticle extends EntityPathBase<SavedArticle> {
 
     public final QArticle article;
 
+    public final NumberPath<Long> savedArticleId = createNumber("savedArticleId", Long.class);
+
     public final QUser user;
 
     public QSavedArticle(String variable) {

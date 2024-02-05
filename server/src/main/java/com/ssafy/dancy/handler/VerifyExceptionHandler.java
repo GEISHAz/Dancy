@@ -1,10 +1,9 @@
 package com.ssafy.dancy.handler;
 
-import com.ssafy.dancy.exception.verify.EmailNotVerifiedException;
-import com.ssafy.dancy.exception.verify.VerifyCodeNotFoundException;
-import com.ssafy.dancy.exception.verify.VerifyCodeNotMatchException;
+import com.ssafy.dancy.exception.verify.*;
 import com.ssafy.dancy.message.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,6 +30,18 @@ public class VerifyExceptionHandler {
     @ExceptionHandler(EmailNotVerifiedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public List<ErrorResponse> emailNotVerifiedExceptionHandler(EmailNotVerifiedException e){
+        return makeErrorResponse(e, "email");
+    }
+
+    @ExceptionHandler(VerifySystemBlockException.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public List<ErrorResponse> verifySystemBlockExceptionHandler(VerifySystemBlockException e){
+        return makeErrorResponse(e, "email");
+    }
+
+    @ExceptionHandler(VerifySystemNotAuthorizedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public List<ErrorResponse> verifySystemNotAuthorizedExceptionHandler(VerifySystemNotAuthorizedException e){
         return makeErrorResponse(e, "email");
     }
 }
