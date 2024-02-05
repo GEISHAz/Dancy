@@ -49,6 +49,7 @@ def compare_video(music_name, sync_frame):
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # 비디오 형식 정하기
     fps = cap.get(cv2.CAP_PROP_FPS)  # 비디오 캡쳐 프레임 속도 가져오기
 
+
     # 비디오 정보
     video_inform = {
         'frame_width': int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
@@ -64,10 +65,9 @@ def compare_video(music_name, sync_frame):
     with open(os.path.join(key_path, gt_path, f'_info.json')) as json_file:
         gt_inform = json.load(json_file)  # frame_width, frame_height, video_fps, total_frame, #gt_bbox
 
-    # imcolor = cv2.imread('colormap.jpg')
-
     prac_resize = (int(video_inform['frame_width'] * gt_inform['frame_height'] / video_inform['frame_height']),
                    gt_inform['frame_height'])
+
     gt_video = metric.VideoMetric(gt_inform['frame_width'], gt_inform['frame_height'])
     prac_video = metric.VideoMetric(prac_resize[0], prac_resize[1])
 
@@ -77,6 +77,8 @@ def compare_video(music_name, sync_frame):
     print("======================================")
 
     # 비디오 정확도 이미지 관련
+
+    # imcolor = cv2.imread('colormap.jpg')
     # imcolorshape = imcolor.shape
     # imcolor = cv2.resize(imcolor, dsize=(int(imcolorshape[1] * gt_inform['frame_height'] / 2 / imcolorshape[0]), int(gt_inform['frame_height'] / 2)))
 
@@ -94,98 +96,101 @@ def compare_video(music_name, sync_frame):
     eval_graph_y = [[] for _ in range(11)]
     eval_graph_x = []
 
+    out = cv2.VideoWriter("./dataset/result/" + music_name + "_prac_analyzed.mp4", fourcc, 30,
+                          (gt_inform['frame_width']+prac_resize[0],max(gt_inform['frame_height'],prac_resize[1])))
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:  # 미디어파이프 신뢰도 설정
         i = 0
         # 비디오 저장할 곳, 형식, 프레임,크기 설정
-        if cap.isOpened():  # 연습영상이 열렸다면 실행
+        while cap.isOpened():
+
             ret, frame = cap.read()
 
-            img_h,img_w,img_c = frame.shape
+            if ret is False: break
+            if i >= gt_inform['total_frame'] - 1: break
 
-            out = cv2.VideoWriter("./dataset/result/" + music_name + "_prac_analyzed.mp4", fourcc, 30,
-                                  (img_w,img_h))
+            # get frame time and FPS
+            # frame_time = cap.get(cv2.CAP_PROP_POS_MSEC)
+            resize_frame = cv2.resize(frame, dsize=prac_resize, fx=1, fy=1, interpolation=cv2.INTER_LINEAR)
 
-            while ret is True:
-                ret, frame = cap.read()
+            # Recolor image to RGB
+            image = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)
+            image.flags.writeable = False
 
-                if not ret: break
-                if i >= gt_inform['total_frame'] - 1: break
-                cap.grab()
+            # Make detection
+            results = pose.process(image)
 
-                # get frame time and FPS
-                # frame_time = cap.get(cv2.CAP_PROP_POS_MSEC)
-                resize_frame = cv2.resize(frame, dsize=prac_resize, fx=1, fy=1, interpolation=cv2.INTER_LINEAR)
+            # Recolor back to BGR
+            image.flags.writeable = True
+            # image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-                # Recolor image to RGB
-                image = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)
-                image.flags.writeable = False
+            # Extract landmarks
+            try:
+                landmarks = results.pose_landmarks.landmark
+            except:
+                i = i + 1
+                continue
+            # Get coordinate
 
-                # Make detection
-                results = pose.process(image)
+            # save keypoints
+            keypoints = config.make_keypoints(landmarks, mp_pose, video_inform)
+            if len(prac_temp) > before_frame:
+                prac_temp = prac_temp[1:]
+            prac_temp.append(keypoints)
 
-                # Recolor back to BGR
-                image.flags.writeable = True
-                # image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+            with open(os.path.join(key_path, gt_path,
+                                   f'{max(int(i * match_frame + sync_frame), 0):0>4}.json')) as json_file:
+                gt_json = json.load(json_file)
 
-                # Extract landmarks
-                try:
-                    landmarks = results.pose_landmarks.landmark
-                except:
-                    i = i + 1
-                    continue
-                # Get coordinate
+            if i % (compare_frame) == 0:
+                s_p = max(int(i * match_frame + sync_frame) - compare_frame, before_frame)  # start point
+                e_p = min(int(i * match_frame + sync_frame) + compare_frame,
+                          gt_inform['total_frame'] - 1)  # end point
 
-                # save keypoints
-                keypoints = config.make_keypoints(landmarks, mp_pose, video_inform)
-                if len(prac_temp) > before_frame:
-                    prac_temp = prac_temp[1:]
-                prac_temp.append(keypoints)
+                # body part별로(왼다리, 오른다리, 왼팔, 오른팔, 몸통) normalize된 값 vector 추출
+                prac = prac_video.extract_vec_norm_by_small_part(keypoints)
+                prac_displace_prac = prac_video.extract_vec_norm_by_small_part_diff(prac_temp[0], keypoints)
 
-                with open(os.path.join(key_path, gt_path,
-                                       f'{max(int(i * match_frame + sync_frame), 0):0>4}.json')) as json_file:
-                    gt_json = json.load(json_file)
+                total_eval = [[] for _ in range(len(prac) + 1)]
+                total_eval_diff = [[] for _ in range(len(prac))]
+                for j in range(s_p, e_p, 1):
+                    with open(os.path.join(key_path, gt_path, f'{j:0>4}.json')) as json_file:
+                        gt_temp = json.load(json_file)
+                    with open(os.path.join(key_path, gt_path, f'{j - before_frame:0>4}.json')) as json_file:
+                        displace_gt_temp = json.load(json_file)
+                    gt = gt_video.extract_vec_norm_by_small_part(gt_temp)
+                    gt_displace_prac = prac_video.extract_vec_norm_by_small_part_diff(displace_gt_temp, gt_temp)
 
-                if i % (compare_frame) == 0:
-                    s_p = max(int(i * match_frame + sync_frame) - compare_frame, before_frame)  # start point
-                    e_p = min(int(i * match_frame + sync_frame) + compare_frame,
-                              gt_inform['total_frame'] - 1)  # end point
-
-                    # body part별로(왼다리, 오른다리, 왼팔, 오른팔, 몸통) normalize된 값 vector 추출
-                    prac = prac_video.extract_vec_norm_by_small_part(keypoints)
-                    prac_displace_prac = prac_video.extract_vec_norm_by_small_part_diff(prac_temp[0], keypoints)
-
-                    total_eval = [[] for _ in range(len(prac) + 1)]
-                    total_eval_diff = [[] for _ in range(len(prac))]
-                    for j in range(s_p, e_p, 1):
-                        with open(os.path.join(key_path, gt_path, f'{j:0>4}.json')) as json_file:
-                            gt_temp = json.load(json_file)
-                        with open(os.path.join(key_path, gt_path, f'{j - before_frame:0>4}.json')) as json_file:
-                            displace_gt_temp = json.load(json_file)
-                        gt = gt_video.extract_vec_norm_by_small_part(gt_temp)
-                        gt_displace_prac = prac_video.extract_vec_norm_by_small_part_diff(displace_gt_temp, gt_temp)
-
-                        s = 0
-                        for part in range(len(prac)):
-                            eval = metric.coco_oks(gt[part], prac[part], part) * (
-                                        metric.cosine_similar(gt[part], prac[part]) / 2 + 0.5)
-                            total_eval[part].append(eval)
-                            total_eval_diff[part].append((gt_displace_prac[part], prac_displace_prac[
-                                part]))  # metric.cosine_similar(gt_displace_prac[part], prac_displace_prac[part])/2+1)
-                            s += eval
-                        total_eval[-1].append(s / len(prac))  # 평균 계산!
-
-                    eval_graph_y[-1].append(total_eval[-1][np.argmax(total_eval[-1])])  # 평균 계산
-                    eval_graph_x.append(cap.get(cv2.CAP_PROP_POS_MSEC) / 1000)
-                    eval_metric = []
+                    s = 0
                     for part in range(len(prac)):
-                        eval_graph_y[part].append(total_eval[part][np.argmax(total_eval[part])])
-                        best_point = np.argmax(total_eval[part])
-                        worst_point = np.argmin(total_eval[part])
-                        if total_eval[part][best_point] < threshold:  # threshold
-                            eval_metric.append("NG")
+                        eval = metric.coco_oks(gt[part], prac[part], part) * (
+                                metric.cosine_similar(gt[part], prac[part]) / 2 + 0.5)
+                        total_eval[part].append(eval)
+                        total_eval_diff[part].append((gt_displace_prac[part], prac_displace_prac[
+                            part]))  # metric.cosine_similar(gt_displace_prac[part], prac_displace_prac[part])/2+1)
+                        s += eval
+                    total_eval[-1].append(s / len(prac))  # 평균 계산!
+
+                eval_graph_y[-1].append(total_eval[-1][np.argmax(total_eval[-1])])  # 평균 계산
+                eval_graph_x.append(cap.get(cv2.CAP_PROP_POS_MSEC) / 1000)
+                eval_metric = []
+                for part in range(len(prac)):
+                    eval_graph_y[part].append(total_eval[part][np.argmax(total_eval[part])])
+                    best_point = np.argmax(total_eval[part])
+                    worst_point = np.argmin(total_eval[part])
+                    if total_eval[part][best_point] < threshold:  # threshold
+                        eval_metric.append("NG")
+                    else:
+                        if np.linalg.norm(total_eval_diff[part][best_point][0]) < threshold or np.linalg.norm(
+                                total_eval_diff[part][best_point][1]) < threshold:
+                            if best_point - compare_frame - accept_frame > 0:
+                                eval_metric.append(best_point)  # .append("fast")
+                            elif best_point - compare_frame + accept_frame < 0:
+                                eval_metric.append(best_point)  # .append("slow")
+                            else:
+                                eval_metric.append(best_point)  # .append("good")
                         else:
-                            if np.linalg.norm(total_eval_diff[part][best_point][0]) < threshold or np.linalg.norm(
-                                    total_eval_diff[part][best_point][1]) < threshold:
+                            if metric.cosine_similar(total_eval_diff[part][best_point][0],
+                                                     total_eval_diff[part][best_point][1]) > 0:
                                 if best_point - compare_frame - accept_frame > 0:
                                     eval_metric.append(best_point)  # .append("fast")
                                 elif best_point - compare_frame + accept_frame < 0:
@@ -193,47 +198,38 @@ def compare_video(music_name, sync_frame):
                                 else:
                                     eval_metric.append(best_point)  # .append("good")
                             else:
-                                if metric.cosine_similar(total_eval_diff[part][best_point][0],
-                                                         total_eval_diff[part][best_point][1]) > 0:
-                                    if best_point - compare_frame - accept_frame > 0:
-                                        eval_metric.append(best_point)  # .append("fast")
-                                    elif best_point - compare_frame + accept_frame < 0:
-                                        eval_metric.append(best_point)  # .append("slow")
-                                    else:
-                                        eval_metric.append(best_point)  # .append("good")
-                                else:
-                                    eval_metric.append("NG")
+                                eval_metric.append("NG")
 
-                array = (np.zeros((gt_inform['frame_height'], gt_inform['frame_width'], 3)) + 255).astype(np.uint8)
-                prac_image = prac_video.visual_back_color(image, keypoints, eval_metric)
-                gt_image = gt_video.visual_back_color(array, gt_json, eval_metric)
+            array = (np.zeros((gt_inform['frame_height'], gt_inform['frame_width'], 3)) + 255).astype(np.uint8)
+            prac_image = prac_video.visual_back_color(image, keypoints, eval_metric)
+            gt_image = gt_video.visual_back_color(array, gt_json, eval_metric)
 
-                # 두개의 이미지 하나는 스켈레톤, 하나는 연습영상에 스켈레톤 씌워진것을 가로로 병합하는 코드
-                # image = cv2.hconcat([gt_image, prac_image])
+            # 두개의 이미지 하나는 스켈레톤, 하나는 연습영상에 스켈레톤 씌워진것을 가로로 병합하는 코드
+            image = cv2.hconcat([gt_image, prac_image])
 
-                cTime = time.time()
-                fps = 1 / (cTime - pTime)
-                pTime = cTime
+            cTime = time.time()
+            fps = 1 / (cTime - pTime)
+            pTime = cTime
 
-                # 비디오 정확도 이미지 관련
-                # image[int(imcolor.shape[0] / 2):int(imcolor.shape[0] / 2) + imcolor.shape[0], 50:50 + imcolor.shape[1],
-                # :] = imcolor
+            # 비디오 정확도 이미지 관련
+            # image[int(imcolor.shape[0] / 2):int(imcolor.shape[0] / 2) + imcolor.shape[0], 50:50 + imcolor.shape[1],
+            # :] = imcolor
 
-                # 각 이미지에 GT와 정확도 숫자를 표기하는 코드
-                # cv2.putText(image, str(int(fps)), (70, 50), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 0), 3)  # FPS 삽입
-                # cv2.putText(image, 'GT', (gt_inform['frame_width'] // 2 - 25, 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 3)
+            # 각 이미지에 GT와 정확도 숫자를 표기하는 코드
+            cv2.putText(image, str(int(fps)), (70, 50), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 0), 3)  # FPS 삽입
+            cv2.putText(image, 'GT', (gt_inform['frame_width'] // 2 - 25, 50), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 3)
 
-                # 시간이지남에 따라 이미지 frame+1 하는 코드
-                i = i + 1
+            # 시간이지남에 따라 이미지 frame+1 하는 코드
+            i = i + 1
 
-                # cv2.imshow("Mediapipe Feed", image)
-                #
-                # FRAME_WINDOW.image(image) #streamlit에서 보여주는 코드
-                out.write(prac_image)  # out을 위에 지정한 위치에 저장하는 코드
 
-                # 저장 디버그 체크
+            # FRAME_WINDOW.image(image) #streamlit에서 보여주는 코드
+            out.write(image)  # out을 위에 지정한 위치에 저장하는 코드
 
-        print("저장완료 되었습니다.")
-        print("======================================")
+            # 저장 디버그 체크
+
         cap.release()
-        out.release()
+    print("저장완료 되었습니다.")
+    print("======================================")
+
+    out.release()

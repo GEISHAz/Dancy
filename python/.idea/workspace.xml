@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0fd0e8ef-820e-4cae-8d1b-9c7cc38bf1de" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../server/src/main/java/com/ssafy/dancy/util/AwsS3Util.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../server/src/test/java/com/ssafy/dancy/user/UserApiTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/com/ssafy/dancy/config/AWSConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/com/ssafy/dancy/config/AWSConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/com/ssafy/dancy/service/user/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/com/ssafy/dancy/service/user/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/java/com/ssafy/dancy/util/FileStoreUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/java/com/ssafy/dancy/util/FileStoreUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/src/main/resources/s3.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../server/src/main/resources/s3.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/compare.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/compare.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/result/asap_prac_analyzed.mp4" beforeDir="false" afterPath="$PROJECT_DIR$/api/dataset/result/asap_prac_analyzed.mp4" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,7 +21,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="feature/user" />
+        <entry key="$PROJECT_DIR$/.." value="feature/test" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -39,19 +37,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/programming/Dancy/python&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.app.executor": "Run",
+    "Python.compare.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "BE",
+    "last_opened_file_path": "C:/programming/Dancy/python",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "configurable.group.editor",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -85,5 +87,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/python$app.coverage" NAME="app Coverage Results" MODIFIED="1707116063061" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />
+    <SUITE FILE_PATH="coverage/python$compare.coverage" NAME="compare Coverage Results" MODIFIED="1707108045858" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />
+    <SUITE FILE_PATH="coverage/python$test.coverage" NAME="test Coverage Results" MODIFIED="1707106287736" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />
   </component>
 </project>
