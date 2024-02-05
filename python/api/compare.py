@@ -47,8 +47,11 @@ def compare_video(music_name, sync_frame):
     # cap = cv2.VideoCapture(os.path.join(video_path, target_video))
     cap = cv2.VideoCapture(f"./dataset/video/{music_name}_prac.mp4")  # 비디오 한장 캡쳐
     cap_gt = cv2.VideoCapture(f"./dataset/video/{music_name}_gt.mp4")
+
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # 비디오 형식 정하기
-    fps = cap.get(cv2.CAP_PROP_FPS)  # 비디오 캡쳐 프레임 속도 가져오기
+    fps = 30
+    cap_gt.set(cv2.CAP_PROP_FPS, fps)
+    cap.set(cv2.CAP_PROP_FPS, fps)
 
 
     # 비디오 정보
@@ -108,7 +111,7 @@ def compare_video(music_name, sync_frame):
             ret_gt, frame_gt = cap_gt.read()  # GT 비디오에서 1프레임 읽기
             ret, frame = cap.read()
 
-            if ret is False: break
+            if not ret or not ret_gt: break
             if i >= gt_inform['total_frame'] - 1: break
 
             # get frame time and FPS
@@ -117,8 +120,8 @@ def compare_video(music_name, sync_frame):
             gt_frame_resized = cv2.resize(frame_gt, dsize=gt_resize, fx=1, fy=1, interpolation=cv2.INTER_LINEAR)
 
             # Recolor image to RGB
-            image = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)
-            image_gt = cv2.cvtColor(gt_frame_resized, cv2.COLOR_BGR2RGB)
+            image = cv2.cvtColor(resize_frame, cv2.IMREAD_COLOR)
+            image_gt = cv2.cvtColor(gt_frame_resized, cv2.IMREAD_COLOR)
             image.flags.writeable = False
 
             # Make detection
@@ -230,14 +233,15 @@ def compare_video(music_name, sync_frame):
             # :] = imcolor
 
             # 각 이미지에 GT와 정확도 숫자를 표기하는 코드
-            cv2.putText(image, str(int(fps)), (70, 50), cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 0, 0), 2)  # FPS 삽입
-            cv2.putText(image, 'origin', (gt_inform['frame_width'] // 2 - 25, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 2)
+            # cv2.putText(image, str(int(fps)), (70, 50), cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 0, 0), 2)  # FPS 삽입
+            # cv2.putText(image, 'origin', (gt_inform['frame_width'] // 2 - 25, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 2)
 
             frames_to_average = 2  # 평균을 내기 위한 프레임 수
             last_frames_accuracy = eval_graph_y[-1][-frames_to_average:]  # 마지막 30프레임 동안의 정확도 값들
             average_accuracy = np.mean(last_frames_accuracy)  # 마지막 30프레임 동안의 평균 정확도 계산
-            cv2.putText(image, f'Accuracy: {average_accuracy:.4f}',
-                        (70, 100 + 30 * len(small_name)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+
+            # 정확도 텍스트 추가 (FPS 텍스트 위치에)
+            cv2.putText(image, f'정확도: {average_accuracy:.4f}', (70, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
             # 시간이지남에 따라 이미지 frame+1 하는 코드
             i = i + 1
