@@ -28,19 +28,19 @@ const Content = styled.div`
 
 export default function App() {
   return (
-    <Container>
-      <GlobalStyle />
+		<Container>
+			<GlobalStyle />
 
-      <RouterProvider>
-        <NavigationBar />
+			<RouterProvider>
+				<NavigationBar />
 
-        <Content>
-          <Router /> 
-        </Content>
+				<Content>
+					<Router /> 
+				</Content>
 
-        <GoCreate />
-        <Footer />
-      </RouterProvider>
-    </Container>
+				<GoCreate />
+				<Footer />
+			</RouterProvider>
+		</Container>
   );
 }
