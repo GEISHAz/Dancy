@@ -10,6 +10,7 @@ import com.ssafy.dancy.repository.follow.FollowRepository;
 import com.ssafy.dancy.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FollowService {
 
     private final FollowRepository followRepository;
@@ -65,6 +67,8 @@ public class FollowService {
         User toUser = userRepository.findByNickname(toNickname).orElseThrow(()
                 -> new UserNotFoundException("팔로우할 유저를 찾을 수 없습니다."));
 
+        log.info("보내는 유저 : {}", user);
+        log.info("보내는 유저 닉네임 : {}", user.getNickname());
         Follow savedFollow = followRepository.save(Follow
                 .builder()
                 .fromUser(user)
