@@ -3,7 +3,7 @@ package com.ssafy.dancy.controller;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.request.follow.FollowRequest;
 import com.ssafy.dancy.message.response.FollowResponse;
-import com.ssafy.dancy.message.response.follow.FollowResultResponse;
+import com.ssafy.dancy.message.response.follow.FollowerResultInfoResponse;
 import com.ssafy.dancy.service.follow.FollowService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,12 +32,12 @@ public class FollowController {
     }
 
     @PostMapping("/request-follow")
-    public FollowResultResponse follow(@AuthenticationPrincipal User user, @RequestBody FollowRequest request){
+    public FollowerResultInfoResponse follow(@AuthenticationPrincipal User user, @RequestBody FollowRequest request){
         return followService.follow(user,request.nickname());
     }
 
     @PostMapping("/request-unfollow")
-    public FollowResultResponse unFollow(@AuthenticationPrincipal User user, @RequestBody FollowRequest request){
+    public FollowerResultInfoResponse unFollow(@AuthenticationPrincipal User user, @RequestBody FollowRequest request){
         return followService.unFollow(user,request.nickname());
     }
 }

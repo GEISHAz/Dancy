@@ -5,7 +5,7 @@ import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.exception.follow.FollowInfoNotFoundException;
 import com.ssafy.dancy.exception.user.UserNotFoundException;
 import com.ssafy.dancy.message.response.FollowResponse;
-import com.ssafy.dancy.message.response.follow.FollowResultResponse;
+import com.ssafy.dancy.message.response.follow.FollowerResultInfoResponse;
 import com.ssafy.dancy.repository.follow.FollowRepository;
 import com.ssafy.dancy.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -62,7 +62,7 @@ public class FollowService {
     }
 
 
-    public FollowResultResponse follow(User user, String toNickname) {
+    public FollowerResultInfoResponse follow(User user, String toNickname) {
         User toUser = userRepository.findByNickname(toNickname).orElseThrow(()
                 -> new UserNotFoundException("팔로우할 유저를 찾을 수 없습니다."));
 
@@ -76,25 +76,28 @@ public class FollowService {
                 .build());
 
         userRepository.save(user);
-        return FollowResultResponse.builder()
-                .followedNickname(toNickname)
-                .followerNickname(user.getNickname())
-                .followInfoId(savedFollow.getFollowId())
+        return FollowerResultInfoResponse.builder()
+                .nickname(toUser.getNickname())
+                .followed(true)
+                .following(toUser.getFollowingCount())
+                .follower(toUser.getFollowerCount())
                 .build();
     }
 
-    @Transactional
-    public FollowResultResponse unFollow(User user, String toNickname) {
+    public FollowerResultInfoResponse unFollow(User user, String toNickname) {
 
         Follow followInfo = followRepository.findByFromUserAndToUser_Nickname(user, toNickname).orElseThrow(
                 () -> new FollowInfoNotFoundException("팔로우한 정보를 찾을 수 없습니다."));
 
-        followRepository.delete(followInfo);
 
-        return FollowResultResponse.builder()
-                .followInfoId(0L)
-                .followerNickname(followInfo.getFromUser().getNickname())
-                .followedNickname(followInfo.getToUser().getNickname())
+        followRepository.delete(followInfo);
+        User toUser = followInfo.getToUser();
+
+        return FollowerResultInfoResponse.builder()
+                .nickname(toUser.getNickname())
+                .followed(false)
+                .following(toUser.getFollowingCount())
+                .follower(toUser.getFollowerCount())
                 .build();
     }
 }
