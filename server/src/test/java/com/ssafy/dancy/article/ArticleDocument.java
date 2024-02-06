@@ -1,12 +1,12 @@
 package com.ssafy.dancy.article;
 
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.restdocs.snippet.Snippet;
 
 import static com.ssafy.dancy.DocumentFormatProvider.required;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 public class ArticleDocument {
 
@@ -20,6 +20,11 @@ public class ArticleDocument {
 
     public static final Snippet articleIdPathField = pathParameters(
             parameterWithName("articleId").attributes(required()).description("게시물 아이디")
+    );
+
+    public static final Snippet stageRequestField = queryParameters(
+            parameterWithName("limit").attributes(required()).description("받을 게시글 최대 갯수"),
+            parameterWithName("previousArticleId").description("무한 스크롤에서 마지막에 받은 게시글 아이디")
     );
 
     public static final Snippet ArticleWriteResponseField = responseFields(
@@ -58,5 +63,15 @@ public class ArticleDocument {
             fieldWithPath("nickname").type(JsonFieldType.STRING).description("글쓴이 닉네임"),
             fieldWithPath("profileImageUrl").type(JsonFieldType.VARIES).description("글쓴이 프로필 URL"),
             fieldWithPath("video").type(JsonFieldType.VARIES).description("비디오 URL")
+    );
+
+    public static final Snippet simpleArticleListResponseField = responseFields(
+            fieldWithPath("[].articleId").type(JsonFieldType.NUMBER).description("게시글 고유 아이디"),
+            fieldWithPath("[].articleTitle").type(JsonFieldType.STRING).description("게시글 제목"),
+            fieldWithPath("[].articleThumbnail").type(JsonFieldType.STRING).description("썸네일 이미지 URL"),
+            fieldWithPath("[].authorId").type(JsonFieldType.NUMBER).description("글쓴이 고유 아이디"),
+            fieldWithPath("[].authorProfileImage").type(JsonFieldType.VARIES).description("글쓴이 프로필 URL"),
+            fieldWithPath("[].authorName").type(JsonFieldType.STRING).description("글쓴이 닉네임"),
+            fieldWithPath("[].articleView").type(JsonFieldType.NUMBER).description("조회수")
     );
 }
