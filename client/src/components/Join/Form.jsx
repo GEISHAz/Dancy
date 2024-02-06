@@ -57,8 +57,22 @@ export const RadioContainer = styled.div`
 `;
 
 export default function FormArea() {
-  const [inputValue, setInputValue] = useState("");
-  const [showWarning, setShowWarning] = useState(false);
+  const [inputValues, setInputValues] = useState({
+    email: "",
+    password: "",
+    checkpassword: "",
+    birthdate: "",
+    gender: "",
+    nickname: "",
+  });
+  const [showWarnings, setShowWarnings] = useState({
+    email: false,
+    password: false,
+    checkpassword: false,
+    birthdate: false,
+    gender: false,
+    nickname: false,
+  });
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달의 열림/닫힘 상태를 관리
   const [submittedPin, setSubmittedPin] = useState(""); // 모달에서 제출된 PIN을 저장
 
@@ -79,12 +93,69 @@ export default function FormArea() {
     closeModal(); // PIN이 제출되면 모달을 닫음
   };
 
-  const inputChangeHandler = (e) => {
-    const value = e.target.value;
-    setInputValue(value);
+  // const inputChangeHandler = (e) => {
+  //   const value = e.target.value;
+  //   setInputValue(value);
 
-    // 유효성 검사 등을 수행하여 유효하지 않은 경우에만 경고를 보이도록 설정
-    setShowWarning(value.trim() === "");
+  //   // 유효성 검사 등을 수행하여 유효하지 않은 경우에만 경고를 보이도록 설정
+  //   setShowWarning(value.trim() === "");
+  // };
+
+  const handleInputChange = (inputName, value) => {
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [inputName]: value,
+    }));
+    //형식이 맞으면 경고 상태 초기화 해주기 !
+    setShowWarnings((prevWarnings) => ({
+      ...prevWarnings,
+      [inputName]: "",
+    }));
+  };
+
+  const handleAuthentication = async () => {
+    // 이메일 형식 체크
+    if (!validateEmail(inputValues.email)) {
+      setShowWarnings((prevWarnings) => ({
+        ...prevWarnings,
+        email: "유효하지 않은 이메일 형식입니다.",
+      }));
+      return;
+    }
+
+    try {
+      // 서버에 이메일 중복 여부 확인 요청
+      const isEmailDuplicate = await checkEmailDuplicate(inputValues.email);
+
+      if (isEmailDuplicate) {
+        setShowWarnings((prevWarnings) => ({
+          ...prevWarnings,
+          email: "중복된 이메일입니다.",
+        }));
+        return;
+      }
+
+      // 서버 통신 로직
+      openModal();
+    } catch (error) {
+      console.error("Authentication failed:", error);
+      // 서버에서 에러가 발생한 경우에 대한 처리
+    }
+  };
+
+  // 이메일 형식 체크 함수
+  const validateEmail = (email) => {
+    // 간단한 이메일 형식 체크 로직
+    return /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i.test(
+      email
+    );
+  };
+
+  // 서버에 이메일 중복 여부를 확인하는 함수
+  const checkEmailDuplicate = async (email) => {
+    // 서버와 통신하여 이메일 중복 여부를 확인하는 로직
+    // true: 중복된 이메일, false: 중복되지 않은 이메일
+    return false; // 임시로 false 반환 (중복되지 않은 이메일로 가정)
   };
 
   return (
@@ -97,7 +168,14 @@ export default function FormArea() {
       <FormDetailArea>
         <JF.MustIcon />
         <JF.FormCategory margin="76px">E-mail</JF.FormCategory>
-        <JF.FormInput type="email"></JF.FormInput>
+        <JF.FormInput
+          type="email"
+          value={inputValues.email}
+          onChange={(e) => handleInputChange("email", e.target.value)}
+        ></JF.FormInput>
+        <JF.InputNoticeText show={showWarnings.email}>
+          형식을 만족하지 않는 비밀번호입니다.
+        </JF.InputNoticeText>
         <JF.FormBtn onClick={openModal}>인증하기</JF.FormBtn>
         {/* CustomModal 컴포넌트를 렌더링하고 isOpen, onClose, onSubmit을 props로 전달 */}
         <CustomModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handlePinSubmit} />
@@ -110,7 +188,7 @@ export default function FormArea() {
         <InputContainer>
           <JF.FormInput
             type="password"
-            value={inputValue}
+            value={inputValues.password}
             onChange={inputChangeHandler}
           ></JF.FormInput>
           <JF.InputNoticeText show={showWarning}>
