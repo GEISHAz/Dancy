@@ -289,9 +289,11 @@ export default function FormArea() {
         <JF.MustIcon />
         <JF.FormCategory margin="99px">성별</JF.FormCategory>
         <RadioContainer>
-          <input type="radio" name="gender" value="MALE" /> 남성
-          <input type="radio" name="gender" value="FEMALE" /> 여성
+          <input type="radio" name="gender" value="MALE" onChange={(e) => handleInputChange("gender", e.target.value)} /> 남성
+          <input type="radio" name="gender" value="FEMALE" onChange={(e) => handleInputChange("gender", e.target.value)} /> 여성
         </RadioContainer>
+        {/* 선택된 성별 값 출력 */}
+      <p>선택된 성별: {inputValues.gender}</p>
       </FormDetailArea>
       <FormDetailArea>
         <JF.MustIcon />
