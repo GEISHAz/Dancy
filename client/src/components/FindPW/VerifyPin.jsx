@@ -96,7 +96,12 @@ export default function VerifyPin({targetEmail}) {
     publicApi.post('/auth/password/check', { "targetEmail": targetEmail, "verifyCode": verifyCode })
       .then(response => {
         alert("인증에 성공하였습니다.")
+        const token = response.data.accessToken;
+        localStorage.setItem("token", token);
         setIsOpen(true);
+        // return (
+        //   { token }
+        // );
       })
       .catch(error => {
         const errorType = error.response?.data[0]?.errorType;

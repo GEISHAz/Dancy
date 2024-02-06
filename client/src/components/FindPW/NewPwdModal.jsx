@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { publicApi } from "../../util/http-commons";
+import { useNavigate } from "react-router-dom"
+import { privateApi } from "../../util/http-commons";
 
 const ModalOverlay = styled.div`
   display: ${(props) => (props.isOpen ? "flex" : "none")};
@@ -13,7 +14,7 @@ const ModalOverlay = styled.div`
   background: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 1000;
 `;
 
 // 모달 전체의 정렬 설정
@@ -108,13 +109,32 @@ const InfoText = styled.div`
   color: #6c6c6c;
   align-self: flex-start;
   margin-left: 74px;
-  margin-bottom: 33px;
+  /* margin-bottom: 33px; */
   margin-top: 24px;
 `;
 
 const NewPwdModal = ({ isOpen, onClose }) => {
-  const newPassword = () => {
-    publicApi.post('/auth/password/')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const navigate = useNavigate();
+
+  const setPassword = () => {
+    privateApi.post('/auth/password/find', { "newPassword" : newPassword })
+    .then(response => {
+      alert("비밀번호를 변경하였습니다!!!!!!!!!!!");
+      navigate('/login');
+    })
+    .catch(error => {
+      const errorType = error.response?.data[0]?.errorType;
+      if (errorType === 'Password') {
+        alert("비밀번호는 영문, 숫자, 특수문자 포함 8자리 이상이어야 합니다.")
+      } else if (errorType === 'TokenInvalidException') {
+        alert("응답시간이 지났습니다. 잠시 후 다시 시도해주세요.");
+        navigate('/login');
+      }
+      console.log(error.response);
+    })
   }
   
   const handleOverlayClick = (e) => {
@@ -132,13 +152,13 @@ const NewPwdModal = ({ isOpen, onClose }) => {
         <ModalContent>
           <ModalTitle>비밀번호 변경</ModalTitle>
           <ChangePwdTitle>새 비밀번호</ChangePwdTitle>
-          <ChangeInput />
+          <ChangeInput type="password" onChange={e => setNewPassword(e.target.value)} />
           <ChangePwdTitle>비밀번호 확인</ChangePwdTitle>
-          <ChangeInput />
+          <ChangeInput type="password" onChange={e => confirmPassword(e.target.value)} />
           <InfoText>영문자, 숫자, 특수문자를 조합하여 입력해주세요. (8자 이상)</InfoText>
         </ModalContent>
         <ModalButtonContainer>
-          <ModalButton>변경 완료</ModalButton>
+          <ModalButton onClick={setPassword}>변경 완료</ModalButton>
         </ModalButtonContainer>
       </ModalContainer>
     </ModalOverlay>

@@ -36,6 +36,7 @@ export const FindInput = styled.input`
   border: 1px solid black;
   border-radius: 5px;
   margin-right: 86px;
+  padding: 10px;
 
   &:focus {
     outline: 2px solid #e23e59;
