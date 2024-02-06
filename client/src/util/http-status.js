@@ -3,5 +3,6 @@ export const httpStatusCode = {
 	BADREQUESAT : 400,
 	UNAUTHORIZEZD : 401,
 	FOBIDDEN : 403,
-	NOTFOUND : 404 
+	NOTFOUND: 404,
+	CONFLICT: 409
 }

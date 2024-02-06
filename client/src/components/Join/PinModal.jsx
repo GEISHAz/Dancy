@@ -11,7 +11,7 @@ const ModalOverlay = styled.div`
   background: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 2000;
 `;
 
 const ModalContainer = styled.div`
@@ -139,9 +139,7 @@ const CustomModal = ({ isOpen, onClose, onSubmit }) => {
                 key={index}
                 contentEditable
                 ref={pinRefs.current[index]}
-                onInput={(e) =>
-                  handlePinChange(index, e.currentTarget.innerText)
-                }
+                onInput={(e) => handlePinChange(index, e.currentTarget.innerText)}
               >
                 {digit}
               </PinInput>

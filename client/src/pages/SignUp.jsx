@@ -11,11 +11,11 @@ export const Container = styled.div`
 `;
 
 export default function SignUp() {
-  return <JoinForm />;
+  return <SelectJoinMethod />;
   {
-    /*<JoinComplete></JoinComplete>;*/
+    /* <JoinForm />; */
   }
   {
-    /*<SelectJoinMethod></SelectJoinMethod>*/
+    /*<JoinComplete></JoinComplete>;*/
   }
 }

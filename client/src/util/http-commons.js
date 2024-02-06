@@ -4,16 +4,6 @@ const baseURL = 'http://i10d210.p.ssafy.io:8080';
 
 axios.defaults.withCredentials = true;
 
-export const axiosInstance = axios.create({
-	baseURL: baseURL,
-	headers: {
-		"Content-Type": "application/json;charset=utf-8",
-	},
-});
-
-
-axios.defaults.withCredentials = true;
-
 export const publicApi= axios.create({
   baseURL: baseURL,
   headers: {
@@ -26,13 +16,20 @@ export const privateApi = axios.create({
   headers: {
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    'AUTH-TOKEN': `${localStorage.getItem('token')}`,
   },
 });
 
-privateApi.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  config.headers.Authorization = 'Bearer ' + token;
+export const joinApi = axios.create({
+  baseURL: baseURL,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+  }
+});
 
-  return config;
+export const textApi = axios.create({
+  baseURL: baseURL,
+  headers: {
+    'Content-Type': 'text/plain',
+  }
 });

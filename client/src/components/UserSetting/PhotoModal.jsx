@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import AddImgLogo from "../../assets/UserSetting/AddImgIcon.png";
 
@@ -12,7 +12,7 @@ const ModalOverlay = styled.div`
   background: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 2000;
 `;
 
 // 모달 전체의 정렬 설정
@@ -85,26 +85,68 @@ const ModalButton = styled.button`
 `;
 
 const PhotoModal = ({ isOpen, onClose }) => {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const fileInputRef = useRef();
+
   const handleOverlayClick = (e) => {
-    // 모달 배경 클릭 시 모달을 닫음
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    setSelectedFile(file);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleUpload = () => {
+    // 선택된 파일 처리 로직 작성
+    console.log("Selected File:", selectedFile);
+    // 여기에 선택된 파일을 업로드하거나 다른 작업 수행 axios 추가 !
+
+    // 모달 닫기
+    onClose();
+  };
+
+  // 사진 로고에 바꾼 사진을 보여주지 말고 더 크게 키워서 ...... 보여주게 변경 필요
   return (
     <ModalOverlay isOpen={isOpen} onClick={handleOverlayClick}>
       <ModalContainer>
         <ModalContent>
           <ModalTitle>프로필 사진 변경</ModalTitle>
-          <ImportContainer>
+          <ImportContainer
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            onClick={() => fileInputRef.current.click()}
+          >
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
             <ImportLogo>
-              <img src={AddImgLogo}></img>
+              {selectedFile ? (
+                <img src={URL.createObjectURL(selectedFile)} alt="Selected" />
+              ) : (
+                <img src={AddImgLogo} alt="Add" />
+              )}
             </ImportLogo>
           </ImportContainer>
         </ModalContent>
         <ModalButtonContainer>
-          <ModalButton>변경 완료</ModalButton>
+          <ModalButton onClick={handleUpload}>변경 완료</ModalButton>
         </ModalButtonContainer>
       </ModalContainer>
     </ModalOverlay>

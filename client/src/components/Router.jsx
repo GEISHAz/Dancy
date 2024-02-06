@@ -11,6 +11,7 @@ import SearchResult from "../pages/SearchResult";
 import VideoDetailPage from "../pages/VideoDetailPage";
 import UserSetting from "../pages/UserSetting";
 import FindMyPwd from "../pages/FindMyPwd";
+import JoinForm from "./Join/JoinForm";
 
 export default function Router({ cardDetails, videoDetails }) {
   return (
@@ -23,6 +24,7 @@ export default function Router({ cardDetails, videoDetails }) {
         <Route path="/profile/:user_id" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/signup/joinform" element={<JoinForm />} />
         <Route path="/detail/:video_id" element={<VideoDetailPage />} />
         {/* SearchResult 페이지의 라우트 추가 */}
         <Route path="/results" element={<SearchResult cardDetails={cardDetails} />} />
