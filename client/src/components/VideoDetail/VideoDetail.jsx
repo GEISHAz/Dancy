@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
 import { VideoDetailContainer, VideoDetailArea, VideoContentArea, VideoTitle, VideoUserDetailArea, VideoUserName, VideoFollowArea, VideoFollower, VideoUserProfileImage, VideoFollowBtn, VideoAccuracyArea, VideoUpperContainer, VideoLowerContainer, VideoUserDetail, BtnContainer, HashTagArea, AccuracyBtn, HashTagBtn, HashTagContainer } from './VideoDetail.style'
+import { getArticle } from "../../api/stage";
 
 const cardDetails = [
   {
@@ -30,6 +32,19 @@ export default function VideoDetail() {
     setFollow(!follow);
   };
 
+  const { state } = useLocation();
+  const articleId = state?.articleId;
+
+  useEffect(() => {
+    console.log(articleId)
+    // getArticle(articleId)
+    // .then ((res) => {
+    //   console.log(res)
+    // })
+    // .catch ((err) => {
+    //   console.error(err)
+    // })
+  })
   return (
     <VideoDetailContainer>
       {cardDetail && cardDetail.map((card, index) => (
