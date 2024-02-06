@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import ProfileImgDefault from "../../assets/profileIntro/ProfileImgDefault.png";
 
 export const PageButton = styled.div`
 	border: 1px solid #252525;
@@ -62,7 +63,7 @@ export const NavRed = styled.div`
   background-color: #E23E59;
   width: 100%;
   height: 5px;
-  margin: 0 0 20px;
+  margin: 0 0 15px;
 `;
 
 export const NavTextArea = styled.div`
@@ -92,12 +93,61 @@ export const NavLeftContainer = styled.div`
   position: relative;
 `;
 
+
+export const NavLoginWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 150px;
+  gap: 20px;
+  margin: 0px 30px;
+`
+
+export const NavProfileArea = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+export const NavUserProfileImage = styled.img.attrs(({ src }) => ({
+  src: src || ProfileImgDefault, alt: 'logo'
+}))`
+  border-radius: 50%;
+  background-color: #252525;
+  width: 38px;
+  height: 38px;
+  border: none;
+`
+
+export const NavUserName = styled.div`
+  font-size: 16px;
+`
+
+export const NavLogout = styled.div`
+  font-size: 14px;
+  color: gray;
+  cursor: pointer;
+  text-align: end;
+`
+
+
+export const NavLogoutWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 150px;
+  height: 100%;
+  margin: 0px 30px;
+  gap: 50px;
+`
+
 export const NavSignUp = styled.div`
-  margin: 0px 43px;
+  font-size: 16px;
 `;
 
+
+
 export const NavLogin = styled.div`
-  margin-right: 30px;
+  font-size: 16px;
+
 `;
 
 export const Square = styled.div`

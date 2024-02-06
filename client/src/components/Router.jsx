@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Routes, useNavigate, Navigate, useLocation } from "react-router-dom"; // useNavigate import
 import Home from "../pages/Home";
 import Create from "../pages/Create";
 import Practice from "../pages/Practice";
@@ -16,6 +16,15 @@ import { useRecoilValue } from "recoil";
 
 export default function Router({ cardDetails, videoDetails }) {
   const isLoggedIn = useRecoilValue(loginState);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // 로그인 상태가 아니고, 현재 페이지가 로그인 페이지나 회원가입 페이지가 아닐 경우 로그인 페이지로 이동하도록 이동
+    if (!isLoggedIn && location.pathname !== '/login' && location.pathname !== '/signup') {
+      navigate('/login');
+    }
+  }, [isLoggedIn, navigate, location]);
 
   return (
     <>
