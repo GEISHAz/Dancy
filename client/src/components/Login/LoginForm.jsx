@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useRecoilValue } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useState } from "react";
+import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 import * as L from "./LoginForm.style.jsx";
 import { userState, loginState } from "../../recoil/LoginState.js";
 import { login } from "../../api/auth.js";
@@ -45,6 +45,7 @@ export default function Login() {
       const userDetailsData = await userDetails();
       console.log("User Details:", userDetailsData.userInfo);
       setUserInfo(userDetailsData.userInfo)
+      console.log(userState)
     } catch (error) {
       console.error("Login Error:", error);
       const errorMsg = error.response?.data[0]?.message || "An error occurred";
