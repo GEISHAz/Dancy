@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
+import { publicApi } from "../../util/http-commons";
 
 const ModalOverlay = styled.div`
   display: ${(props) => (props.isOpen ? "flex" : "none")};
@@ -72,6 +74,8 @@ const ChangeInput = styled.input`
   border: 1px solid black;
   border-radius: 3px;
   margin-bottom: 16px;
+  padding-left: 10px;
+
 
   &:focus {
     outline: 2px solid #e23e59;
@@ -109,12 +113,18 @@ const InfoText = styled.div`
 `;
 
 const NewPwdModal = ({ isOpen, onClose }) => {
+  const newPassword = () => {
+    publicApi.post('/auth/password/')
+  }
+  
   const handleOverlayClick = (e) => {
     // 모달 배경 클릭 시 모달을 닫음
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
+
+
 
   return (
     <ModalOverlay isOpen={isOpen} onClick={handleOverlayClick}>

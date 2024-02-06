@@ -130,7 +130,7 @@ export default function Login() {
               비밀번호를 잊어버리셨나요?
             </L.ExplainJoinFindPw>
             <L.GoJoinFindPw>
-              <Link to="/">비밀번호</Link>
+              <Link to="/findpassword">비밀번호 찾기</Link>
             </L.GoJoinFindPw>
           </div>
         </div>
