@@ -69,6 +69,7 @@ public class FollowService {
 
         log.info("보내는 유저 : {}", user);
         log.info("보내는 유저 닉네임 : {}", user.getNickname());
+        log.info("팔로우받는 유저 닉네임 : {}",toNickname);
         Follow savedFollow = followRepository.save(Follow
                 .builder()
                 .fromUser(user)
