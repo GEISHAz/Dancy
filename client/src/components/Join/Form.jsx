@@ -61,7 +61,6 @@ export const RadioContainer = styled.div`
 export const InputColunmArea = styled.div`
   display: flex;
   flex-direction: column;
-
 `;
 
 export default function FormArea() {
@@ -76,7 +75,7 @@ export default function FormArea() {
   const [showWarnings, setShowWarnings] = useState({
     email: { show: false, message: "" },
     password: { show: false, message: "" },
-    checkpassword:  { show: false, message: "" },
+    checkpassword: { show: false, message: "" },
     birthdate: { show: false, message: "" },
     gender: false,
     nickname: { show: false, message: "" },
@@ -136,20 +135,21 @@ export default function FormArea() {
       }));
     }
 
-     // 날짜 데이터 입력값 체크
-  if (inputName === "birthdate") {
-    if (!value) { // 값이 비어 있는 경우
-      setShowWarnings((prevWarnings) => ({
-        ...prevWarnings,
-        birthdate: true, // 경고 메시지를 표시합니다.
-      }));
-    }else {
-      setShowWarnings((prevWarnings) => ({
-        ...prevWarnings,
-        birthdate: false, // 값이 존재하는 경우 경고 메시지를 초기화합니다.
-      }));
+    // 날짜 데이터 입력값 체크
+    if (inputName === "birthdate") {
+      if (!value) {
+        // 값이 비어 있는 경우
+        setShowWarnings((prevWarnings) => ({
+          ...prevWarnings,
+          birthdate: true, // 경고 메시지를 표시합니다.
+        }));
+      } else {
+        setShowWarnings((prevWarnings) => ({
+          ...prevWarnings,
+          birthdate: false, // 값이 존재하는 경우 경고 메시지를 초기화합니다.
+        }));
+      }
     }
-  }
   };
 
   const handleAuthentication = async () => {
@@ -185,9 +185,9 @@ export default function FormArea() {
 
   const handleNickNameCheck = async () => {
     // 닉네임 형식 체크
-    try{
+    try {
       const response = await nickNameCheck(inputValues.nickname);
-      console.log("response", response)
+      console.log("response", response);
       if (response === httpStatusCode.OK) {
         setShowWarnings((prevWarnings) => ({
           ...prevWarnings,
@@ -195,17 +195,17 @@ export default function FormArea() {
         }));
         return;
       }
-    }catch(error){
-        if(error === httpStatusCode.CONFLICT){
-          setShowWarnings((prevWarnings) => ({
-            ...prevWarnings,
-            nickname: { show: true, message: "이미 가입된 이메일입니다." },
-          }));
-          return;
-        }
-        // 400일때 대응 필요합니다.
+    } catch (error) {
+      if (error === httpStatusCode.CONFLICT) {
+        setShowWarnings((prevWarnings) => ({
+          ...prevWarnings,
+          nickname: { show: true, message: "중복되는 닉네임입니다." },
+        }));
+        return;
+      }
+      // 400일때 대응 필요합니다.
     }
-  }
+  };
 
   // 이메일 형식 체크 함수
   const validateEmail = (email) => {
@@ -220,18 +220,18 @@ export default function FormArea() {
     // 서버와 통신하여 이메일 중복 여부를 확인하는 로직
     // true: 중복된 이메일, false: 중복되지 않은 이메일
 
-    try{
+    try {
       const response = await emailCheck(email);
-      console.log("response", response)
+      console.log("response", response);
       if (response === httpStatusCode.OK) {
         // 성공적인 응답
         return false;
       }
-    }catch(error){
-        if(error === httpStatusCode.CONFLICT){
-          return true;
-        }
-        // 400일때 대응 필요합니다.
+    } catch (error) {
+      if (error === httpStatusCode.CONFLICT) {
+        return true;
+      }
+      // 400일때 대응 필요합니다.
     }
   };
 
@@ -264,8 +264,7 @@ export default function FormArea() {
         <JF.FormBtn onClick={handleAuthentication}>인증하기</JF.FormBtn>
         {/* CustomModal 컴포넌트를 렌더링하고 isOpen, onClose, onSubmit을 props로 전달 */}
         <CustomModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handlePinSubmit} />
-        {/* PIN이 제출되면 해당 내용을 출력 */}4
-        {submittedPin && <p>인증번호: {submittedPin}</p>}
+        {/* PIN이 제출되면 해당 내용을 출력 */}4{submittedPin && <p>인증번호: {submittedPin}</p>}
       </FormDetailArea>
       <FormDetailArea>
         <JF.MustIcon />
@@ -289,9 +288,11 @@ export default function FormArea() {
         <JF.MustIcon />
         <JF.FormCategory margin="19px">비밀번호 확인</JF.FormCategory>
         <InputContainer>
-          <JF.FormInput type="password"
-          value={inputValues.checkpassword}
-          onChange={(e) => handleInputChange("checkpassword", e.target.value)}></JF.FormInput>
+          <JF.FormInput
+            type="password"
+            value={inputValues.checkpassword}
+            onChange={(e) => handleInputChange("checkpassword", e.target.value)}
+          ></JF.FormInput>
           <JF.InputNoticeText show={showWarnings.checkpassword}>
             비밀번호가 일치하지 않습니다.
           </JF.InputNoticeText>
@@ -301,7 +302,9 @@ export default function FormArea() {
         <JF.MustIcon />
         <JF.FormCategory margin="62px">생년월일</JF.FormCategory>
         <InputContainer>
-        <JF.FormInput type="date" value={inputValues.birthdate}
+          <JF.FormInput
+            type="date"
+            value={inputValues.birthdate}
             onChange={(e) => handleInputChange("birthdate", e.target.value)}
           ></JF.FormInput>
           <JF.InputNoticeText show={showWarnings.birthdate}>
@@ -313,18 +316,32 @@ export default function FormArea() {
         <JF.MustIcon />
         <JF.FormCategory margin="99px">성별</JF.FormCategory>
         <RadioContainer>
-          <input type="radio" name="gender" value="MALE" onChange={(e) => handleInputChange("gender", e.target.value)} /> 남성
-          <input type="radio" name="gender" value="FEMALE" onChange={(e) => handleInputChange("gender", e.target.value)} /> 여성
+          <input
+            type="radio"
+            name="gender"
+            value="MALE"
+            onChange={(e) => handleInputChange("gender", e.target.value)}
+          />{" "}
+          남성
+          <input
+            type="radio"
+            name="gender"
+            value="FEMALE"
+            onChange={(e) => handleInputChange("gender", e.target.value)}
+          />{" "}
+          여성
         </RadioContainer>
       </FormDetailArea>
       <FormDetailArea>
         <JF.MustIcon />
         <JF.FormCategory margin="80px">닉네임</JF.FormCategory>
         <InputContainer>
-        <JF.FormInput value={inputValues.nickname}
-            onChange={(e) => handleInputChange("nickname", e.target.value)}></JF.FormInput>
-        <JF.InputNoticeText show={showWarnings.nickname.show}>
-          {showWarnings.nickname.message}
+          <JF.FormInput
+            value={inputValues.nickname}
+            onChange={(e) => handleInputChange("nickname", e.target.value)}
+          ></JF.FormInput>
+          <JF.InputNoticeText show={showWarnings.nickname.show}>
+            {showWarnings.nickname.message}
           </JF.InputNoticeText>
         </InputContainer>
         <JF.FormBtn onClick={handleNickNameCheck}>중복 확인</JF.FormBtn>
