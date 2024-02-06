@@ -1,7 +1,6 @@
 package com.ssafy.dancy.article;
 
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.restdocs.snippet.Snippet;
 
 import static com.ssafy.dancy.DocumentFormatProvider.required;
@@ -24,7 +23,7 @@ public class ArticleDocument {
 
     public static final Snippet stageRequestField = queryParameters(
             parameterWithName("limit").attributes(required()).description("받을 게시글 최대 갯수"),
-            parameterWithName("previousArticleId").description("무한 스크롤에서 마지막에 받은 게시글 아이디")
+            parameterWithName("previousArticleId").description("무한 스크롤에서 마지막에 받은 게시글 아이디").optional()
     );
 
     public static final Snippet keywordPathField = pathParameters(

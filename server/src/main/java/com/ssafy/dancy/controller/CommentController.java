@@ -23,8 +23,9 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("/{articleId}")
-    public List<CommentResponse> searchComment(@PathVariable Long articleId){
-        return commentService.searchComment(articleId);
+    public List<CommentResponse> searchComment(@PathVariable Long articleId,
+                                               @RequestParam(required = false, defaultValue = "0") Long parentId){
+        return commentService.searchComment(articleId, parentId);
     }
 
     @PostMapping("/{articleId}")
