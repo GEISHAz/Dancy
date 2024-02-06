@@ -66,6 +66,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/like/article-like/**").hasRole("USER")
                         .requestMatchers("/like/comment-like/**").hasRole("USER")
                         .requestMatchers("/mypage/**").hasRole("USER")
+                        .requestMatchers("/follow/request-follow").hasRole("USER")
+                        .requestMatchers("/follow/request-unfollow").hasRole("USER")
                         .anyRequest().permitAll())
                 .exceptionHandling(config ->
                         config.authenticationEntryPoint(authenticationEntryPoint()).
