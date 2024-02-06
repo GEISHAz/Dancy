@@ -10,6 +10,7 @@ import com.ssafy.dancy.service.video.VideoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +27,9 @@ import java.util.List;
 public class VideoController {
 
     private final VideoService videoService;
-    WebClient webClient = WebClient.create();
+
+    @Autowired
+    WebClient webClient;
 
     @PostMapping("")
     public String requestAccuracyData(@RequestBody String accuracyData){
