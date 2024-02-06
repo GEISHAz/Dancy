@@ -75,8 +75,8 @@ export default function FormArea() {
   });
   const [showWarnings, setShowWarnings] = useState({
     email: { show: false, message: "" },
-    password: false,
-    checkpassword: false,
+    password: { show: false, message: "" },
+    checkpassword:  { show: false, message: "" },
     birthdate: false,
     gender: false,
     nickname: false,
@@ -120,7 +120,21 @@ export default function FormArea() {
       [inputName]: { show: false, message: "" },
     }));
 
-    console.log(showWarnings.email.show);
+    if (inputName === "password") {
+      const isValid = validatePW(value);
+      setShowWarnings((prevWarnings) => ({
+        ...prevWarnings,
+        password: !isValid,
+      }));
+    }
+
+    if (inputName === "checkpassword") {
+      console.log(value);
+      setShowWarnings((prevWarnings) => ({
+        ...prevWarnings,
+        checkpassword: value !== inputValues.password,
+      }));
+    }
   };
 
   const handleAuthentication = async () => {
@@ -178,7 +192,14 @@ export default function FormArea() {
         if(error === httpStatusCode.CONFLICT){
           return true;
         }
+        // 400일때 대응 필요합니다.
     }
+  };
+
+  // 비밀번호 형식 체크
+  const validatePW = (password) => {
+    const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
   };
 
   return (
@@ -229,7 +250,12 @@ export default function FormArea() {
         <JF.MustIcon />
         <JF.FormCategory margin="19px">비밀번호 확인</JF.FormCategory>
         <InputContainer>
-          <JF.FormInput type="password"></JF.FormInput>
+          <JF.FormInput type="password"
+          value={inputValues.checkpassword}
+          onChange={(e) => handleInputChange("checkpassword", e.target.value)}></JF.FormInput>
+          <JF.InputNoticeText show={showWarnings.checkpassword}>
+            비밀번호가 일치하지 않습니다.
+          </JF.InputNoticeText>
         </InputContainer>
       </FormDetailArea>
       <FormDetailArea>
