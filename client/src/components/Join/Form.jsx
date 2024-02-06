@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import * as JF from "./JoinForm.style";
 import CustomModal from "./PinModal";
-import { emailCheck } from "../../api/join";
+import { emailCheck, nickNameCheck } from "../../api/join";
 import { httpStatusCode } from "../../util/http-status";
 
 // 전체 폼 구성
@@ -79,7 +79,7 @@ export default function FormArea() {
     checkpassword:  { show: false, message: "" },
     birthdate: { show: false, message: "" },
     gender: false,
-    nickname: false,
+    nickname: { show: false, message: "" },
   });
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달의 열림/닫힘 상태를 관리
   const [submittedPin, setSubmittedPin] = useState(""); // 모달에서 제출된 PIN을 저장
@@ -182,6 +182,30 @@ export default function FormArea() {
       // 서버에서 에러가 발생한 경우에 대한 처리
     }
   };
+
+  const handleNickNameCheck = async () => {
+    // 닉네임 형식 체크
+    try{
+      const response = await nickNameCheck(inputValues.nickname);
+      console.log("response", response)
+      if (response === httpStatusCode.OK) {
+        setShowWarnings((prevWarnings) => ({
+          ...prevWarnings,
+          nickname: { show: true, message: "사용 가능한 닉네임 입니다." }, // 값이 존재하는 경우 경고 메시지를 초기화합니다.
+        }));
+        return;
+      }
+    }catch(error){
+        if(error === httpStatusCode.CONFLICT){
+          setShowWarnings((prevWarnings) => ({
+            ...prevWarnings,
+            nickname: { show: true, message: "이미 가입된 이메일입니다." },
+          }));
+          return;
+        }
+        // 400일때 대응 필요합니다.
+    }
+  }
 
   // 이메일 형식 체크 함수
   const validateEmail = (email) => {
@@ -292,14 +316,18 @@ export default function FormArea() {
           <input type="radio" name="gender" value="MALE" onChange={(e) => handleInputChange("gender", e.target.value)} /> 남성
           <input type="radio" name="gender" value="FEMALE" onChange={(e) => handleInputChange("gender", e.target.value)} /> 여성
         </RadioContainer>
-        {/* 선택된 성별 값 출력 */}
-      <p>선택된 성별: {inputValues.gender}</p>
       </FormDetailArea>
       <FormDetailArea>
         <JF.MustIcon />
         <JF.FormCategory margin="80px">닉네임</JF.FormCategory>
-        <JF.FormInput></JF.FormInput>
-        <JF.FormBtn>중복 확인</JF.FormBtn>
+        <InputContainer>
+        <JF.FormInput value={inputValues.nickname}
+            onChange={(e) => handleInputChange("nickname", e.target.value)}></JF.FormInput>
+        <JF.InputNoticeText show={showWarnings.nickname.show}>
+          {showWarnings.nickname.message}
+          </JF.InputNoticeText>
+        </InputContainer>
+        <JF.FormBtn onClick={handleNickNameCheck}>중복 확인</JF.FormBtn>
       </FormDetailArea>
     </JoinFormArea>
   );

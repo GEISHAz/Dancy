@@ -4,6 +4,10 @@ const baseURL = 'http://i10d210.p.ssafy.io:8080';
 
 axios.defaults.withCredentials = true;
 
+export const noneApi = axios.create({
+  baseURL: baseURL,
+});
+
 export const publicApi= axios.create({
   baseURL: baseURL,
   headers: {
