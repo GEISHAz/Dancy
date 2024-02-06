@@ -1,9 +1,11 @@
 import * as P from './ProfileFeed.style'
-import { useState } from 'react'
 import VideoList from './VideoList'
 import NoVideo from './NoVideo'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../../../recoil/LoginState'
+import { userInfo } from '../../../api/myPage.js';
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 const uploadVideos = [
   // {
@@ -113,6 +115,25 @@ const archiveVideos = [
 
 export default function ProfileFeed ({Profile}) {
   const user = useRecoilValue(userState)
+	const { user_id } = useParams();
+	const [ userDetail, setUserDetail ] = useState({})
+	const [ followerInfo, setFollowerInfo ] = useState([])
+	const [ followingInfo, setFollowingInfo ] = useState([])
+
+	useEffect(() => {
+		userInfo(user_id)
+		.then((res) => {
+			setUserDetail(res.userInfo)
+			console.log(res.userInfo)
+		})
+		.catch((err) => {
+			console.error(err)
+			if (err.response.status === 404) {
+				alert(err.response.data[0].message)
+				navigate('/')
+			}
+		})
+	}, [])
 
   const nickColor = {color: '#252525'}
 
@@ -135,7 +156,7 @@ export default function ProfileFeed ({Profile}) {
 	return (
 		<P.FeedContainer>
 			<P.FeedHeader>
-				<P.Archive><b style={nickColor}>{user.nickname}</b>님의 아카이브</P.Archive>
+				<P.Archive><b style={nickColor}>{userDetail.nickname}</b>님의 아카이브</P.Archive>
 
         <P.BtnBox>
           <P.BtnContainer>

@@ -75,7 +75,7 @@ export const FollowNum = styled.div`
 	text-align:center;
 `
 
-export const FollowBtn = styled.div`
+export const FollowBtn = styled.button`
 	width: 160px;
 	height: 50px;
 	border: 1px solid black;

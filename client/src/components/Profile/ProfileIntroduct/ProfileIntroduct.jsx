@@ -1,25 +1,26 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { userInfo } from '../../../api/myPage.js';
+import { followRequest, followerData, followingData, unFollowRequest } from '../../../api/follow.js';
 import * as P from './ProfileIntroduct.style';
 import FollowModal from './FollowModal';
 import { useRecoilValue } from 'recoil';
-import { userState } from "../../../recoil/LoginState.js";
-import { userInfo } from '../../../api/myPage.js';
-import { followerData, followingData } from '../../../api/follow.js';
+import { userState } from '../../../recoil/LoginState.js';
 
 
 export default function ProfileIntroduct() {
 	const navigate = useNavigate()
 	const { user_id } = useParams();
-	const [ userDetail, setUserDetail ] = useState({})
-	const [ followerInfo, setFollowerInfo ] = useState([])
-	const [ followingInfo, setFollowingInfo ] = useState([])
-
+	const [ userDetail, setUserDetail ] = useState({})  // 누구의 Profile페이지니?
+	const [ myFollowerInfo, setMyFollowerInfo ] = useState([])
+	const [ myFollowingInfo, setMyFollowingInfo ] = useState([])
+	const user = useRecoilValue(userState)
+	// 누구의 Profile 페이지인지 확인
 	useEffect(() => {
 		userInfo(user_id)
 		.then((res) => {
 			setUserDetail(res.userInfo)
-			console.log(userDetail)
+			console.log(res.userInfo)
 		})
 		.catch((err) => {
 			console.error(err)
@@ -41,33 +42,67 @@ export default function ProfileIntroduct() {
 	};
 
   const modalHandler = (what) => {
-    if (what === 'follower') {
-      setIsFollow(true)
-
-			followerData(userDetail.nickname)
-			.then((res) => {
-				setFollowerInfo(res.follower)
-				console.log(followerInfo)
-			})
-
-    } else if (what === 'following') {
-      setIsFollow(false)
-
-			followingData(userDetail.nickname)
-			.then((res) => {
-				setFollowingInfo(res.following)
-				console.log(followingInfo)
-			})
+		if (userDetail.nickname === user.nickname) {
+			if (what === 'follower') {
+				setIsFollow(true)
+	
+				followerData(userDetail.nickname)
+				.then((res) => {
+					setMyFollowerInfo(res.follower)
+					console.log(myFollowerInfo)
+				})
+	
+			} else if (what === 'following') {
+				setIsFollow(false)
+	
+				followingData(userDetail.nickname)
+				.then((res) => {
+					setMyFollowingInfo(res.following)
+					console.log(myFollowingInfo)
+				})
+				.catch((err) => {
+					console.error(err)
+				})
+			}
 		}
 		setIsOpen(true)
 	}
 
-  // const followerData = Profile.follower
-  // const followingData = Profile.following
+	const followHandler = () => {
+		if (userDetail.followed) {
+			console.log(userDetail.nickname)
+			unFollowRequest(userDetail.nickname)
+			.then ((res) => {
+				setUserDetail({
+					...userDetail, 
+					"follower" : res.follower.follower, 
+					"following" : res.follower.following, 
+					"followed" : res.follower.followed
+				})
+			})
+			.catch((err) => {
+				console.error(err)
+			})
+		} else {
+			followRequest(userDetail.nickname)
+			.then ((res) => {
+				setUserDetail({
+					...userDetail, 
+					"follower" : res.follower.follower, 
+					"following" : res.follower.following, 
+					"followed" : res.follower.followed
+				})
+				console.log(res)
+			})
+			.catch((err) => {
+				console.error(err)
+			})
+		}
+	}
 
 	return (
     <>
-      {isOpen && (<FollowModal isFollow={isFollow} getData={getData} info={isFollow ? followerInfo : followingInfo} />)}
+      {isOpen && (<FollowModal isFollow={isFollow} getData={getData} info={isFollow ? myFollowerInfo : myFollowingInfo} />)}
       
       <P.ProfileIntroBox>
         <P.ProfileRound>
@@ -92,8 +127,8 @@ export default function ProfileIntroduct() {
           </div>
         </P.FollowBox>
 
-				{userDetail.isMine ? null :				
-					<P.FollowBtn style={followBtnStyle}>
+				{userDetail.isMine ? null :
+					<P.FollowBtn onClick={followHandler} style={followBtnStyle}>
 						{userDetail.followed ? '팔로우' : '팔로잉'}
 					</P.FollowBtn>
 				}

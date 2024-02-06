@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import Notification from './Notification';
 import { PageButton, NavHome, NavPractice, NavStage, NavProfile, NavArea, NavRed, NavTextArea, NavLeft, NavRight, NavLeftContainer, NavSignUp, NavLogin, Square, AlertButton } from './NavigationBar.style'
@@ -11,16 +11,23 @@ import { userDetails } from '../../api/user.js';
 
 export default function Navbar() {
   const [activeButton, setActiveButton] = useState('');
-  // const user = useRecoilValue(userState)
   const [userInfo, setUserInfo] = useRecoilState(userState)
+  const navigate = useNavigate();
 
-
-	useEffect(() => {
+	const goProfileHandler = () => {
 		userDetails()
 		.then((res) => {
 			setUserInfo(res.userInfo)
+			setActiveButton('Profile')
 		})
-	}, [])
+		.catch((err)=>{
+			if (err.response.status === 401 ) {
+				alert('로그인이 필요한 서비스입니다.')
+				navigate("/login");
+			}
+		})
+	}
+
 
 	const setLogin = useSetRecoilState(loginState)
   const isLogin = useRecoilValue(loginState)
@@ -54,7 +61,8 @@ export default function Navbar() {
           <Square />
         </NavLeftContainer>
         <NavLeftContainer>
-          <NavProfile onClick={() => setActiveButton('Profile')} $active={activeButton === 'Profile'}>
+          {/* <NavProfile onClick={() => setActiveButton('Profile')} $active={activeButton === 'Profile'}> */}
+          <NavProfile onClick={goProfileHandler} $active={activeButton === 'Profile'}>
           <Link to={`/profile/${userInfo.nickname}`}>Profile</Link>
           </NavProfile>
           <Square />
