@@ -30,7 +30,7 @@ public class CommentDocument {
     public static final Snippet commentInfoResponseField = responseFields(
             fieldWithPath("commentId").type(JsonFieldType.NUMBER).description("댓글 정보의 아이디"),
             fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용"),
-            fieldWithPath("createdDate").type(JsonFieldType.STRING).description("생성일시"),
+            fieldWithPath("createdDate").type(JsonFieldType.ARRAY).description("생성일시"),
             fieldWithPath("commentLike").type(JsonFieldType.NUMBER).description("댓글 좋아요 갯수"),
             fieldWithPath("authorNickname").type(JsonFieldType.STRING).description("작성자 닉네임"),
             fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("댓글이 작성된 게시글의 아이디"),
@@ -40,7 +40,7 @@ public class CommentDocument {
     public static final Snippet commentInfoListResponseField = responseFields(
             fieldWithPath("[].commentId").type(JsonFieldType.NUMBER).description("댓글 정보의 아이디"),
             fieldWithPath("[].content").type(JsonFieldType.STRING).description("댓글 내용"),
-            fieldWithPath("[].createdDate").type(JsonFieldType.STRING).description("생성일시"),
+            fieldWithPath("[].createdDate").type(JsonFieldType.ARRAY).description("생성일시"),
             fieldWithPath("[].commentLike").type(JsonFieldType.NUMBER).description("댓글 좋아요 갯수"),
             fieldWithPath("[].authorNickname").type(JsonFieldType.STRING).description("작성자 닉네임"),
             fieldWithPath("[].articleId").type(JsonFieldType.NUMBER).description("댓글이 작성된 게시글의 아이디"),
