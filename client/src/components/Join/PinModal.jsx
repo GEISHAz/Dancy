@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import { pinNumCheck } from "../../api/join";
+import { httpStatusCode } from "../../util/http-status";
 
 const ModalOverlay = styled.div`
   display: ${(props) => (props.isOpen ? "flex" : "none")};
@@ -77,7 +79,7 @@ const ModalButton = styled.button`
   font-size: 20px;
 `;
 
-const CustomModal = ({ isOpen, onClose, onSubmit }) => {
+const CustomModal = ({ email, isOpen, onClose, onSubmit }) => {
   const [pin, setPin] = useState(["", "", "", "", "", ""]);
   const pinRefs = useRef(pin.map(() => React.createRef()));
 
@@ -98,12 +100,37 @@ const CustomModal = ({ isOpen, onClose, onSubmit }) => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (email) => {
     // 핀 번호가 모두 입력되었는지 확인
     if (pin.every((digit) => digit !== "")) {
       const pinValue = pin.join("");
-      onSubmit(pinValue);
-      onClose();
+      console.log("pin:", pinValue);
+      console.log("email: ", email);
+
+      // 서버와의 통신 구현 필요 -> 서버 핀번호랑 맞는지 비교후에 200이면 true 반환하는. 로직
+
+      try {
+        const response = await pinNumCheck(email, pinValue);
+        console.log("response: ", response);
+        if (response === httpStatusCode.OK) {
+          // 핀넘버랑 동일할 때
+          onSubmit(pinValue);
+          onClose();
+        }
+      } catch (error) {
+        if (error === httpStatusCode.FOBIDDEN) {
+          alert("인증번호가 일치하지 않습니다. 다시 시도해주세요");
+        } else if (error === httpStatusCode.NOTFOUND) {
+          alert("인증번호가 저장되어 있지 않습니다.");
+          onClose();
+        } else if (error === httpStatusCode.CONFLICT) {
+          alert("이미 가입된 이메일 계정입니다.");
+          onClose();
+        } else if (error === httpStatusCode.BADREQUEST) {
+          alert("이메일 형식이 아닙니다.");
+          onClose();
+        }
+      }
     }
   };
 
@@ -147,7 +174,7 @@ const CustomModal = ({ isOpen, onClose, onSubmit }) => {
           </PinInputContainer>
         </ModalContent>
         <ModalButtonContainer>
-          <ModalButton onClick={handleSubmit}>인증 완료</ModalButton>
+          <ModalButton onClick={() => handleSubmit(email)}>인증 완료</ModalButton>
         </ModalButtonContainer>
       </ModalContainer>
     </ModalOverlay>

@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import styled, { css } from "styled-components";
 
 // Dancy 로고
 export const JoinLogo = styled.div`
@@ -69,6 +69,13 @@ export const FormBtn = styled.button`
   &:hover {
     background-color: #c0354c;
   }
+  /* disable 상태일 때의 스타일 */
+  ${(props) =>
+    props.disabled &&
+    css`
+      background-color: #6f6f6f;
+      cursor: not-allowed;
+    `}
 `;
 
 // 가입하기 버튼

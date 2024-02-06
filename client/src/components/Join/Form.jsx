@@ -72,6 +72,7 @@ export default function FormArea() {
     gender: "",
     nickname: "",
   });
+
   const [showWarnings, setShowWarnings] = useState({
     email: { show: false, message: "" },
     password: { show: false, message: "" },
@@ -80,8 +81,10 @@ export default function FormArea() {
     gender: false,
     nickname: { show: false, message: "" },
   });
+
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달의 열림/닫힘 상태를 관리
   const [submittedPin, setSubmittedPin] = useState(""); // 모달에서 제출된 PIN을 저장
+  const [isPinChecked, setIsPinChecked] = useState(false);
 
   // 모달을 열기 위한 함수
   const openModal = () => {
@@ -97,16 +100,8 @@ export default function FormArea() {
   const handlePinSubmit = (pin) => {
     console.log(`Submitted PIN: ${pin}`);
     setSubmittedPin(pin); // 제출된 PIN을 상태값에 저장
-    closeModal(); // PIN이 제출되면 모달을 닫음
+    setIsPinChecked(true); // 핀이 제출되면 체크 된 것으로 가정!
   };
-
-  // const inputChangeHandler = (e) => {
-  //   const value = e.target.value;
-  //   setInputValue(value);
-
-  //   // 유효성 검사 등을 수행하여 유효하지 않은 경우에만 경고를 보이도록 설정
-  //   setShowWarning(value.trim() === "");
-  // };
 
   const handleInputChange = (inputName, value) => {
     setInputValues((prevValues) => ({
@@ -165,7 +160,6 @@ export default function FormArea() {
     try {
       // 서버에 이메일 중복 여부 확인 요청
       const isEmailDuplicate = await checkEmailDuplicate(inputValues.email);
-      console.log(isEmailDuplicate);
 
       if (isEmailDuplicate) {
         setShowWarnings((prevWarnings) => ({
@@ -174,7 +168,6 @@ export default function FormArea() {
         }));
         return;
       }
-
       // 서버 통신 로직
       openModal();
     } catch (error) {
@@ -219,7 +212,6 @@ export default function FormArea() {
   const checkEmailDuplicate = async (email) => {
     // 서버와 통신하여 이메일 중복 여부를 확인하는 로직
     // true: 중복된 이메일, false: 중복되지 않은 이메일
-
     try {
       const response = await emailCheck(email);
       console.log("response", response);
@@ -261,10 +253,16 @@ export default function FormArea() {
             {showWarnings.email.message}
           </JF.InputNoticeText>
         </InputColunmArea>
-        <JF.FormBtn onClick={handleAuthentication}>인증하기</JF.FormBtn>
+        <JF.FormBtn disabled={isPinChecked} onClick={handleAuthentication}>
+          인증하기
+        </JF.FormBtn>
         {/* CustomModal 컴포넌트를 렌더링하고 isOpen, onClose, onSubmit을 props로 전달 */}
-        <CustomModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handlePinSubmit} />
-        {/* PIN이 제출되면 해당 내용을 출력 */}4{submittedPin && <p>인증번호: {submittedPin}</p>}
+        <CustomModal
+          email={inputValues.email}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          onSubmit={handlePinSubmit}
+        />
       </FormDetailArea>
       <FormDetailArea>
         <JF.MustIcon />
