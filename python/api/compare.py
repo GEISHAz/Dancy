@@ -68,6 +68,8 @@ def compare_video(music_name, sync_frame):
 
     prac_resize = (int(video_inform['frame_width'] * gt_inform['frame_height'] / video_inform['frame_height']),
                    gt_inform['frame_height'])
+    gt_resize = (int(gt_inform['frame_width'] * gt_inform['frame_height'] / gt_inform['frame_height']),
+                   gt_inform['frame_height'])
 
     gt_video = metric.VideoMetric(gt_inform['frame_width'], gt_inform['frame_height'])
     prac_video = metric.VideoMetric(prac_resize[0], prac_resize[1])
@@ -98,7 +100,7 @@ def compare_video(music_name, sync_frame):
     eval_graph_x = []
 
     out = cv2.VideoWriter("./dataset/result/" + music_name + "_prac_analyzed.mp4", fourcc, 30,
-                          (gt_inform['frame_width']+prac_resize[0],max(gt_inform['frame_height'],prac_resize[1])))
+                          (gt_resize[0]+prac_resize[0],max(gt_resize[1],prac_resize[1])))
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:  # 미디어파이프 신뢰도 설정
         i = 0
         # 비디오 저장할 곳, 형식, 프레임,크기 설정
@@ -112,7 +114,7 @@ def compare_video(music_name, sync_frame):
             # get frame time and FPS
             # frame_time = cap.get(cv2.CAP_PROP_POS_MSEC)
             resize_frame = cv2.resize(frame, dsize=prac_resize, fx=1, fy=1, interpolation=cv2.INTER_LINEAR)
-            gt_frame_resized = cv2.resize(frame_gt, dsize=prac_resize, fx=1, fy=1, interpolation=cv2.INTER_LINEAR)
+            gt_frame_resized = cv2.resize(frame_gt, dsize=gt_resize, fx=1, fy=1, interpolation=cv2.INTER_LINEAR)
 
             # Recolor image to RGB
             image = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)
