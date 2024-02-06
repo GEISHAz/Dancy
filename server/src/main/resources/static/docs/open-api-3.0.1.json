@@ -1,0 +1,2859 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "SSAFY DANCY API",
+    "description" : "SSAFY 공통프로젝트 DANCY 에서 사용할 API 문서입니다.",
+    "version" : "0.0.1"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:8080"
+  }, {
+    "url" : "http://i10d210.p.ssafy.io:8080"
+  } ],
+  "tags" : [ ],
+  "paths" : {
+    "/auth" : {
+      "delete" : {
+        "tags" : [ "auth" ],
+        "summary" : "회원 탈퇴",
+        "description" : "회원 탈퇴 API 입니다.<br>올바른 비밀번호를 입력했을 때, 200 OK 와 함께 회원 탈퇴 처리되며, 로그아웃됩니다.<br>프론트앤드 영역에서 Access Token 을 직접 삭제시켜 주어야 합니다.<br>AUTH-TOKEN 이 유효하지 않거나, 값이 없을 경우 401 Unauthorized 가 반환됩니다.<br>기존 패스워드와 일치하지 않을 경우, 403 Forbidden 과 함께 패스워드가 일치하지 않는다는 메세지가 반환됩니다.",
+        "operationId" : "auth_api_test/회원탈퇴_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzgxLCJleHAiOjE3MDcxODI1ODF9.yyxnmW42noPaVbPU6bYVC4nIYgSHoUcI3f5a7_Z2vPc"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth-1994102425"
+              },
+              "examples" : {
+                "auth_api_test/회원탈퇴_비밀번호불일치_403/" : {
+                  "value" : "{\r\n  \"password\" : \"Asdf1234!!\"\r\n}"
+                },
+                "auth_api_test/회원탈퇴_성공_200/" : {
+                  "value" : "{\r\n  \"password\" : \"Test1122!\"\r\n}"
+                },
+                "auth_api_test/회원탈퇴_토큰없음_401/" : {
+                  "value" : "{\r\n  \"password\" : \"Test1122!\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "403" : {
+            "description" : "403",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "auth_api_test/회원탈퇴_비밀번호불일치_403/" : {
+                    "value" : "[ {\r\n  \"message\" : \"기존 비밀번호가 일치하지 않습니다.\",\r\n  \"errorType\" : \"UserPasswordNotMatchException\",\r\n  \"fieldName\" : \"currentPassword\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200"
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "auth_api_test/회원탈퇴_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/change" : {
+      "put" : {
+        "tags" : [ "auth" ],
+        "summary" : "비밀번호 변경",
+        "description" : "비밀번호를 변경하는 API 입니다.<br>비밀번호 변경에 성공한다면, 200 OK 와 함께 로그아웃 처리됩니다.<br>프론트앤드 영역에서 Access Token 을 직접 삭제시켜 주어야 합니다.<br>바꾸고자 하는 비밀번호가 정규표현식을 만족하지 못하는 경우, 400 Bad Request 와 함께 에러 메세지가 반환됩니다.<br>AUTH-TOKEN 이 유효하지 않거나, 값이 없을 경우 401 Unauthorized 가 반환됩니다.<br>A기존 패스워드와 일치하지 않을 경우, 403 Forbidden 과 함께 패스워드가 일치하지 않는다는 메세지가 반환됩니다.",
+        "operationId" : "auth_api_test/비밀번호변경_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzgxLCJleHAiOjE3MDcxODI1ODF9.yyxnmW42noPaVbPU6bYVC4nIYgSHoUcI3f5a7_Z2vPc"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth-change1195549048"
+              },
+              "examples" : {
+                "auth_api_test/비밀번호변경_비밀번호불일치_403/" : {
+                  "value" : "{\r\n  \"currentPassword\" : \"asdfasdf\",\r\n  \"newPassword\" : \"Asdf1234!!\"\r\n}"
+                },
+                "auth_api_test/비밀번호변경_성공_200/" : {
+                  "value" : "{\r\n  \"currentPassword\" : \"Test1122!\",\r\n  \"newPassword\" : \"Asdf1234!!\"\r\n}"
+                },
+                "auth_api_test/비밀번호변경_정규표현식_불만족_400/" : {
+                  "value" : "{\r\n  \"currentPassword\" : \"Test1122!\",\r\n  \"newPassword\" : \"asdfasdf\"\r\n}"
+                },
+                "auth_api_test/비밀번호변경_토큰없음_401/" : {
+                  "value" : "{\r\n  \"currentPassword\" : \"Test1122!\",\r\n  \"newPassword\" : \"Asdf1234!!\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "403" : {
+            "description" : "403",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "auth_api_test/비밀번호변경_비밀번호불일치_403/" : {
+                    "value" : "[ {\r\n  \"message\" : \"기존 비밀번호가 일치하지 않습니다.\",\r\n  \"errorType\" : \"UserPasswordNotMatchException\",\r\n  \"fieldName\" : \"currentPassword\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200"
+          },
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "auth_api_test/비밀번호변경_정규표현식_불만족_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"비밀번호는 8자리 이상, 영문, 숫자, 특수문자 조합이어야 합니다.\",\r\n  \"errorType\" : \"Password\",\r\n  \"fieldName\" : \"newPassword\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "auth_api_test/비밀번호변경_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login" : {
+      "post" : {
+        "tags" : [ "auth" ],
+        "summary" : "로그인",
+        "description" : "로그인을 진행하는 API 입니다.<br>로그인에 성공한다면, 200 OK 와 함께 Access Token 과 Refresh Token, 인증타입, 토큰타입 정보가 반환됩니다.<br>아이디나 비밀번호가 일치하지 않는다면, 404 Not Found 가 반환됩니다.",
+        "operationId" : "auth_api_test/로그인",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth-login-83566640"
+              },
+              "examples" : {
+                "auth_api_test/로그인_정보불일치_404/" : {
+                  "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"password\" : \"asdfasdf\"\r\n}"
+                },
+                "auth_api_test/로그인성공_200/" : {
+                  "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"password\" : \"Test1122!\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "auth_api_test/로그인_정보불일치_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"아이디나 패스워드가 일치하지 않습니다.\",\r\n  \"errorType\" : \"UserInfoNotMatchException\",\r\n  \"fieldName\" : \"email\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-password-check328342784"
+                },
+                "examples" : {
+                  "auth_api_test/로그인성공_200/" : {
+                    "value" : "{\r\n  \"accessToken\" : \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzgyLCJleHAiOjE3MDcxODI1ODJ9.36bvpQTcgNjggzMDF8viiUxMIekU0lTP5Xet6fm4y6k\",\r\n  \"tokenType\" : \"Bearer\",\r\n  \"authType\" : \"DANCY\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout" : {
+      "post" : {
+        "tags" : [ "auth" ],
+        "summary" : "로그아웃",
+        "description" : "로그아웃을 진행하는 API 입니다.<br>로그아웃에 성공한다면, 200 OK 와 함께 Refresh Token 을 가지고 있는 Cookie 가 삭제됩니다.<br>프론트앤드 영역에서 Access Token 을 직접 삭제시켜 주어야 합니다.<br>AUTH-TOKEN 을 입력하지 않았을 때, 401 Unauthorized 가 반환됩니다.",
+        "operationId" : "auth_api_test/로그아웃_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzgwLCJleHAiOjE3MDcxODI1ODB9.98d7NPJPd1MDyQPIsaOewKPOmcMjSboV-RnqUUbvji4"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "auth_api_test/로그아웃_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/password/check" : {
+      "post" : {
+        "tags" : [ "auth" ],
+        "summary" : "비밀번호 찾기 인증번호 검증",
+        "description" : "비밀번호 찾기에서의 이메일 인증번호 검증 API 입니다..<br>지정된 코드와 일치하는 코드를 입력하는 경우, 200 OK 와 함께 AUTH-TOKEN 을 반환합니다.<br>로그인 처리되는 것은 아니지만, 해당 JWT 코드를 저장해 이후 비밀번호 찾기를 진행할 수 있습니다.<br>서버 내에서는, “비밀번호 찾기 기능이 인가되었다” 라는 정보가 저장됩니다. <br>해당 정보는 1시간 동안 유효하며, 1시간 이내로 비밀번호 찾기 기능에서의 변경을 수행하지 않으면 해당 프로세스를 재실행해야 합니다.<br>이메일에 동봉된 인증코드와 입력한 인증코드가 일치하지 않을 경우, <br>403 Forbidden 과 함께 인증 코드가 일치하지 않는다는 메세지가 반환됩니다.<br>저장된 인증코드가 존재하지 않을 경우, 404 Not Found 가 반환됩니다.<br>인증번호 입력을 5번 틀린 사용자가, 해당 시스템을 이용하려고 할 때 406 Not Acceptable 과 함께 아래 메세지를 입력받습니다.<br>소셜 로그인 계정일 경우, 409 Conflict 가 반환됩니다.<br>현재, 404, 406, 409 Code 가 나가는 케이스의 경우, 테스트하기 어려운 케이스이기 때문에<br>노션에 직접 해당 테스트 검증 결과를 추후 남겨 두겠습니다.",
+        "operationId" : "auth_api_test/비밀번호_찾기_인증번호_",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth-password-check1025472966"
+              },
+              "examples" : {
+                "auth_api_test/비밀번호_찾기_인증번호_검증_성공_200/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"ndw8200@naver.com\",\r\n  \"verifyCode\" : \"123456\"\r\n}"
+                },
+                "auth_api_test/비밀번호_찾기_인증번호_불일치_403/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"ndw8200@naver.com\",\r\n  \"verifyCode\" : \"654321\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-password-check328342784"
+                },
+                "examples" : {
+                  "auth_api_test/비밀번호_찾기_인증번호_검증_성공_200/" : {
+                    "value" : "{\r\n  \"accessToken\" : \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzgxLCJleHAiOjE3MDcxODI1ODF9.yyxnmW42noPaVbPU6bYVC4nIYgSHoUcI3f5a7_Z2vPc\",\r\n  \"tokenType\" : \"Bearer\",\r\n  \"authType\" : \"DANCY\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "403",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "auth_api_test/비밀번호_찾기_인증번호_불일치_403/" : {
+                    "value" : "[ {\r\n  \"message\" : \"인증 코드가 일치하지 않습니다. 2 번 틀렸습니다\",\r\n  \"errorType\" : \"VerifyCodeNotMatchException\",\r\n  \"fieldName\" : \"verifyCode\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/password/find" : {
+      "post" : {
+        "tags" : [ "auth" ],
+        "summary" : "비밀번호 찾기에서의 비밀번호 변경",
+        "description" : "비밀번호 찾기에서의 최종 비밀번호 변경을 진행하는 API 입니다.<br>비밀번호 찾기에서의 이메일 프로세스를 모두 통과하고, 받아온 토큰과 함께 비밀번호를 최종 변경할 경우,<br>200 OK 와 함께 최종적으로 비밀번호가 변경되게 됩니다.<br>최종적으로 다시 로그인되는 것은 아니며, 이전에 받았던 Token 을 삭제하는 작업이 클라이언트 단에서 필요합니다.<br>이전의 프로세스 진행 후 1시간 동안 비밀번호를 바꾸지 않았다면, 다시 해당 프로세스 전체를 진행해야 합니다.<br>비밀번호는 8자리 이상, 영문, 숫자, 특수문자 조합이어야 하며, 이를 위반하는 경우 400 Bad Request 가 반환됩니다.<br>AUTH-TOKEN 이 유효하지 않거나 값이 없을 경우, 401 Unauthorized 가 반환됩니다.<br>비밀번호 찾기 인증 시스템에서 정상적으로 해당 기능에 대한 허가를 받지 않은 사용자가 해당 API 를 이용할 경우, 403 Forbidden 이 반환됩니다.<br>소셜 로그인 계정일 경우, 409 Conflict 가 반환됩니다.<br>현재, 403, 409 Code 가 나가는 케이스의 경우, 테스트하기 어려운 케이스이기 때문에<br>테스트를 수동으로 진행했으며, 409 의 경우 소셜 로그인을 구현 후 진행합니다.",
+        "operationId" : "auth_api_test/비밀번호_찾기_비밀번호_변경_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzgyLCJleHAiOjE3MDcxODI1ODJ9.36bvpQTcgNjggzMDF8viiUxMIekU0lTP5Xet6fm4y6k"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth-password-find-1938778681"
+              },
+              "examples" : {
+                "auth_api_test/비밀번호_찾기_비밀번호_변경_성공_200/" : {
+                  "value" : "{\r\n  \"newPassword\" : \"Asdf1234!!\"\r\n}"
+                },
+                "auth_api_test/비밀번호_찾기_비밀번호_변경_토큰없음_401/" : {
+                  "value" : "{\r\n  \"newPassword\" : \"Asdf1234!!\"\r\n}"
+                },
+                "auth_api_test/비밀번호_찾기_비밀번호_변경_패스워드타입아님_400/" : {
+                  "value" : "{\r\n  \"newPassword\" : \"asdfasdf\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "auth_api_test/비밀번호_찾기_비밀번호_변경_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "auth_api_test/비밀번호_찾기_비밀번호_변경_패스워드타입아님_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"비밀번호는 8자리 이상, 영문, 숫자, 특수문자 조합이어야 합니다.\",\r\n  \"errorType\" : \"Password\",\r\n  \"fieldName\" : \"newPassword\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comment/{articleId}" : {
+      "get" : {
+        "tags" : [ "comment" ],
+        "summary" : "댓글조회",
+        "description" : "댓글을 조회하는 API 입니다.<br>articleId 를 path variable 로 입력하면, 200 OK 와 함께 댓글 목록이 반환됩니다.<br>존재하지 않는 articleId 이더라도, 댓글 란이 빈 칸으로 존재합니다.",
+        "operationId" : "comment_api_test/댓글_조회/",
+        "parameters" : [ {
+          "name" : "articleId",
+          "in" : "path",
+          "description" : "게시물 아이디",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/comment-articleId-2077767438"
+                },
+                "examples" : {
+                  "comment_api_test/댓글_조회/" : {
+                    "value" : "[ {\r\n  \"commentId\" : 1,\r\n  \"content\" : \"fuck\",\r\n  \"createdDate\" : \"2024-02-06T09:53:05.181248\",\r\n  \"commentLike\" : 0,\r\n  \"authorNickname\" : \"dongw\",\r\n  \"articleId\" : 1,\r\n  \"parentId\" : 0\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "comment" ],
+        "summary" : "댓글 작성",
+        "description" : "댓글을 작성하는 API 입니다.<br>댓글 작성이 성공하면 200 OK 와 함께 작성된 댓글의 정보를 입력받습니다.<br>댓글은 200 자 까지 작성 가능합니다. 댓글에 공란을 입력하거나, 200 자를 초과하는 경우, 400 Bad Request 가 반환됩니다.<br>부모 댓글 아이디는 필수값입니다. 부모 댓글이 존재하지 않을 경우, 0을 입력해야 하며 <br>로그인 토큰을 헤더에 입력하지 않고 작성 시도를 하는 경우, 401 Unauthorized 가 반환됩니다.<br>댓글을 작성하려는 글이 존재하지 않을 경우, 404 Not Found 가 반환됩니다.",
+        "operationId" : "comment_api_test/댓글_작성_",
+        "parameters" : [ {
+          "name" : "articleId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzgzLCJleHAiOjE3MDcxODI1ODN9.iW50UOUYE9Z81oDMQE8a1C6_cK-MQ8SsJffTzrMedT0"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/comment-articleId1206823079"
+              },
+              "examples" : {
+                "comment_api_test/댓글_작성_성공_200/" : {
+                  "value" : "{\r\n  \"content\" : \"fuck\",\r\n  \"parentId\" : 0\r\n}"
+                },
+                "comment_api_test/댓글_작성_조건위반_400/" : {
+                  "value" : "{\r\n  \"content\" : \"fuck\",\r\n  \"parentId\" : -1\r\n}"
+                },
+                "comment_api_test/댓글_작성_토큰없음_401/" : {
+                  "value" : "{\r\n  \"content\" : \"fuck\",\r\n  \"parentId\" : 0\r\n}"
+                },
+                "comment_api_test/댓글_작성_해당게시물없음_404/" : {
+                  "value" : "{\r\n  \"content\" : \"fuck\",\r\n  \"parentId\" : 0\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/comment-commentId-455871403"
+                },
+                "examples" : {
+                  "comment_api_test/댓글_작성_성공_200/" : {
+                    "value" : "{\r\n  \"commentId\" : 1,\r\n  \"content\" : \"fuck\",\r\n  \"createdDate\" : \"2024-02-06T09:53:03.244256\",\r\n  \"commentLike\" : 0,\r\n  \"authorNickname\" : \"dongw\",\r\n  \"articleId\" : 1,\r\n  \"parentId\" : 0\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "comment_api_test/댓글_작성_조건위반_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"0 이상으로 입력해 주세요\",\r\n  \"errorType\" : \"Min\",\r\n  \"fieldName\" : \"parentId\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "comment_api_test/댓글_작성_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "comment_api_test/댓글_작성_해당게시물없음_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"해당 글을 찾을 수 없습니다.\",\r\n  \"errorType\" : \"ArticleNotFoundException\",\r\n  \"fieldName\" : \"article\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comment/{commentId}" : {
+      "put" : {
+        "tags" : [ "comment" ],
+        "summary" : "댓글수정",
+        "description" : "댓글 수정을 진행하는 API 입니다.<br>성공적으로 댓글 수정이 진행되면, 200 OK 와 함께 수정된 댓글 정보를 입력받습니다.<br>수정 댓글을 공란이나 200 자가 넘게 된다면, 400 Bad Request 가 반환됩니다.<br>로그인 토큰을 입력하지 않고 댓글 수정을 진행하면, 401 Unauthorized 가 반환됩니다.<br>로그인한 유저가 작성하지 않은 댓글을 수정하고자 한다면, 403 Forbidden 이 반환됩니다.<br>존재하지 않는 댓글을 수정하고자 시도한다면, 404 Not Found 가 반환됩니다.",
+        "operationId" : "comment_api_test/댓글_수정_",
+        "parameters" : [ {
+          "name" : "commentId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzgzLCJleHAiOjE3MDcxODI1ODN9.iW50UOUYE9Z81oDMQE8a1C6_cK-MQ8SsJffTzrMedT0"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/comment-commentId-1563718501"
+              },
+              "examples" : {
+                "comment_api_test/댓글_수정_검증위반_400/" : {
+                  "value" : "{\r\n  \"content\" : \"\"\r\n}"
+                },
+                "comment_api_test/댓글_수정_권한없음_403/" : {
+                  "value" : "{\r\n  \"content\" : \"modified Content\"\r\n}"
+                },
+                "comment_api_test/댓글_수정_성공_200/" : {
+                  "value" : "{\r\n  \"content\" : \"modified Content\"\r\n}"
+                },
+                "comment_api_test/댓글_수정_토큰없음_401/" : {
+                  "value" : "{\r\n  \"content\" : \"\"\r\n}"
+                },
+                "comment_api_test/댓글_수정_해당댓글없음_404/" : {
+                  "value" : "{\r\n  \"content\" : \"modified Content\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "comment_api_test/댓글_수정_검증위반_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"댓글은 1자 이상 255자 이하여야 합니다.\",\r\n  \"errorType\" : \"Size\",\r\n  \"fieldName\" : \"content\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "403",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "comment_api_test/댓글_수정_권한없음_403/" : {
+                    "value" : "[ {\r\n  \"message\" : \"작성자만이 수정가능합니다.\",\r\n  \"errorType\" : \"NotHavingPermissionException\",\r\n  \"fieldName\" : \"email\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/comment-commentId-455871403"
+                },
+                "examples" : {
+                  "comment_api_test/댓글_수정_성공_200/" : {
+                    "value" : "{\r\n  \"commentId\" : 1,\r\n  \"content\" : \"modified Content\",\r\n  \"createdDate\" : \"2024-02-06T09:53:04.189249\",\r\n  \"commentLike\" : 0,\r\n  \"authorNickname\" : \"dongw\",\r\n  \"articleId\" : 1,\r\n  \"parentId\" : 0\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "comment_api_test/댓글_수정_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "comment_api_test/댓글_수정_해당댓글없음_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"존재하지 않는 댓글입니다.\",\r\n  \"errorType\" : \"CommentNotFoundException\",\r\n  \"fieldName\" : \"follow\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "comment" ],
+        "summary" : "댓글 삭제",
+        "description" : "댓글 삭제를 진행하는 API 입니다.<br>정상적으로 삭제가 진행되었다면, 200 OK 와 함께 삭제된 댓글 정보가 반환됩니다.<br>commentId 를 -1 처리하여, 삭제되었다고 표시하고 있습니다. <br>로그인 토큰을 입력하지 않고 댓글 삭제를 시도할 경우, 401 Unauthorized 가 반환됩니다.<br>로그인한 유저가 작성한 댓글이 아닌 댓글을 삭제 시도할 경우, 403 Forbidden 이 반환됩니다.<br>존재하지 않는 댓글을 삭제 시도할 경우, 404 Not Found 가 반환됩니다.",
+        "operationId" : "comment_api_test/댓글_삭제_",
+        "parameters" : [ {
+          "name" : "commentId",
+          "in" : "path",
+          "description" : "댓글 아이디",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGxtaW45NzAyQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzg0LCJleHAiOjE3MDcxODI1ODR9.x2j4C8GhIhcGfSJjuNJrJtoAhJ5MOSDh6QN1fUT4EEA"
+        } ],
+        "responses" : {
+          "403" : {
+            "description" : "403",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "comment_api_test/댓글_삭제_권한없음_403/" : {
+                    "value" : "[ {\r\n  \"message\" : \"작성자만이 수정가능합니다.\",\r\n  \"errorType\" : \"NotHavingPermissionException\",\r\n  \"fieldName\" : \"email\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "comment_api_test/댓글_삭제_댓글없음_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"존재하지 않는 댓글입니다.\",\r\n  \"errorType\" : \"CommentNotFoundException\",\r\n  \"fieldName\" : \"follow\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/comment-commentId-455871403"
+                },
+                "examples" : {
+                  "comment_api_test/댓글_삭제_성공_200/" : {
+                    "value" : "{\r\n  \"commentId\" : -1,\r\n  \"content\" : \"fuck\",\r\n  \"createdDate\" : \"2024-02-06T09:53:02.988251\",\r\n  \"commentLike\" : 0,\r\n  \"authorNickname\" : \"dongw\",\r\n  \"articleId\" : 1,\r\n  \"parentId\" : 0\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "comment_api_test/댓글_삭제_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email/password/send" : {
+      "post" : {
+        "tags" : [ "email" ],
+        "summary" : "비밀번호 찾기 이메일 전송",
+        "description" : "계정 이메일에 비밀번호 찾기를 전송하는 API 입니다.<br>정상적으로 비밀번호 찾기 이메일이 전송되었을 때, 200 OK 가 반환됩니다.<br>전송하려는 이메일 계정이 이메일 형식을 띠고 있지 않는다면, 400 Bad Request 가 반환됩니다.<br>가입된 이메일이 아닐 경우, 404 Not Found 가 반환됩니다.<br>인증번호 입력을 5번 틀린 사용자가, 해당 시스템을 이용하려고 할 때 406 Not Acceptable 이 반환됩니다.<br>자체 로그인 계정이 아닌 경우, 409 Conflict 가 반환됩니다.<br> 406 Code 의 경우, 테스트 코드를 만들지는 못했지만 수동 테스트를 진행 성공했습니다.",
+        "operationId" : "email_api_test/비밀번호_찾기_",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/email-verify-send1357172838"
+              },
+              "examples" : {
+                "email_api_test/비밀번호_찾기_가입된이메일_아님_404/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"ndw8200@naver.com\"\r\n}"
+                },
+                "email_api_test/비밀번호_찾기_이메일_전송_성공_200/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"ndw8200@naver.com\"\r\n}"
+                },
+                "email_api_test/비밀번호_찾기_이메일_전송_이메일형식_400/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"asdf\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "email_api_test/비밀번호_찾기_가입된이메일_아님_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"가입된 이메일이 아닙니다.\",\r\n  \"errorType\" : \"UserNotFoundException\",\r\n  \"fieldName\" : \"user\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200"
+          },
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "email_api_test/비밀번호_찾기_이메일_전송_이메일형식_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"이메일 형식이 아닙니다.\",\r\n  \"errorType\" : \"Email\",\r\n  \"fieldName\" : \"targetEmail\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email/verify/check" : {
+      "post" : {
+        "tags" : [ "email" ],
+        "summary" : "이메일 가입 인증번호 검증",
+        "description" : "이메일 가입 인증번호 코드를 검증하는 API 입니다.<br>서버에 저장된 인증 코드와 입력한 인증 코드가 일치할 때, 200 OK 가 반환됩니다.<br>이후, 회원가입을 진행할 수 있으며, 30분 이내에 가입하지 않을 시 이메일 인증을 다시 진행해야 합니다. <br>가입하려는 이메일 계정이, 이메일 형식을 하고 있지 않을 경우 400 Bad Request 가 반환됩니다.<br>이메일 인증번호가 일치하지 않을 경우, 403 Forbidden 이 반환됩니다.<br>가입하려는 이메일 계정에 인증코드가 전송되어 있지 않거나, 시간이 30분 이상 지나 만료된 코드의 경우<br>404 Not Found 가 반환됩니다.<br>이미 가입된 이메일로 검증을 시도할 경우, 409 Conflict 가 반환됩니다.<br>404 코드의 경우, 수동 테스트를 진행했고 성공했습니다.",
+        "operationId" : "email_api_test/이메일_인증",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth-password-check1025472966"
+              },
+              "examples" : {
+                "email_api_test/이메일_인증_이메일형식아님_400/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"ndw8200\",\r\n  \"verifyCode\" : \"123456\"\r\n}"
+                },
+                "email_api_test/이메일_인증_이미가입_409/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"ndw8200@naver.com\",\r\n  \"verifyCode\" : \"123456\"\r\n}"
+                },
+                "email_api_test/이메일_인증_코드불일치_403/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"ndw8200@naver.com\",\r\n  \"verifyCode\" : \"654321\"\r\n}"
+                },
+                "email_api_test/이메일_인증번호_확인_성공_200/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"ndw8200@naver.com\",\r\n  \"verifyCode\" : \"123456\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "email_api_test/이메일_인증_이메일형식아님_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"이메일 형식이 아닙니다.\",\r\n  \"errorType\" : \"Email\",\r\n  \"fieldName\" : \"targetEmail\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "409",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "email_api_test/이메일_인증_이미가입_409/" : {
+                    "value" : "[ {\r\n  \"message\" : \"이미 가입된 이메일 계정입니다.\",\r\n  \"errorType\" : \"UserAlreadyExistException\",\r\n  \"fieldName\" : \"email\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "403",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "email_api_test/이메일_인증_코드불일치_403/" : {
+                    "value" : "[ {\r\n  \"message\" : \"인증번호가 일치하지 않습니다.\",\r\n  \"errorType\" : \"VerifyCodeNotMatchException\",\r\n  \"fieldName\" : \"verifyCode\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/email-verify-check-123477478"
+                },
+                "examples" : {
+                  "email_api_test/이메일_인증번호_확인_성공_200/" : {
+                    "value" : "{\r\n  \"targetEmail\" : \"ndw8200@naver.com\",\r\n  \"verified\" : true\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email/verify/send" : {
+      "post" : {
+        "tags" : [ "email" ],
+        "summary" : "이메일 가입 인증번호 전송",
+        "description" : "이메일 가입 인증번호 코드를 전송하는 API 입니다.<br>이미 생성된 계정이 아닐 때, 200 OK 와 함께 이메일이 해당 계정으로 전송됩니다.<br>이메일이 전송될 때, 서버에 인증번호 정보가 저장되어 있습니다. 인증번호의 유효기간은 30분 입니다. <br>가입하려는 이메일 계정이, 이메일 형식을 하고 있지 않을 경우 400 Bad Request 가 반환됩니다.<br>이미 가입된 이메일의 경우, 409 Conflict 가 반환됩니다.",
+        "operationId" : "email_api_test/이메일_가입_인증번호_",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/email-verify-send1357172838"
+              },
+              "examples" : {
+                "email_api_test/이메일_가입_인증번호_이미가입_409/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"ndw8200@naver.com\"\r\n}"
+                },
+                "email_api_test/이메일_가입_인증번호_전송_이메일_형식_아님_400/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"asdf\"\r\n}"
+                },
+                "email_api_test/이메일_가입_인증번호_전송_이메일아님_400/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"asdf\"\r\n}"
+                },
+                "email_api_test/이메일_가입_인증번호_전송_테스트_성공_200/" : {
+                  "value" : "{\r\n  \"targetEmail\" : \"ndw8200@naver.com\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "409" : {
+            "description" : "409",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "email_api_test/이메일_가입_인증번호_이미가입_409/" : {
+                    "value" : "[ {\r\n  \"message\" : \"이미 가입된 이메일 계정입니다.\",\r\n  \"errorType\" : \"UserAlreadyExistException\",\r\n  \"fieldName\" : \"email\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "email_api_test/이메일_가입_인증번호_전송_이메일_형식_아님_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"이메일 형식이 아닙니다.\",\r\n  \"errorType\" : \"Email\",\r\n  \"fieldName\" : \"targetEmail\"\r\n} ]"
+                  },
+                  "email_api_test/이메일_가입_인증번호_전송_이메일아님_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"이메일 형식이 아닙니다.\",\r\n  \"errorType\" : \"Email\",\r\n  \"fieldName\" : \"targetEmail\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200"
+          }
+        }
+      }
+    },
+    "/follow/request-follow" : {
+      "post" : {
+        "tags" : [ "follow" ],
+        "summary" : "팔로우 진행",
+        "description" : "팔로우를 진행하는 API입니다.<br>성공적으로 수정되면 200 OK와 함께 수정 후 게시글 ID, 제목, 내용, 썸네일 등이 반환됩니다.<br>게시물 제목을 40자 이하로 작성하지 않거나, 공백으로 둘 경우, 그리고 게시물 내용이 공백일 경우<br>400 Bad Request 가 생성됩니다.<br>로그인 토큰을 입력하지 않으면, 401 Unauthorized 가 반환됩니다.<br>로그인되어 있는 사람이 작성하지 않은 게시물을 수정하고자 하는 경우, 403 Forbidden 이 반환됩니다.<br>해당 글을 찾을 수 없을 경우, 404 Not Found 가 반환됩니다.",
+        "operationId" : "follow_api_test/팔로우_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzg4LCJleHAiOjE3MDcxODI1ODh9.BCHD6d6QdFWJnDXzlhVvPnAHgm0c6zqf4AQkiMv3O6g"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/follow-request-unfollow1278808337"
+              },
+              "examples" : {
+                "follow_api_test/팔로우_상대방_닉네임없음_404/" : {
+                  "value" : "{\r\n  \"nickname\" : \"notregistered\"\r\n}"
+                },
+                "follow_api_test/팔로우_성공_200/" : {
+                  "value" : "{\r\n  \"nickname\" : \"maino\"\r\n}"
+                },
+                "follow_api_test/팔로우_토큰없음_401/" : {
+                  "value" : "{\r\n  \"nickname\" : \"maino\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "follow_api_test/팔로우_상대방_닉네임없음_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"팔로우할 유저를 찾을 수 없습니다.\",\r\n  \"errorType\" : \"UserNotFoundException\",\r\n  \"fieldName\" : \"user\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/follow-request-unfollow1753370495"
+                },
+                "examples" : {
+                  "follow_api_test/팔로우_성공_200/" : {
+                    "value" : "{\r\n  \"followInfoId\" : 8,\r\n  \"followerNickname\" : \"dongw\",\r\n  \"followedNickname\" : \"maino\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "follow_api_test/팔로우_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/follow/request-unfollow" : {
+      "delete" : {
+        "tags" : [ "follow" ],
+        "summary" : "언팔로우 진행",
+        "description" : "언팔로우를 진행하는 API 입니다.<br>언팔로우를 성공적으로 진행한다면, 200 OK 와 함께 언팔로우한 정보를 받습니다.<br>로그인 토큰을 입력하지 않는다면 401 Unauthorized 가 반환됩니다.<br>기존에 팔로우한 정보가 없다면 404 Not Found 가 반환됩니다.",
+        "operationId" : "follow_api_test/언팔로우",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzg4LCJleHAiOjE3MDcxODI1ODh9.BCHD6d6QdFWJnDXzlhVvPnAHgm0c6zqf4AQkiMv3O6g"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/follow-request-unfollow1278808337"
+              },
+              "examples" : {
+                "follow_api_test/언팔로우/" : {
+                  "value" : "{\r\n  \"nickname\" : \"maino\"\r\n}"
+                },
+                "follow_api_test/언팔로우_토큰없음_401/" : {
+                  "value" : "{\r\n  \"nickname\" : \"maino\"\r\n}"
+                },
+                "follow_api_test/언팔로우_팔로우정보없음_404/" : {
+                  "value" : "{\r\n  \"nickname\" : \"maino\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/follow-request-unfollow1753370495"
+                },
+                "examples" : {
+                  "follow_api_test/언팔로우/" : {
+                    "value" : "{\r\n  \"followInfoId\" : 0,\r\n  \"followerNickname\" : \"dongw\",\r\n  \"followedNickname\" : \"maino\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "follow_api_test/언팔로우_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "follow_api_test/언팔로우_팔로우정보없음_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"팔로우한 정보를 찾을 수 없습니다.\",\r\n  \"errorType\" : \"FollowInfoNotFoundException\",\r\n  \"fieldName\" : \"follow\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/follow/get-followers/{nickname}" : {
+      "get" : {
+        "tags" : [ "follow" ],
+        "summary" : "팔로우 정보 조회",
+        "description" : "특정 계정의 팔로워 정보를 조회하는 API 입니다.<br>존재하는 닉네임을 입력했을 경우, 200 OK 와 함께 그 계정을 팔로우한 유저 정보를 조회할 수 있습니다.<br>존재하지 않는 계정 닉네임을 입력했을 경우 ,404 Not Found 와 함께 에러 메세지를 반환받습니다.",
+        "operationId" : "follow_api_test/팔로우_조회",
+        "parameters" : [ {
+          "name" : "nickname",
+          "in" : "path",
+          "description" : "닉네임",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/follow-get-followers-nickname-666951130"
+                },
+                "examples" : {
+                  "follow_api_test/팔로우_조회/" : {
+                    "value" : "[ {\r\n  \"profileImageUrl\" : null,\r\n  \"nickname\" : \"maino\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "follow_api_test/팔로우_조회_닉네임없음_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"해당 유저를 찾을 수 없습니다.\",\r\n  \"errorType\" : \"UserNotFoundException\",\r\n  \"fieldName\" : \"user\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/follow/get-followings/{nickname}" : {
+      "get" : {
+        "tags" : [ "follow" ],
+        "summary" : "팔로잉 정보 조회",
+        "description" : "특정 계정의 팔로잉 정보를 조회하는 API 입니다.<br>존재하는 닉네임을 입력했을 경우, 200 OK 와 함께 그 계정의 팔로잉한 유저 정보를 조회할 수 있습니다.<br>존재하지 않는 계정 닉네임을 입력했을 경우 ,404 Not Found 와 함께 에러 메세지를 반환받습니다.",
+        "operationId" : "follow_api_test/팔로잉_조회_",
+        "parameters" : [ {
+          "name" : "nickname",
+          "in" : "path",
+          "description" : "닉네임",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "follow_api_test/팔로잉_조회_닉네임없음_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"해당 유저를 찾을 수 없습니다.\",\r\n  \"errorType\" : \"UserNotFoundException\",\r\n  \"fieldName\" : \"user\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/follow-get-followers-nickname-666951130"
+                },
+                "examples" : {
+                  "follow_api_test/팔로잉_조회_성공_200/" : {
+                    "value" : "[ {\r\n  \"profileImageUrl\" : null,\r\n  \"nickname\" : \"maino\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/like/article-like/{articleId}" : {
+      "post" : {
+        "tags" : [ "like" ],
+        "summary" : "게시글 좋아요 프로세스",
+        "description" : "게시글 좋아요를 등록하고 취소하는 API 입니다.<br>게시글 좋아요 등록이 성공하면, 200 OK 와 함께 해당 게시글의 좋아요 갯수, 자신이 좋아요하는지 여부 정보를 입력받습니다.<br>게시글이 좋아요 되어 있는 상태에서 다시 해당 API 를 호출하면, 200 OK 가 반환되며 좋아요가 취소됩니다.<br>로그인 토큰을 헤더에 입력하지 않고 해당 API 를 호출하면, 401 Unauthorized 가 반환됩니다.<br>존재하지 않는 게시글을 좋아요 요청하면, 404 Not Found 가 반환됩니다.",
+        "operationId" : "like_api_test/게시글_좋아요_",
+        "parameters" : [ {
+          "name" : "articleId",
+          "in" : "path",
+          "description" : "게시물 아이디",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzg5LCJleHAiOjE3MDcxODI1ODl9.v9-B_u8xPEnUTtLVHizsoZRAX9fNmunAX7Zjb38cxAQ"
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "like_api_test/게시글_좋아요_게시글없음_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"게시글을 찾을 수 없습니다.\",\r\n  \"errorType\" : \"ArticleNotFoundException\",\r\n  \"fieldName\" : \"article\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "like_api_test/게시글_좋아요_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/like-article-like-articleId-1344636820"
+                },
+                "examples" : {
+                  "like_api_test/게시글_좋아요_프로세스_성공_200/" : {
+                    "value" : "{\r\n  \"articleLikeCount\" : 1,\r\n  \"isArticleLiked\" : true\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/like/comment-like/{commentId}" : {
+      "post" : {
+        "tags" : [ "like" ],
+        "summary" : "댓글 좋아요 프로세스",
+        "description" : "댓글 좋아요를 등록하고 취소하는 API 입니다.<br>댓글 좋아요 등록이 성공하면, 200 OK 와 함께 해당 댓글의 좋아요 갯수, 자신이 좋아요하는지 여부 정보를 입력받습니다.<br>댓글이 좋아요 되어 있는 상태에서 다시 해당 API 를 호출하면, 200 OK 가 반환되며 좋아요가 취소됩니다.<br>로그인 토큰을 헤더에 입력하지 않고 해당 API 를 호출하면, 401 Unauthorized 가 반환됩니다.<br>존재하지 않는 댓글을 좋아요 요청하면, 404 Not Found 가 반환됩니다.",
+        "operationId" : "like_api_test/댓글_좋아요_",
+        "parameters" : [ {
+          "name" : "commentId",
+          "in" : "path",
+          "description" : "댓글 아이디",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzg5LCJleHAiOjE3MDcxODI1ODl9.v9-B_u8xPEnUTtLVHizsoZRAX9fNmunAX7Zjb38cxAQ"
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "like_api_test/댓글_좋아요_댓글없음_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"댓글을 찾을 수 없습니다.\",\r\n  \"errorType\" : \"CommentNotFoundException\",\r\n  \"fieldName\" : \"follow\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/like-comment-like-commentId1382993375"
+                },
+                "examples" : {
+                  "like_api_test/댓글_좋아요_성공_200/" : {
+                    "value" : "{\r\n  \"commentLikeCount\" : 1,\r\n  \"isCommentLiked\" : true\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "like_api_test/댓글_좋아요_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/like/who-like/{articleId}" : {
+      "get" : {
+        "tags" : [ "like" ],
+        "summary" : "게시글 좋아요 리스트 조회",
+        "description" : "게시글 좋아요를 한 사람의 리스트를 불러오는 API 입니다. <br>존재하는 게시글의 아이디를 path variable 로 전달했을 시, 200 OK 와 함께 좋아요한 사람의 간단한 정보 리스트가 전달됩니다.<br>존재하지 않는 게시글 아이디를 전달했을 시, 404 Not Found 가 전달됩니다.",
+        "operationId" : "like_api_test/게시글_좋아요_",
+        "parameters" : [ {
+          "name" : "articleId",
+          "in" : "path",
+          "description" : "게시물 아이디",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/like-who-like-articleId-1056158686"
+                },
+                "examples" : {
+                  "like_api_test/게시글_좋아요_리스트_200/" : {
+                    "value" : "[ {\r\n  \"profileImageUrl\" : null,\r\n  \"nickname\" : \"dongw\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "like_api_test/게시글_좋아요_없는게시글_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"게시글을 찾을 수 없습니다.\",\r\n  \"errorType\" : \"ArticleNotFoundException\",\r\n  \"fieldName\" : \"article\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mypage/{nickname}" : {
+      "get" : {
+        "tags" : [ "mypage" ],
+        "summary" : "SNS 마이페이지",
+        "description" : "마이페이지 정보를 조회하는 API 입니다.<br>여기서 말하는 마이페이지란, 본인 스스로의 상세정보 조회가 아닌 SNS 기능으로의 마이페이지 조회입니다.<br>존재하는 사람의 path variable 로 입력 시, 200 OK 와 함께 SNS 상에서의 상대방 정보와<br>나와의 관계 (ex: 내가 팔로우했는지, 내 개인 계정인지) 여부가 반환됩니다.<br>로그인 토큰 미입력 시, 401 Unauthorized 가 반환됩니다.<br>존재하지 않는 사용자 닉네임을 입력했을 때, 404 Not Found 가 반환됩니다.",
+        "operationId" : "my_page_api_test/마이페이지_",
+        "parameters" : [ {
+          "name" : "nickname",
+          "in" : "path",
+          "description" : "닉네임",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzkxLCJleHAiOjE3MDcxODI1OTF9.1Q6glJ-eeqnhEMbuJM0CPQ_5MUVbVXU2UOd0w55aip4"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/mypage-nickname-682177778"
+                },
+                "examples" : {
+                  "my_page_api_test/마이페이지_나자신일때_유저정보조회/" : {
+                    "value" : "{\r\n  \"nickname\" : \"dongw\",\r\n  \"introduceText\" : \"\",\r\n  \"profileImageUrl\" : null,\r\n  \"following\" : 0,\r\n  \"follower\" : 0,\r\n  \"isMine\" : true,\r\n  \"followed\" : false\r\n}"
+                  },
+                  "my_page_api_test/마이페이지_팔로우시_유저정보조회/" : {
+                    "value" : "{\r\n  \"nickname\" : \"maino\",\r\n  \"introduceText\" : \"\",\r\n  \"profileImageUrl\" : null,\r\n  \"following\" : 0,\r\n  \"follower\" : 1,\r\n  \"isMine\" : false,\r\n  \"followed\" : true\r\n}"
+                  },
+                  "my_page_api_test/마이페이지_팔로우아닐시_유저정보조회/" : {
+                    "value" : "{\r\n  \"nickname\" : \"maino\",\r\n  \"introduceText\" : \"\",\r\n  \"profileImageUrl\" : null,\r\n  \"following\" : 0,\r\n  \"follower\" : 0,\r\n  \"isMine\" : false,\r\n  \"followed\" : false\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "my_page_api_test/마이페이지_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stage" : {
+      "post" : {
+        "tags" : [ "stage" ],
+        "summary" : "게시물작성",
+        "description" : "게시물을 작성하는 API입니다.<br>성공적으로 작성되면 200 OK와 함께 게시글 ID, 제목, 내용, 썸네일 등이 반환됩니다.<br>게시물 제목을 40자 이하로 작성하지 않거나, 공백으로 둘 경우, 그리고 게시물 내용이 공백일 경우<br>400 Bad Request 가 생성됩니다.<br>헤더에 로그인 토큰을 입력하지 않을 경우, 401 Unauthorized 가 반환됩니다.<br>해시대크 부분은 추가 구현 예정입니다. 참고해 주세요.",
+        "operationId" : "article_api_test/게시물_작성_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzc0LCJleHAiOjE3MDcxODI1NzR9.ypUur_sA8lP0cjMaSPd6pR5necV5ITcgdkJO0vfSI3E"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/stage-1635408559"
+              },
+              "examples" : {
+                "article_api_test/게시물_작성_검증위반_400/" : {
+                  "value" : "{\r\n  \"articleTitle\" : \"\",\r\n  \"articleContent\" : \"test_content\",\r\n  \"video\" : \"test_video\",\r\n  \"thumbnailImageUrl\" : \"test_image\"\r\n}"
+                },
+                "article_api_test/게시물_작성_성공_200/" : {
+                  "value" : "{\r\n  \"articleTitle\" : \"test_title\",\r\n  \"articleContent\" : \"test_content\",\r\n  \"video\" : \"test_video\",\r\n  \"thumbnailImageUrl\" : \"test_image\"\r\n}"
+                },
+                "article_api_test/게시물_작성_토큰없음_401/" : {
+                  "value" : "{\r\n  \"articleTitle\" : \"\",\r\n  \"articleContent\" : \"test_content\",\r\n  \"video\" : \"test_video\",\r\n  \"thumbnailImageUrl\" : \"test_image\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "article_api_test/게시물_작성_검증위반_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"게시물 제목을 입력해 주세요\",\r\n  \"errorType\" : \"NotEmpty\",\r\n  \"fieldName\" : \"articleTitle\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/stage-2037598534"
+                },
+                "examples" : {
+                  "article_api_test/게시물_작성_성공_200/" : {
+                    "value" : "{\r\n  \"articleId\" : 1,\r\n  \"articleTitle\" : \"test_title\",\r\n  \"articleContent\" : \"test_content\",\r\n  \"thumbnailImageUrl\" : \"test_image\",\r\n  \"thumbnailVideoUrl\" : \"test_video\",\r\n  \"view\" : 0,\r\n  \"articleLike\" : 0,\r\n  \"createdDate\" : \"2024-02-06T09:52:56.9822086\",\r\n  \"isArticleLiked\" : false,\r\n  \"isAuthorFollowed\" : false,\r\n  \"score\" : -1,\r\n  \"follower\" : 0,\r\n  \"authorId\" : 1,\r\n  \"nickname\" : \"dongw\",\r\n  \"profileImageUrl\" : null,\r\n  \"video\" : null\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "article_api_test/게시물_작성_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stage/{articleId}" : {
+      "get" : {
+        "tags" : [ "stage" ],
+        "summary" : "게시글상세조회",
+        "description" : "게시글 상세 조회를 수행하는 API 입니다.<br>존재하는 게시글을 조회 시도하는 경우, 200 OK 와 함께 해당 게시글의 상세정보를 반환받습니다. <br>이때, 글을 쓴 사람을 팔로우하는지, 혹은 그 글을 좋아요 클릭했는지 정보도 같이 반환됩니다.<br>로그인 토큰을 입력하지 않고 조회했다면, 401 Unauthorized 가 반환됩니다.<br>존재하지 않는 글을 조회하면, 404 Not Found 가 반환됩니다.",
+        "operationId" : "article_api_test/게시글_상세_조회_",
+        "parameters" : [ {
+          "name" : "articleId",
+          "in" : "path",
+          "description" : "게시물 아이디",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzc5LCJleHAiOjE3MDcxODI1Nzl9.g8v7ijzLrDwqkvqTjwpIHtbfR_29-DsVtiujuNVUTiE"
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "article_api_test/게시글_상세_조회_게시글없음_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"게시물을 찾을 수 없습니다.\",\r\n  \"errorType\" : \"ArticleNotFoundException\",\r\n  \"fieldName\" : \"article\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/stage-articleId178536929"
+                },
+                "examples" : {
+                  "article_api_test/게시글_상세_조회_둘다해당/" : {
+                    "value" : "{\r\n  \"articleId\" : 1,\r\n  \"articleTitle\" : \"test_title\",\r\n  \"articleContent\" : \"test_content\",\r\n  \"thumbnailImageUrl\" : \"test_image\",\r\n  \"thumbnailVideoUrl\" : \"test_video\",\r\n  \"view\" : 0,\r\n  \"articleLike\" : 1,\r\n  \"createdDate\" : \"2024-02-06T09:52:57.644209\",\r\n  \"isArticleLiked\" : true,\r\n  \"isAuthorFollowed\" : true,\r\n  \"score\" : -1,\r\n  \"follower\" : 1,\r\n  \"authorId\" : 1,\r\n  \"nickname\" : \"dongw\",\r\n  \"profileImageUrl\" : null,\r\n  \"video\" : null\r\n}"
+                  },
+                  "article_api_test/게시글_상세_조회_성공_좋아요클릭/" : {
+                    "value" : "{\r\n  \"articleId\" : 1,\r\n  \"articleTitle\" : \"test_title\",\r\n  \"articleContent\" : \"test_content\",\r\n  \"thumbnailImageUrl\" : \"test_image\",\r\n  \"thumbnailVideoUrl\" : \"test_video\",\r\n  \"view\" : 0,\r\n  \"articleLike\" : 1,\r\n  \"createdDate\" : \"2024-02-06T09:52:58.309209\",\r\n  \"isArticleLiked\" : true,\r\n  \"isAuthorFollowed\" : false,\r\n  \"score\" : -1,\r\n  \"follower\" : 0,\r\n  \"authorId\" : 1,\r\n  \"nickname\" : \"dongw\",\r\n  \"profileImageUrl\" : null,\r\n  \"video\" : null\r\n}"
+                  },
+                  "article_api_test/게시글_상세_조회_좋아요_팔로우_아님/" : {
+                    "value" : "{\r\n  \"articleId\" : 1,\r\n  \"articleTitle\" : \"test_title\",\r\n  \"articleContent\" : \"test_content\",\r\n  \"thumbnailImageUrl\" : \"test_image\",\r\n  \"thumbnailVideoUrl\" : \"test_video\",\r\n  \"view\" : 0,\r\n  \"articleLike\" : 0,\r\n  \"createdDate\" : \"2024-02-06T09:52:57.301208\",\r\n  \"isArticleLiked\" : false,\r\n  \"isAuthorFollowed\" : false,\r\n  \"score\" : -1,\r\n  \"follower\" : 0,\r\n  \"authorId\" : 1,\r\n  \"nickname\" : \"dongw\",\r\n  \"profileImageUrl\" : null,\r\n  \"video\" : null\r\n}"
+                  },
+                  "article_api_test/게시글_상세_조회_해당유저팔로우/" : {
+                    "value" : "{\r\n  \"articleId\" : 1,\r\n  \"articleTitle\" : \"test_title\",\r\n  \"articleContent\" : \"test_content\",\r\n  \"thumbnailImageUrl\" : \"test_image\",\r\n  \"thumbnailVideoUrl\" : \"test_video\",\r\n  \"view\" : 0,\r\n  \"articleLike\" : 0,\r\n  \"createdDate\" : \"2024-02-06T09:52:55.260208\",\r\n  \"isArticleLiked\" : false,\r\n  \"isAuthorFollowed\" : true,\r\n  \"score\" : -1,\r\n  \"follower\" : 1,\r\n  \"authorId\" : 1,\r\n  \"nickname\" : \"dongw\",\r\n  \"profileImageUrl\" : null,\r\n  \"video\" : null\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "article_api_test/게시글_상세_조회_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "stage" ],
+        "summary" : "게시물 수정",
+        "description" : "게시물을 수정하는 API입니다.<br>성공적으로 수정되면 200 OK와 함께 수정 후 게시글 ID, 제목, 내용, 썸네일 등이 반환됩니다.<br>게시물 제목을 40자 이하로 작성하지 않거나, 공백으로 둘 경우, 그리고 게시물 내용이 공백일 경우<br>400 Bad Request 가 생성됩니다.<br>로그인 토큰을 입력하지 않으면, 401 Unauthorized 가 반환됩니다.<br>로그인되어 있는 사람이 작성하지 않은 게시물을 수정하고자 하는 경우, 403 Forbidden 이 반환됩니다.<br>해당 글을 찾을 수 없을 경우, 404 Not Found 가 반환됩니다.",
+        "operationId" : "article_api_test/게시물_수정",
+        "parameters" : [ {
+          "name" : "articleId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzgwLCJleHAiOjE3MDcxODI1ODB9.98d7NPJPd1MDyQPIsaOewKPOmcMjSboV-RnqUUbvji4"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/stage-1635408559"
+              },
+              "examples" : {
+                "article_api_test/게시물_수정/" : {
+                  "value" : "{\r\n  \"articleTitle\" : \"test_title_modified\",\r\n  \"articleContent\" : \"test_content_modified\",\r\n  \"video\" : null,\r\n  \"thumbnailImageUrl\" : null\r\n}"
+                },
+                "article_api_test/게시물_수정_검증위반_400/" : {
+                  "value" : "{\r\n  \"articleTitle\" : \"\",\r\n  \"articleContent\" : \"test_content_modified\",\r\n  \"video\" : null,\r\n  \"thumbnailImageUrl\" : null\r\n}"
+                },
+                "article_api_test/게시물_수정_게시물없음_404/" : {
+                  "value" : "{\r\n  \"articleTitle\" : \"test_title_modified\",\r\n  \"articleContent\" : \"test_content_modified\",\r\n  \"video\" : null,\r\n  \"thumbnailImageUrl\" : null\r\n}"
+                },
+                "article_api_test/게시물_수정_권한없음_403/" : {
+                  "value" : "{\r\n  \"articleTitle\" : \"test_title_modified\",\r\n  \"articleContent\" : \"test_content_modified\",\r\n  \"video\" : null,\r\n  \"thumbnailImageUrl\" : null\r\n}"
+                },
+                "article_api_test/게시물_수정_토큰없음_401/" : {
+                  "value" : "{\r\n  \"articleTitle\" : \"test_title_modified\",\r\n  \"articleContent\" : \"test_content_modified\",\r\n  \"video\" : null,\r\n  \"thumbnailImageUrl\" : null\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/stage-2037598534"
+                },
+                "examples" : {
+                  "article_api_test/게시물_수정/" : {
+                    "value" : "{\r\n  \"articleId\" : 1,\r\n  \"articleTitle\" : \"test_title_modified\",\r\n  \"articleContent\" : \"test_content_modified\",\r\n  \"thumbnailImageUrl\" : \"test_image\",\r\n  \"thumbnailVideoUrl\" : \"test_video\",\r\n  \"view\" : 0,\r\n  \"articleLike\" : 0,\r\n  \"createdDate\" : \"2024-02-06T09:53:00.104256\",\r\n  \"isArticleLiked\" : false,\r\n  \"isAuthorFollowed\" : false,\r\n  \"score\" : -1,\r\n  \"follower\" : 0,\r\n  \"authorId\" : 1,\r\n  \"nickname\" : \"dongw\",\r\n  \"profileImageUrl\" : null,\r\n  \"video\" : null\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "article_api_test/게시물_수정_검증위반_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"비어 있을 수 없습니다\",\r\n  \"errorType\" : \"NotEmpty\",\r\n  \"fieldName\" : \"articleTitle\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "article_api_test/게시물_수정_게시물없음_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"게시물을 찾을 수 없습니다.\",\r\n  \"errorType\" : \"ArticleNotFoundException\",\r\n  \"fieldName\" : \"article\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "403",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "article_api_test/게시물_수정_권한없음_403/" : {
+                    "value" : "[ {\r\n  \"message\" : \"게시물을 수정/삭제할 수 있는 권한이 없습니다.\",\r\n  \"errorType\" : \"ArticleNotOwnerException\",\r\n  \"fieldName\" : \"article\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "article_api_test/게시물_수정_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "stage" ],
+        "summary" : "게시물 삭제",
+        "description" : "게시물을 삭제하는 API입니다.<br>성공적으로 삭제되면 200 OK와 함께 삭제된 게시글 ID가 반환됩니다.<br>로그인 토큰을 입력하지 않는다면 401 Unauthorized 가 반환됩니다.<br>로그인한 유저가 그 글을 삭제할 권한을 가지고 있지 않다면, 403 Forbidden 이 반환됩니다.<br>삭제하고자 하는 글을 찾을 수 없다면, 404 Not Found 가 반환됩니다.",
+        "operationId" : "article_api_test/게시물_삭제",
+        "parameters" : [ {
+          "name" : "articleId",
+          "in" : "path",
+          "description" : "게시물 아이디",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzc5LCJleHAiOjE3MDcxODI1Nzl9.g8v7ijzLrDwqkvqTjwpIHtbfR_29-DsVtiujuNVUTiE"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "article_api_test/게시물_삭제/" : {
+                    "value" : "1"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "article_api_test/게시물_삭제_게시물없음_404/" : {
+                    "value" : "[ {\r\n  \"message\" : \"게시물을 찾을 수 없습니다.\",\r\n  \"errorType\" : \"ArticleNotFoundException\",\r\n  \"fieldName\" : \"article\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "403",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "article_api_test/게시물_삭제_권한없음_403/" : {
+                    "value" : "[ {\r\n  \"message\" : \"게시물을 수정/삭제할 수 있는 권한이 없습니다.\",\r\n  \"errorType\" : \"ArticleNotOwnerException\",\r\n  \"fieldName\" : \"article\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "article_api_test/게시물_삭제_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/details" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "자기정보상세조회",
+        "description" : "자신의 상세 정보를 가져오는 API 입니다.<br>토큰을 입력하면, 200 OK 와 함께 해당 유저의 상세정보가 반환됩니다.<br>토큰을 헤더에 입력하지 않았을 경우, 401 Unauthorized 가 반환됩니다. ",
+        "operationId" : "user_api_test/자기상세정보조회_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzk2LCJleHAiOjE3MDcxODI1OTZ9.TJS1xaJ0vRP8NuHa5Q0iYnDxETv9tvz5eYWSfNUEyNM"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-details-1087654261"
+                },
+                "examples" : {
+                  "user_api_test/자기상세정보조회_성공_200/" : {
+                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"nickname\" : \"dongw\",\r\n  \"birthDate\" : \"2000-01-01\",\r\n  \"introduceText\" : \"\",\r\n  \"profileImageUrl\" : null\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "user_api_test/자기상세정보조회_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/introduce" : {
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "소개메세지변경",
+        "description" : "소개 메세지를 변경하는 API 입니다..<br>성공적으로 소개 메세지가 변경되었을 때, 200 OK 와 함께 계정 이메일과 소개 메세지 정보가 반환됩니다.<br>토큰을 헤더에 입력하지 않았을 경우, 401 Unauthorized 가 반환됩니다. <br>50자 이상 소개이거나, 공백 소개메세지가 입력되면 400 Bad Request 가 반환됩니다.",
+        "operationId" : "user_api_test/소개",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzk4LCJleHAiOjE3MDcxODI1OTh9.Y7GMVbNj_Vg35k9NTyTQKhdgBP4JCFyqJkdpwJ5Dpk4"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/user-introduce1696629381"
+              },
+              "examples" : {
+                "user_api_test/소개매세지_50자이상_400/" : {
+                  "value" : "{\r\n  \"introduceText\" : \"Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!Hello!\"\r\n}"
+                },
+                "user_api_test/소개매세지_토큰없음_401/" : {
+                  "value" : "{\r\n  \"introduceText\" : \"Hello!\"\r\n}"
+                },
+                "user_api_test/소개메세지_변경_성공_200/" : {
+                  "value" : "{\r\n  \"introduceText\" : \"Hello!\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "user_api_test/소개매세지_50자이상_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"소개 메세지는 1자 이상 50자 이하여야 합니다.\",\r\n  \"errorType\" : \"Size\",\r\n  \"fieldName\" : \"introduceText\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "user_api_test/소개매세지_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-introduce-199180118"
+                },
+                "examples" : {
+                  "user_api_test/소개메세지_변경_성공_200/" : {
+                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"introduceText\" : \"Hello!\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/nickname" : {
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "닉네임변경",
+        "description" : "닉네임 변경을 처리하는 API 입니다..<br>성공적으로 닉네임이 변경되었을 때, 200 OK 와 함께 계정 이메일과 닉네임 정보가 반환됩니다.<br>토큰을 헤더에 입력하지 않았을 경우, 401 Unauthorized 가 반환됩니다. <br>중복되는 닉네임이 존재했을 경우, 409 Conflict 가 반환됩니다.",
+        "operationId" : "user_api_test/닉네임_변경_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzk3LCJleHAiOjE3MDcxODI1OTd9.3J108j8C_oLtdyiAxkufkd-a9d6GrjEHg69M_EbAdSY"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/user-nickname-520340433"
+              },
+              "examples" : {
+                "user_api_test/닉네임_변경_닉네임중복_409/" : {
+                  "value" : "{\r\n  \"nickname\" : \"dongw\"\r\n}"
+                },
+                "user_api_test/닉네임_변경_성공_200/" : {
+                  "value" : "{\r\n  \"nickname\" : \"asdf\"\r\n}"
+                },
+                "user_api_test/닉네임_변경_토큰없음_401/" : {
+                  "value" : "{\r\n  \"nickname\" : \"asdf\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "409" : {
+            "description" : "409",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "user_api_test/닉네임_변경_닉네임중복_409/" : {
+                    "value" : "[ {\r\n  \"message\" : \"중복되는 닉네임입니다.\",\r\n  \"errorType\" : \"DuplicateNicknameException\",\r\n  \"fieldName\" : \"nickname\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-signup2062416360"
+                },
+                "examples" : {
+                  "user_api_test/닉네임_변경_성공_200/" : {
+                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"nickname\" : \"asdf\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "user_api_test/닉네임_변경_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/profile_image" : {
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "유저프로필사진수정",
+        "description" : "유저 프로필 사진을 수정하는 API 입니다.<br>성공적으로 프로필 사진이 수정된 경우, 200 OK 와 함께 이메일과 프로필 이미지 URL 이 반환됩니다.<br>프로필 이미지가 지정된 사진 확장자명으로 되어 있는 파일이 아닐 경우, 400 Bad Request 가 반환되며 <br>아래와 같은 메세지를 반환받습니다. <br>AUTH-TOKEN 이 유효하지 않거나, 값이 없을 경우 401 Unauthorized 가 반환됩니다.",
+        "operationId" : "user_api_test/유저프로필사진_수정_",
+        "parameters" : [ {
+          "name" : "AUTH-TOKEN",
+          "in" : "header",
+          "description" : "access token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZHc4MjAwQG5hdmVyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNzA3MTgwNzk3LCJleHAiOjE3MDcxODI1OTd9.3J108j8C_oLtdyiAxkufkd-a9d6GrjEHg69M_EbAdSY"
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "user_api_test/유저프로필사진_수정_다른확장자파일_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"입력된 파일이 이미지가 아닙니다.\",\r\n  \"errorType\" : \"ImageFile\",\r\n  \"fieldName\" : \"profileImage\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-profile_image1544711743"
+                },
+                "examples" : {
+                  "user_api_test/유저프로필사진_수정_성공_200/" : {
+                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"profileImageUrl\" : \"https://gumid210bucket.s3.ap-northeast-2.amazonaws.com/profileImage/a1461ebc-f086-48b2-896b-6d3d5d29c5cb.png\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change486549215"
+                },
+                "examples" : {
+                  "user_api_test/유저프로필사진_수정_토큰없음_401/" : {
+                    "value" : "{\r\n  \"message\" : \"토큰이 유효하지 않습니다.\",\r\n  \"errorType\" : \"TokenInvalidException\",\r\n  \"fieldName\" : \"\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/signup" : {
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "회원가입",
+        "description" : "회원 가입을 처리하는 API 입니다.<br>성공적으로 회원가입이 이루어진 경우, 200 OK 와 함께 이메일과 닉네임 정보가 반환됩니다.<br>검증 로직에 맞지 않는 입력값을 넣었을 때, 400 Bad Request 가 반환됩니다. <br>이메일 검증이 이루어지지 않은 사용자가 가입을 시도할 경우, 403 Forbidden 이 반환됩니다.<br>이때, 이메일 인증 이후 30분 이상 가입이 진행되지 않았을 경우, 인증이 취소된 것으로 간주되며<br>새로 인증을 진행해야 합니다.<br>이미 가입된 이메일의 경우, 409 Conflict 가 반환됩니다.<br>닉네임 중복의 경우, 409 Conflict 가 반환됩니다.<br>403 코드의 경우, 수동 테스트를 진행했고, 성공을 확인할 수 있었습니다.",
+        "operationId" : "user_api_test/회원가입_",
+        "responses" : {
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "user_api_test/회원가입_검증로직_미충족_400/" : {
+                    "value" : "[ {\r\n  \"message\" : \"이메일 형식으로 입력해 주세요.\",\r\n  \"errorType\" : \"Email\",\r\n  \"fieldName\" : \"email\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-signup2062416360"
+                },
+                "examples" : {
+                  "user_api_test/회원가입_성공_200/" : {
+                    "value" : "{\r\n  \"email\" : \"ndw8200@naver.com\",\r\n  \"nickname\" : \"dongw\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "409",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "user_api_test/회원가입_이미_가입된_이메일_409/" : {
+                    "value" : "[ {\r\n  \"message\" : \"이미 가입된 이메일입니다.\",\r\n  \"errorType\" : \"UserAlreadyExistException\",\r\n  \"fieldName\" : \"email\"\r\n} ]"
+                  },
+                  "user_api_test/회원가입_이미_존재하는_닉네임_409/" : {
+                    "value" : "[ {\r\n  \"message\" : \"이미 존재하는 닉네임입니다.\",\r\n  \"errorType\" : \"DuplicateNicknameException\",\r\n  \"fieldName\" : \"nickname\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/exists/{nickname}" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "닉네임 중복체크",
+        "description" : "닉네임 중복검사를 수행하는 API 입니다.<br>닉네임이 기존 가입된 닉네임과 중복되지 않았을 경우, 200 OK 만 반환됩니다.<br>이미 가입되어 중복되는 경우, 409 Conflict 가 반환됩니다.",
+        "operationId" : "user_api_test/닉네임_중복체크_",
+        "parameters" : [ {
+          "name" : "nickname",
+          "in" : "path",
+          "description" : "닉네임",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          },
+          "409" : {
+            "description" : "409",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/auth-change-1708490688"
+                },
+                "examples" : {
+                  "user_api_test/닉네임_중복체크_중복_409/" : {
+                    "value" : "[ {\r\n  \"message\" : \"중복되는 닉네임입니다.\",\r\n  \"errorType\" : \"DuplicateNicknameException\",\r\n  \"fieldName\" : \"nickname\"\r\n} ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "email-verify-send1357172838" : {
+        "required" : [ "targetEmail" ],
+        "type" : "object",
+        "properties" : {
+          "targetEmail" : {
+            "type" : "string",
+            "description" : "인증번호를 보내려는 이메일"
+          }
+        }
+      },
+      "auth-1994102425" : {
+        "required" : [ "password" ],
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "현재 비밀번호"
+          }
+        }
+      },
+      "user-signup2062416360" : {
+        "type" : "object",
+        "properties" : {
+          "nickname" : {
+            "type" : "string",
+            "description" : "닉네임"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "이메일"
+          }
+        }
+      },
+      "stage-articleId178536929" : {
+        "type" : "object",
+        "properties" : {
+          "isAuthorFollowed" : {
+            "type" : "boolean",
+            "description" : "내가 글쓴이를 팔로우했는지 여부"
+          },
+          "articleTitle" : {
+            "type" : "string",
+            "description" : "게시글 제목"
+          },
+          "follower" : {
+            "type" : "number",
+            "description" : "글쓴이 팔로워 수"
+          },
+          "articleId" : {
+            "type" : "number",
+            "description" : "게시글 고유 아이디"
+          },
+          "video" : {
+            "type" : "object",
+            "description" : "비디오 URL"
+          },
+          "authorId" : {
+            "type" : "number",
+            "description" : "글쓴이 고유 아이디"
+          },
+          "articleLike" : {
+            "type" : "number",
+            "description" : "게시글 좋아요 갯수"
+          },
+          "isArticleLiked" : {
+            "type" : "boolean",
+            "description" : "내가 좋아요했는지 여부"
+          },
+          "thumbnailVideoUrl" : {
+            "type" : "string",
+            "description" : "썸네일 비디오 URL"
+          },
+          "score" : {
+            "type" : "number",
+            "description" : "비디오 정확도"
+          },
+          "view" : {
+            "type" : "number",
+            "description" : "조회수"
+          },
+          "thumbnailImageUrl" : {
+            "type" : "string",
+            "description" : "썸네일 이미지 URL"
+          },
+          "createdDate" : {
+            "type" : "string",
+            "description" : "생성일시"
+          },
+          "nickname" : {
+            "type" : "string",
+            "description" : "글쓴이 닉네임"
+          },
+          "articleContent" : {
+            "type" : "string",
+            "description" : "게시글 내용"
+          },
+          "profileImageUrl" : {
+            "type" : "object",
+            "description" : "글쓴이 프로필 URL"
+          }
+        }
+      },
+      "comment-commentId-455871403" : {
+        "type" : "object",
+        "properties" : {
+          "createdDate" : {
+            "type" : "string",
+            "description" : "생성일시"
+          },
+          "articleId" : {
+            "type" : "number",
+            "description" : "댓글이 작성된 게시글의 아이디"
+          },
+          "commentId" : {
+            "type" : "number",
+            "description" : "댓글 정보의 아이디"
+          },
+          "commentLike" : {
+            "type" : "number",
+            "description" : "댓글 좋아요 갯수"
+          },
+          "authorNickname" : {
+            "type" : "string",
+            "description" : "작성자 닉네임"
+          },
+          "parentId" : {
+            "type" : "number",
+            "description" : "댓글의 부모 아이디(대댓글의 댓글)"
+          },
+          "content" : {
+            "type" : "string",
+            "description" : "댓글 내용"
+          }
+        }
+      },
+      "comment-articleId1206823079" : {
+        "required" : [ "content", "parentId" ],
+        "type" : "object",
+        "properties" : {
+          "parentId" : {
+            "type" : "number",
+            "description" : "부모 댓글 아이디"
+          },
+          "content" : {
+            "type" : "string",
+            "description" : "댓글 내용"
+          }
+        }
+      },
+      "user-introduce-199180118" : {
+        "type" : "object",
+        "properties" : {
+          "introduceText" : {
+            "type" : "string",
+            "description" : "닉네임"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "이메일"
+          }
+        }
+      },
+      "comment-commentId-1563718501" : {
+        "required" : [ "content" ],
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "type" : "string",
+            "description" : "댓글 내용"
+          }
+        }
+      },
+      "auth-password-check328342784" : {
+        "type" : "object",
+        "properties" : {
+          "authType" : {
+            "type" : "string",
+            "description" : "인증 타입"
+          },
+          "tokenType" : {
+            "type" : "string",
+            "description" : "토큰 타입"
+          },
+          "accessToken" : {
+            "type" : "string",
+            "description" : "access token"
+          }
+        }
+      },
+      "user-nickname-520340433" : {
+        "required" : [ "nickname" ],
+        "type" : "object",
+        "properties" : {
+          "nickname" : {
+            "type" : "string",
+            "description" : "변경하고자 하는 닉네임"
+          }
+        }
+      },
+      "stage-1635408559" : {
+        "required" : [ "articleContent", "articleTitle", "thumbnailImageUrl", "video" ],
+        "type" : "object",
+        "properties" : {
+          "thumbnailImageUrl" : {
+            "type" : "object",
+            "description" : "썸네일 이미지 URL"
+          },
+          "articleTitle" : {
+            "type" : "string",
+            "description" : "게시물 제목"
+          },
+          "articleContent" : {
+            "type" : "string",
+            "description" : "게시물 내용"
+          },
+          "video" : {
+            "type" : "object",
+            "description" : "비디오"
+          }
+        }
+      },
+      "auth-login-83566640" : {
+        "required" : [ "email", "password" ],
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "비밀번호"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "아이디"
+          }
+        }
+      },
+      "comment-articleId-2077767438" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "createdDate" : {
+              "type" : "string",
+              "description" : "생성일시"
+            },
+            "articleId" : {
+              "type" : "number",
+              "description" : "댓글이 작성된 게시글의 아이디"
+            },
+            "commentId" : {
+              "type" : "number",
+              "description" : "댓글 정보의 아이디"
+            },
+            "commentLike" : {
+              "type" : "number",
+              "description" : "댓글 좋아요 갯수"
+            },
+            "authorNickname" : {
+              "type" : "string",
+              "description" : "작성자 닉네임"
+            },
+            "parentId" : {
+              "type" : "number",
+              "description" : "댓글의 부모 아이디(대댓글의 댓글)"
+            },
+            "content" : {
+              "type" : "string",
+              "description" : "댓글 내용"
+            }
+          }
+        }
+      },
+      "mypage-nickname-682177778" : {
+        "type" : "object",
+        "properties" : {
+          "follower" : {
+            "type" : "number",
+            "description" : "팔로워 수"
+          },
+          "introduceText" : {
+            "type" : "string",
+            "description" : "소개 메세지"
+          },
+          "following" : {
+            "type" : "number",
+            "description" : "팔로잉 수"
+          },
+          "nickname" : {
+            "type" : "string",
+            "description" : "닉네임"
+          },
+          "isMine" : {
+            "type" : "boolean",
+            "description" : "본인의 마이페이지인지 여부"
+          },
+          "followed" : {
+            "type" : "boolean",
+            "description" : "본인이 팔로우했는지 여부"
+          },
+          "profileImageUrl" : {
+            "type" : "object",
+            "description" : "프로필 이미지 URL"
+          }
+        }
+      },
+      "auth-password-check1025472966" : {
+        "required" : [ "targetEmail", "verifyCode" ],
+        "type" : "object",
+        "properties" : {
+          "verifyCode" : {
+            "type" : "string",
+            "description" : "들어온 인증번호"
+          },
+          "targetEmail" : {
+            "type" : "string",
+            "description" : "인증번호를 보낸 이메일"
+          }
+        }
+      },
+      "follow-get-followers-nickname-666951130" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "nickname" : {
+              "type" : "string",
+              "description" : "팔로우 정보 ID"
+            },
+            "profileImageUrl" : {
+              "type" : "object",
+              "description" : "팔로우한 사람의 닉네임"
+            }
+          }
+        }
+      },
+      "auth-change486549215" : {
+        "type" : "object"
+      },
+      "user-details-1087654261" : {
+        "type" : "object",
+        "properties" : {
+          "introduceText" : {
+            "type" : "string",
+            "description" : "소개메세지"
+          },
+          "nickname" : {
+            "type" : "string",
+            "description" : "닉네임"
+          },
+          "profileImageUrl" : {
+            "type" : "object",
+            "description" : "프로필이미지URL"
+          },
+          "birthDate" : {
+            "type" : "string",
+            "description" : "생년월일"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "이메일"
+          }
+        }
+      },
+      "user-introduce1696629381" : {
+        "required" : [ "introduceText" ],
+        "type" : "object",
+        "properties" : {
+          "introduceText" : {
+            "type" : "string",
+            "description" : "바꾸고자 하는 소개 메세지"
+          }
+        }
+      },
+      "follow-request-unfollow1278808337" : {
+        "required" : [ "nickname" ],
+        "type" : "object",
+        "properties" : {
+          "nickname" : {
+            "type" : "string",
+            "description" : "팔로우 요청할 닉네임"
+          }
+        }
+      },
+      "auth-change-1708490688" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "fieldName" : {
+              "type" : "string",
+              "description" : "에러난 필드이름"
+            },
+            "errorType" : {
+              "type" : "string",
+              "description" : "에러타입"
+            },
+            "message" : {
+              "type" : "string",
+              "description" : "에러메세지"
+            }
+          }
+        }
+      },
+      "user-profile_image1544711743" : {
+        "type" : "object",
+        "properties" : {
+          "profileImageUrl" : {
+            "type" : "string",
+            "description" : "프로필이미지URL"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "이메일"
+          }
+        }
+      },
+      "like-who-like-articleId-1056158686" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "nickname" : {
+              "type" : "string",
+              "description" : "좋아요한 사람의 닉네임"
+            },
+            "profileImageUrl" : {
+              "type" : "object",
+              "description" : "프로필 이미지 URL"
+            }
+          }
+        }
+      },
+      "like-comment-like-commentId1382993375" : {
+        "type" : "object",
+        "properties" : {
+          "isCommentLiked" : {
+            "type" : "boolean",
+            "description" : "해당 사람이 좋아요했는지 현재 여부"
+          },
+          "commentLikeCount" : {
+            "type" : "number",
+            "description" : "해당 댓글의 좋아요 갯수"
+          }
+        }
+      },
+      "stage-2037598534" : {
+        "type" : "object",
+        "properties" : {
+          "isAuthorFollowed" : {
+            "type" : "boolean",
+            "description" : "해당 사람 팔로우 여부"
+          },
+          "articleTitle" : {
+            "type" : "string",
+            "description" : "게시물 제목"
+          },
+          "follower" : {
+            "type" : "number",
+            "description" : "팔로워 수"
+          },
+          "articleId" : {
+            "type" : "number",
+            "description" : "게시물 ID"
+          },
+          "video" : {
+            "type" : "object",
+            "description" : "비디오"
+          },
+          "authorId" : {
+            "type" : "number",
+            "description" : "유저 PK 아이디"
+          },
+          "articleLike" : {
+            "type" : "number",
+            "description" : "게시물 좋아요"
+          },
+          "isArticleLiked" : {
+            "type" : "boolean",
+            "description" : "내가 좋아요했는지 여부"
+          },
+          "thumbnailVideoUrl" : {
+            "type" : "string",
+            "description" : "썸네일 비디오 URL"
+          },
+          "score" : {
+            "type" : "number",
+            "description" : "점수"
+          },
+          "view" : {
+            "type" : "number",
+            "description" : "게시물 조회수"
+          },
+          "thumbnailImageUrl" : {
+            "type" : "string",
+            "description" : "썸네일 이미지 URL"
+          },
+          "createdDate" : {
+            "type" : "string",
+            "description" : "생성일시"
+          },
+          "nickname" : {
+            "type" : "string",
+            "description" : "유저 닉네임"
+          },
+          "articleContent" : {
+            "type" : "string",
+            "description" : "게시물 내용"
+          },
+          "profileImageUrl" : {
+            "type" : "object",
+            "description" : "프로필 이미지 URL"
+          }
+        }
+      },
+      "like-article-like-articleId-1344636820" : {
+        "type" : "object",
+        "properties" : {
+          "articleLikeCount" : {
+            "type" : "number",
+            "description" : "해당 게시글의 좋아요 갯수"
+          },
+          "isArticleLiked" : {
+            "type" : "boolean",
+            "description" : "해당 사람이 좋아요했는지 현재 여부"
+          }
+        }
+      },
+      "auth-password-find-1938778681" : {
+        "required" : [ "newPassword" ],
+        "type" : "object",
+        "properties" : {
+          "newPassword" : {
+            "type" : "string",
+            "description" : "새 비밀번호"
+          }
+        }
+      },
+      "email-verify-check-123477478" : {
+        "type" : "object",
+        "properties" : {
+          "targetEmail" : {
+            "type" : "string",
+            "description" : "인증 번호를 보낸 이메일"
+          },
+          "verified" : {
+            "type" : "boolean",
+            "description" : "인증 확인"
+          }
+        }
+      },
+      "auth-change1195549048" : {
+        "required" : [ "currentPassword", "newPassword" ],
+        "type" : "object",
+        "properties" : {
+          "newPassword" : {
+            "type" : "string",
+            "description" : "바꾸고자 하는 패스워드"
+          },
+          "currentPassword" : {
+            "type" : "string",
+            "description" : "현재 패스워드"
+          }
+        }
+      },
+      "follow-request-unfollow1753370495" : {
+        "type" : "object",
+        "properties" : {
+          "followInfoId" : {
+            "type" : "number",
+            "description" : "팔로우 정보 ID"
+          },
+          "followedNickname" : {
+            "type" : "string",
+            "description" : "팔로우받은 사람의 닉네임"
+          },
+          "followerNickname" : {
+            "type" : "string",
+            "description" : "팔로우한 사람의 닉네임"
+          }
+        }
+      }
+    }
+  }
+}
