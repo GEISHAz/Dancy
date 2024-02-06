@@ -36,7 +36,7 @@ public class FollowController {
         return followService.follow(user,request.nickname());
     }
 
-    @DeleteMapping("/request-unfollow")
+    @PostMapping("/request-unfollow")
     public FollowResultResponse unFollow(@AuthenticationPrincipal User user, @RequestBody FollowRequest request){
         return followService.unFollow(user,request.nickname());
     }
