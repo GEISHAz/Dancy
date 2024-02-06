@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import styled from "styled-components";
+import { publicApi } from "../../util/http-commons";
+import NewPwdModal from "./NewPwdModal";
 
 // 전체 화면 구성
 const FindArea = styled.div`
@@ -59,9 +62,10 @@ const SendPinButton = styled.button`
   cursor: ${(props) => (props.pinFull ? "pointer" : "not-allowed")};
 `;
 
-export default function VerifyPin() {
+export default function VerifyPin({targetEmail}) {
   const [pin, setPin] = useState(["", "", "", "", "", ""]);
   const pinRefs = useRef(pin.map(() => React.createRef()));
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     // 컴포넌트가 마운트될 때 첫 번째 입력란에 포커스를 줌
@@ -87,6 +91,21 @@ export default function VerifyPin() {
   // 핀번호가 다 차면... true 하나라도 차지 않으면 false
   const isPinFull = pin.every((digit) => digit !== "");
 
+  const validPin = () => {
+    const verifyCode = pin.join('');
+    publicApi.post('/auth/password/check', { "targetEmail": targetEmail, "verifyCode": verifyCode })
+      .then(response => {
+        alert("인증에 성공하였습니다.")
+        setIsOpen(true);
+      })
+      .catch(error => {
+        const errorType = error.response?.data[0]?.errorType;
+        if (errorType === 'VerifyCodeNotMatchException') {
+          alert(error.response?.data[0]?.message)
+        }
+      });
+  }
+
   return (
     <FindArea>
       <FindPWTitle>인증번호 입력</FindPWTitle>
@@ -104,7 +123,8 @@ export default function VerifyPin() {
           ))}
         </PinInputContainer>
       </InputArea>
-      <SendPinButton pinFull={isPinFull}>비밀번호 변경</SendPinButton>
+      <SendPinButton pinFull={isPinFull} onClick={validPin}>비밀번호 변경</SendPinButton>
+      <NewPwdModal isOpen={isOpen} onClose={() => setModalOpen(false)} />
     </FindArea>
   );
 }

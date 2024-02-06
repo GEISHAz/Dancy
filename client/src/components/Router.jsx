@@ -10,7 +10,7 @@ import SignUp from "../pages/SignUp";
 import SearchResult from "../pages/SearchResult";
 import VideoDetailPage from "../pages/VideoDetailPage";
 import UserSetting from "../pages/UserSetting";
-import FindMyPwd from "../pages/FindMyPwd";
+import SendPin from "../pages/FindMyPwd";
 
 export default function Router({ cardDetails, videoDetails }) {
   return (
@@ -26,7 +26,7 @@ export default function Router({ cardDetails, videoDetails }) {
         <Route path="/detail/:articleId" element={<VideoDetailPage />}  />
         <Route path="/results" element={<SearchResult cardDetails={cardDetails} />} />
         <Route path="/setting" element={<UserSetting />} />
-        <Route path="/findpw" element={<FindMyPwd />} />
+        <Route path="/findpassword" element={<SendPin />} />
       </Routes>
     </>
   );

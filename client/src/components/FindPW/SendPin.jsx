@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import styled from "styled-components";
+import { publicApi } from "../../util/http-commons";
+import VerifyPin from "./VerifyPin";
 
 // 전체 화면 구성
 export const FindArea = styled.div`
@@ -62,14 +65,38 @@ export const SendPinButton = styled.button`
 `;
 
 export default function SendPin() {
+  const [targetEmail, setTargetEmail] = useState('');
+  const [emailSend, setEmailSend] = useState(false);
+
+  const sendEmail = () => {
+    publicApi.post('/email/password/send', { "targetEmail": targetEmail })
+      .then(response => {
+        alert("인증번호가 전송되었습니다. 이메일을 확인해주세요.");
+        setEmailSend(true)
+      })
+      .catch(error => {
+        console.error(error.response);
+        const errorType = error.response?.data[0]?.errorType;
+        if (errorType === "UserNotFoundException") {
+          alert("가입된 이메일이 아닙니다.");
+        } else if (errorType === "Email") {
+          alert("이메일 형식이 아닙니다.");
+        }
+      });
+  }
+
+  if (emailSend) {
+    return <VerifyPin targetEmail={targetEmail} />
+  }
+
   return (
     <FindArea>
       <FindPWTitle>비밀번호 찾기</FindPWTitle>
       <InputArea>
         <InputTitle>Email</InputTitle>
-        <FindInput></FindInput>
+        <FindInput value={targetEmail} onChange={(e) => setTargetEmail(e.target.value)}></FindInput>
       </InputArea>
-      <SendPinButton>인증번호 전송</SendPinButton>
+      <SendPinButton onClick={sendEmail}>인증번호 전송</SendPinButton>
     </FindArea>
   );
 }
