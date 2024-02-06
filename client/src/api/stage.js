@@ -27,3 +27,13 @@ export const getArticle = async (articleId) => {
     throw error;
   }
 }
+
+export const deleteArticle = async (articleId) => {
+  try {
+    const res = await privateApi.delete(`/${url}/${articleId}`, {'articleId': articleId});
+    console.log(res)
+  } catch (error) {
+    console.error(error)
+    throw error;
+  }
+}
