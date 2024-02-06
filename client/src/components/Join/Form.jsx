@@ -58,6 +58,11 @@ export const RadioContainer = styled.div`
   }
 `;
 
+export const InputColunmArea = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 export default function FormArea() {
   const [inputValues, setInputValues] = useState({
     email: "",
@@ -111,8 +116,10 @@ export default function FormArea() {
     //형식이 맞으면 경고 상태 초기화 해주기 !
     setShowWarnings((prevWarnings) => ({
       ...prevWarnings,
-      [inputName]: "",
+      [inputName]: { show: false, message: "" },
     }));
+
+    console.log(showWarnings.email.show);
   };
 
   const handleAuthentication = async () => {
@@ -120,7 +127,7 @@ export default function FormArea() {
     if (!validateEmail(inputValues.email)) {
       setShowWarnings((prevWarnings) => ({
         ...prevWarnings,
-        email: "유효하지 않은 이메일 형식입니다.",
+        email: { show: true, message: "유효하지 않은 이메일 형식입니다." },
       }));
       return;
     }
@@ -178,14 +185,16 @@ export default function FormArea() {
       <FormDetailArea>
         <JF.MustIcon />
         <JF.FormCategory margin="76px">E-mail</JF.FormCategory>
-        <JF.FormInput
-          type="email"
-          value={inputValues.email}
-          onChange={(e) => handleInputChange("email", e.target.value)}
-        ></JF.FormInput>
-        <JF.InputNoticeText show={showWarnings.email.show}>
-          {showWarnings.email.message}
-        </JF.InputNoticeText>
+        <InputColunmArea>
+          <JF.FormInput
+            type="email"
+            value={inputValues.email}
+            onChange={(e) => handleInputChange("email", e.target.value)}
+          ></JF.FormInput>
+          <JF.InputNoticeText show={showWarnings.email.show}>
+            {showWarnings.email.message}
+          </JF.InputNoticeText>
+        </InputColunmArea>
         <JF.FormBtn onClick={handleAuthentication}>인증하기</JF.FormBtn>
         {/* CustomModal 컴포넌트를 렌더링하고 isOpen, onClose, onSubmit을 props로 전달 */}
         <CustomModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handlePinSubmit} />
