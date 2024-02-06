@@ -15,7 +15,7 @@ export default function Main() {
 
   const handleContextLoad = () => {
     if (context.current) {
-      context.current.classList.add("show");
+      context.current.classList.add("show")
     } 
   }
 

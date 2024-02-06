@@ -84,7 +84,7 @@ export const NavRight = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-right: 46px;
+  gap: 20px;
   font-size: 16px;
 `;
 
@@ -93,11 +93,11 @@ export const NavLeftContainer = styled.div`
 `;
 
 export const NavSignUp = styled.div`
-  margin-right: 43px;
+  margin: 0px 43px;
 `;
 
 export const NavLogin = styled.div`
-  margin-right: 10px;
+  margin-right: 30px;
 `;
 
 export const Square = styled.div`
@@ -116,7 +116,7 @@ export const Square = styled.div`
 
 export const AlertButton = styled.div`
   cursor: pointer;
-  margin-right: 48px;
+  /* margin-right: 48px; */
   margin-left: 26px;
 
   img {
