@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
+import { useRecoilState } from "recoil";
+import { joinState } from "../../recoil/JoinState";
 import * as JF from "./JoinForm.style";
 import CustomModal from "./PinModal";
 import { emailCheck, nickNameCheck } from "../../api/join";
@@ -64,21 +66,22 @@ export const InputColunmArea = styled.div`
 `;
 
 export default function FormArea() {
-  const [inputValues, setInputValues] = useState({
-    email: "",
-    password: "",
-    checkpassword: "",
-    birthdate: "",
-    gender: "",
-    nickname: "",
-  });
+  const [joinData, setJoinData] = useRecoilState(joinState);
+  // const [inputValues, setInputValues] = useState({
+  //   email: "",
+  //   password: "",
+  //   checkpassword: "",
+  //   birthdate: "",
+  //   gender: "",
+  //   nickname: "",
+  // });
 
   const [showWarnings, setShowWarnings] = useState({
     email: { show: false, message: "" },
     password: { show: false, message: "" },
     checkpassword: { show: false, message: "" },
     birthdate: { show: false, message: "" },
-    gender: false,
+    gender: { show: false, message: "" },
     nickname: { show: false, message: "" },
   });
 
@@ -104,8 +107,8 @@ export default function FormArea() {
   };
 
   const handleInputChange = (inputName, value) => {
-    setInputValues((prevValues) => ({
-      ...prevValues,
+    setJoinData((prevData) => ({
+      ...prevData,
       [inputName]: value,
     }));
     //형식이 맞으면 경고 상태 초기화 해주기 !
@@ -126,7 +129,7 @@ export default function FormArea() {
       console.log(value);
       setShowWarnings((prevWarnings) => ({
         ...prevWarnings,
-        checkpassword: value !== inputValues.password,
+        checkpassword: value !== joinData.password,
       }));
     }
 
@@ -149,7 +152,7 @@ export default function FormArea() {
 
   const handleAuthentication = async () => {
     // 이메일 형식 체크
-    if (!validateEmail(inputValues.email)) {
+    if (!validateEmail(joinData.email)) {
       setShowWarnings((prevWarnings) => ({
         ...prevWarnings,
         email: { show: true, message: "유효하지 않은 이메일 형식입니다." },
@@ -159,7 +162,7 @@ export default function FormArea() {
 
     try {
       // 서버에 이메일 중복 여부 확인 요청
-      const isEmailDuplicate = await checkEmailDuplicate(inputValues.email);
+      const isEmailDuplicate = await checkEmailDuplicate(joinData.email);
 
       if (isEmailDuplicate) {
         setShowWarnings((prevWarnings) => ({
@@ -179,7 +182,7 @@ export default function FormArea() {
   const handleNickNameCheck = async () => {
     // 닉네임 형식 체크
     try {
-      const response = await nickNameCheck(inputValues.nickname);
+      const response = await nickNameCheck(joinData.nickname);
       console.log("response", response);
       if (response === httpStatusCode.OK) {
         setShowWarnings((prevWarnings) => ({
@@ -246,7 +249,7 @@ export default function FormArea() {
         <InputColunmArea>
           <JF.FormInput
             type="email"
-            value={inputValues.email}
+            value={joinData.email}
             onChange={(e) => handleInputChange("email", e.target.value)}
           ></JF.FormInput>
           <JF.InputNoticeText show={showWarnings.email.show}>
@@ -258,7 +261,7 @@ export default function FormArea() {
         </JF.FormBtn>
         {/* CustomModal 컴포넌트를 렌더링하고 isOpen, onClose, onSubmit을 props로 전달 */}
         <CustomModal
-          email={inputValues.email}
+          email={joinData.email}
           isOpen={isModalOpen}
           onClose={closeModal}
           onSubmit={handlePinSubmit}
@@ -270,7 +273,7 @@ export default function FormArea() {
         <InputContainer>
           <JF.FormInput
             type="password"
-            value={inputValues.password}
+            value={joinData.password}
             onChange={(e) => handleInputChange("password", e.target.value)}
           ></JF.FormInput>
           <JF.InputNoticeText show={showWarnings.password}>
@@ -288,7 +291,7 @@ export default function FormArea() {
         <InputContainer>
           <JF.FormInput
             type="password"
-            value={inputValues.checkpassword}
+            value={joinData.checkpassword}
             onChange={(e) => handleInputChange("checkpassword", e.target.value)}
           ></JF.FormInput>
           <JF.InputNoticeText show={showWarnings.checkpassword}>
@@ -302,7 +305,7 @@ export default function FormArea() {
         <InputContainer>
           <JF.FormInput
             type="date"
-            value={inputValues.birthdate}
+            value={joinData.birthdate}
             onChange={(e) => handleInputChange("birthdate", e.target.value)}
           ></JF.FormInput>
           <JF.InputNoticeText show={showWarnings.birthdate}>
@@ -335,7 +338,7 @@ export default function FormArea() {
         <JF.FormCategory margin="80px">닉네임</JF.FormCategory>
         <InputContainer>
           <JF.FormInput
-            value={inputValues.nickname}
+            value={joinData.nickname}
             onChange={(e) => handleInputChange("nickname", e.target.value)}
           ></JF.FormInput>
           <JF.InputNoticeText show={showWarnings.nickname.show}>
