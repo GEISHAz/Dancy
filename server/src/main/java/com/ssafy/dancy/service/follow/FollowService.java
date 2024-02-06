@@ -53,8 +53,8 @@ public class FollowService {
         for (Follow u : list) {
             responseList.add(FollowResponse
                     .builder()
-                    .nickname(u.getToUser().getNickname())
-                    .profileImageUrl(u.getToUser().getProfileImageUrl())
+                    .nickname(u.getFromUser().getNickname())
+                    .profileImageUrl(u.getFromUser().getProfileImageUrl())
                     .build());
         }
 
