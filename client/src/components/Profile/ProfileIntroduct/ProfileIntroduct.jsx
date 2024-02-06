@@ -11,10 +11,11 @@ import { userState } from '../../../recoil/LoginState.js';
 export default function ProfileIntroduct() {
 	const navigate = useNavigate()
 	const { user_id } = useParams();
-	const [ userDetail, setUserDetail ] = useState({})  // 누구의 Profile페이지니?
-	const [ followerInfo, setFollowerInfo ] = useState([])
-	const [ followingInfo, setFollowingInfo ] = useState([])
-	const user = useRecoilValue(userState)
+	const [ userDetail, setUserDetail ] = useState({})         // 누구(=특정 유저)의 Profile페이지니?
+	const [ followerInfo, setFollowerInfo ] = useState([])     // 특정 유저를 팔로우하는 사람의 목록
+	const [ followingInfo, setFollowingInfo ] = useState([])   // 특정 유저가 팔로우하는 사람의 목록
+	const user = useRecoilValue(userState)                     // 로그인 한 유저 정보
+
 	// 누구의 Profile 페이지인지 확인
 	useEffect(() => {
 		userInfo(user_id)
@@ -35,60 +36,36 @@ export default function ProfileIntroduct() {
 		backgroundColor: userDetail.followed ? '#AABBFF' : '#898989',
 	}
 
-	const [ isOpen, setIsOpen ] = useState(false);  // Modal On/Off 여부
+	const [ isOpen, setIsOpen ] = useState(false);     // Modal On/Off 여부
 	const [ isFollow, setIsFollow ] = useState(true);  // 조회하는게 follower(true) 목록인지 following(false) 목록인지?
 	const getData = childData => {
 		setIsOpen(childData);
 	};
 
+  // 팔로워 & 팔로잉 명 수 클릭 시 목록 조회 가능
   const modalHandler = async (what) => {
-		if (user.nickname === userDetail.nickname) {
-			if (what === 'follower') {
-				setIsFollow(true)
-	
-				await followerData(user.nickname)
-				.then((res) => {
-					setFollowerInfo(res.follower)
-					console.log(followerInfo)
-				})
-	
-			} else if (what === 'following') {
-				setIsFollow(false)
-	
-				await followingData(user.nickname)
-				.then((res) => {
-					setFollowingInfo(res.following)
-					console.log(followingInfo)
-				})
-				.catch((err) => {
-					console.error(err)
-				})
-			}
-		} else {
-			console.log("user.nickname", user)
-			console.log("user.nickname", userDetail.nickname)
-			if (what === 'follower') {
-				setIsFollow(true)
-	
-				await followerData(userDetail.nickname)
-				.then((res) => {
-					setFollowerInfo(res.follower)
-					console.log(followerInfo)
-				})
-	
-			} else if (what === 'following') {
-				setIsFollow(false)
-	
-				await followingData(userDetail.nickname)
-				.then((res) => {
-					setFollowingInfo(res.following)
-					console.log(followingInfo)
-				})
-				.catch((err) => {
-					console.error(err)
-				})
-			}
-		}
+    if (what === 'follower') {                  // 팔로워 목록 조회
+      setIsFollow(true)
+      
+      await followerData(userDetail.nickname)
+      .then((res) => {
+        console.log(res.follower)
+        setFollowerInfo(res.follower)
+        console.log(followerInfo)
+      })
+
+    } else if (what === 'following') {          // 팔로잉 목록 조회
+      setIsFollow(false)
+
+      await followingData(userDetail.nickname)
+      .then((res) => {
+        setFollowingInfo(res.following)
+        console.log(followingInfo)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+    }
 		setIsOpen(true)
 	}
 
