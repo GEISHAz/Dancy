@@ -1,17 +1,13 @@
 package com.ssafy.dancy.message.response;
 
-import com.ssafy.dancy.entity.Article;
-import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.entity.Video;
-import jakarta.persistence.Column;
 import lombok.Builder;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 
 @Builder
-public record ArticleResponseDto (
+public record ArticleDetailResponse(
     Long articleId,
     String articleTitle,
     String articleContent,
@@ -21,10 +17,10 @@ public record ArticleResponseDto (
     int articleLike,
     LocalDateTime createdDate,
     boolean isArticleLiked,
-    boolean isAuthorFollowing,
+    boolean isAuthorFollowed,
     int score,
     int follower,
-    long userId,
+    long authorId,
     String nickname,
     String profileImageUrl,
     Video video
