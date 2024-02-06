@@ -77,7 +77,7 @@ export default function FormArea() {
     email: { show: false, message: "" },
     password: { show: false, message: "" },
     checkpassword:  { show: false, message: "" },
-    birthdate: false,
+    birthdate: { show: false, message: "" },
     gender: false,
     nickname: false,
   });
@@ -135,6 +135,21 @@ export default function FormArea() {
         checkpassword: value !== inputValues.password,
       }));
     }
+
+     // 날짜 데이터 입력값 체크
+  if (inputName === "birthdate") {
+    if (!value) { // 값이 비어 있는 경우
+      setShowWarnings((prevWarnings) => ({
+        ...prevWarnings,
+        birthdate: true, // 경고 메시지를 표시합니다.
+      }));
+    }else {
+      setShowWarnings((prevWarnings) => ({
+        ...prevWarnings,
+        birthdate: false, // 값이 존재하는 경우 경고 메시지를 초기화합니다.
+      }));
+    }
+  }
   };
 
   const handleAuthentication = async () => {
@@ -261,14 +276,21 @@ export default function FormArea() {
       <FormDetailArea>
         <JF.MustIcon />
         <JF.FormCategory margin="62px">생년월일</JF.FormCategory>
-        <JF.FormInput type="date"></JF.FormInput>
+        <InputContainer>
+        <JF.FormInput type="date" value={inputValues.birthdate}
+            onChange={(e) => handleInputChange("birthdate", e.target.value)}
+          ></JF.FormInput>
+          <JF.InputNoticeText show={showWarnings.birthdate}>
+            날짜를 입력해주세요.
+          </JF.InputNoticeText>
+        </InputContainer>
       </FormDetailArea>
       <FormDetailArea>
         <JF.MustIcon />
         <JF.FormCategory margin="99px">성별</JF.FormCategory>
         <RadioContainer>
-          <input type="radio" name="gender" value="male" /> 남성
-          <input type="radio" name="gender" value="female" /> 여성
+          <input type="radio" name="gender" value="MALE" /> 남성
+          <input type="radio" name="gender" value="FEMALE" /> 여성
         </RadioContainer>
       </FormDetailArea>
       <FormDetailArea>
