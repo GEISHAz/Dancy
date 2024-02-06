@@ -30,7 +30,7 @@ public class ArticleDocument {
             fieldWithPath("thumbnailVideoUrl").type(JsonFieldType.STRING).description("썸네일 비디오 URL"),
             fieldWithPath("view").type(JsonFieldType.NUMBER).description("게시물 조회수"),
             fieldWithPath("articleLike").type(JsonFieldType.NUMBER).description("게시물 좋아요"),
-            fieldWithPath("createdDate").type(JsonFieldType.STRING).description("생성일시"),
+            fieldWithPath("createdDate").type(JsonFieldType.ARRAY).description("생성일시"),
             fieldWithPath("isArticleLiked").type(JsonFieldType.BOOLEAN).description("내가 좋아요했는지 여부"),
             fieldWithPath("isAuthorFollowed").type(JsonFieldType.BOOLEAN).description("해당 사람 팔로우 여부"),
             fieldWithPath("score").type(JsonFieldType.NUMBER).description("점수"),
@@ -49,7 +49,7 @@ public class ArticleDocument {
             fieldWithPath("thumbnailVideoUrl").type(JsonFieldType.STRING).description("썸네일 비디오 URL"),
             fieldWithPath("view").type(JsonFieldType.NUMBER).description("조회수"),
             fieldWithPath("articleLike").type(JsonFieldType.NUMBER).description("게시글 좋아요 갯수"),
-            fieldWithPath("createdDate").type(JsonFieldType.STRING).description("생성일시"),
+            fieldWithPath("createdDate").type(JsonFieldType.ARRAY).description("생성일시"),
             fieldWithPath("isArticleLiked").type(JsonFieldType.BOOLEAN).description("내가 좋아요했는지 여부"),
             fieldWithPath("isAuthorFollowed").type(JsonFieldType.BOOLEAN).description("내가 글쓴이를 팔로우했는지 여부"),
             fieldWithPath("score").type(JsonFieldType.NUMBER).description("비디오 정확도"),
@@ -58,6 +58,5 @@ public class ArticleDocument {
             fieldWithPath("nickname").type(JsonFieldType.STRING).description("글쓴이 닉네임"),
             fieldWithPath("profileImageUrl").type(JsonFieldType.VARIES).description("글쓴이 프로필 URL"),
             fieldWithPath("video").type(JsonFieldType.VARIES).description("비디오 URL")
-
     );
 }
