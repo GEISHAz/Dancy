@@ -1,6 +1,7 @@
 package com.ssafy.dancy.repository.article;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.dancy.entity.Article;
@@ -25,26 +26,6 @@ import static com.ssafy.dancy.entity.QFollow.follow;
 public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
 
     private final JPAQueryFactory jpaQueryFactory;
-
-
-    @Override
-    public List<ArticleSimpleResponse> getStagePageInfo(int findCount, Long previousLastArticleId) {
-        JPAQuery<Article> queryProcess = jpaQueryFactory.selectFrom(article);
-
-        if(previousLastArticleId != null){
-            queryProcess = queryProcess.where(article.articleId.lt(previousLastArticleId));
-        }
-
-        List<Article> resultArticle = queryProcess
-                .orderBy(article.articleId.desc())
-                .limit(findCount)
-                .fetch();
-
-        if(resultArticle.isEmpty()){
-            throw new LastArticleException("마지막 게시글입니다.");
-        }
-        return makeArticlesToSimpleList(resultArticle);
-    }
 
     @Override
     public Optional<ArticleDetailResponse> getArticleDetailInfo(User me, long articleId) {
@@ -71,6 +52,41 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
                 .fetchOne();
 
         return Optional.of(makeResponse(me, dto, followInfo));
+    }
+
+    @Override
+    public List<ArticleSimpleResponse> getStagePageInfo(int findCount, Long previousLastArticleId) {
+        return getResultStagePage(findCount, previousLastArticleId, article.isNotNull());
+    }
+
+    @Override
+    public List<ArticleSimpleResponse> getArticleSearchedByTitle(String title, int findCount, Long previousLastArticleId) {
+        return getResultStagePage(findCount, previousLastArticleId, article.articleTitle.contains(title));
+    }
+
+    @Override
+    public List<ArticleSimpleResponse> getArticleSearchByNickname(String nickname, int findCount, Long previousLastArticleId) {
+        return getResultStagePage(findCount, previousLastArticleId, article.user.nickname.eq(nickname));
+    }
+
+    public List<ArticleSimpleResponse> getResultStagePage(int findCount, Long previousLastArticleId,
+                                                          BooleanExpression searcher){
+        JPAQuery<Article> queryProcess = jpaQueryFactory.selectFrom(article);
+
+        if(previousLastArticleId != null){
+            queryProcess = queryProcess.where(article.articleId.lt(previousLastArticleId)
+                    .and(searcher));
+        }
+
+        List<Article> resultArticle = queryProcess
+                .orderBy(article.articleId.desc())
+                .limit(findCount)
+                .fetch();
+
+        if(resultArticle.isEmpty()){
+            throw new LastArticleException("마지막 게시글입니다.");
+        }
+        return makeArticlesToSimpleList(resultArticle);
     }
 
     private ArticleDetailResponse makeResponse(User user, ArticleDetailDTO dto, Follow followInfo) {

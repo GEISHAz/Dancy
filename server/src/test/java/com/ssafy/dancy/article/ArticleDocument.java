@@ -27,6 +27,10 @@ public class ArticleDocument {
             parameterWithName("previousArticleId").description("무한 스크롤에서 마지막에 받은 게시글 아이디")
     );
 
+    public static final Snippet keywordPathField = pathParameters(
+            parameterWithName("keyword").attributes(required()).description("검색 키워드")
+    );
+
     public static final Snippet ArticleWriteResponseField = responseFields(
             fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("게시물 ID"),
             fieldWithPath("articleTitle").type(JsonFieldType.STRING).description("게시물 제목"),

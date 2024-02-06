@@ -13,4 +13,8 @@ public interface ArticleCustomRepository {
 
     Optional<ArticleDetailResponse> getArticleDetailInfo(User user, long articleID);
 
+    List<ArticleSimpleResponse> getArticleSearchedByTitle(String title, int findCount, Long previousLastArticleId);
+
+    List<ArticleSimpleResponse> getArticleSearchByNickname(String nickname, int findCount, Long previousLastArticleId);
+
 }
