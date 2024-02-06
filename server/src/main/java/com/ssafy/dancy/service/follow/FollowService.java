@@ -62,7 +62,6 @@ public class FollowService {
     }
 
 
-    @Transactional
     public FollowResultResponse follow(User user, String toNickname) {
         User toUser = userRepository.findByNickname(toNickname).orElseThrow(()
                 -> new UserNotFoundException("팔로우할 유저를 찾을 수 없습니다."));
