@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import styled, { css } from "styled-components";
 
 // Dancy 로고
 export const JoinLogo = styled.div`
@@ -69,6 +69,13 @@ export const FormBtn = styled.button`
   &:hover {
     background-color: #c0354c;
   }
+  /* disable 상태일 때의 스타일 */
+  ${(props) =>
+    props.disabled &&
+    css`
+      background-color: #6f6f6f;
+      cursor: not-allowed;
+    `}
 `;
 
 // 가입하기 버튼
@@ -136,14 +143,12 @@ export const FormInput = styled.input`
 
 // input 안내문구 -> 형식 체크
 export const InputNoticeText = styled.div`
-  position: absolute;
-  bottom: -24px;
-  right: 0;
   font-family: "NYJ Gothic L";
   font-size: 16px;
   font-weight: 400;
   line-height: nomal;
   color: #e2030f;
-  margin-top: 12px;
+  text-align: end;
+  height: 0px;
   display: ${(props) => (props.show ? "block" : "none")};
 `;

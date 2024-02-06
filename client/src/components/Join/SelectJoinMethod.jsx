@@ -1,4 +1,7 @@
 import { styled } from "styled-components";
+import { useState } from "react";
+import JoinForm from "./JoinForm";
+import { useNavigate } from "react-router-dom";
 import {
   WelcomeTitle,
   JoinChoiceTitle,
@@ -47,6 +50,13 @@ export const JoinArea = styled.div`
 `;
 
 export default function SelectJoinMethod() {
+  const navigate = useNavigate();
+
+  const handleEmailJoinClick = () => {
+    // Email로 회원가입 버튼이 클릭되면 /signup/joinform 경로로 이동
+    navigate("/signup/joinform");
+  };
+
   return (
     <SelectJoinArea>
       <LogoArea>
@@ -59,7 +69,7 @@ export default function SelectJoinMethod() {
         <JoinChoiceTitle>Dancy 회원가입 방식을 선택해주세요.</JoinChoiceTitle>
       </TextArea>
       <JoinArea>
-        <JoinBtnContainer>
+        <JoinBtnContainer onClick={handleEmailJoinClick}>
           <EmailLogo>
             <img src={EmailImg}></img>
           </EmailLogo>
