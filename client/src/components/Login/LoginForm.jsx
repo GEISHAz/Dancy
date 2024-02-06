@@ -21,6 +21,7 @@ export default function Login() {
   const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
   const [isEmailCorrect, setIsEmailCorrect] = useState(true);
   const [userInfo, setUserInfo] = useRecoilState(userState)
+	// const user = useRecoilValue(userState)
   const setLogin = useSetRecoilState(loginState); // login유무 저장
 
   const handleChange = (e) => {
@@ -45,6 +46,7 @@ export default function Login() {
       const userDetailsData = await userDetails();
       console.log("User Details:", userDetailsData.userInfo);
       setUserInfo(userDetailsData.userInfo)
+      setUserInfo(user)
     } catch (error) {
       console.error("Login Error:", error);
       const errorMsg = error.response?.data[0]?.message || "An error occurred";

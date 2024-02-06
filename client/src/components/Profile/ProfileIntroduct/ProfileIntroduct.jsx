@@ -12,8 +12,8 @@ export default function ProfileIntroduct() {
 	const navigate = useNavigate()
 	const { user_id } = useParams();
 	const [ userDetail, setUserDetail ] = useState({})  // 누구의 Profile페이지니?
-	const [ myFollowerInfo, setMyFollowerInfo ] = useState([])
-	const [ myFollowingInfo, setMyFollowingInfo ] = useState([])
+	const [ followerInfo, setFollowerInfo ] = useState([])
+	const [ followingInfo, setFollowingInfo ] = useState([])
 	const user = useRecoilValue(userState)
 	// 누구의 Profile 페이지인지 확인
 	useEffect(() => {
@@ -35,30 +35,54 @@ export default function ProfileIntroduct() {
 		backgroundColor: userDetail.followed ? '#AABBFF' : '#898989',
 	}
 
-	const [ isOpen, setIsOpen ] = useState(false);
-	const [ isFollow, setIsFollow ] = useState(true);
+	const [ isOpen, setIsOpen ] = useState(false);  // Modal On/Off 여부
+	const [ isFollow, setIsFollow ] = useState(true);  // 조회하는게 follower(true) 목록인지 following(false) 목록인지?
 	const getData = childData => {
 		setIsOpen(childData);
 	};
 
-  const modalHandler = (what) => {
-		if (userDetail.nickname === user.nickname) {
+  const modalHandler = async (what) => {
+		if (user.nickname === userDetail.nickname) {
 			if (what === 'follower') {
 				setIsFollow(true)
 	
-				followerData(userDetail.nickname)
+				await followerData(user.nickname)
 				.then((res) => {
-					setMyFollowerInfo(res.follower)
-					console.log(myFollowerInfo)
+					setFollowerInfo(res.follower)
+					console.log(followerInfo)
 				})
 	
 			} else if (what === 'following') {
 				setIsFollow(false)
 	
-				followingData(userDetail.nickname)
+				await followingData(user.nickname)
 				.then((res) => {
-					setMyFollowingInfo(res.following)
-					console.log(myFollowingInfo)
+					setFollowingInfo(res.following)
+					console.log(followingInfo)
+				})
+				.catch((err) => {
+					console.error(err)
+				})
+			}
+		} else {
+			console.log("user.nickname", user)
+			console.log("user.nickname", userDetail.nickname)
+			if (what === 'follower') {
+				setIsFollow(true)
+	
+				await followerData(userDetail.nickname)
+				.then((res) => {
+					setFollowerInfo(res.follower)
+					console.log(followerInfo)
+				})
+	
+			} else if (what === 'following') {
+				setIsFollow(false)
+	
+				await followingData(userDetail.nickname)
+				.then((res) => {
+					setFollowingInfo(res.following)
+					console.log(followingInfo)
 				})
 				.catch((err) => {
 					console.error(err)
@@ -102,7 +126,7 @@ export default function ProfileIntroduct() {
 
 	return (
     <>
-      {isOpen && (<FollowModal isFollow={isFollow} getData={getData} info={isFollow ? myFollowerInfo : myFollowingInfo} />)}
+      {isOpen && (<FollowModal isFollow={isFollow} getData={getData} info={isFollow ? followerInfo : followingInfo} />)}
       
       <P.ProfileIntroBox>
         <P.ProfileRound>

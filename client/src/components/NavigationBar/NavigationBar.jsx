@@ -35,6 +35,7 @@ export default function Navbar() {
   const logoutHandler = () => {
     logout()
     setLogin(false);
+		navigate('/')
   }
 
   return (
