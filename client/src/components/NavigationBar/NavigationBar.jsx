@@ -2,55 +2,56 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import Notification from './Notification';
-import { PageButton, NavHome, NavPractice, NavStage, NavProfile, NavArea, NavRed, NavTextArea, NavLeft, NavRight, NavLeftContainer, NavSignUp, NavLogin, Square, AlertButton } from './NavigationBar.style'
+import * as N from './NavigationBar.style';
 
 export default function Navbar() {
   const [activeButton, setActiveButton] = useState('');
-
+  console.log(activeButton)
   return (
-    <NavArea>
-      <NavRed />
-      <NavTextArea>
-        <NavLeft>
-        <NavLeftContainer>
-          <NavHome onClick={() => setActiveButton('Home')} $active={activeButton === 'Home'}>
-          <Link to="/">Home</Link>
-          </NavHome>
-          <Square>Home</Square>
-        </NavLeftContainer>
-        <NavLeftContainer>
-          <NavPractice onClick={() => setActiveButton('Create')} $active={activeButton === 'Create'}>
+    <N.NavArea>
+      <N.NavRed />
+      <N.NavTextArea>
+        <N.NavLeft>
+        <N.NavLeftContainer>
+          <N.NavHome onClick={() => setActiveButton('Home')} $active={activeButton === 'Home'}>
+            <Link to="/">Home</Link>
+          </N.NavHome>
+          <N.Square>Home</N.Square>
+        </N.NavLeftContainer>
+        <N.NavLeftContainer>
+          <N.NavPractice onClick={() => setActiveButton('Create')} $active={activeButton === 'Create'}>
           <Link to="/create">Practice</Link>
-          </NavPractice>
-          <Square />
-        </NavLeftContainer>
-        <NavLeftContainer>
-          <NavStage onClick={() => setActiveButton('Stage')} $active={activeButton === 'Stage'}>
-          <Link to="/stage">Stage</Link>
-          </NavStage>
-          <Square />
-        </NavLeftContainer>
-        <NavLeftContainer>
-          <NavProfile onClick={() => setActiveButton('Profile')} $active={activeButton === 'Profile'}>
-          <Link to="/profile/:username">Profile</Link>
-          </NavProfile>
-          <Square />
-        </NavLeftContainer>
-        </NavLeft>
-        <NavRight>
+          </N.NavPractice>
+          <N.Square />
+        </N.NavLeftContainer>
+        <N.NavLeftContainer>
+          <N.NavStage onClick={() => setActiveButton('Stage')} $active={activeButton === 'Stage'}>
+            <Link to="/stage">Stage</Link>
+          </N.NavStage>
+          <N.Square />
+        </N.NavLeftContainer>
+        <N.NavLeftContainer>
+          <N.NavProfile onClick={() => setActiveButton('Profile')} $active={activeButton === 'Profile'}>
+            <Link to="/profile/:username">Profile</Link>
+          </N.NavProfile>
+          <N.Square />
+        </N.NavLeftContainer>
+        </N.NavLeft>
+        <N.NavRight>
           <SearchBar />
-          {/* onClick method 만들것! */}
-          <AlertButton>
+          <N.AlertButton>
             <Notification />
-          </AlertButton>
-          <NavSignUp>
-            <Link to="/signup">Join</Link>
-          </NavSignUp>
-          <NavLogin>
-            <Link to="/login">Login</Link>
-          </NavLogin>
-        </NavRight>
-      </NavTextArea>
-    </NavArea>
+          </N.AlertButton>
+          <>
+            <N.NavSignUp>
+              <Link to="/signup">Join</Link>
+            </N.NavSignUp>
+            <N.NavLogin>
+              <Link to="/login">Login</Link>
+            </N.NavLogin>
+          </>
+        </N.NavRight>
+      </N.NavTextArea>
+    </N.NavArea>
   );
 }
