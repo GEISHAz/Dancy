@@ -13,20 +13,20 @@ export default function Navbar() {
   const [activeButton, setActiveButton] = useState('');
   const [userInfo, setUserInfo] = useRecoilState(userState)
   const navigate = useNavigate();
-
-	const goProfileHandler = () => {
-		userDetails()
-		.then((res) => {
-			setUserInfo(res.userInfo)
-			setActiveButton('Profile')
-		})
-		.catch((err)=>{
-			if (err.response.status === 401 ) {
-				alert('로그인이 필요한 서비스입니다.')
-				navigate("/login");
-			}
-		})
-	}
+  console.log(activeButton)
+	// const goProfileHandler = () => {
+	// 	userDetails()
+	// 	.then((res) => {
+	// 		setUserInfo(res.userInfo)
+	// 		setActiveButton('Profile')
+	// 	})
+	// 	.catch((err)=>{
+	// 		if (err.response.status === 401 ) {
+	// 			alert('로그인이 필요한 서비스입니다.')
+	// 			navigate("/login");
+	// 		}
+	// 	})
+	// }
 
 
 	const setLogin = useSetRecoilState(loginState)
@@ -43,28 +43,36 @@ export default function Navbar() {
       <N.NavTextArea>
         <N.NavLeft>
         <N.NavLeftContainer>
+        <Link to="/">
           <N.NavHome onClick={() => setActiveButton('Home')} $active={activeButton === 'Home'}>
-            <Link to="/">Home</Link>
+            Home
           </N.NavHome>
-          <N.Square>Home</N.Square>
+        </Link>
+        <N.Square />
         </N.NavLeftContainer>
         <N.NavLeftContainer>
-          <N.NavPractice onClick={() => setActiveButton('Create')} $active={activeButton === 'Create'}>
-          <Link to="/create">Practice</Link>
-          </N.NavPractice>
+          <Link to="/create">
+            <N.NavPractice onClick={() => setActiveButton('Create')} $active={activeButton === 'Create'}>
+              Practice
+            </N.NavPractice>
+          </Link>
           <N.Square />
         </N.NavLeftContainer>
         <N.NavLeftContainer>
-          <N.NavStage onClick={() => setActiveButton('Stage')} $active={activeButton === 'Stage'}>
-            <Link to="/stage">Stage</Link>
-          </N.NavStage>
-          <N.Square />
+          <Link to="/stage">
+            <N.NavStage onClick={() => setActiveButton('Stage')} $active={activeButton === 'Stage'}>
+              Stage
+            </N.NavStage>
+            <N.Square />
+          </Link>
         </N.NavLeftContainer>
         <N.NavLeftContainer>
-          {/* <N.NavProfile onClick={() => setActiveButton('Profile')} $active={activeButton === 'Profile'}> */}
-          <N.NavProfile onClick={goProfileHandler} $active={activeButton === 'Profile'}>
-            <Link to={`/profile/${userInfo.nickname}`}>Profile</Link>
-          </N.NavProfile>
+        <Link to={`/profile/${userInfo.nickname}`}>
+            <N.NavProfile onClick={() => setActiveButton('Profile')} $active={activeButton === 'Profile'}>
+            {/* <N.NavProfile onClick={goProfileHandler} $active={activeButton === 'Profile'}> */}
+              Profile
+            </N.NavProfile>
+          </Link>
           <N.Square />
         </N.NavLeftContainer>
         </N.NavLeft>
@@ -78,7 +86,7 @@ export default function Navbar() {
               <Link to="/signup">Join</Link>
             </N.NavSignUp>
             <N.NavLogin>
-  						{isLogin ? <div onClick={logoutHandler}>Logout</div> : <Link to="/login">Login</Link> }
+            {isLogin ? <div onClick={logoutHandler}>Logout</div> : <Link to="/login">Login</Link> }
             {/* <Link to="/login">Login</Link> */}
             </N.NavLogin>
           </>
