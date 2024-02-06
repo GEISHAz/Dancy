@@ -106,6 +106,7 @@ export default function JoinForm() {
       // 처리 결과 확인 등의 작업 수행
     } catch (error) {
       console.log("error", error);
+      alert("회원가입을 진행할 수 없습니다.");
       if (error === httpStatusCode.CONFLICT) {
         return;
       }
