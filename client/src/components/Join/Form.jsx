@@ -61,6 +61,7 @@ export const RadioContainer = styled.div`
 export const InputColunmArea = styled.div`
   display: flex;
   flex-direction: column;
+
 `;
 
 export default function FormArea() {
@@ -135,11 +136,12 @@ export default function FormArea() {
     try {
       // 서버에 이메일 중복 여부 확인 요청
       const isEmailDuplicate = await checkEmailDuplicate(inputValues.email);
+      console.log(isEmailDuplicate);
 
       if (isEmailDuplicate) {
         setShowWarnings((prevWarnings) => ({
           ...prevWarnings,
-          email: { show: true, message: "중복된 이메일입니다." },
+          email: { show: true, message: "이미 가입된 이메일입니다." },
         }));
         return;
       }
@@ -165,13 +167,17 @@ export default function FormArea() {
     // 서버와 통신하여 이메일 중복 여부를 확인하는 로직
     // true: 중복된 이메일, false: 중복되지 않은 이메일
 
-    const response = await emailCheck(email);
-    // 상태 코드에 따라 다른 처리 수행
-    if (response === httpStatusCode.OK) {
-      // 성공적인 응답
-      return false;
-    } else if (response === httpStatusCode.CONFLICT) {
-      return true;
+    try{
+      const response = await emailCheck(email);
+      console.log("response", response)
+      if (response === httpStatusCode.OK) {
+        // 성공적인 응답
+        return false;
+      }
+    }catch(error){
+        if(error === httpStatusCode.CONFLICT){
+          return true;
+        }
     }
   };
 
@@ -198,7 +204,7 @@ export default function FormArea() {
         <JF.FormBtn onClick={handleAuthentication}>인증하기</JF.FormBtn>
         {/* CustomModal 컴포넌트를 렌더링하고 isOpen, onClose, onSubmit을 props로 전달 */}
         <CustomModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handlePinSubmit} />
-        {/* PIN이 제출되면 해당 내용을 출력 */}
+        {/* PIN이 제출되면 해당 내용을 출력 */}4
         {submittedPin && <p>인증번호: {submittedPin}</p>}
       </FormDetailArea>
       <FormDetailArea>

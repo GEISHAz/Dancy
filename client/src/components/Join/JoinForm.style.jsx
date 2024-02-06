@@ -141,6 +141,7 @@ export const InputNoticeText = styled.div`
   font-weight: 400;
   line-height: nomal;
   color: #e2030f;
-  margin-top: 12px;
+  text-align: end;
+  height: 0px;
   display: ${(props) => (props.show ? "block" : "none")};
 `;

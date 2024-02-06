@@ -16,10 +16,13 @@ export const emailCheck = async (formData) => {
         return statusCode;
   
     } catch (error) {
-        console.log(formData);
+        console.log("error:", error.response.status)
         console.error("이메일 응답에 에러가 발생함", error);
-      throw error;
+      throw error.response.status;
     }
   };
+
+
+  
   
   
