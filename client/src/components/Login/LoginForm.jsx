@@ -21,10 +21,7 @@ export default function Login() {
   const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
   const [isEmailCorrect, setIsEmailCorrect] = useState(true);
   const [userInfo, setUserInfo] = useRecoilState(userState)
-
-  // const setUser = useSetRecoilState(userState); // userState에 로그인한 회원정보 저장
   const setLogin = useSetRecoilState(loginState); // login유무 저장
-  // const user = useRecoilValue(userState)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -55,25 +52,6 @@ export default function Login() {
       setModalTxt(errorMsg);
       openModalHandler();
     }
-    // login(formData)
-    // .then((res) => {
-    //   console.log(res)
-    //   setLogin(true);
-    //   navigate("/");
-    // })
-    // .then(() => {
-    //   const res = userDetails()
-    //   console.log(res)
-    //   // userInfo = res.userInfo
-    //   // setUserInfo(userInfo)
-    // })
-    // .catch((err) => {
-    //   console.error(err)
-    //   const errorMsg = err.response.data[0].message;
-      
-    //   setModalTxt(errorMsg);
-    //   openModalHandler();
-    // })
   };
 
 

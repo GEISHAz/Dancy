@@ -1,7 +1,7 @@
 import FollowItem from './FollowItem';
 import * as F from './FollowModal.style'
 
-export default function FollowModal ({ getData, Profile, isFollower }) {
+export default function FollowModal ({ getData, info, isFollower }) {
 	const data = false;
 	const postData = () => {
 		getData(data)
@@ -17,7 +17,7 @@ export default function FollowModal ({ getData, Profile, isFollower }) {
           <hr />
 
           <F.FollowList>
-            {Profile.map((item) => (
+            {info.map((item) => (
               <FollowItem key={item.key} {...item} />
             ))}
           </F.FollowList>

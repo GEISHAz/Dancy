@@ -54,7 +54,7 @@ export const NavArea = styled.div`
   color: #252525;
   font-family: 'NanumSquareRound', sans-serif;
   position: relative;
-  z-index: 1000;
+  z-index: 1;
 `;
 
 export const NavRed = styled.div`

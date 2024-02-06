@@ -22,11 +22,9 @@ export default function Profile() {
 		followed: true,
 	}
 
-  
-	
 	return (
 		<div className="flex gap-x-2 justify-center mt-14">
-			<ProfileIntroduct Profile={Profile} />
+			<ProfileIntroduct />
 			<ProfileFeed Profile={Profile} />
 		</div>
 	)
