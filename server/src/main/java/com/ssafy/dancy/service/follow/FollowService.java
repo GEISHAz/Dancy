@@ -78,8 +78,8 @@ public class FollowService {
 
         userRepository.save(user);
         return FollowResultResponse.builder()
-                .followedNickname(savedFollow.getToUser().getNickname())
-                .followerNickname(savedFollow.getFromUser().getNickname())
+                .followedNickname(toNickname)
+                .followerNickname(user.getNickname())
                 .followInfoId(savedFollow.getFollowId())
                 .build();
     }
