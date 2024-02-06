@@ -8,25 +8,36 @@ public class ArticleSteps {
 
     public static final String modifiedTestTitle = "test_title_modified";
     public static final String modifiedTestContent = "test_content_modified";
+    public static final String testTitle = "test_title";
+    public static final String testContent = "test_content";
+    public static final String testVideo = "test_video";
+    public static final String testImage = "test_image";
 
-
+    public ArticleUpdateRequest 게시물_생성(String title){
+        return ArticleUpdateRequest.builder()
+                .articleTitle(title)
+                .articleContent(testContent)
+                .video(testVideo)
+                .thumbnailImageUrl(testImage)
+                .build();
+    }
 
     public ArticleUpdateRequest 게시물_생성(){
 
         return ArticleUpdateRequest.builder()
-                .articleTitle("test_title")
-                .articleContent("test_content")
-                .video("test_video")
-                .thumbnailImageUrl("test_image")
+                .articleTitle(testTitle)
+                .articleContent(testContent)
+                .video(testVideo)
+                .thumbnailImageUrl(testImage)
                 .build();
     }
 
     public ArticleUpdateRequest 게시물_생성_타이틀공백(){
         return ArticleUpdateRequest.builder()
                 .articleTitle("")
-                .articleContent("test_content")
-                .video("test_video")
-                .thumbnailImageUrl("test_image")
+                .articleContent(testContent)
+                .video(testVideo)
+                .thumbnailImageUrl(testImage)
                 .build();
     }
 

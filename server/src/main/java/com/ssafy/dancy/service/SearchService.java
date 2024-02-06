@@ -13,12 +13,11 @@ public class SearchService {
 
     private final ArticleRepository articleRepository;
 
-    public List<ArticleSimpleResponse> searchByTitle(String keyword) {
-//        articleRepository
-        return null;
+    public List<ArticleSimpleResponse> searchByTitle(String keyword, int limit, Long previousArticleId) {
+        return articleRepository.getArticleSearchedByTitle(keyword, limit, previousArticleId);
     }
 
-    public List<ArticleSimpleResponse> searchByNickname(String keyword) {
-        return null;
+    public List<ArticleSimpleResponse> searchByNickname(String keyword, int limit, Long previousArticleId) {
+        return articleRepository.getArticleSearchByNickname(keyword, limit,previousArticleId);
     }
 }
