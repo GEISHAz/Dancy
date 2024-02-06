@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import * as JF from "./JoinForm.style";
 import CustomModal from "./PinModal";
+import { emailCheck } from "../../api/join";
+import { httpStatusCode } from "../../util/http-status";
 
 // 전체 폼 구성
 export const JoinFormArea = styled.div`
@@ -66,7 +68,7 @@ export default function FormArea() {
     nickname: "",
   });
   const [showWarnings, setShowWarnings] = useState({
-    email: false,
+    email: { show: false, message: "" },
     password: false,
     checkpassword: false,
     birthdate: false,
@@ -130,7 +132,7 @@ export default function FormArea() {
       if (isEmailDuplicate) {
         setShowWarnings((prevWarnings) => ({
           ...prevWarnings,
-          email: "중복된 이메일입니다.",
+          email: { show: true, message: "중복된 이메일입니다." },
         }));
         return;
       }
@@ -155,7 +157,15 @@ export default function FormArea() {
   const checkEmailDuplicate = async (email) => {
     // 서버와 통신하여 이메일 중복 여부를 확인하는 로직
     // true: 중복된 이메일, false: 중복되지 않은 이메일
-    return false; // 임시로 false 반환 (중복되지 않은 이메일로 가정)
+
+    const response = await emailCheck(email);
+    // 상태 코드에 따라 다른 처리 수행
+    if (response === httpStatusCode.OK) {
+      // 성공적인 응답
+      return false;
+    } else if (response === httpStatusCode.CONFLICT) {
+      return true;
+    }
   };
 
   return (
@@ -173,10 +183,10 @@ export default function FormArea() {
           value={inputValues.email}
           onChange={(e) => handleInputChange("email", e.target.value)}
         ></JF.FormInput>
-        <JF.InputNoticeText show={showWarnings.email}>
-          형식을 만족하지 않는 비밀번호입니다.
+        <JF.InputNoticeText show={showWarnings.email.show}>
+          {showWarnings.email.message}
         </JF.InputNoticeText>
-        <JF.FormBtn onClick={openModal}>인증하기</JF.FormBtn>
+        <JF.FormBtn onClick={handleAuthentication}>인증하기</JF.FormBtn>
         {/* CustomModal 컴포넌트를 렌더링하고 isOpen, onClose, onSubmit을 props로 전달 */}
         <CustomModal isOpen={isModalOpen} onClose={closeModal} onSubmit={handlePinSubmit} />
         {/* PIN이 제출되면 해당 내용을 출력 */}
@@ -189,9 +199,9 @@ export default function FormArea() {
           <JF.FormInput
             type="password"
             value={inputValues.password}
-            onChange={inputChangeHandler}
+            onChange={(e) => handleInputChange("password", e.target.value)}
           ></JF.FormInput>
-          <JF.InputNoticeText show={showWarning}>
+          <JF.InputNoticeText show={showWarnings.password}>
             형식을 만족하지 않는 비밀번호입니다.
           </JF.InputNoticeText>
         </InputContainer>
