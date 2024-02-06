@@ -16,13 +16,6 @@ export const userDetails = async () => {
       profileImageUrl: res.data.profileImageUrl,
     }
 
-    // const email = res.data.email
-    // const nickname = res.data.nickname
-    // const birthDate = res.data.birthDate
-    // const introduceText = res.data.introduceText
-    // const profileImageUrl = res.data.profileImageUrl
-
-    // return { email, nickname, birthDate, introduceText, profileImageUrl }
     return { userInfo }
   } catch (error) {
     console.error(error);

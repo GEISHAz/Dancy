@@ -1,11 +1,41 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import Notification from './Notification';
 import { PageButton, NavHome, NavPractice, NavStage, NavProfile, NavArea, NavRed, NavTextArea, NavLeft, NavRight, NavLeftContainer, NavSignUp, NavLogin, Square, AlertButton } from './NavigationBar.style'
+import { loginState, userState } from "../../recoil/LoginState.js";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil'
+import { logout } from '../../api/auth.js';
+import { userDetails } from '../../api/user.js';
+
 
 export default function Navbar() {
   const [activeButton, setActiveButton] = useState('');
+  const [userInfo, setUserInfo] = useRecoilState(userState)
+  const navigate = useNavigate();
+
+	const goProfileHandler = () => {
+		userDetails()
+		.then((res) => {
+			setUserInfo(res.userInfo)
+			setActiveButton('Profile')
+		})
+		.catch((err)=>{
+			if (err.response.status === 401 ) {
+				alert('로그인이 필요한 서비스입니다.')
+				navigate("/login");
+			}
+		})
+	}
+
+
+	const setLogin = useSetRecoilState(loginState)
+  const isLogin = useRecoilValue(loginState)
+
+  const logoutHandler = () => {
+    logout()
+    setLogin(false);
+  }
 
   return (
     <NavArea>
@@ -31,8 +61,9 @@ export default function Navbar() {
           <Square />
         </NavLeftContainer>
         <NavLeftContainer>
-          <NavProfile onClick={() => setActiveButton('Profile')} $active={activeButton === 'Profile'}>
-          <Link to="/profile/:username">Profile</Link>
+          {/* <NavProfile onClick={() => setActiveButton('Profile')} $active={activeButton === 'Profile'}> */}
+          <NavProfile onClick={goProfileHandler} $active={activeButton === 'Profile'}>
+          <Link to={`/profile/${userInfo.nickname}`}>Profile</Link>
           </NavProfile>
           <Square />
         </NavLeftContainer>
@@ -47,7 +78,8 @@ export default function Navbar() {
             <Link to="/signup">Join</Link>
           </NavSignUp>
           <NavLogin>
-            <Link to="/login">Login</Link>
+						{isLogin ? <div onClick={logoutHandler}>Logout</div> : <Link to="/login">Login</Link> }
+            {/* <Link to="/login">Login</Link> */}
           </NavLogin>
         </NavRight>
       </NavTextArea>
