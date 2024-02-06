@@ -1,4 +1,4 @@
-package com.ssafy.dancy.repository;
+package com.ssafy.dancy.repository.article;
 
 import com.ssafy.dancy.entity.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface ArticleRepository extends JpaRepository<Article,String> {
+public interface ArticleRepository extends JpaRepository<Article,String>, ArticleCustomRepository {
 
 
     List<Article> findAll();

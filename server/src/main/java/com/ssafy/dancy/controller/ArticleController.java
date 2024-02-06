@@ -4,7 +4,7 @@ import com.ssafy.dancy.entity.Article;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.request.article.ArticleModifyRequest;
 import com.ssafy.dancy.message.request.article.ArticleUpdateRequest;
-import com.ssafy.dancy.message.response.ArticleResponseDto;
+import com.ssafy.dancy.message.response.ArticleDetailResponse;
 import com.ssafy.dancy.service.article.ArticleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,21 +31,21 @@ public class ArticleController {
     }
 
     @GetMapping("/{articleId}")
-    public ArticleResponseDto getArticle(@AuthenticationPrincipal User user, @PathVariable long articleId){
+    public ArticleDetailResponse getArticle(@AuthenticationPrincipal User user, @PathVariable long articleId){
         return articleService.getArticle(user,articleId);
     }
 
 
     @PostMapping("")
-    public ArticleResponseDto insertArticle(@AuthenticationPrincipal User user, @Valid @RequestBody ArticleUpdateRequest dto){
+    public ArticleDetailResponse insertArticle(@AuthenticationPrincipal User user, @Valid @RequestBody ArticleUpdateRequest dto){
 
         return articleService.insertArticle(user,dto);
     }
 
     @PutMapping("/{articleId}")
-    public ArticleResponseDto modifyArticle(@AuthenticationPrincipal User user,
-                                            @Valid @RequestBody ArticleModifyRequest dto,
-                                            @PathVariable long articleId){
+    public ArticleDetailResponse modifyArticle(@AuthenticationPrincipal User user,
+                                               @Valid @RequestBody ArticleModifyRequest dto,
+                                               @PathVariable long articleId){
 
         return articleService.modifyArticle(user,articleId, dto);
     }

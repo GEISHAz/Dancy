@@ -3,12 +3,12 @@ package com.ssafy.dancy.like;
 import com.ssafy.dancy.ApiTest;
 import com.ssafy.dancy.CommonDocument;
 import com.ssafy.dancy.auth.AuthSteps;
-import com.ssafy.dancy.comment.CommentDocument;
 import com.ssafy.dancy.entity.Article;
 import com.ssafy.dancy.entity.Comment;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.repository.*;
+import com.ssafy.dancy.repository.article.ArticleRepository;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
 import io.restassured.path.json.JsonPath;
@@ -21,7 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.Set;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;

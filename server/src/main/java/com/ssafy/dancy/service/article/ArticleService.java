@@ -6,8 +6,8 @@ import com.ssafy.dancy.exception.article.ArticleNotFoundException;
 import com.ssafy.dancy.exception.article.ArticleNotOwnerException;
 import com.ssafy.dancy.message.request.article.ArticleModifyRequest;
 import com.ssafy.dancy.message.request.article.ArticleUpdateRequest;
-import com.ssafy.dancy.message.response.ArticleResponseDto;
-import com.ssafy.dancy.repository.ArticleRepository;
+import com.ssafy.dancy.message.response.ArticleDetailResponse;
+import com.ssafy.dancy.repository.article.ArticleRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,15 +26,12 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public ArticleResponseDto getArticle(User user, long articleId) {
-
-        Article article = articleRepository.findByArticleId(articleId).orElseThrow(() ->
+    public ArticleDetailResponse getArticle(User user, long articleId) {
+        return articleRepository.getArticleDetailInfo(user, articleId).orElseThrow(() ->
                 new ArticleNotFoundException("게시물을 찾을 수 없습니다."));
-
-        return makeArticleResponseDto(article, user);
     }
 
-    public ArticleResponseDto insertArticle(User user, ArticleUpdateRequest dto) {
+    public ArticleDetailResponse insertArticle(User user, ArticleUpdateRequest dto) {
 
         Article article = Article.builder()
                 .articleTitle(dto.articleTitle())
@@ -46,12 +43,12 @@ public class ArticleService {
 
         articleRepository.save(article);
 
-        return makeArticleResponseDto(article, user);
+        return makeArticleDetailResponse(article, user);
 
     }
 
     @Transactional
-    public ArticleResponseDto modifyArticle(User user, long articleId, ArticleModifyRequest dto) {
+    public ArticleDetailResponse modifyArticle(User user, long articleId, ArticleModifyRequest dto) {
 
         Article article = articleRepository.findByArticleId(articleId).orElseThrow(() ->
                 new ArticleNotFoundException("게시물을 찾을 수 없습니다."));
@@ -63,7 +60,7 @@ public class ArticleService {
         article.setArticleTitle(dto.articleTitle());
         article.setArticleContent(dto.articleContent());
 
-        return makeArticleResponseDto(article, user);
+        return makeArticleDetailResponse(article, user);
     }
 
     public Long deleteArticle(User user, long articleId) {
@@ -80,8 +77,8 @@ public class ArticleService {
         return article.getArticleId();
     }
 
-    public ArticleResponseDto makeArticleResponseDto(Article article, User user){
-        return ArticleResponseDto.builder()
+    public ArticleDetailResponse makeArticleDetailResponse(Article article, User user){
+        return ArticleDetailResponse.builder()
                 .articleId(article.getArticleId())
                 .articleTitle(article.getArticleTitle())
                 .articleContent(article.getArticleContent())
@@ -90,12 +87,14 @@ public class ArticleService {
                 .thumbnailVideoUrl(article.getThumbnailVideoUrl())
                 .view(article.getView())
                 .createdDate(article.getCreatedDate())
-                //.isArticleLiked()
-                //.isAuthorFollowing()
-                //.follower()
-                .userId(user.getUserId())
+                .authorId(user.getUserId())
                 .nickname(user.getNickname())
                 .profileImageUrl(user.getProfileImageUrl())
+//                .isArticleLiked()
+//                .isAuthorFollowed()
+//                .follower()
+                .video(null) // TODO : 추후, 비디오 부분도 집어넣기(비디오 부분 개발 완료 후)
+                .score(-1) // TODO : score 나오면 할 것.
                 .build();
     }
 

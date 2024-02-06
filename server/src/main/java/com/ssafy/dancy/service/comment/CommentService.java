@@ -8,7 +8,7 @@ import com.ssafy.dancy.exception.article.ArticleNotFoundException;
 import com.ssafy.dancy.exception.comment.CommentNotFoundException;
 import com.ssafy.dancy.message.request.comment.CommentWriteRequest;
 import com.ssafy.dancy.message.response.comment.CommentResponse;
-import com.ssafy.dancy.repository.ArticleRepository;
+import com.ssafy.dancy.repository.article.ArticleRepository;
 import com.ssafy.dancy.repository.CommentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

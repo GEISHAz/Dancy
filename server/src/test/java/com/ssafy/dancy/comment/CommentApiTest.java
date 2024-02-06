@@ -7,7 +7,7 @@ import com.ssafy.dancy.entity.Article;
 import com.ssafy.dancy.entity.Comment;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.message.response.comment.CommentResponse;
-import com.ssafy.dancy.repository.ArticleRepository;
+import com.ssafy.dancy.repository.article.ArticleRepository;
 import com.ssafy.dancy.repository.CommentRepository;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
