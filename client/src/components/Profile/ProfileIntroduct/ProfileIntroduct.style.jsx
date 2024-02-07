@@ -36,8 +36,6 @@ export const ProfileImg = styled.img.attrs(({ src }) => ({
 	border-radius: 50%;
 	align-self: center;
   `
-	/* background-image: url(${ProfileImgDefault}); */
-  /* background-size: contain; */
 
 export const UserWrap = styled.div`
 	display: flex;

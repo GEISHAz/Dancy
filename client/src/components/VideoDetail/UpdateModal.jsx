@@ -1,9 +1,10 @@
-import * as P from "./PostModal.style";
+import * as P from "./UpdateModal.style";
 import { useNavigate } from "react-router-dom";
 import { postArticle } from "../../api/stage";
 import { useRef, useState } from "react";
+import { UpdateArticle } from "../../api/stage";
 
-export default function PostModal({ getData }) {
+export default function PostModal({ articleId, beforeData, getData }) {
   const navigate = useNavigate();
   const data = false;
   const postData = () => {
@@ -13,17 +14,17 @@ export default function PostModal({ getData }) {
   const articleTitleInput = useRef();
   const articleContentInput = useRef();
   const [formData, setFormData] = useState({
-    articleTitle: "",
-    articleContent: "",
-    video: "test",
-    thumbnailImageUrl: "test",
+    'articleTitle': beforeData.articleTitle,
+    'articleContent': beforeData.articleContent,
+    'video': beforeData.video,
+    'thumbnailImageUrl': beforeData.thumbnailImageUrl,
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handlePost = () => {
+  const handleUpdate = () => {
     if (formData.articleTitle.length < 1) {
       articleTitleInput.current.focus();
       return;
@@ -33,15 +34,11 @@ export default function PostModal({ getData }) {
       articleContentInput.current.focus();
       return;
     }
-
-    console.log(formData)
-
-    postArticle(formData)
+		console.log(articleId)
+    UpdateArticle({articleId, formData})
     .then ((res) => {
-      // console.log(res)
-      const articleId = res.articleId
-      console.log(articleId)
-      navigate(`/detail/${articleId}`,  { state: { articleId } })
+      console.log(res)
+			window.location.reload()
     })
     .catch ((err) => {
       console.error(err)
@@ -55,7 +52,7 @@ export default function PostModal({ getData }) {
 
       <P.ModalWrap>
         <P.ModalView>
-          <P.BigTitle>POST</P.BigTitle>
+          <P.BigTitle>UPDATE</P.BigTitle>
 
           <P.GapRadio>
             <P.Gap>
@@ -104,7 +101,7 @@ export default function PostModal({ getData }) {
           </P.GapRadio>
         </P.ModalView>
 
-        <P.ModalPost onClick={handlePost}>게시하기</P.ModalPost>
+        <P.ModalPost onClick={handleUpdate}>수정하기</P.ModalPost>
       </P.ModalWrap>
     </P.Modal>
   );

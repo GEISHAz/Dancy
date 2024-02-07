@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import EditImg from '../../assets/editimage.png'
+import DeleteImg from '../../assets/deleteimage.png'
 
 const hashTagColors = {
   "#FFF4B5": "#FFF4B5",
@@ -144,3 +146,87 @@ export const HashTagBtn = styled.button`
 `;
 
 export const HashTagContainer = styled.div``;
+
+
+
+export const FunctionWrapper = styled.div.attrs(({ isMyArticle}) => {
+	isMyArticle: isMyArticle
+})`
+  display: flex;
+	padding-left: 6px;
+	padding-right: 6px;
+  justify-content: ${(props) => (props.isMyArticle ? 'space-between' : 'end')};
+  gap: 15px;
+  margin-bottom: 4px;
+`
+export const BtnWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 4px;
+
+  img {
+    cursor: pointer;
+  }
+  
+  div {
+    display: flex;
+    font-size: 20px;
+  }
+`
+
+export const SaveBtn = styled.img`
+  width: 32px;
+  height: 36px;
+  padding-bottom: 1px;
+`
+
+export const WithBtn = styled.img`
+  border: 1.5px solid black;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+`
+
+export const WithArea = styled.div`
+  width: 40px;
+  height: 40px;
+`
+
+export const LikeBtn = styled.img`
+  width: 40px;
+  height: 40px;
+  margin-left: -3px;
+	font-size: 16px;
+`
+
+export const LikeRate = styled.div`
+	
+`
+
+export const EditWrap = styled.div.attrs(({ isMyArticle}) => {
+	isMyArticle: isMyArticle
+})`
+	display: ${(props) => (props.isMyArticle ? 'flex' : 'none')};
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 4px;
+
+  img {
+    cursor: pointer;
+  }
+`
+
+export const EditBtn = styled.button`
+	width: 30px;
+	height: 30px;
+	background-image: url(${EditImg});
+	background-size: contain;
+`
+
+export const DeleteBtn = styled.button`
+	width: 25px;
+	height: 30px;
+	background-image: url(${DeleteImg});
+	background-size: contain;
+`
