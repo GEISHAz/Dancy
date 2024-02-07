@@ -35,6 +35,7 @@ import { deleteArticle, getArticle } from "../../api/stage";
 import VideoPlayer from "./VideoPlayer";
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../recoil/LoginState.js';
+import UpdateModal from '../../components/VideoDetail/UpdateModal.jsx'
 
 const cardDetails = [
   {
@@ -88,6 +89,12 @@ export default function VideoDetail({videoSrc}) {
 	const [createdDate, setCreatedDate] = useState('')
 	const user = useRecoilValue(userState)              // 로그인 한 유저 정보
 	const [isMyArticle, setIsMyArticle] = useState(false)
+	const [beforeData, setBeforeData] = useState({
+    'articleTitle': "",
+    'articleContent': "",
+    'video': "test",
+    'thumbnailImageUrl': "test",
+  });
 
   useEffect(() => {
     // 게시글 상세 정보 조회를 위한 api 요청
@@ -104,12 +111,18 @@ export default function VideoDetail({videoSrc}) {
 			} else {
 				setIsMyArticle(false)
 			}
+
+			setBeforeData({
+				'articleTitle': res.articleTitle,
+				'articleContent': res.articleContent,
+				'video': res.video,
+				'thumbnailImageUrl': res.thumbnailImageUrl,
+			})
+			return beforeData
 		})
     .catch ((err) => {
 			console.error(err)
     })
-
-		
   }, []);
 	
   const handleDelete = () => {
@@ -137,11 +150,21 @@ export default function VideoDetail({videoSrc}) {
       });
   };
 
+	const handleUpdate = () => {
+		setIsOpen(true)
+	}
+	
+	const [isOpen, setIsOpen] = useState(false);
+	const getData = childData => {
+		setIsOpen(childData);
+	};
+
   return (
 		<>
+			{isOpen && (<UpdateModal articleId={articleId} beforeData={beforeData} getData={getData}/>)}
 			<FunctionWrapper isMyArticle={isMyArticle}>
 				<EditWrap isMyArticle={isMyArticle}>
-					<EditBtn />
+					<EditBtn onClick={handleUpdate} />
 					<DeleteBtn onClick={handleDelete} />
 				</EditWrap>
 				<BtnWrap>

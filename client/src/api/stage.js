@@ -37,3 +37,15 @@ export const deleteArticle = async (articleId) => {
     throw error;
   }
 }
+
+export const UpdateArticle = async ({articleId, formData}) => {
+  try {
+    const res = await privateApi.put(`/${url}/${articleId}`, formData);
+    
+    const updateInfo = res.data
+		return updateInfo
+  } catch (error) {
+    console.error(error)
+    throw error;
+  }
+}
