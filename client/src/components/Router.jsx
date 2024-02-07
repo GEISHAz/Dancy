@@ -52,7 +52,7 @@ export default function Router({ cardDetails, videoDetails }) {
             <Route path="/signup/joinform" element={<JoinForm />} />
             <Route path="/signup/joincomplete" element={<JoinComplete />} />
             <Route path="/findpassword" element={<SendPin />} />
-            <Route path="*" element={<Login />} />
+            {/* <Route path="*" element={<Login />} /> */}
           </>
         )}
       </Routes>

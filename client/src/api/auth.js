@@ -1,4 +1,6 @@
+import { useSetRecoilState } from 'recoil';
 import { privateApi, publicApi } from '../util/http-commons'
+import { loginState } from '../recoil/LoginState';
 
 const url = 'auth'
 
@@ -14,9 +16,10 @@ export const login = async (formData) => {
   }
 };
 
-export const logout = async () => {
+export const logout = async (setLoginState) => {
   try {
     localStorage.removeItem("token")
+      setLoginState(false)
   } catch (error) {
     console.error("로그아웃 에러:", error);
     window.alert(error.message)

@@ -232,7 +232,8 @@ export default function FormArea() {
 
   // 비밀번호 형식 체크
   const validatePW = (password) => {
-    const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const regex = /^(?=.*[a-z])(?=.*\d)(?=.*[$@$!^%*`#~?&])[A-Za-z\d$@$!%`~*^#?&]{8,}/;
+
     return regex.test(password);
   };
 

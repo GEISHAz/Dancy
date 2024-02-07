@@ -1,5 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import { changePasswordApi } from "../../util/http-commons";
+import { logout } from "../../api/auth.js";
+import axios from 'axios';
+import { loginState } from "../../recoil/LoginState.js";
+import { useRecoilState } from "recoil";
 
 const ModalOverlay = styled.div`
   display: ${(props) => (props.isOpen ? "flex" : "none")};
@@ -72,6 +77,7 @@ const ChangeInput = styled.input`
   border: 1px solid black;
   border-radius: 3px;
   margin-bottom: 16px;
+  padding-left: 10px;
 
   &:focus {
     outline: 2px solid #e23e59;
@@ -108,7 +114,11 @@ const InfoText = styled.div`
   margin-top: 24px;
 `;
 
-const ChangePwdModal = ({ isOpen, onClose }) => {
+const ChangePwdModal = ({ isOpen, onClose }) => {  
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [isLoggedIn, setLoginState] = useRecoilState(loginState);
+
   const handleOverlayClick = (e) => {
     // 모달 배경 클릭 시 모달을 닫음
     if (e.target === e.currentTarget) {
@@ -116,21 +126,54 @@ const ChangePwdModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const changePassword = () => {
+    changePasswordApi.put('/auth/change', {"currentPassword" : currentPassword, "newPassword": newPassword})
+    .then(() => {
+      alert("비밀번호가 성공적으로 변경되었습니다");
+      onClose();
+      logout(setLoginState);
+    })
+
+    .then(() => {
+      navigate('/login');
+    })
+
+    .catch(error => {
+      const errorType = error.response.status;
+
+      if (errorType === 400) {
+        alert("비밀번호는 영문, 숫자, 특수문자 포함 8자리 이상이어야 합니다.")
+      } else if (errorType === 401) {
+        alert("요청 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.")
+      } else if (errorType === 403) {
+        alert("기존 비밀번호가 일치하지 않습니다.")
+      }
+    })
+  }
+
+  const handleCurrentPassword = (e) => {
+    setCurrentPassword(e.target.value);
+  }
+
+  const handleNewPassword = (e) => {
+    setNewPassword(e.target.value)
+  }
+
   return (
     <ModalOverlay isOpen={isOpen} onClick={handleOverlayClick}>
       <ModalContainer>
         <ModalContent>
           <ModalTitle>비밀번호 변경</ModalTitle>
           <ChangePwdTitle>현재 비밀번호</ChangePwdTitle>
-          <ChangeInput />
+          <ChangeInput type='password' onChange={handleCurrentPassword} />
           <ChangePwdTitle>새 비밀번호</ChangePwdTitle>
-          <ChangeInput />
+          <ChangeInput type='password' onChange={handleNewPassword} />
           <ChangePwdTitle>비밀번호 확인</ChangePwdTitle>
-          <ChangeInput />
+          <ChangeInput type='password' onChange={handleNewPassword} />
           <InfoText>영문자, 숫자, 특수문자를 조합하여 입력해주세요. (8자 이상)</InfoText>
         </ModalContent>
         <ModalButtonContainer>
-          <ModalButton>변경 완료</ModalButton>
+          <ModalButton onClick={changePassword}>변경 완료</ModalButton>
         </ModalButtonContainer>
       </ModalContainer>
     </ModalOverlay>

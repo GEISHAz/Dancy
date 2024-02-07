@@ -157,4 +157,5 @@ export const QuitText = styled.div`
   color: #ababab;
   text-decoration: underline;
   margin-top: 32px;
+  cursor: pointer;
 `;

@@ -6,7 +6,7 @@ export const userDetails = async () => {
   try {
     const res = await privateApi.get(`/${url}/details`);
 
-    const userInfo = { 
+    const userInfo = {
       email: res.data.email,
       nickname: res.data.nickname,
       birthDate: res.data.birthDate,
@@ -19,4 +19,4 @@ export const userDetails = async () => {
     console.error(error);
     throw error;
   }
-};
+}

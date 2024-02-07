@@ -114,7 +114,7 @@ const InfoText = styled.div`
 `;
 
 const NewPwdModal = ({ isOpen, onClose }) => {
-  const [newPassword, setNewPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const navigate = useNavigate();
@@ -122,11 +122,12 @@ const NewPwdModal = ({ isOpen, onClose }) => {
   const setPassword = () => {
     privateApi.post('/auth/password/find', { "newPassword" : newPassword })
     .then(response => {
-      alert("비밀번호를 변경하였습니다!!!!!!!!!!!");
+      alert("비밀번호가 성공적으로 변경되었습니다.");
       navigate('/login');
     })
     .catch(error => {
       const errorType = error.response?.data[0]?.errorType;
+      console.log(errorType)
       if (errorType === 'Password') {
         alert("비밀번호는 영문, 숫자, 특수문자 포함 8자리 이상이어야 합니다.")
       } else if (errorType === 'TokenInvalidException') {

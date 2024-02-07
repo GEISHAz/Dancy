@@ -104,6 +104,10 @@ const QuitModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const unresister = () => {
+    
+  }
+
   return (
     <ModalOverlay isOpen={isOpen} onClick={handleOverlayClick}>
       <ModalContainer>
