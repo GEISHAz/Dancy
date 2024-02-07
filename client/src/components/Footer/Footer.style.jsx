@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import MainLogo from "../../assets/DancyLogo.png"
 
 export const Wrap = styled.div`
   width: 100%;
@@ -11,7 +12,7 @@ export const Wrap = styled.div`
 `
 
 export const Logo = styled.img.attrs({
-  src: 'src/assets/DancyLogo.png', alt: 'logo'
+  src: MainLogo, alt: 'logo'
 })`
   height: 100px;
 `
