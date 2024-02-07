@@ -181,6 +181,14 @@ export default function FormArea() {
 
   const handleNickNameCheck = async () => {
     // 닉네임 형식 체크
+    if (!validateNickName(joinData.nickname)) {
+      setShowWarnings((prevWarnings) => ({
+        ...prevWarnings,
+        nickname: { show: true, message: "불가능한 형식의 닉네임입니다." },
+      }));
+      return;
+    }
+
     try {
       const response = await nickNameCheck(joinData.nickname);
       console.log("response", response);
@@ -234,6 +242,12 @@ export default function FormArea() {
   const validatePW = (password) => {
     const regex  = /^(?=.[a-z])(?=.\d)(?=.[$@$!^%#~?&])[A-Za-z\d$@$!%~*^#?&]{8,}/;
     return regex.test(password);
+  };
+
+  // 닉네임 형식 체크
+  const validateNickName = (nickname) => {
+    const regex = /^[A-Za-z_.\-]?[A-Za-z_.\-]{1,8}$/;
+    return regex.test(nickname);
   };
 
   return (
