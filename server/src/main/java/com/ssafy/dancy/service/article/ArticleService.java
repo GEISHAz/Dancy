@@ -6,7 +6,8 @@ import com.ssafy.dancy.exception.article.ArticleNotFoundException;
 import com.ssafy.dancy.exception.article.ArticleNotOwnerException;
 import com.ssafy.dancy.message.request.article.ArticleModifyRequest;
 import com.ssafy.dancy.message.request.article.ArticleUpdateRequest;
-import com.ssafy.dancy.message.response.ArticleDetailResponse;
+import com.ssafy.dancy.message.response.article.ArticleDetailResponse;
+import com.ssafy.dancy.message.response.article.ArticleSimpleResponse;
 import com.ssafy.dancy.repository.article.ArticleRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,8 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    public List<Article> getAllArticle(){
-        return articleRepository.findAll();
+    public List<ArticleSimpleResponse> getStagePage(int limit, Long previousLastArticleId){
+        return articleRepository.getStagePageInfo(limit, previousLastArticleId);
     }
 
     public ArticleDetailResponse getArticle(User user, long articleId) {

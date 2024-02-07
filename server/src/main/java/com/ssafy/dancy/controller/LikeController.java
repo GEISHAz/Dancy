@@ -3,7 +3,7 @@ package com.ssafy.dancy.controller;
 
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.response.LikeResponse;
-import com.ssafy.dancy.message.response.ArticleLikeResponse;
+import com.ssafy.dancy.message.response.article.ArticleLikeResponse;
 import com.ssafy.dancy.message.response.comment.CommentLikeResponse;
 import com.ssafy.dancy.service.like.LikeService;
 import lombok.RequiredArgsConstructor;

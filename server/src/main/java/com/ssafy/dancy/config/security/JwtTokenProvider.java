@@ -43,7 +43,7 @@ public class JwtTokenProvider {
         this.redisRepository = redisRepository;
     }
 
-    public static long tokenValidTime = 30 * 60 * 1000L; // 30분
+    public static long tokenValidTime = 3 * 60 * 60 * 1000L; // 3시간
     public static long refreshTokenValidTime = 15 * 60 * 60 * 24 * 1000L; // 15일
 
     private String tokenType = "Bearer";

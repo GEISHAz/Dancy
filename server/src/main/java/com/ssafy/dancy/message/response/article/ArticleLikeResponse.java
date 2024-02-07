@@ -1,4 +1,4 @@
-package com.ssafy.dancy.message.response;
+package com.ssafy.dancy.message.response.article;
 
 import lombok.Builder;
 

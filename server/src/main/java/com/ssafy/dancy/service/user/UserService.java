@@ -202,7 +202,7 @@ public class UserService {
         if(!savedVerifyCode.equals(request.verifyCode())){
             int wrongCount = redisRepository.stackWrongPasswordFindCode(
                     request.targetEmail(), PASSWORD_FIND_INFO_VALID_TIME, BLOCK_USER_TIME);
-            throw new VerifyCodeNotMatchException(String.format("인증 코드가 일치하지 않습니다. %d 번 틀렸습니다",wrongCount));
+            throw new VerifyCodeNotMatchException(String.format("인증 코드가 일치하지 않습니다.\n(%d/5)",wrongCount));
         }
 
         redisRepository.deletePasswordFindInfo(request.targetEmail());

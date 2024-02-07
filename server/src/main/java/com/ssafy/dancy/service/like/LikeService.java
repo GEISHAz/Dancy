@@ -4,7 +4,7 @@ import com.ssafy.dancy.entity.*;
 import com.ssafy.dancy.exception.article.ArticleNotFoundException;
 import com.ssafy.dancy.exception.comment.CommentNotFoundException;
 import com.ssafy.dancy.message.response.LikeResponse;
-import com.ssafy.dancy.message.response.ArticleLikeResponse;
+import com.ssafy.dancy.message.response.article.ArticleLikeResponse;
 import com.ssafy.dancy.message.response.comment.CommentLikeResponse;
 import com.ssafy.dancy.repository.article.ArticleRepository;
 import com.ssafy.dancy.repository.CommentLikeRepository;

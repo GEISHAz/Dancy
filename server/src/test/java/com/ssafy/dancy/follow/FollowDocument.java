@@ -19,9 +19,10 @@ public class FollowDocument {
     );
 
     public static final Snippet followResultResponseField = responseFields(
-            fieldWithPath("followInfoId").type(JsonFieldType.NUMBER).description("팔로우 정보 ID"),
-            fieldWithPath("followerNickname").type(JsonFieldType.STRING).description("팔로우한 사람의 닉네임"),
-            fieldWithPath("followedNickname").type(JsonFieldType.STRING).description("팔로우받은 사람의 닉네임")
+            fieldWithPath("nickname").type(JsonFieldType.STRING).description("팔로우/언팔로우한 사람의 닉네임"),
+            fieldWithPath("followed").type(JsonFieldType.BOOLEAN).description("본인이 팔로우하고 있는지 여부"),
+            fieldWithPath("following").type(JsonFieldType.NUMBER).description("팔로우한 사람의 팔로잉 수"),
+            fieldWithPath("follower").type(JsonFieldType.NUMBER).description("팔로우한 사람의 팔로워 수")
     );
 
     public static final Snippet followInfoListResponseField = responseFields(
