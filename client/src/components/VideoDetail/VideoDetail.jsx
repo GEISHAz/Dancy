@@ -36,6 +36,7 @@ import VideoPlayer from "./VideoPlayer";
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../recoil/LoginState.js';
 import UpdateModal from '../../components/VideoDetail/UpdateModal.jsx'
+import { articleLike } from "../../api/like.js";
 
 const cardDetails = [
   {
@@ -69,14 +70,6 @@ export default function VideoDetail({videoSrc}) {
     setFollow(!follow);
   };
 	
-	const handleLike = () => {
-    setLike(!like);
-    if (!like) {
-      setLikeCount(likeCount + 1);
-    } else {
-      setLikeCount(likeCount - 1);
-    }
-  };
 
   const handleSave = () => {
     setSave(!save)
@@ -96,6 +89,7 @@ export default function VideoDetail({videoSrc}) {
     'thumbnailImageUrl': "test",
   });
 
+	// 페이지 렌더링 시 기본 정보 호출 (onMount)
   useEffect(() => {
     // 게시글 상세 정보 조회를 위한 api 요청
     getArticle(articleId)
@@ -124,9 +118,9 @@ export default function VideoDetail({videoSrc}) {
 			console.error(err)
     })
   }, []);
-	
-  const handleDelete = () => {
 
+	// 게시글 삭제 관리
+  const handleDelete = () => {
     deleteArticle(articleId)
       .then((res) => {
         navigate('/stage')
@@ -150,10 +144,23 @@ export default function VideoDetail({videoSrc}) {
       });
   };
 
+	// 게시글 수정 관리
 	const handleUpdate = () => {
 		setIsOpen(true)
 	}
 	
+	// 게시글 좋아요 관리
+	const handleLike = () => {
+    // setLike(!like);
+    // if (!like) {
+    //   setLikeCount(likeCount + 1);
+    // } else {
+    //   setLikeCount(likeCount - 1);
+    // }
+		articleLike(articleId)
+  };
+
+	// update모달 관리 
 	const [isOpen, setIsOpen] = useState(false);
 	const getData = childData => {
 		setIsOpen(childData);
