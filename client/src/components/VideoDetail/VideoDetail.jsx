@@ -1,43 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  VideoDetailContainer,
-  VideoDetailArea,
-  VideoContentArea,
-  VideoTitle,
-  VideoUserDetailArea,
-  VideoUserName,
-  VideoFollowArea,
-  VideoFollower,
-  VideoUserProfileImage,
-  VideoFollowBtn,
-  VideoAccuracyArea,
-  VideoUpperContainer,
-  VideoLowerContainer,
-  VideoUserDetail,
-  BtnContainer,
-  HashTagArea,
-  AccuracyBtn,
-  HashTagBtn,
-  HashTagContainer,
-	FunctionWrapper,
-  SaveBtn,
-  WithBtn,
-  WithArea,
-  LikeBtn,
-  LikeRate,
-	EditWrap,
-	BtnWrap,
-	EditBtn,
-	DeleteBtn,
-  VideoContent
-} from "./VideoDetail.style";
+import * as V from "./VideoDetail.style";
 import { deleteArticle, getArticle } from "../../api/stage";
 import VideoPlayer from "./VideoPlayer";
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../recoil/LoginState.js';
 import UpdateModal from '../../components/VideoDetail/UpdateModal.jsx'
-import { articleLike } from "../../api/like.js";
+import { articleLike, likeUsers } from "../../api/like.js";
 import { userInfo } from "../../api/myPage.js";
 import { followRequest, unFollowRequest } from '../../api/follow.js';
 
@@ -167,6 +136,7 @@ export default function VideoDetail({videoSrc}) {
     })
   };
 
+  // 게시글 작성자 팔로우/언팔로우 (자신의 글이라면 팔로우 버튼 노출 X)
   const followHandler = () => {
 		if (authorInfo.followed) {
 			console.log(authorInfo.nickname)
@@ -199,7 +169,38 @@ export default function VideoDetail({videoSrc}) {
 		}
 	}
 
-	// update모달 관리 
+  const [likeUser, setLikeUser] = useState([
+    {
+      "profileImageUrl": null,
+      "nickname": "dongw"
+    },
+    {
+      "profileImageUrl": null,
+      "nickname": "dongw"
+    },
+    {
+      "profileImageUrl": null,
+      "nickname": "dongw"
+    },
+    {
+      "profileImageUrl": null,
+      "nickname": "dongw"
+    }
+  ])
+  const [isDropDown, setIsDropDown] = useState(false)
+  
+  // 게시글 좋아요한 유저 목록 조회
+  const handleLikeUser = () => {
+    likeUsers(articleId)
+    .then((res) => {
+      // setLikeUser(res)
+      setIsDropDown(!isDropDown)
+      console.log(isDropDown)
+    })
+    .catch((err) => { console.error(err) })
+  }
+	
+  // update모달 관리 
 	const [isOpen, setIsOpen] = useState(false);
 	const getData = childData => {
 		setIsOpen(childData);
@@ -208,74 +209,84 @@ export default function VideoDetail({videoSrc}) {
   return (
 		<>
 			{isOpen && (<UpdateModal articleId={articleId} beforeData={beforeData} getData={getData}/>)}
-			<FunctionWrapper isMyArticle={isMyArticle}>
-				<EditWrap isMyArticle={isMyArticle}>
-					<EditBtn onClick={handleUpdate} />
-					<DeleteBtn onClick={handleDelete} />
-				</EditWrap>
-				<BtnWrap>
-					<WithArea>
-						<WithBtn src="/src/assets/with.png"/>
-					</WithArea>
-					<SaveBtn src={save ? "/src/assets/saveimage.png" : "/src/assets/unsaveimage.png"} onClick={handleSave}/>
-					<LikeBtn src={articleInfo.isArticleLiked ? "/src/assets/likeimage.png" : "/src/assets/unlikeimage.png"} onClick={handleLike} />
-					<LikeRate>
-						<div>
-							{articleInfo.articleLike}
-						</div>
-					</LikeRate>
-				</BtnWrap>
-      </FunctionWrapper>
+			<V.FunctionWrapper isMyArticle={isMyArticle}>
+				<V.EditWrap isMyArticle={isMyArticle}>
+					<V.EditBtn onClick={handleUpdate} />
+					<V.DeleteBtn onClick={handleDelete} />
+				</V.EditWrap>
+				<V.BtnWrap>
+					<V.WithArea>
+						<V.WithBtn src="/src/assets/with.png"/>
+					</V.WithArea>
+					<V.SaveBtn src={save ? "/src/assets/saveimage.png" : "/src/assets/unsaveimage.png"} onClick={handleSave}/>
+					<V.LikeBtn src={articleInfo.isArticleLiked ? "/src/assets/likeimage.png" : "/src/assets/unlikeimage.png"} onClick={handleLike} />
+					<V.LikeRate>
+						<V.DropdownToggle onClick={handleLikeUser}> {articleInfo.articleLike} 
+              {isDropDown && (
+                  <V.LikeUserList>
+                    {likeUser.map((user) => (
+                      <V.LikeUserInfo>
+                        <V.LikeUserImg src={user.profileImageUrl} />
+                        <V.LikeUserNickName>{user.nickname}</V.LikeUserNickName>
+                      </V.LikeUserInfo>
+                      )
+                    )}
+                  </V.LikeUserList>
+                )}
+            </V.DropdownToggle>
+					</V.LikeRate>
+				</V.BtnWrap>
+      </V.FunctionWrapper>
 			
 			<VideoPlayer src={videoSrc} />
 
-			<VideoDetailContainer>
+			<V.VideoDetailContainer>
 				{cardDetail &&
 					cardDetail.map((card, index) => (
-						<VideoDetailArea key={index}>
-							<VideoTitle>{articleInfo.articleTitle}</VideoTitle>
-							<VideoContentArea>
-								<VideoUserDetailArea>
-									<VideoUserProfileImage src={authorInfo.profileImageUrl} />
-									<VideoUserDetail>
-										<VideoUserName>{articleInfo.nickname}</VideoUserName>
-										<VideoFollowArea>
-											<VideoFollower>
+						<V.VideoDetailArea key={index}>
+							<V.VideoTitle>{articleInfo.articleTitle}</V.VideoTitle>
+							<V.VideoContentArea>
+								<V.VideoUserDetailArea>
+									<V.VideoUserProfileImage src={authorInfo.profileImageUrl} />
+									<V.VideoUserDetail>
+										<V.VideoUserName>{articleInfo.nickname}</V.VideoUserName>
+										<V.VideoFollowArea>
+											<V.VideoFollower>
 												<div>팔로워 {authorInfo.follower}</div>
-											</VideoFollower>
+											</V.VideoFollower>
                       {authorInfo.isMine ? null :                       
-                        <VideoFollowBtn $isFollow={authorInfo.followed} onClick={followHandler}>
+                        <V.VideoFollowBtn $isFollow={authorInfo.followed} onClick={followHandler}>
                           <div>{authorInfo.followed ? "팔로잉" : "팔로우"}</div>
-                        </VideoFollowBtn>
+                        </V.VideoFollowBtn>
                       }
-										</VideoFollowArea>
-									</VideoUserDetail>
-								</VideoUserDetailArea>
-								<VideoAccuracyArea>
-									<VideoUpperContainer>
+										</V.VideoFollowArea>
+									</V.VideoUserDetail>
+								</V.VideoUserDetailArea>
+								<V.VideoAccuracyArea>
+									<V.VideoUpperContainer>
 										<div>{`${createdDate[0]}. ${createdDate[1]}. ${createdDate[2]}.`} &nbsp; |&nbsp; 조회 수 {articleInfo.view}</div>
-									</VideoUpperContainer>
-									<VideoLowerContainer>
-										<VideoContent>{articleInfo.articleContent}</VideoContent>
-										<BtnContainer>
-											<AccuracyBtn>87 %</AccuracyBtn>
-											<HashTagContainer>
-												<HashTagArea>
+									</V.VideoUpperContainer>
+									<V.VideoLowerContainer>
+										<V.VideoContent>{articleInfo.articleContent}</V.VideoContent>
+										<V.BtnContainer>
+											<V.AccuracyBtn>{articleInfo.score} %</V.AccuracyBtn>
+											<V.HashTagContainer>
+												<V.HashTagArea>
 													{hashtags &&
 														hashtags.map((hashtag, index) => (
-															<HashTagBtn key={index} color={hashtag.color}>
+															<V.HashTagBtn key={index} color={hashtag.color}>
 																{hashtag.text}
-															</HashTagBtn>
+															</V.HashTagBtn>
 														))}
-												</HashTagArea>
-											</HashTagContainer>
-										</BtnContainer>
-									</VideoLowerContainer>
-								</VideoAccuracyArea>
-							</VideoContentArea>
-						</VideoDetailArea>
+												</V.HashTagArea>
+											</V.HashTagContainer>
+										</V.BtnContainer>
+									</V.VideoLowerContainer>
+								</V.VideoAccuracyArea>
+							</V.VideoContentArea>
+						</V.VideoDetailArea>
 					))}
-			</VideoDetailContainer>
+			</V.VideoDetailContainer>
 		</>
   );
 }

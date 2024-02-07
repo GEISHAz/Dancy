@@ -12,3 +12,15 @@ export const articleLike = async (articleId) => {
     throw error;
 	}
 }
+
+export const likeUsers = async (articleId) => {
+	try {
+		const res = await privateApi.get(`/${url}/who-like/${articleId}`)
+    const likeUser = res.data
+		
+    return likeUser
+	} catch (error) {
+    console.error(error);
+    throw error;
+	}
+}

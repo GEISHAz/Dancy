@@ -44,6 +44,7 @@ export const VideoUserDetailArea = styled.div`
   flex-direction: row;
   gap: 15px;
   align-items: center;
+  margin-top: 30px;
 `;
 
 export const VideoUserName = styled.div`
@@ -220,9 +221,47 @@ export const LikeRate = styled.div`
 	
 `
 
-export const EditWrap = styled.div.attrs(({ isMyArticle}) => {
+export const DropdownToggle = styled.div`
+  position: relative;
+  cursor: pointer;
+`
+
+export const LikeUserList = styled.div`
+  position: absolute;
+  width: 200px;
+  height: 230px;
+  top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 20px;
+  z-index: 1000;
+`;
+
+export const LikeUserInfo = styled.div`
+  width: 160px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  column-gap: 30px;
+  /* border-bottom: 1px solid #ddd; */
+`
+export const LikeUserImg = styled.img.attrs(({ src }) => ({ src: src || DefaultProfileImg }))`
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+`
+export const LikeUserNickName = styled.div`
+  font-family: 'NYJ Gothic L';
+  font-size: 10px;
+`
+
+export const EditWrap = styled.div.attrs(({ isMyArticle }) => ({
 	isMyArticle: isMyArticle
-})`
+}))`
 	display: ${(props) => (props.isMyArticle ? 'flex' : 'none')};
   align-items: center;
   gap: 15px;
