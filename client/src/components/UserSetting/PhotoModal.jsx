@@ -42,8 +42,8 @@ const ModalTitle = styled.div`
   font-family: "NYJ Gothic B";
   font-size: 28px;
   color: black;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-top: 24px;
+  margin-bottom: 20px;
 `;
 
 // 사진 첨부 공간(점선)
