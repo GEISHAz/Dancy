@@ -15,13 +15,17 @@ export default function Navbar() {
   const [userDetailsInfo, setUserDetailsInfo] = useState(null);
   const location = useLocation();
 
-	const setLogin = useSetRecoilState(loginState)
+	const [isLoggedIn, setLoginState] = useRecoilState(loginState);
   const isLogin = useRecoilValue(loginState)
 
   const logoutHandler = () => {
-    logout()
-    setLogin(false);
-		navigate('/')
+    logout(setLoginState)
+		.then((res) => {
+			console.log(res)
+			navigate('/')
+		})
+		.catch((err) => console.error(err))
+    // setLogin(false);
   }
 
   // userDetails는 비동기처리하여서, 호출된 값이 없음.
