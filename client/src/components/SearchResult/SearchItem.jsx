@@ -65,23 +65,23 @@ export default function SearchItem({
     <VideoListArea>
       {VideoData.map((video, index) => (
         <Link to={`/detail/${index}`} key={index}>
-        <div key={index}>
-          <VideoContainer>
-          <SI.SearchThumbNail src={video.thumbnailImageUrl}></SI.SearchThumbNail>
-          <VideoContentArea>
-            <SI.SearchResultTitle>{video.videoTitle}</SI.SearchResultTitle>
-            <SI.SearchResultCount>
-              조회수 {video.videoCount}회 | 2024.01.03
-            </SI.SearchResultCount>
-            <SI.SearchResultContent>{video.videoContent}</SI.SearchResultContent>
-            <UserContentArea>
-              <SI.SearchResultProfile src={video.videoUserImg}></SI.SearchResultProfile>
-              <SI.SearchResultAuthor>@{video.videoUserName}님의 비디오</SI.SearchResultAuthor>
-            </UserContentArea>
-          </VideoContentArea>
-          </VideoContainer>
-        </div>
-       </Link>
+          <div key={index}>
+            <VideoContainer>
+            <SI.SearchThumbNail src={video.thumbnailImageUrl}></SI.SearchThumbNail>
+            <VideoContentArea>
+              <SI.SearchResultTitle>{video.videoTitle}</SI.SearchResultTitle>
+              <SI.SearchResultCount>
+                조회수 {video.videoCount}회 | 2024.01.03
+              </SI.SearchResultCount>
+              <SI.SearchResultContent>{video.videoContent}</SI.SearchResultContent>
+              <UserContentArea>
+                <SI.SearchResultProfile src={video.videoUserImg}></SI.SearchResultProfile>
+                <SI.SearchResultAuthor>@{video.videoUserName}님의 비디오</SI.SearchResultAuthor>
+              </UserContentArea>
+            </VideoContentArea>
+            </VideoContainer>
+          </div>
+        </Link>
       ))}
     </VideoListArea>
   );

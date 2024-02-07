@@ -1,6 +1,4 @@
-import { useRecoilState } from 'recoil';
 import { privateApi, publicApi } from '../util/http-commons'
-import { loginState } from '../recoil/LoginState';
 
 const url = 'auth'
 

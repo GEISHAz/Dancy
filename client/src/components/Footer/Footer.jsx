@@ -1,5 +1,4 @@
 import * as F from './Footer.style'
-import GoCreate from './GoCreate'
 
 export default function Footer () {
   return (

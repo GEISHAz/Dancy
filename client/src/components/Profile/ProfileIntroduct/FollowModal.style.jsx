@@ -30,8 +30,6 @@ export const ModalView = styled.div.attrs((props) => ({role: "dialog"}))`
 	padding: 33px;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
-  /* align-items: center; */
 	row-gap: 16px;
 `
 

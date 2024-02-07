@@ -2,6 +2,18 @@ import { privateApi, publicApi } from '../util/http-commons'
 
 const url = 'stage'
 
+export const allArticles = async () => {
+  try {
+    const res = await privateApi.get(`/${url}`,   {params:{'limit': 200}} );
+    const allArticles = res.data
+
+    return allArticles
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const postArticle = async (formData) => {
   try {
     const res = await privateApi.post(`/${url}`, formData);
@@ -13,7 +25,6 @@ export const postArticle = async (formData) => {
     throw error;
   }
 };
-
 
 export const getArticle = async (articleId) => {
   try {

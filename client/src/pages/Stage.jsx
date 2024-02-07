@@ -11,11 +11,10 @@ export const StageContainer = styled.div`
 export const CardThumbnail = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   width: 1000px;
   height: auto;
   margin-top: 50px;
-  gap: 10px;
+  gap: 50px;
   text-align: center;
 `;
 

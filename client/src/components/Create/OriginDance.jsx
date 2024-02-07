@@ -12,18 +12,6 @@ const imgList = [
 	{key: 9, src: 'src/assets/profileFeed/uploadThumb.png'},
 	{key: 10, src: 'src/assets/profileFeed/uploadThumb.png'},
 ]
-// const imgList = [
-// 	{key: 1, src: 'src/assets/ProfileImgDefault.png'},
-// 	{key: 2, src: 'src/assets/ProfileImgDefault.png'},
-// 	{key: 3, src: 'src/assets/ProfileImgDefault.png'},
-// 	{key: 4, src: 'src/assets/ProfileImgDefault.png'},
-// 	{key: 5, src: 'src/assets/ProfileImgDefault.png'},
-// 	{key: 6, src: 'src/assets/ProfileImgDefault.png'},
-// 	{key: 7, src: 'src/assets/ProfileImgDefault.png'},
-// 	{key: 8, src: 'src/assets/ProfileImgDefault.png'},
-// 	{key: 9, src: 'src/assets/ProfileImgDefault.png'},
-// 	{key: 10, src: 'src/assets/ProfileImgDefault.png'},
-// ]
 
 export default function OriginDance() {
 	return (

@@ -113,12 +113,9 @@ const archiveVideos = [
   },
 ]
 
-export default function ProfileFeed ({Profile}) {
-  const user = useRecoilValue(userState)
+export default function ProfileFeed () {
 	const { user_id } = useParams();
 	const [ userDetail, setUserDetail ] = useState({})
-	const [ followerInfo, setFollowerInfo ] = useState([])
-	const [ followingInfo, setFollowingInfo ] = useState([])
 
 	useEffect(() => {
 		userInfo(user_id)
