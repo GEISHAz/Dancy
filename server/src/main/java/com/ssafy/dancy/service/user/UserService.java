@@ -9,7 +9,6 @@ import com.ssafy.dancy.message.request.email.VerifyEmailRequest;
 import com.ssafy.dancy.message.request.user.ChangeProfileImageRequest;
 import com.ssafy.dancy.message.request.user.IntroduceTextChangeRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
-import com.ssafy.dancy.message.response.auth.JwtTokenResponse;
 import com.ssafy.dancy.message.response.user.ChangeIntroduceResponse;
 import com.ssafy.dancy.message.response.user.ChangedProfileImageResponse;
 import com.ssafy.dancy.message.response.user.UpdatedUserResponse;
