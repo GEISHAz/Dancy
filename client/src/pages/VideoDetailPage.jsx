@@ -3,7 +3,6 @@ import styled from "styled-components";
 import VideoDetail from "../components/VideoDetail/VideoDetail";
 import RecommendVideo from "../components/VideoDetail/RecommendVideo";
 import Comment from "../components/VideoDetail/Comment";
-import PostModal from "../components/Practice/PostModal";
 
 const VideoDetailPageContainer = styled.div`
 	margin: 72px;
@@ -13,8 +12,7 @@ const VideoDetailPageContainer = styled.div`
 	gap: 60px;
 `
 
-const VideoDetailPageLayout = styled.div`
-`
+const VideoDetailPageLayout = styled.div``
 
 
 export default function VideoDetailPage({videoSrc}) {
@@ -29,8 +27,8 @@ export default function VideoDetailPage({videoSrc}) {
 	return (
 		<VideoDetailPageContainer>
 			<VideoDetailPageLayout>
-					<VideoDetail src={videoSrc} />
-					<Comment />
+        <VideoDetail src={videoSrc} />
+        <Comment />
 			</VideoDetailPageLayout>
 			<RecommendVideo />
 		</VideoDetailPageContainer>

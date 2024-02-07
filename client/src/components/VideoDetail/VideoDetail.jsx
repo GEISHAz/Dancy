@@ -29,7 +29,8 @@ import {
 	EditWrap,
 	BtnWrap,
 	EditBtn,
-	DeleteBtn
+	DeleteBtn,
+  VideoContent
 } from "./VideoDetail.style";
 import { deleteArticle, getArticle } from "../../api/stage";
 import VideoPlayer from "./VideoPlayer";
@@ -37,6 +38,9 @@ import { useRecoilValue } from 'recoil';
 import { userState } from '../../recoil/LoginState.js';
 import UpdateModal from '../../components/VideoDetail/UpdateModal.jsx'
 import { articleLike } from "../../api/like.js";
+import { userInfo } from "../../api/myPage.js";
+import { followRequest, unFollowRequest } from '../../api/follow.js';
+
 
 const cardDetails = [
   {
@@ -54,22 +58,14 @@ const Hashtags = [
 ];
 
 export default function VideoDetail({videoSrc}) {
-  const [follow, setFollow] = useState(false);
   const [cardDetail, setCardDetail] = useState();
   const [hashtags, setHashtags] = useState();
-	const [like, setLike] = useState(false);
   const [save, setSave] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
 
   useEffect(() => {
     setCardDetail(cardDetails);
     setHashtags(Hashtags);
   }, []);
-
-  const toggleFollow = () => {
-    setFollow(!follow);
-  };
-	
 
   const handleSave = () => {
     setSave(!save)
@@ -79,6 +75,7 @@ export default function VideoDetail({videoSrc}) {
   const state = useLocation();
   const articleId = Number(state.pathname.split('/')[2])
 	const [articleInfo, setArticleInfo] = useState({})
+	const [authorInfo, setAuthorInfo] = useState({})
 	const [createdDate, setCreatedDate] = useState('')
 	const user = useRecoilValue(userState)              // 로그인 한 유저 정보
 	const [isMyArticle, setIsMyArticle] = useState(false)
@@ -106,12 +103,22 @@ export default function VideoDetail({videoSrc}) {
 				setIsMyArticle(false)
 			}
 
+      userInfo(res.nickname)
+      .then ((res) => {
+        console.log(res)
+        setAuthorInfo(res.userInfo)
+      })
+      .catch ((err) => {
+        console.log(err)
+      })
+
 			setBeforeData({
 				'articleTitle': res.articleTitle,
 				'articleContent': res.articleContent,
 				'video': res.video,
 				'thumbnailImageUrl': res.thumbnailImageUrl,
 			})
+
 			return beforeData
 		})
     .catch ((err) => {
@@ -151,14 +158,46 @@ export default function VideoDetail({videoSrc}) {
 	
 	// 게시글 좋아요 관리
 	const handleLike = () => {
-    // setLike(!like);
-    // if (!like) {
-    //   setLikeCount(likeCount + 1);
-    // } else {
-    //   setLikeCount(likeCount - 1);
-    // }
 		articleLike(articleId)
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.error(err)
+    })
   };
+
+  const followHandler = () => {
+		if (authorInfo.followed) {
+			console.log(authorInfo.nickname)
+			unFollowRequest(authorInfo.nickname)
+			.then ((res) => {
+				setAuthorInfo({
+					...authorInfo, 
+					"follower" : res.follower.follower, 
+					"following" : res.follower.following, 
+					"followed" : res.follower.followed
+				})
+			})
+			.catch((err) => {
+				console.error(err)
+			})
+		} else {
+			followRequest(authorInfo.nickname)
+			.then ((res) => {
+				setAuthorInfo({
+					...authorInfo, 
+					"follower" : res.follower.follower, 
+					"following" : res.follower.following, 
+					"followed" : res.follower.followed
+				})
+				console.log(res)
+			})
+			.catch((err) => {
+				console.error(err)
+			})
+		}
+	}
 
 	// update모달 관리 
 	const [isOpen, setIsOpen] = useState(false);
@@ -197,16 +236,18 @@ export default function VideoDetail({videoSrc}) {
 							<VideoTitle>{articleInfo.articleTitle}</VideoTitle>
 							<VideoContentArea>
 								<VideoUserDetailArea>
-									<VideoUserProfileImage />
+									<VideoUserProfileImage src={authorInfo.profileImageUrl} />
 									<VideoUserDetail>
 										<VideoUserName>{articleInfo.nickname}</VideoUserName>
 										<VideoFollowArea>
 											<VideoFollower>
-												<div>팔로워 672</div>
+												<div>팔로워 {authorInfo.follower}</div>
 											</VideoFollower>
-											<VideoFollowBtn $follow={follow} onClick={toggleFollow}>
-												<div>{articleInfo.isAuthorFollowed ? "팔로잉" : "팔로우"}</div>
-											</VideoFollowBtn>
+                      {authorInfo.isMine ? null :                       
+                        <VideoFollowBtn $isFollow={authorInfo.followed} onClick={followHandler}>
+                          <div>{authorInfo.followed ? "팔로잉" : "팔로우"}</div>
+                        </VideoFollowBtn>
+                      }
 										</VideoFollowArea>
 									</VideoUserDetail>
 								</VideoUserDetailArea>
@@ -215,7 +256,7 @@ export default function VideoDetail({videoSrc}) {
 										<div>{`${createdDate[0]}. ${createdDate[1]}. ${createdDate[2]}.`} &nbsp; |&nbsp; 조회 수 {articleInfo.view}</div>
 									</VideoUpperContainer>
 									<VideoLowerContainer>
-										<div>{articleInfo.articleContent}</div>
+										<VideoContent>{articleInfo.articleContent}</VideoContent>
 										<BtnContainer>
 											<AccuracyBtn>87 %</AccuracyBtn>
 											<HashTagContainer>

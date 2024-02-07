@@ -14,7 +14,7 @@ export const userDetails = async () => {
       profileImageUrl: res.data.profileImageUrl,
     }
 
-    return { userInfo }
+    return userInfo
   } catch (error) {
     console.error(error);
     throw error;

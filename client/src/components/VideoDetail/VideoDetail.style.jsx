@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import DefaultProfileImg from '../../assets/profileIntro/ProfileImgDefault.png'
 import EditImg from '../../assets/editimage.png'
 import DeleteImg from '../../assets/deleteimage.png'
 
@@ -10,22 +11,29 @@ const hashTagColors = {
 
 
 export const VideoDetailContainer = styled.div`
-  margin: 30px;
-  width: 900px;
-  height: 127px;
+  margin-top: 20px;
+  /* width: 900px; */
+  /* height: 127px; */
   font-family: 'NanumSquareRound', sans-serif;
 `;
 
-export const VideoDetailArea = styled.div``;
+export const VideoDetailArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+`;
 
 export const VideoContentArea = styled.div`
   display: flex;
-  gap: 52px;
+  /* gap: 52px; */
   margin-top: 14px;
   margin-left: 13px;
+  justify-content: space-between;
+  align-items: start;
 `;
 
 export const VideoTitle = styled.div`
+  margin-left: 10px;
   font-size: 28px;
   letter-spacing: 1.5;
   font-weight: 600;
@@ -46,7 +54,7 @@ export const VideoUserName = styled.div`
 export const VideoFollowArea = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 25px;
   margin-top: 10px;
 `;
 
@@ -54,16 +62,16 @@ export const VideoFollower = styled.div`
   font-size: 16px;
 `;
 
-export const VideoUserProfileImage = styled.img`
+export const VideoUserProfileImage = styled.img.attrs(props => ({ 
+  src: props.src || DefaultProfileImg }))`
   border: none;
-  background-color: black;
   width: 60px;
   height: 60px;
   border-radius: 100%;
 `;
 
 export const VideoFollowBtn = styled.button`
-  background-color: ${props => props.$follow ? 'gray' : '#aabbff'};
+  background-color: ${props => props.$isFollow ? '#898989' : '#aabbff'};
   border: 1px solid black;
   border-radius: 50px;
   width: 70px;
@@ -72,11 +80,13 @@ export const VideoFollowBtn = styled.button`
   font-size: 14px;
 `;
 
-export const VideoAccuracyArea = styled.div``;
+export const VideoAccuracyArea = styled.div`
+  width: 700px;
+`;
 
 export const VideoUpperContainer = styled.div`
   display: flex;
-  width: 600px;
+  /* width: 600px; */
   height: 28px;
   border: 1px solid #252525;
   border-top-left-radius: 7px;
@@ -97,15 +107,20 @@ export const VideoLowerContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
+  background-color: #FFFFFF;
   padding: 5px 10px;
-  width: 600px;
-  height: 68px;
+  /* width: 600px; */
+  /* height: 68px; */
   border: 1px solid #252525;
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;
   border-top: none;
 `;
+
+export const VideoContent = styled.div`
+  padding: 5px;
+  padding-bottom: 15px;
+`
 
 export const VideoUserDetail = styled.div`
 	
@@ -116,6 +131,7 @@ export const BtnContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 5px;
 `;
 
 export const HashTagArea = styled.div`

@@ -22,6 +22,7 @@ export default function Login() {
   const [isEmailCorrect, setIsEmailCorrect] = useState(true);
   const [userInfo, setUserInfo] = useRecoilState(userState)
   const setLogin = useSetRecoilState(loginState); // login유무 저장
+  const user = useRecoilValue(userState)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,9 +44,9 @@ export default function Login() {
   
       // 로그인 이후 user 정보를 가져옴
       const userDetailsData = await userDetails();
-      console.log("User Details:", userDetailsData.userInfo);
-      setUserInfo(userDetailsData.userInfo)
-      console.log(userState)
+      console.log("User Details:", userDetailsData);
+      setUserInfo(userDetailsData)
+      // console.log(userState)
     } catch (error) {
       console.error("Login Error:", error);
       const errorMsg = error.response?.data[0]?.message || "An error occurred";

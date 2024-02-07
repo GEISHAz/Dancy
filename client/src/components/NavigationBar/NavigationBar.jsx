@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import Notification from './Notification';
 import * as N from './NavigationBar.style';
@@ -12,36 +12,19 @@ import { userDetails } from '../../api/user.js';
 export default function Navbar() {
   const [activeButton, setActiveButton] = useState('');
   const [userInfo, setUserInfo] = useRecoilState(userState);
-  const [userDetailsInfo, setUserDetailsInfo] = useState(null);
-  const location = useLocation();
-
-	const [isLoggedIn, setLoginState] = useRecoilState(loginState);
-  const isLogin = useRecoilValue(loginState)
+  const [isLoggedIn, setLoginState] = useRecoilState(loginState);
+  const userDetailsInfo = useRecoilValue(userState);
+  const navigate = useNavigate();
+  const isLogin = useRecoilValue(loginState);
 
   const logoutHandler = () => {
     logout(setLoginState)
-		.then((res) => {
-			console.log(res)
-			navigate('/')
-		})
-		.catch((err) => console.error(err))
-    // setLogin(false);
+    .then((res) => {
+        navigate('/')
+    })
+    .catch((err) => console.error(err));
   }
 
-  // userDetails는 비동기처리하여서, 호출된 값이 없음.
-  // 따라서, 컴포넌트가 마운트될 때 userDetails 호출 후 결과를 표출.
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const { userInfo } = await userDetails();
-        setUserDetailsInfo(userInfo);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchUserDetails();
-  }, []);
 
   return (
     <N.NavArea>
