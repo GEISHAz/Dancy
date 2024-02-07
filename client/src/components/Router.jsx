@@ -24,7 +24,7 @@ export default function Router({ cardDetails, videoDetails }) {
 
   useEffect(() => {
     // 로그인 상태가 아니고, 현재 페이지가 로그인 페이지나 회원가입 페이지가 아닐 경우 로그인 페이지로 이동하도록 이동
-    if (!isLoggedIn && location.pathname !== '/login' && location.pathname !== '/signup') {
+    if (!isLoggedIn && location.pathname !== '/' && location.pathname !== '/login' && location.pathname !== '/signup' && location.pathname !== '/signup/joinform' && location.pathname !== '/signup/joincomplete' && location.pathname !== '/findpassword') {
       navigate('/login');
     }
   }, [isLoggedIn, navigate, location]);
@@ -42,7 +42,6 @@ export default function Router({ cardDetails, videoDetails }) {
             <Route path="/detail/:articleId" element={<VideoDetailPage />} />
             <Route path="/results" element={<SearchResult cardDetails={cardDetails} />} />
             <Route path="/setting" element={<UserSetting />} />
-            <Route path="/findpassword" element={<SendPin />} />
             <Route path="*" element={<Navigate replace to="/" />} />
           </>
         ) : (
@@ -52,6 +51,7 @@ export default function Router({ cardDetails, videoDetails }) {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signup/joinform" element={<JoinForm />} />
             <Route path="/signup/joincomplete" element={<JoinComplete />} />
+            <Route path="/findpassword" element={<SendPin />} />
             <Route path="*" element={<Login />} />
           </>
         )}
