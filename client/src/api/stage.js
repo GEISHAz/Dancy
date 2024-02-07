@@ -17,7 +17,7 @@ export const postArticle = async (formData) => {
 
 export const getArticle = async (articleId) => {
   try {
-    const res = await privateApi.get(`/${url}`, {'articleId': articleId});
+    const res = await privateApi.get(`/${url}/${articleId}`);
     const articleInfo = res.data
 		console.log(articleInfo)
 

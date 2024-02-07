@@ -20,8 +20,21 @@ import {
   AccuracyBtn,
   HashTagBtn,
   HashTagContainer,
+	FunctionWrapper,
+  SaveBtn,
+  WithBtn,
+  WithArea,
+  LikeBtn,
+  LikeRate,
+	EditWrap,
+	BtnWrap,
+	EditBtn,
+	DeleteBtn
 } from "./VideoDetail.style";
 import { deleteArticle, getArticle } from "../../api/stage";
+import VideoPlayer from "./VideoPlayer";
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoil/LoginState.js';
 
 const cardDetails = [
   {
@@ -38,10 +51,13 @@ const Hashtags = [
   { text: "#ㅠㅠ", color: "#D4DCFF" },
 ];
 
-export default function VideoDetail() {
+export default function VideoDetail({videoSrc}) {
   const [follow, setFollow] = useState(false);
   const [cardDetail, setCardDetail] = useState();
   const [hashtags, setHashtags] = useState();
+	const [like, setLike] = useState(false);
+  const [save, setSave] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
 
   useEffect(() => {
     setCardDetail(cardDetails);
@@ -51,25 +67,53 @@ export default function VideoDetail() {
   const toggleFollow = () => {
     setFollow(!follow);
   };
+	
+	const handleLike = () => {
+    setLike(!like);
+    if (!like) {
+      setLikeCount(likeCount + 1);
+    } else {
+      setLikeCount(likeCount - 1);
+    }
+  };
+
+  const handleSave = () => {
+    setSave(!save)
+  }
 
   const navigate = useNavigate();
   const state = useLocation();
   const articleId = Number(state.pathname.split('/')[2])
+	const [articleInfo, setArticleInfo] = useState({})
+	const [createdDate, setCreatedDate] = useState('')
+	const user = useRecoilValue(userState)              // 로그인 한 유저 정보
+	const [isMyArticle, setIsMyArticle] = useState(false)
 
   useEffect(() => {
-    console.log(articleId)
-    // // 게시글 상세 정보 조회를 위한 api 요청
-    // getArticle(articleId)
-    // .then ((res) => {
-    //   console.log(res)
-    // })
-    // .catch ((err) => {
-    //   console.error(err)
-    // })
-  }, []);
+    // 게시글 상세 정보 조회를 위한 api 요청
+    getArticle(articleId)
+    .then ((res) => {
+      setArticleInfo(res)
+			return res
+    })
+		.then ((res) => {
+			setCreatedDate(res.createdDate)
 
+			if (res.nickname === user.nickname) {
+				setIsMyArticle(true)
+			} else {
+				setIsMyArticle(false)
+			}
+		})
+    .catch ((err) => {
+			console.error(err)
+    })
+
+		
+  }, []);
+	
   const handleDelete = () => {
-    console.log(articleId);
+
     deleteArticle(articleId)
       .then((res) => {
         navigate('/stage')
@@ -78,66 +122,89 @@ export default function VideoDetail() {
         if (err.response.status === 401) {
           alert(err.response.data[0].message)
           navigate('/login')
-        } else if (err.response.status === 403) {
+        } 
+				
+				else if (err.response.status === 403) {
           alert(err.response.data[0].message)
-        } else if (err.response.status === 404) {
+        } 
+				
+				else if (err.response.status === 404) {
           alert(err.response.data[0].message)
           navigate('/stage')
-        } else {
-          alert('요청에 실패했습니다.')
-        }
+        } 
+				
+				else { alert('요청에 실패했습니다.') }
       });
   };
 
   return (
-    <VideoDetailContainer>
-      <button onClick={handleDelete}>삭제</button>
-      {cardDetail &&
-        cardDetail.map((card, index) => (
-          <VideoDetailArea key={index}>
-            <VideoTitle>{card.title}</VideoTitle>
-            <VideoContentArea>
-              <VideoUserDetailArea>
-                <VideoUserProfileImage />
-                <VideoUserDetail>
-                  <VideoUserName>{card.username}</VideoUserName>
-                  <VideoFollowArea>
-                    <VideoFollower>
-                      <div>팔로워 672</div>
-                    </VideoFollower>
-                    <VideoFollowBtn $follow={follow} onClick={toggleFollow}>
-                      <div>{follow ? "팔로잉" : "팔로우"}</div>
-                    </VideoFollowBtn>
-                  </VideoFollowArea>
-                </VideoUserDetail>
-              </VideoUserDetailArea>
-              <VideoAccuracyArea>
-                <VideoUpperContainer>
-                  <div>
-                    {card.created_at.toLocaleDateString()} | 조회 수 {card.view}
-                    회
-                  </div>
-                </VideoUpperContainer>
-                <VideoLowerContainer>
-                  <div>너가 내 옆에 없어서 단 한숨의 잠도 이루지 못해..</div>
-                  <BtnContainer>
-                    <AccuracyBtn>87 %</AccuracyBtn>
-                    <HashTagContainer>
-                      <HashTagArea>
-                        {hashtags &&
-                          hashtags.map((hashtag, index) => (
-                            <HashTagBtn key={index} color={hashtag.color}>
-                              {hashtag.text}
-                            </HashTagBtn>
-                          ))}
-                      </HashTagArea>
-                    </HashTagContainer>
-                  </BtnContainer>
-                </VideoLowerContainer>
-              </VideoAccuracyArea>
-            </VideoContentArea>
-          </VideoDetailArea>
-        ))}
-    </VideoDetailContainer>
+		<>
+			<FunctionWrapper isMyArticle={isMyArticle}>
+				<EditWrap isMyArticle={isMyArticle}>
+					<EditBtn />
+					<DeleteBtn onClick={handleDelete} />
+				</EditWrap>
+				<BtnWrap>
+					<WithArea>
+						<WithBtn src="/src/assets/with.png"/>
+					</WithArea>
+					<SaveBtn src={save ? "/src/assets/saveimage.png" : "/src/assets/unsaveimage.png"} onClick={handleSave}/>
+					<LikeBtn src={articleInfo.isArticleLiked ? "/src/assets/likeimage.png" : "/src/assets/unlikeimage.png"} onClick={handleLike} />
+					<LikeRate>
+						<div>
+							{articleInfo.articleLike}
+						</div>
+					</LikeRate>
+				</BtnWrap>
+      </FunctionWrapper>
+			
+			<VideoPlayer src={videoSrc} />
+
+			<VideoDetailContainer>
+				{cardDetail &&
+					cardDetail.map((card, index) => (
+						<VideoDetailArea key={index}>
+							<VideoTitle>{articleInfo.articleTitle}</VideoTitle>
+							<VideoContentArea>
+								<VideoUserDetailArea>
+									<VideoUserProfileImage />
+									<VideoUserDetail>
+										<VideoUserName>{articleInfo.nickname}</VideoUserName>
+										<VideoFollowArea>
+											<VideoFollower>
+												<div>팔로워 672</div>
+											</VideoFollower>
+											<VideoFollowBtn $follow={follow} onClick={toggleFollow}>
+												<div>{articleInfo.isAuthorFollowed ? "팔로잉" : "팔로우"}</div>
+											</VideoFollowBtn>
+										</VideoFollowArea>
+									</VideoUserDetail>
+								</VideoUserDetailArea>
+								<VideoAccuracyArea>
+									<VideoUpperContainer>
+										<div>{`${createdDate[0]}. ${createdDate[1]}. ${createdDate[2]}.`} &nbsp; |&nbsp; 조회 수 {articleInfo.view}</div>
+									</VideoUpperContainer>
+									<VideoLowerContainer>
+										<div>{articleInfo.articleContent}</div>
+										<BtnContainer>
+											<AccuracyBtn>87 %</AccuracyBtn>
+											<HashTagContainer>
+												<HashTagArea>
+													{hashtags &&
+														hashtags.map((hashtag, index) => (
+															<HashTagBtn key={index} color={hashtag.color}>
+																{hashtag.text}
+															</HashTagBtn>
+														))}
+												</HashTagArea>
+											</HashTagContainer>
+										</BtnContainer>
+									</VideoLowerContainer>
+								</VideoAccuracyArea>
+							</VideoContentArea>
+						</VideoDetailArea>
+					))}
+			</VideoDetailContainer>
+		</>
   );
 }
