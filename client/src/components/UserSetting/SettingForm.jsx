@@ -48,6 +48,7 @@ export const CenterContainer = styled.div`
 `;
 
 export default function SettingForm() {
+  //
   return (
     <JoinArea>
       <AlignArea>
