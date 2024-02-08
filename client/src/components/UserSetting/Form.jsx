@@ -3,6 +3,8 @@ import { styled } from "styled-components";
 import * as SF from "./SettingForm.style";
 import QuitModal from "./QuitModal";
 import ChangePwdModal from "./ChangePwdModal";
+import { useRecoilState } from "recoil";
+import { userState } from "../../recoil/LoginState";
 
 // 전체 폼 구성
 export const JoinFormArea = styled.div`
@@ -63,6 +65,9 @@ export default function FormArea() {
   const [showWarning, setShowWarning] = useState(false);
   const [isChangePwdModalOpen, setIsChangePwdModalOpen] = useState(false);
   const [isQuitModalOpen, setIsQuitModalOpen] = useState(false);
+  const [user, setUser] = useRecoilState(userState);
+
+  console.log("user", user);
 
   // 각 모달을 열기 위한 함수
   const openChangePwdModal = () => {
@@ -82,12 +87,12 @@ export default function FormArea() {
     setIsQuitModalOpen(false);
   };
 
-  const inputChangeHandler = (e) => {
+  const handleChange = (e) => {
     const value = e.target.value;
-    setInputValue(value);
-
-    // 유효성 검사 등을 수행하여 유효하지 않은 경우에만 경고를 보이도록 설정
-    setShowWarning(value.trim() === "");
+    setUser({
+      ...user,
+      [e.target.name]: value
+    });
   };
 
   return (
@@ -100,34 +105,34 @@ export default function FormArea() {
       <FormDetailArea>
         <SF.MustIcon />
         <SF.FormCategory margin="72px">닉네임</SF.FormCategory>
-        <SF.FormInput type="text"></SF.FormInput>
+        <SF.FormInput type="text" name="nickname" value={user.nickname} onChange={handleChange}></SF.FormInput>
         <SF.FormBtn>중복 체크</SF.FormBtn>
       </FormDetailArea>
       <FormDetailArea>
         <SF.MustIcon visibility="hidden" />
         <SF.FormCategory margin="36px">상태메세지</SF.FormCategory>
         <InputContainer>
-          <SF.FormInput type="text"></SF.FormInput>
+          <SF.FormInput type="text" name="introduceText" value={user.introduceText} onChange={handleChange}></SF.FormInput>
         </InputContainer>
       </FormDetailArea>
       <FormDetailArea>
         <SF.MustIcon />
         <SF.FormCategory margin="68px">E-mail</SF.FormCategory>
         <InputContainer>
-          <SF.FormInput type="email"></SF.FormInput>
+          <SF.FormInput type="email" name="email" value={user.email} onChange={handleChange} readOnly></SF.FormInput>
         </InputContainer>
       </FormDetailArea>
       <FormDetailArea>
         <SF.MustIcon />
         <SF.FormCategory margin="54px">생년월일</SF.FormCategory>
-        <SF.FormInput type="date"></SF.FormInput>
+        <SF.FormInput type="date" name="birthDate" value={user.birthDate} onChange={handleChange} readOnly></SF.FormInput>
       </FormDetailArea>
       <FormDetailArea>
         <SF.MustIcon />
         <SF.FormCategory margin="91px">성별</SF.FormCategory>
         <RadioContainer margin="104.1px">
-          <input type="radio" name="gender" value="male" /> 남성
-          <input type="radio" name="gender" value="female" /> 여성
+          <input type="radio" name="gender" value="male" disabled="true"/> 남성
+          <input type="radio" name="gender" value="female" disabled="true"/> 여성
         </RadioContainer>
         <SF.FormBtn width="167px" onClick={openChangePwdModal}>
           비밀번호 변경
