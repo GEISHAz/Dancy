@@ -53,7 +53,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.PUT,"/user/introduce").hasRole("USER")
                         .requestMatchers("/user/details").hasRole("USER")
                         .requestMatchers("/auth/change").hasRole("USER")
-                        .requestMatchers(HttpMethod.DELETE, "/auth").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/auth/delete").hasRole("USER")
                         .requestMatchers("/user/profile_image").hasRole("USER")
                         .requestMatchers(HttpMethod.POST, "/stage").hasRole("USER")
                         .requestMatchers("/stage/**").hasRole("USER")

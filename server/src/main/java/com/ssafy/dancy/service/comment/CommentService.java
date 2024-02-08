@@ -90,6 +90,7 @@ public class CommentService {
                 .createdDate(comment.getCreatedDate())
                 .commentLike(comment.getCommentLike())
                 .authorNickname(comment.getUser().getNickname())
+                .authorProfileImageUrl(comment.getUser().getProfileImageUrl())
                 .articleId(comment.getArticle().getArticleId())
                 .parentId(comment.getParentId())
                 .build();

@@ -18,10 +18,4 @@ public class DancyApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DancyApplication.class, args);
 	}
-
-	@PostConstruct
-	void started(){
-		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
-	}
-
 }
