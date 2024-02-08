@@ -128,6 +128,7 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
                     .authorName(author.getNickname())
                     .authorProfileImage(author.getProfileImageUrl())
                     .articleView(article.getView())
+                    .createdDate(article.getCreatedDate())
                     .build());
         }
         return result;

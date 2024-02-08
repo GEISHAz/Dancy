@@ -76,6 +76,7 @@ public class ArticleDocument {
             fieldWithPath("[].authorId").type(JsonFieldType.NUMBER).description("글쓴이 고유 아이디"),
             fieldWithPath("[].authorProfileImage").type(JsonFieldType.VARIES).description("글쓴이 프로필 URL"),
             fieldWithPath("[].authorName").type(JsonFieldType.STRING).description("글쓴이 닉네임"),
-            fieldWithPath("[].articleView").type(JsonFieldType.NUMBER).description("조회수")
+            fieldWithPath("[].articleView").type(JsonFieldType.NUMBER).description("조회수"),
+            fieldWithPath("[].createdDate").type(JsonFieldType.ARRAY).description("생성일시")
     );
 }
