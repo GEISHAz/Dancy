@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../../recoil/LoginState";
 import { nickNameCheck } from "../../api/join";
 import { httpStatusCode } from "../../util/http-status";
+import { BrowserRouter as Router, Route, Link, useNavigate } from "react-router-dom";
 
 // 전체 폼 구성
 export const JoinFormArea = styled.div`
@@ -105,6 +106,8 @@ export default function FormArea() {
     // nickname 또는 introduceText인 경우에만 상태값 업데이트
     if (inputName === "nickname") {
       setNickname(value);
+      // 닉네임이 변경되면 isChecked를 false로 초기화
+      setIsChecked(false);
     } else if (inputName === "introduceText") {
       setIntroduceText(value);
     }
@@ -114,15 +117,6 @@ export default function FormArea() {
   const validateNickName = (nickname) => {
     const regex = /^[A-Za-z_.\-]?[A-Za-z_.\-]{1,8}$/;
     return regex.test(nickname);
-  };
-
-  // 버튼을 눌르고 닉네임하고 상태메세지 모두 !!OK 가 나면!! userState에 저장해준다.
-  const submitSetting = (e) => {
-    setUser({
-      ...user,
-      nickname,
-      introduceText,
-    });
   };
 
   const handleNickNameCheck = async () => {
@@ -161,20 +155,45 @@ export default function FormArea() {
     }
   };
 
-  // 서버로 제출 요청하기 
+  // 서버로 제출 요청하기
   const readyToSubmit = async () => {
-    //닉네임 체크가 되지 않았다면 수행 불가해요.
+    // 닉네임 체크가 되지 않았다면 수행 불가해요.
     if (!isChecked) {
       alert("닉네임 중복체크를 수행해주세요.");
       return;
     }
 
     // 이부분에 닉네임과 상태메세지 전부 수정해주는 코드 작성해주기
-    
+    try {
+      // 닉네임 변경
+      const nicknameStatusCode = await userChangeNickName(nickname);
+      console.log("Nickname change", nicknameStatusCode);
 
+      // 상태메시지 변경
+      const introStatusCode = await userChangeIntro(introduceText);
+      console.log("Introduce text change", introStatusCode);
 
-
-
+      // 두 요청 모두 성공했을 때에만 Recoil 업데이트
+      if (nicknameStatusCode === httpStatusCode.OK && introStatusCode === httpStatusCode.OK) {
+        setUser((prevUser) => ({
+          ...prevUser,
+          nickname: nickname,
+          introduceText: introduceText,
+        }));
+        alert("정보가 성공적으로 변경되었습니다.");
+        navigate(`/profile/${user.nickname}`); //완료 페이지로 넘어가도록
+      } else {
+        // 실패한 경우에 대한 처리
+        console.error("실패가 될수도?");
+        alert("잠시 후 다시 시도해주세요.");
+        navigate(`/profile/${user.nickname}`);
+      }
+    } catch (error) {
+      // 서버 요청 중 에러가 발생한 경우 둘중 하나라도 이상했을 확률 농후...
+      console.error("서버 요청 중 에러가 발생했습니다.", error);
+      alert("서버 요청 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      navigate(`/profile/${user.nickname}`);
+    }
   };
 
   return (
@@ -240,8 +259,22 @@ export default function FormArea() {
         <SF.MustIcon />
         <SF.FormCategory margin="91px">성별</SF.FormCategory>
         <RadioContainer margin="104.1px">
-          <input type="radio" name="gender" value="MALE" checked={user.gender === "MALE"} disabled="true" /> 남성
-          <input type="radio" name="gender" value="FEMALE" checked={user.gender === "FEMALE"} disabled="true" /> 여성
+          <input
+            type="radio"
+            name="gender"
+            value="MALE"
+            checked={user.gender === "MALE"}
+            disabled="true"
+          />{" "}
+          남성
+          <input
+            type="radio"
+            name="gender"
+            value="FEMALE"
+            checked={user.gender === "FEMALE"}
+            disabled="true"
+          />{" "}
+          여성
         </RadioContainer>
         <SF.FormBtn width="167px" onClick={openChangePwdModal}>
           비밀번호 변경
@@ -255,7 +288,9 @@ export default function FormArea() {
         <QuitModal isOpen={isQuitModalOpen} onClose={closeQuitModal} />
       </FormDetailArea>
       <FormDetailArea>
-        <SF.RegisterBtn onClick={readyToSubmit} margin="217px">완료</SF.RegisterBtn>
+        <SF.RegisterBtn onClick={readyToSubmit} margin="217px">
+          완료
+        </SF.RegisterBtn>
       </FormDetailArea>
     </JoinFormArea>
   );
