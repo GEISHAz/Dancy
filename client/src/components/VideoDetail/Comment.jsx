@@ -7,6 +7,11 @@ import {
   CommentTitleArea,
   CommentTitle,
   CommentTitleLine,
+  CommentInputWrapper,
+  CommentInput,
+  CommentBtns,
+  CommentButton,
+  CommentCancelButton,
   CommentArea,
   CommentUserProfileImage,
   CommentUserDetail,
@@ -111,6 +116,18 @@ export default function Comment() {
         <CommentTitle>댓글</CommentTitle>
         <CommentTitleLine />
       </CommentTitleArea>
+      <CommentInputWrapper>
+        <CommentInput 
+          type="text"
+          placeholder={placeholder}
+          onFocus={() => setPlaceholder("")}
+          onBlur={() => setPlaceholder("답글을 입력하세요")}
+        />
+        <CommentBtns>
+          <CommentButton>답글달기</CommentButton>
+          <CommentCancelButton>취소</CommentCancelButton>
+        </CommentBtns>
+      </CommentInputWrapper>
       {comments.map((comment, index) => (
         <CommentArea key={index}>
           <CommentUserProfileImage />

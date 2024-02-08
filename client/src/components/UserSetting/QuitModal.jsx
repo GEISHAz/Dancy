@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import { authtokenApi } from "../../util/http-commons";
+import { useNavigate } from "react-router-dom"
 
 const ModalOverlay = styled.div`
   display: ${(props) => (props.isOpen ? "flex" : "none")};
@@ -70,6 +72,7 @@ const QuitInput = styled.input`
   height: 46px;
   border: 1px solid black;
   border-radius: 3px;
+  padding-left: 10px;
 
   &:focus {
     outline: 2px solid #e23e59;
@@ -97,6 +100,8 @@ const ModalButton = styled.button`
 `;
 
 const QuitModal = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+
   const handleOverlayClick = (e) => {
     // 모달 배경 클릭 시 모달을 닫음
     if (e.target === e.currentTarget) {
@@ -105,7 +110,22 @@ const QuitModal = ({ isOpen, onClose }) => {
   };
 
   const unresister = () => {
-    
+    authtokenApi.delete('/auth')
+    .then(() => {
+      onClose();
+    })
+    .then (() => {
+      navigate('/')
+    })
+    .catch(error => {
+      const errorType = error.response.status;
+
+      if (errorType === 401) {
+        alert("요청 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.")
+      } else if(errorType === 403) {
+        alert("기존 비밀번호가 일치하지 않습니다.")
+      }
+    })
   }
 
   return (
@@ -117,10 +137,10 @@ const QuitModal = ({ isOpen, onClose }) => {
             <ModalTitle>회원 탈퇴를 위해 비밀번호를 입력해주십시오.</ModalTitle>
           </EnterArea>
           <QuitTitle>비밀번호</QuitTitle>
-          <QuitInput />
+          <QuitInput type="password" />
         </ModalContent>
         <ModalButtonContainer>
-          <ModalButton>탈퇴하기</ModalButton>
+          <ModalButton onClick={unresister}>탈퇴하기</ModalButton>
         </ModalButtonContainer>
       </ModalContainer>
     </ModalOverlay>

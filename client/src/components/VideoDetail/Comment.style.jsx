@@ -24,6 +24,69 @@ export const CommentTitleLine = styled.hr`
   border-color: #252525;
 `;
 
+export const CommentInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+export const CommentInput = styled.input`
+  font-size: 15px;
+  color: #222222;
+  width: 100%;
+  border: none;
+  border-bottom: solid #aaaaaa 1px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  position: relative;
+  background: none;
+  z-index: 5;
+
+  ::placeholder {
+    color: #aaaaaa;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`
+
+export const CommentBtns = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 10px;
+`
+
+export const CommentButton = styled.button`
+  display: block;
+  font-size: 12px;
+  margin-top: 10px;
+  color: #252525;
+  padding: 5px 10px;
+  cursor: pointer;
+
+  &:hover {
+    border-radius: 20px;
+    color: white;
+    background-color: #e4b1c9;
+  }
+`
+
+export const CommentCancelButton = styled.button`
+  display: block;
+  font-size: 12px;
+  margin-top: 10px;
+  color: #252525;
+  padding: 5px 10px;
+  cursor: pointer;
+  
+  &:hover {
+    border-radius: 20px;
+    color: white;
+    background-color: #e4b1c9;
+  }
+`
+
+
 export const CommentArea = styled.div`
   position: relative;
   display: flex;

@@ -46,17 +46,18 @@ export const textApi = axios.create({
   }
 });
 
-export const changePasswordApi = axios.create({
+export const authtokenApi = axios.create({
   baseURL: baseURL,
   headers: {
     'AUTH-TOKEN': `${localStorage.getItem('token')}`,
   }
 })
 
-changePasswordApi.interceptors.request.use((config) => {
+authtokenApi.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers['AUTH-TOKEN'] = `${token}`;
   }
   return config;
-})
+});
+

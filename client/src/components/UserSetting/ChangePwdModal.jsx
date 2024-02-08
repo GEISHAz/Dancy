@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { changePasswordApi } from "../../util/http-commons";
+import { authtokenApi } from "../../util/http-commons";
 import { logout } from "../../api/auth.js";
 import axios from 'axios';
 import { loginState } from "../../recoil/LoginState.js";
@@ -127,7 +127,7 @@ const ChangePwdModal = ({ isOpen, onClose }) => {
   };
 
   const changePassword = () => {
-    changePasswordApi.put('/auth/change', {"currentPassword" : currentPassword, "newPassword": newPassword})
+    authtokenApi.put('/auth/change', {"currentPassword" : currentPassword, "newPassword": newPassword})
     .then(() => {
       alert("비밀번호가 성공적으로 변경되었습니다");
       onClose();
