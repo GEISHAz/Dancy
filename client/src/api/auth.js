@@ -19,7 +19,7 @@ export const login = async (formData) => {
 export const logout = async (setLoginState) => {
   try {
     localStorage.removeItem("token")
-      setLoginState(false)
+		setLoginState(false)
   } catch (error) {
     console.error("로그아웃 에러:", error);
     window.alert(error.message)

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import DefaultImg from '../../assets/profileIntro/ProfileImgDefault.png'
 
 export const CardContainer = styled.div`
   border: none;
@@ -44,7 +45,10 @@ export const CardDetailArea = styled.div`
   flex-direction: column;
 `;
 
-export const CardProfileImage = styled.img`
+export const CardProfileImage = styled.img.attrs(({src}) => ({
+  src: src || DefaultImg
+}))`
+  border-radius: 50%;
   margin-top: 5px;
   width: 32px;
 	height: 32px; 

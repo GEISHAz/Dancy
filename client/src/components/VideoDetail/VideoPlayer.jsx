@@ -7,12 +7,6 @@ import {
   VolumeControl,
   PlayBtn,
   VideoRightOptions,
-  FunctionWrapper,
-  SaveBtn,
-  WithBtn,
-  WithArea,
-  LikeBtn,
-  LikeRate,
 } from './VideoPlayer.style';
 
 export default function VideoPlayer({ src }) {
@@ -83,18 +77,6 @@ export default function VideoPlayer({ src }) {
 
   return (
     <>
-      <FunctionWrapper>
-        <WithArea>
-          <WithBtn src="/src/assets/with.png"/>
-        </WithArea>
-        <SaveBtn src={save ? "/src/assets/saveimage.png" : "/src/assets/unsaveimage.png"} onClick={handleSave}/>
-        <LikeBtn src={like ? "/src/assets/likeimage.png" : "/src/assets/unlikeimage.png"} onClick={handleLike} />
-        <LikeRate>
-          <div>
-            {likeCount}
-          </div>
-        </LikeRate>
-      </FunctionWrapper>
       <VideoPlayerContainer>
         <video src={src} ref={videoRef} />
         <ControlsWrapper>

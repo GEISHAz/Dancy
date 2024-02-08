@@ -1,10 +1,18 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+  height: 1024px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const Context = styled.img`
-	position: absolute;
+  position: absolute;
   opacity: 0;
-	top: 100px;
-	left: 100px;
+  top: 100px;
+  left: 100px;
   transition: 2s;
   transform: translateX(-150px);
 
@@ -16,12 +24,12 @@ export const Context = styled.img`
 
 export const DancyLogo = styled.img`
   position: absolute;
-	top: 250px;
-  left: 150px;
+  top: 250px;
+  left: 190px;
   opacity: 0;
   transition: 3s;
-  transform: translateX(-200px);
-	width: 40%;
+  transform: translateX(200px);
+  width: 40%;
 
   &.show {
     opacity: 2;
@@ -31,14 +39,14 @@ export const DancyLogo = styled.img`
 
 export const Text1 = styled.img`
   position: absolute;
-	top: 380px;
+  top: 380px;
   left: 775px;
   opacity: 0;
   transition: 3s;
-  transform: translateX(-200px);
+  transform: translateX(200px);
 
   &.show {
     opacity: 2;
     transform: translateX(0);
   }
-`
+`;

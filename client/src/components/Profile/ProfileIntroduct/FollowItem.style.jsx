@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import DefaultImg from '../../../assets/profileIntro/ProfileImgDefault.png'
 
 export const Profile = styled.div`
   display: flex;
@@ -6,7 +7,9 @@ export const Profile = styled.div`
   align-items: center;
 `
 
-export const ProfileImg = styled.img`
+export const ProfileImg = styled.img.attrs(({src}) => ({
+  src: src || DefaultImg
+}))`
   width: 44px;
   height: 44px;
   border-radius: 50%;

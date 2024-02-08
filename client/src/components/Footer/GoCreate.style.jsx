@@ -16,7 +16,7 @@ export const GoBtn = styled.button`
 `
 
 export const BtnImg = styled.img.attrs({
-  src: 'src/assets/Footer/FooterIcon.png'
+  src: BtnIcon
 })`
   width: 60px;
   height: 60px;

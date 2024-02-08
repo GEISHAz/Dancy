@@ -1,5 +1,4 @@
 import { noneApi, privateApi, publicApi, joinApi, textApi} from '../util/http-commons'
-import axios from 'axios';
 
 const baseURL = 'http://i10d210.p.ssafy.io:8080'
 

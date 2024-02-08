@@ -22,6 +22,7 @@ export default function Login() {
   const [isEmailCorrect, setIsEmailCorrect] = useState(true);
   const [userInfo, setUserInfo] = useRecoilState(userState)
   const setLogin = useSetRecoilState(loginState); // login유무 저장
+  const user = useRecoilValue(userState)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

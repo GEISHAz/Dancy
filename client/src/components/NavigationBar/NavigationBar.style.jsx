@@ -112,7 +112,6 @@ export const NavUserProfileImage = styled.img.attrs(({ src }) => ({
   src: src || ProfileImgDefault, alt: 'logo'
 }))`
   border-radius: 50%;
-  background-color: #252525;
   width: 38px;
   height: 38px;
   border: none;

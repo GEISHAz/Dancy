@@ -1,74 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {CardContainer, CardUpperContainer, CardLowerContainer, CardDetailContainer, CardDetailArea, CardProfileImage, CardTitle, CardUserName, CardViewAndDate } from './Card.Style'
-
-
-
-const cardDetails = [
-  {
-    username: "namhyun._.2",
-    title: "남현이의 춤사위를 보세요",
-    created_at: new Date(),
-    view: 25,
-  },
-  {
-    username: "jungsuu._.",
-    title: "정수의 춤사위를 보세요",
-    created_at: new Date(),
-    view: "100K",
-  },
-  {
-    username: "sunovo._.2",
-    title: "해진이의 춤사위를 보세요",
-    created_at: new Date(),
-    view: 22,
-  },
-  {
-    username: "seolyeon._.2",
-    title: "설연이의 춤사위를 보세요",
-    created_at: new Date(),
-    view: 25,
-  },
-  {
-    username: "blingblingminhow._.2",
-    title: "민호의 춤사위를 보세요",
-    created_at: new Date(),
-    view: 25,
-  },
-  {
-    username: "dongwooman._.2",
-    title: "동우의 춤사위를 보세요",
-    created_at: new Date(),
-    view: 25,
-  },
-];
-
+import { allArticles } from "../../api/stage";
 
 // 사용할 색상 배열
 const colors = ["#fffbe5", "#d8fcf6", "#dfe5fe"]; 
 
 export default function Card() {
+  const [articles, setArticles] = useState([])
+
+  useEffect(() => {
+    allArticles()
+    .then ((res) => {
+      console.log(res)
+      setArticles(res)
+    })
+    .catch ((err) => {
+      console.error(err)
+    })
+  }, [])
+
   const handleClick = () => {
     const videoUrl = "your_video_url_here.mp4";
     onClick(videoUrl)
   }
-  const cards = [...Array(6)].map((_, index) => {
+  const cards = articles.map((_, index) => {
     // 줄 별로 색상 선택
     const color = colors[Math.floor(index / 3) % colors.length];
+    const item = articles[index % articles.length]
     
     return (
-      <Link to={`/detail/${index}`} key={index}>
+      <Link to={`/detail/${item.articleId}`} key={index}>
         <CardContainer key={index} onClick={handleClick}>
-          <CardUpperContainer src="/src/assets/thumbnail.png" />
+          <CardUpperContainer src={item.articleThumbnail} />
           <CardLowerContainer color={color}>
             <CardDetailContainer>
-              <CardProfileImage src="/src/assets/profileimage.png" />
+              <CardProfileImage src={item.authorProfileImage} />
               <CardDetailArea>
-                <CardTitle>{cardDetails[index % cardDetails.length].title}</CardTitle>
-                <CardUserName>{cardDetails[index % cardDetails.length].username}</CardUserName>
+                <CardTitle>{item.articleTitle}</CardTitle>
+                <CardUserName>{item.authorName}</CardUserName>
                 <CardViewAndDate>
-                  조회 수 {cardDetails[index % cardDetails.length].view}회 |{" "}
-                  {cardDetails[index % cardDetails.length].created_at.toLocaleDateString()}
+                  조회 수 {item.articleView}회 |{" "}
+                  {/* {item.created_at.toLocaleDateString()} */}
                 </CardViewAndDate>
               </CardDetailArea>
             </CardDetailContainer>
