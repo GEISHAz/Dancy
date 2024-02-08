@@ -144,6 +144,7 @@ public class UserService {
                         .birthDate(birthDateAsString)
                         .introduceText(user.getIntroduceText())
                         .profileImageUrl(user.getProfileImageUrl())
+                        .gender(user.getGender().toString())
                         .build();
     }
 

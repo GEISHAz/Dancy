@@ -10,7 +10,8 @@ public record UserDetailInfoResponse(
         String nickname,
         String birthDate,
         String introduceText,
-        String profileImageUrl
+        String profileImageUrl,
+        String gender
 ) {
     @Builder
     public UserDetailInfoResponse{
