@@ -1,7 +1,7 @@
 import * as RP from "./ResultPage.style";
 import SearchItem from "./SearchItem";
 import { useState } from "react";
-
+// 수정됨.... 설연
 export default function ResultPage() {
   const nickColor = { color: "#252525" };
 
