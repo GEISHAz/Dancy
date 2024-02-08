@@ -6,6 +6,7 @@ import ChangePwdModal from "./ChangePwdModal";
 import { useRecoilState } from "recoil";
 import { userState } from "../../recoil/LoginState";
 import { nickNameCheck } from "../../api/join";
+import { httpStatusCode } from "../../util/http-status";
 
 // 전체 폼 구성
 export const JoinFormArea = styled.div`
@@ -62,13 +63,16 @@ export const RadioContainer = styled.div`
 `;
 
 export default function FormArea() {
-  const [inputValue, setInputValue] = useState("");
   const [showWarnings, setShowWarnings] = useState({
     nickname: { show: false, message: "" },
   });
   const [isChangePwdModalOpen, setIsChangePwdModalOpen] = useState(false);
   const [isQuitModalOpen, setIsQuitModalOpen] = useState(false);
   const [user, setUser] = useRecoilState(userState);
+
+  // 임시로 저장할 nickname과 introduceText의 상태값
+  const [nickname, setNickname] = useState(user.nickname);
+  const [introduceText, setIntroduceText] = useState(user.introduceText);
 
   console.log("user", user);
 
@@ -91,29 +95,38 @@ export default function FormArea() {
   };
 
   const handleChange = (inputName, value) => {
-     //형식이 맞으면 경고 상태 초기화 해주기 !
-     setShowWarnings((prevWarnings) => ({
+    //형식이 맞으면 경고 상태 초기화 해주기 !
+    setShowWarnings((prevWarnings) => ({
       ...prevWarnings,
       [inputName]: { show: false, message: "" },
     }));
 
-    if(inputName === "gender"){
-      
+    // nickname 또는 introduceText인 경우에만 상태값 업데이트
+    if (inputName === "nickname") {
+      setNickname(value);
+    } else if (inputName === "introduceText") {
+      setIntroduceText(value);
     }
+  };
+
+  // 닉네임 형식 체크
+  const validateNickName = (nickname) => {
+    const regex = /^[A-Za-z_.\-]?[A-Za-z_.\-]{1,8}$/;
+    return regex.test(nickname);
   };
 
   // 버튼을 눌르고 닉네임하고 상태메세지 모두 !!OK 가 나면!! userState에 저장해준다.
   const submitSetting = (e) => {
-    const value = e.target.value;
     setUser({
       ...user,
-      [e.target.name]: value
+      nickname,
+      introduceText,
     });
   };
 
-  const handleNickNameCheck = async (value) => {
+  const handleNickNameCheck = async () => {
     // 닉네임 형식 체크
-    if (!validateNickName(value)) {
+    if (!validateNickName(nickname)) {
       setShowWarnings((prevWarnings) => ({
         ...prevWarnings,
         nickname: { show: true, message: "불가능한 형식의 닉네임입니다." },
@@ -122,7 +135,7 @@ export default function FormArea() {
     }
 
     try {
-      const response = await nickNameCheck(value);
+      const response = await nickNameCheck(nickname);
       console.log("response", response);
       if (response === httpStatusCode.OK) {
         setShowWarnings((prevWarnings) => ({
@@ -132,6 +145,7 @@ export default function FormArea() {
         return;
       }
     } catch (error) {
+      console.log("error", error);
       if (error === httpStatusCode.CONFLICT) {
         setShowWarnings((prevWarnings) => ({
           ...prevWarnings,
@@ -142,13 +156,6 @@ export default function FormArea() {
       // 400일때 대응 필요합니다.
     }
   };
-
-
-    // 닉네임 형식 체크
-    const validateNickName = (nickname) => {
-      const regex = /^[A-Za-z_.\-]?[A-Za-z_.\-]{1,8}$/;
-      return regex.test(nickname);
-    };
 
   return (
     <JoinFormArea>
@@ -161,38 +168,60 @@ export default function FormArea() {
         <SF.MustIcon />
         <SF.FormCategory margin="72px">닉네임</SF.FormCategory>
         <InputContainer>
-        <SF.FormInput type="text" name="nickname" value={user.nickname} onChange={(e) => handleNickNameCheck(e.target.value)}></SF.FormInput>
-        <SF.InputNoticeText show={showWarnings.nickname.show}>
+          <SF.FormInput
+            type="text"
+            name="nickname"
+            value={nickname}
+            onChange={(e) => handleChange("nickname", e.target.value)}
+          ></SF.FormInput>
+          <SF.InputNoticeText show={showWarnings.nickname.show}>
             {showWarnings.nickname.message}
           </SF.InputNoticeText>
         </InputContainer>
-        <SF.FormBtn>중복 체크</SF.FormBtn>
+        <SF.FormBtn onClick={handleNickNameCheck}>중복 체크</SF.FormBtn>
       </FormDetailArea>
       <FormDetailArea>
         <SF.MustIcon visibility="hidden" />
         <SF.FormCategory margin="36px">상태메세지</SF.FormCategory>
         <InputContainer>
-          <SF.FormInput type="text" name="introduceText" value={user.introduceText} onChange={handleChange}></SF.FormInput>
+          <SF.FormInput
+            type="text"
+            name="introduceText"
+            value={introduceText}
+            onChange={(e) => handleChange("introduceText", e.target.value)}
+          ></SF.FormInput>
         </InputContainer>
       </FormDetailArea>
       <FormDetailArea>
         <SF.MustIcon />
         <SF.FormCategory margin="68px">E-mail</SF.FormCategory>
         <InputContainer>
-          <SF.FormInput type="email" name="email" value={user.email} onChange={handleChange} readOnly></SF.FormInput>
+          <SF.FormInput
+            type="email"
+            name="email"
+            value={user.email}
+            onChange={handleChange}
+            readOnly
+          ></SF.FormInput>
         </InputContainer>
       </FormDetailArea>
       <FormDetailArea>
         <SF.MustIcon />
         <SF.FormCategory margin="54px">생년월일</SF.FormCategory>
-        <SF.FormInput type="date" name="birthDate" value={user.birthDate} onChange={handleChange} readOnly></SF.FormInput>
+        <SF.FormInput
+          type="date"
+          name="birthDate"
+          value={user.birthDate}
+          onChange={handleChange}
+          readOnly
+        ></SF.FormInput>
       </FormDetailArea>
       <FormDetailArea>
         <SF.MustIcon />
         <SF.FormCategory margin="91px">성별</SF.FormCategory>
         <RadioContainer margin="104.1px">
-          <input type="radio" name="gender" value="male" disabled="true"/> 남성
-          <input type="radio" name="gender" value="female" disabled="true"/> 여성
+          <input type="radio" name="gender" value="male" disabled="true" /> 남성
+          <input type="radio" name="gender" value="female" disabled="true" /> 여성
         </RadioContainer>
         <SF.FormBtn width="167px" onClick={openChangePwdModal}>
           비밀번호 변경
