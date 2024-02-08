@@ -5,8 +5,7 @@ import org.springframework.restdocs.snippet.Snippet;
 
 import static com.ssafy.dancy.DocumentFormatProvider.required;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 public class CommentDocument {
 
@@ -16,6 +15,11 @@ public class CommentDocument {
 
     public static final Snippet commentIdPathField = pathParameters(
             parameterWithName("commentId").attributes(required()).description("댓글 아이디")
+    );
+
+    public static final Snippet parentIdQueryField = queryParameters(
+            parameterWithName("parentId").attributes(required()).description("대댓글의 부모 아이디. 필수값 아님.")
+                    .optional()
     );
 
     public static final Snippet commentWriteRequestField = requestFields(

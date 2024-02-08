@@ -152,10 +152,16 @@ public class CommentApiTest extends ApiTest {
         ExtractableResponse<Response> response = given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH, "댓글을 조회하는 API 입니다." +
                         "<br>articleId 를 path variable 로 입력하면, 200 OK 와 함께 댓글 목록이 반환됩니다." +
+                        "<br>해당 게시글의 본 댓글을 보고자 한다면, parentId 를 query string 형태로 입력해 줄 필요가 없습니다." +
+                        "<br>이때, 대댓글이 아닌 본 댓글만 반환됩니다." +
+                        "<br>특정 댓글의 대댓글을 확인하고자 한다면, query string 으로 parentId 정보를 입력해 주어야 합니다." +
                         "<br>존재하지 않는 articleId 이더라도, 댓글 란이 빈 칸으로 존재합니다.", "댓글조회",
-                        CommentDocument.articleIdPathField, CommentDocument.commentInfoListResponseField))
+                        CommentDocument.articleIdPathField,
+                        CommentDocument.parentIdQueryField,
+                        CommentDocument.commentInfoListResponseField))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .pathParam("articleId", savedArticle.getArticleId())
+                .param("parentId", 0)
                 .when()
                 .get("/comment/{articleId}")
                 .then()
@@ -163,7 +169,8 @@ public class CommentApiTest extends ApiTest {
                 .statusCode(HttpStatus.OK.value())
                 .log().all().extract();
 
-        List<Comment> commentList = commentRepository.findCommentByArticle_ArticleId(savedArticle.getArticleId());
+        List<Comment> commentList = commentRepository.findCommentByArticle_ArticleIdAndParentId(
+                savedArticle.getArticleId(), 0L);
         JsonPath jsonPath = response.jsonPath();
 
         List<CommentResponse> responseList = jsonPath.getList("", CommentResponse.class);
