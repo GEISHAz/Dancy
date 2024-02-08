@@ -12,7 +12,6 @@ export default function Card() {
   useEffect(() => {
     allArticles()
     .then ((res) => {
-      console.log(res)
       setArticles(res)
     })
     .catch ((err) => {

@@ -20,7 +20,8 @@ export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
   const [isEmailCorrect, setIsEmailCorrect] = useState(true);
-  const [userInfo, setUserInfo] = useRecoilState(userState)
+  // const [userInfo, setUserInfo] = useRecoilState(userState)
+  const setUserInfo = useSetRecoilState(userState)
   const setLogin = useSetRecoilState(loginState); // login유무 저장
   const user = useRecoilValue(userState)
 
@@ -40,20 +41,21 @@ export default function Login() {
     try {
       await login(formData);
       setLogin(true);
-      navigate("/");
-  
+			
       // 로그인 이후 user 정보를 가져옴
       const userDetailsData = await userDetails();
-      // console.log("User Details:", userDetailsData.userInfo);
-      setUserInfo(userDetailsData.userInfo)
+      console.log("User Details:", userDetailsData.userInfo);
+      setUserInfo(userDetailsData)
+      
       // console.log(userState)
     } catch (error) {
-      console.error("Login Error:", error);
+			console.error("Login Error:", error);
       const errorMsg = error.response?.data[0]?.message || "An error occurred";
-  
+			
       setModalTxt(errorMsg);
       openModalHandler();
     }
+		navigate("/");
   };
 
 

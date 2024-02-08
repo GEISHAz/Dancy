@@ -5,8 +5,9 @@ const url = 'like'
 export const articleLike = async (articleId) => {
 	try {
 		const res = await privateApi.post(`/${url}/article-like/${articleId}`)
-
-		console.log(res)
+		const likeInfo = res.data
+		
+		return likeInfo
 	} catch (error) {
     console.error(error);
     throw error;

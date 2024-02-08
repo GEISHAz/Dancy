@@ -74,7 +74,6 @@ export default function VideoDetail({videoSrc}) {
 
       userInfo(res.nickname)
       .then ((res) => {
-        console.log(res)
         setAuthorInfo(res.userInfo)
       })
       .catch ((err) => {
@@ -130,6 +129,7 @@ export default function VideoDetail({videoSrc}) {
 		articleLike(articleId)
     .then((res) => {
       console.log(res)
+			window.location.reload()
     })
     .catch((err) => {
       console.error(err)
@@ -139,7 +139,6 @@ export default function VideoDetail({videoSrc}) {
   // 게시글 작성자 팔로우/언팔로우 (자신의 글이라면 팔로우 버튼 노출 X)
   const followHandler = () => {
 		if (authorInfo.followed) {
-			console.log(authorInfo.nickname)
 			unFollowRequest(authorInfo.nickname)
 			.then ((res) => {
 				setAuthorInfo({
@@ -161,7 +160,6 @@ export default function VideoDetail({videoSrc}) {
 					"following" : res.follower.following, 
 					"followed" : res.follower.followed
 				})
-				console.log(res)
 			})
 			.catch((err) => {
 				console.error(err)
@@ -195,7 +193,6 @@ export default function VideoDetail({videoSrc}) {
     .then((res) => {
       // setLikeUser(res)
       setIsDropDown(!isDropDown)
-      console.log(isDropDown)
     })
     .catch((err) => { console.error(err) })
   }

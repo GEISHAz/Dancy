@@ -55,7 +55,7 @@ export default function Navbar() {
           </Link>
         </N.NavLeftContainer>
         <N.NavLeftContainer>
-          <Link to={`/profile/${userInfo.nickname}`}>
+          <Link to={`/profile/${userDetailsInfo.nickname}`}>
               <N.NavProfile onClick={() => setActiveButton('Profile')} $active={activeButton === 'Profile'}>Profile</N.NavProfile>
           </Link>
           <N.Square />
@@ -70,7 +70,7 @@ export default function Navbar() {
           {isLogin ? (
             <N.NavLoginWrapper>
               <Link to='/setting'>
-                <N.NavUserProfileImage src={userDetails.profileImageUrl}/>
+                <N.NavUserProfileImage src={userDetailsInfo.profileImageUrl}/>
               </Link>
               <N.NavProfileArea>
                 <Link to='/setting'>

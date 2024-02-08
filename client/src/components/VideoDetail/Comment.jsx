@@ -1,43 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Recomment from "./Recomment"
-import { 
-  CommentContainer,
-  CommentTitleArea,
-  CommentTitle,
-  CommentTitleLine,
-  CommentInputWrapper,
-  CommentInput,
-  CommentBtns,
-  CommentButton,
-  CommentCancelButton,
-  CommentArea,
-  CommentUserProfileImage,
-  CommentUserDetail,
-  CommentUserNameArea,
-  CommentUserName,
-  CommentEditImage,
-  DropdownToggle,
-  CommentEditDeleteArea,
-  CommentDeleteImage,
-  CommentContentArea,
-  CommentContent,
-  CommentLikeImage,
-  CommentCreateRecommentArea,
-  CommentCreatedAt,
-  CommentCreateRecomment,
-  CommentNumberOfLikes,
-  RecommentArea,
-  RecommentLine,
-  MoreRecomments,
-  AnimatedRecomment,
-  ReplyWrapper,
-  ReplyInput,
-  ReplyButton,
-  CancelButton,
-  ReplyBtns,
-} from "./Comment.style"
+import * as C from "./Comment.style"
+import { postComment } from "../../api/comment";
+import { Reply } from "./Reply";
 
 const getTimeDifference = (prevDate) => {
   const diff = new Date() - prevDate;
@@ -66,8 +33,10 @@ export default function Comment() {
   const [isRecommentOpen, setIsRecommentOpen] = useState([]);
   const [isReplyInputOpen, setIsReplyInputOpen] = useState([]);
   const [placeholder, setPlaceholder] = useState("답글을 입력하세요");
-  const [dropdownOpen, setDropdownOpen] = useState([]);
-	const { articleId } = useParams();
+  const [dropdownOpen, setDropdownOpen] = useState([]); 
+
+  const state = useLocation();
+	const articleId = Number(state.pathname.split('/')[2])
 
   const fetchComments = async () => {
     try {
@@ -79,6 +48,7 @@ export default function Comment() {
 				setIsRecommentOpen(initialLikeState);
 				setIsReplyInputOpen(initialLikeState);
 				setDropdownOpen(initialLikeState);
+				setReplyInputRefs(response.data.map(() => useRef()));
 				console.log(response)
     } catch (error) {
         console.error('댓글을 가져오는데 실패했습니다.', error);
@@ -88,6 +58,36 @@ export default function Comment() {
   useEffect(() => {
     fetchComments();
   }, []);
+
+	const commentInput = useRef();
+  const [commentData, setCommentData] = useState({
+		"content": "",
+    "parentId": 0,
+  });
+
+	const handleCommentChange = (e) => {
+    setCommentData({ ...commentData, [e.target.name]: e.target.value });
+  };
+
+	const handlePost = () => {
+		if (commentData.content.length < 1) {
+			commentInput.current.focus();
+			return;
+		}
+	
+		postComment({ articleId, commentData })
+		.then ((res) => {
+			console.log(res)
+			setCommentData({
+				content: "",
+				parentId: 0,
+			})
+			window.location.reload()
+		})
+		.catch ((err) => {
+			console.error(err)
+		})
+  };
 
   const handleLike = (index) => {
     setLike(like.map((state, i) => i === index ? !state : state));
@@ -111,81 +111,72 @@ export default function Comment() {
   }
 
   return (
-    <CommentContainer>
-      <CommentTitleArea>
-        <CommentTitle>댓글</CommentTitle>
-        <CommentTitleLine />
-      </CommentTitleArea>
-      <CommentInputWrapper>
-        <CommentInput 
-          type="text"
+    <C.CommentContainer>
+      <C.CommentTitleArea>
+        <C.CommentTitle>댓글</C.CommentTitle>
+        <C.CommentTitleLine />
+      </C.CommentTitleArea>
+      <C.CommentInputWrapper>
+        <C.CommentInput 
+          ref={commentInput}
+					name="comment"
+					type="text"
+					value={commentData.content}
+					onChange={handleCommentChange}
           placeholder={placeholder}
           onFocus={() => setPlaceholder("")}
-          onBlur={() => setPlaceholder("답글을 입력하세요")}
+          onBlur={() => setPlaceholder("댓글을 입력하세요")}
         />
-        <CommentBtns>
-          <CommentButton>답글달기</CommentButton>
-          <CommentCancelButton>취소</CommentCancelButton>
-        </CommentBtns>
-      </CommentInputWrapper>
+        <C.CommentBtns>
+          <C.CommentButton onClick={() => handlePost}>댓글 작성</C.CommentButton>
+          <C.CommentCancelButton>취소</C.CommentCancelButton>
+        </C.CommentBtns>
+      </C.CommentInputWrapper>
       {comments.map((comment, index) => (
-        <CommentArea key={index}>
-          <CommentUserProfileImage />
-          <CommentUserDetail>
-            <CommentUserNameArea>
+        <C.CommentArea key={index}>
+          <C.CommentUserProfileImage />
+          <C.CommentUserDetail>
+            <C.CommentUserNameArea>
               <div>
-                <Link to={`/profile/${comment.username}`}>
-                  <CommentUserName>{comment.authorNickname}</CommentUserName>
+                <Link to={`/profile/${comment.authorNickname}`}>
+                  <C.CommentUserName>{comment.authorNickname}</C.CommentUserName>
                 </Link>
-                <CommentCreatedAt>{getTimeDifference(comment.createdDate)}</CommentCreatedAt>
+                <C.CommentCreatedAt>{getTimeDifference(comment.createdDate)}</C.CommentCreatedAt>
               </div>
-              <DropdownToggle onClick={() => toggleDropdown(index)}>⋮</DropdownToggle>
+              <C.DropdownToggle onClick={() => toggleDropdown(index)}>⋮</C.DropdownToggle>
               {dropdownOpen[index] && (
-                <CommentEditDeleteArea>
-                  <CommentEditImage src="/src/assets/editimage.png"/>
-                  <CommentDeleteImage src="/src/assets/deleteimage.png"/>
-                </CommentEditDeleteArea>
+                <C.CommentEditDeleteArea>
+                  <C.CommentEditImage src="/src/assets/editimage.png"/>
+                  <C.CommentDeleteImage src="/src/assets/deleteimage.png"/>
+                </C.CommentEditDeleteArea>
               )}
-            </CommentUserNameArea>
-            <CommentContentArea>
-              <CommentContent>{comment.content}</CommentContent>
-              <CommentLikeImage 
+            </C.CommentUserNameArea>
+            <C.CommentContentArea>
+              <C.CommentContent>{comment.content}</C.CommentContent>
+              <C.CommentLikeImage 
                 src={like[index] ? "/src/assets/likeimage.png" : "/src/assets/unlikeimage.png"}
                 onClick={() => handleLike(index)} 
               />
-            </CommentContentArea>
-            <CommentCreateRecommentArea>
+            </C.CommentContentArea>
+            <C.CommentCreateRecommentArea>
               <div>
-                <CommentCreateRecomment onClick={() => toggleReplyInput(index)}>답글달기</CommentCreateRecomment>
+                <C.CommentCreateRecomment onClick={() => toggleReplyInput(index)}>답글달기</C.CommentCreateRecomment>
               </div>
-              <CommentNumberOfLikes>{likeCount[index]}</CommentNumberOfLikes>
-            </CommentCreateRecommentArea>
-            {isReplyInputOpen[index] && (
-              <ReplyWrapper>
-                <ReplyInput
-                  type="text"
-                  placeholder={placeholder}
-                  onFocus={() => setPlaceholder("")}
-                  onBlur={() => setPlaceholder("답글을 입력하세요")}
-                />
-                <ReplyBtns>
-                  <ReplyButton>답글달기</ReplyButton>
-                  <CancelButton onClick={() => toggleReplyInput(index)}>취소</CancelButton>
-                </ReplyBtns>
-              </ReplyWrapper>
-            )}
-            <RecommentArea>
-              <RecommentLine />
-              <MoreRecomments onClick={() => toggleRecomment(index)}>
+              <C.CommentNumberOfLikes>{likeCount[index]}</C.CommentNumberOfLikes>
+            </C.CommentCreateRecommentArea>
+            {isReplyInputOpen[index] && <Reply commentId={comment.commentId} />}
+            <C.RecommentArea>
+              <C.RecommentLine />
+              <C.MoreRecomments onClick={() => toggleRecomment(index)}>
                 {isRecommentOpen[index] ? "답글 숨기기" : "답글 더보기"}
-              </MoreRecomments>
-            </RecommentArea>
-            <AnimatedRecomment isOpen={isRecommentOpen[index]}>
+              </C.MoreRecomments>
+            </C.RecommentArea>
+            <C.AnimatedRecomment isOpen={isRecommentOpen[index]}>
               <Recomment />
-            </AnimatedRecomment>
-          </CommentUserDetail>
-        </CommentArea>
+            </C.AnimatedRecomment>
+          </C.CommentUserDetail>
+        </C.CommentArea>
       ))}
-    </CommentContainer>
+    </C.CommentContainer>
   )
 }
