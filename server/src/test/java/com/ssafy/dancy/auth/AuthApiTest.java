@@ -248,7 +248,7 @@ public class AuthApiTest extends ApiTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(authSteps.회원탈퇴_유저_비밀번호_입력())
                 .when()
-                .delete("/auth")
+                .put("/auth/delete")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
