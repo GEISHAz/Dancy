@@ -26,14 +26,14 @@ export const userDetails = async () => {
 
 export const userChangeNickName = async (nickname) => {
   try {
-    const res = await publicApi.put(`/${url}/nickname`,
+    const res = await privateApi.put(`/${url}/nickname`,
     {
       "nickname" : `${nickname}`
     }
     );
     console.log("res", res);
     // 응답 상태 코드 확인
-    const statusCode = response.status;
+    const statusCode = res.status;
     console.log(statusCode);
     return statusCode;
   } catch (error) {
@@ -45,14 +45,14 @@ export const userChangeNickName = async (nickname) => {
 
 export const userChangeIntro = async (introduceText) => {
   try {
-    const res = await publicApi.put(`/${url}/introduce`,
+    const res = await privateApi.put(`/${url}/introduce`,
     {
       "introduceText" : `${introduceText}`
     }
     );
     console.log("res", res);
     // 응답 상태 코드 확인
-    const statusCode = response.status;
+    const statusCode = res.status;
     console.log(statusCode);
     return statusCode;
   } catch (error) {
@@ -65,10 +65,10 @@ export const userChangeIntro = async (introduceText) => {
 
 export const userChangeImg = async (img) => {
   try {
-    const res = await profileImgApi.put(`/${url}/profile_image`,
+    const response = await profileImgApi.put(`/${url}/profile_image`,
         img
     );
-    console.log("res", res);
+    console.log("res", response);
     // 응답 상태 코드 확인
     const statusCode = response.status;
     console.log(statusCode);

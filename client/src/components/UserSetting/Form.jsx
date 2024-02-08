@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { styled } from "styled-components";
 import * as SF from "./SettingForm.style";
 import QuitModal from "./QuitModal";
@@ -8,6 +8,7 @@ import { userState } from "../../recoil/LoginState";
 import { nickNameCheck } from "../../api/join";
 import { httpStatusCode } from "../../util/http-status";
 import { BrowserRouter as Router, Route, Link, useNavigate } from "react-router-dom";
+import { userChangeNickName, userChangeIntro, userChangeImg } from "../../api/user";
 
 // 전체 폼 구성
 export const JoinFormArea = styled.div`
@@ -75,6 +76,8 @@ export default function FormArea() {
   const [nickname, setNickname] = useState(user.nickname);
   const [introduceText, setIntroduceText] = useState(user.introduceText);
   const [isChecked, setIsChecked] = useState(false);
+
+  const navigate = useNavigate();
 
   console.log("user", user);
 
@@ -155,46 +158,70 @@ export default function FormArea() {
     }
   };
 
+  // 이전 user 상태를 기록할 useRef
+  const prevUserRef = useRef(user);
+
+  useEffect(() => {
+    // 이전 user 상태 업데이트
+    prevUserRef.current = user;
+  }, [user]);
+
   // 서버로 제출 요청하기
   const readyToSubmit = async () => {
-    // 닉네임 체크가 되지 않았다면 수행 불가해요.
-    if (!isChecked) {
-      alert("닉네임 중복체크를 수행해주세요.");
-      return;
-    }
+    // 닉네임 체크가 되지 않았다면 수행 불가해요. 그치만 닉네임 수정을 안하고 싶을수도 있잖아?
 
-    // 이부분에 닉네임과 상태메세지 전부 수정해주는 코드 작성해주기
     try {
-      // 닉네임 변경
-      const nicknameStatusCode = await userChangeNickName(nickname);
-      console.log("Nickname change", nicknameStatusCode);
+      // 닉네임과 상태메시지가 변경된 경우에만 서버 요청
+      if (nickname !== user.nickname) {
+        // 닉네임 변경 전에 중복 체크를 수행했는지 확인
+        if (!isChecked) {
+          alert("닉네임 중복체크를 수행해주세요.");
+          return;
+        }
 
-      // 상태메시지 변경
-      const introStatusCode = await userChangeIntro(introduceText);
-      console.log("Introduce text change", introStatusCode);
-
-      // 두 요청 모두 성공했을 때에만 Recoil 업데이트
-      if (nicknameStatusCode === httpStatusCode.OK && introStatusCode === httpStatusCode.OK) {
-        setUser((prevUser) => ({
-          ...prevUser,
-          nickname: nickname,
-          introduceText: introduceText,
-        }));
-        alert("정보가 성공적으로 변경되었습니다.");
-        navigate(`/profile/${user.nickname}`); //완료 페이지로 넘어가도록
-      } else {
-        // 실패한 경우에 대한 처리
-        console.error("실패가 될수도?");
-        alert("잠시 후 다시 시도해주세요.");
-        navigate(`/profile/${user.nickname}`);
+        // 닉네임 변경
+        const nicknameStatusCode = await userChangeNickName(nickname);
+        console.log("닉네임잘바뀌엇니?", nicknameStatusCode);
       }
+
+      console.log("-----------");
+
+      if (introduceText !== user.introduceText) {
+        // 상태메시지 변경
+        const introStatusCode = await userChangeIntro(introduceText);
+        console.log("상메잘바뀌었니?", introStatusCode);
+      }
+
+      // recoil 상태 업데이트
+      setUser((prevUser) => ({
+        ...prevUser,
+        nickname: nickname,
+        introduceText: introduceText,
+      }));
+
+      console.log("---------------");
+
+      // 알림 및 페이지 이동
+      alert("정보가 성공적으로 변경되었습니다.");
     } catch (error) {
-      // 서버 요청 중 에러가 발생한 경우 둘중 하나라도 이상했을 확률 농후...
       console.error("서버 요청 중 에러가 발생했습니다.", error);
+      // recoil 상태 업데이트
+      setUser((prevUser) => ({
+        ...prevUser,
+        nickname: nickname,
+        introduceText: introduceText,
+      }));
       alert("서버 요청 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
-      navigate(`/profile/${user.nickname}`);
     }
   };
+
+  useEffect(() => {
+    // user 상태의 이전값과 현재값이 다른 경우에만 navigate 함수 호출
+    const prevUser = prevUserRef.current;
+    if (prevUser.nickname !== user.nickname || prevUser.introduceText !== user.introduceText) {
+      navigate(`/profile/${user.nickname}`);
+    }
+  }, [user, navigate]);
 
   return (
     <JoinFormArea>
