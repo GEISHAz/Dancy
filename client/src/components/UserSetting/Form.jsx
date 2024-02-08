@@ -73,6 +73,7 @@ export default function FormArea() {
   // 임시로 저장할 nickname과 introduceText의 상태값
   const [nickname, setNickname] = useState(user.nickname);
   const [introduceText, setIntroduceText] = useState(user.introduceText);
+  const [isChecked, setIsChecked] = useState(false);
 
   console.log("user", user);
 
@@ -131,6 +132,7 @@ export default function FormArea() {
         ...prevWarnings,
         nickname: { show: true, message: "불가능한 형식의 닉네임입니다." },
       }));
+      setIsChecked(false);
       return;
     }
 
@@ -142,6 +144,7 @@ export default function FormArea() {
           ...prevWarnings,
           nickname: { show: true, message: "사용 가능한 닉네임 입니다." }, // 값이 존재하는 경우 경고 메시지를 초기화합니다.
         }));
+        setIsChecked(true);
         return;
       }
     } catch (error) {
@@ -151,10 +154,27 @@ export default function FormArea() {
           ...prevWarnings,
           nickname: { show: true, message: "중복되는 닉네임입니다." },
         }));
+        setIsChecked(false);
         return;
       }
       // 400일때 대응 필요합니다.
     }
+  };
+
+  // 서버로 제출 요청하기 
+  const readyToSubmit = async () => {
+    //닉네임 체크가 되지 않았다면 수행 불가해요.
+    if (!isChecked) {
+      alert("닉네임 중복체크를 수행해주세요.");
+      return;
+    }
+
+    // 이부분에 닉네임과 상태메세지 전부 수정해주는 코드 작성해주기
+    
+
+
+
+
   };
 
   return (
@@ -235,7 +255,7 @@ export default function FormArea() {
         <QuitModal isOpen={isQuitModalOpen} onClose={closeQuitModal} />
       </FormDetailArea>
       <FormDetailArea>
-        <SF.RegisterBtn margin="217px">완료</SF.RegisterBtn>
+        <SF.RegisterBtn onClick={readyToSubmit} margin="217px">완료</SF.RegisterBtn>
       </FormDetailArea>
     </JoinFormArea>
   );
