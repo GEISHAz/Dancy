@@ -220,8 +220,8 @@ export default function FormArea() {
         <SF.MustIcon />
         <SF.FormCategory margin="91px">성별</SF.FormCategory>
         <RadioContainer margin="104.1px">
-          <input type="radio" name="gender" value="male" disabled="true" /> 남성
-          <input type="radio" name="gender" value="female" disabled="true" /> 여성
+          <input type="radio" name="gender" value="MALE" checked={user.gender === "MALE"} disabled="true" /> 남성
+          <input type="radio" name="gender" value="FEMALE" checked={user.gender === "FEMALE"} disabled="true" /> 여성
         </RadioContainer>
         <SF.FormBtn width="167px" onClick={openChangePwdModal}>
           비밀번호 변경
