@@ -5,6 +5,7 @@ import QuitModal from "./QuitModal";
 import ChangePwdModal from "./ChangePwdModal";
 import { useRecoilState } from "recoil";
 import { userState } from "../../recoil/LoginState";
+import { nickNameCheck } from "../../api/join";
 
 // 전체 폼 구성
 export const JoinFormArea = styled.div`
@@ -62,7 +63,9 @@ export const RadioContainer = styled.div`
 
 export default function FormArea() {
   const [inputValue, setInputValue] = useState("");
-  const [showWarning, setShowWarning] = useState(false);
+  const [showWarnings, setShowWarnings] = useState({
+    nickname: { show: false, message: "" },
+  });
   const [isChangePwdModalOpen, setIsChangePwdModalOpen] = useState(false);
   const [isQuitModalOpen, setIsQuitModalOpen] = useState(false);
   const [user, setUser] = useRecoilState(userState);
@@ -87,13 +90,65 @@ export default function FormArea() {
     setIsQuitModalOpen(false);
   };
 
-  const handleChange = (e) => {
+  const handleChange = (inputName, value) => {
+     //형식이 맞으면 경고 상태 초기화 해주기 !
+     setShowWarnings((prevWarnings) => ({
+      ...prevWarnings,
+      [inputName]: { show: false, message: "" },
+    }));
+
+    if(inputName === "gender"){
+      
+    }
+  };
+
+  // 버튼을 눌르고 닉네임하고 상태메세지 모두 !!OK 가 나면!! userState에 저장해준다.
+  const submitSetting = (e) => {
     const value = e.target.value;
     setUser({
       ...user,
       [e.target.name]: value
     });
   };
+
+  const handleNickNameCheck = async (value) => {
+    // 닉네임 형식 체크
+    if (!validateNickName(value)) {
+      setShowWarnings((prevWarnings) => ({
+        ...prevWarnings,
+        nickname: { show: true, message: "불가능한 형식의 닉네임입니다." },
+      }));
+      return;
+    }
+
+    try {
+      const response = await nickNameCheck(value);
+      console.log("response", response);
+      if (response === httpStatusCode.OK) {
+        setShowWarnings((prevWarnings) => ({
+          ...prevWarnings,
+          nickname: { show: true, message: "사용 가능한 닉네임 입니다." }, // 값이 존재하는 경우 경고 메시지를 초기화합니다.
+        }));
+        return;
+      }
+    } catch (error) {
+      if (error === httpStatusCode.CONFLICT) {
+        setShowWarnings((prevWarnings) => ({
+          ...prevWarnings,
+          nickname: { show: true, message: "중복되는 닉네임입니다." },
+        }));
+        return;
+      }
+      // 400일때 대응 필요합니다.
+    }
+  };
+
+
+    // 닉네임 형식 체크
+    const validateNickName = (nickname) => {
+      const regex = /^[A-Za-z_.\-]?[A-Za-z_.\-]{1,8}$/;
+      return regex.test(nickname);
+    };
 
   return (
     <JoinFormArea>
@@ -105,7 +160,12 @@ export default function FormArea() {
       <FormDetailArea>
         <SF.MustIcon />
         <SF.FormCategory margin="72px">닉네임</SF.FormCategory>
-        <SF.FormInput type="text" name="nickname" value={user.nickname} onChange={handleChange}></SF.FormInput>
+        <InputContainer>
+        <SF.FormInput type="text" name="nickname" value={user.nickname} onChange={(e) => handleNickNameCheck(e.target.value)}></SF.FormInput>
+        <SF.InputNoticeText show={showWarnings.nickname.show}>
+            {showWarnings.nickname.message}
+          </SF.InputNoticeText>
+        </InputContainer>
         <SF.FormBtn>중복 체크</SF.FormBtn>
       </FormDetailArea>
       <FormDetailArea>
