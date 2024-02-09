@@ -48,7 +48,6 @@ export default function Comment() {
 				setIsRecommentOpen(initialLikeState);
 				setIsReplyInputOpen(initialLikeState);
 				setDropdownOpen(initialLikeState);
-				setReplyInputRefs(response.data.map(() => useRef()));
 				console.log(response)
     } catch (error) {
         console.error('댓글을 가져오는데 실패했습니다.', error);
@@ -119,7 +118,7 @@ export default function Comment() {
       <C.CommentInputWrapper>
         <C.CommentInput 
           ref={commentInput}
-					name="comment"
+					name="content"
 					type="text"
 					value={commentData.content}
 					onChange={handleCommentChange}
@@ -128,13 +127,15 @@ export default function Comment() {
           onBlur={() => setPlaceholder("댓글을 입력하세요")}
         />
         <C.CommentBtns>
-          <C.CommentButton onClick={() => handlePost}>댓글 작성</C.CommentButton>
+          <C.CommentButton onClick={handlePost}>댓글 작성</C.CommentButton>
           <C.CommentCancelButton>취소</C.CommentCancelButton>
         </C.CommentBtns>
       </C.CommentInputWrapper>
       {comments.map((comment, index) => (
         <C.CommentArea key={index}>
-          <C.CommentUserProfileImage />
+          <Link to={`/profile/${comment.authorNickname}`}>
+            <C.CommentUserProfileImage src={comment.authorProfileImageUrl} />
+          </Link>
           <C.CommentUserDetail>
             <C.CommentUserNameArea>
               <div>
@@ -164,7 +165,7 @@ export default function Comment() {
               </div>
               <C.CommentNumberOfLikes>{likeCount[index]}</C.CommentNumberOfLikes>
             </C.CommentCreateRecommentArea>
-            {isReplyInputOpen[index] && <Reply commentId={comment.commentId} />}
+            {isReplyInputOpen[index] && <Reply articleId={articleId} commentId={comment.commentId} />}
             <C.RecommentArea>
               <C.RecommentLine />
               <C.MoreRecomments onClick={() => toggleRecomment(index)}>

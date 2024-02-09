@@ -1,32 +1,34 @@
 import * as C from './Reply.style'
 import React, { useState, useRef } from "react";
+import { postComment } from "../../api/comment";
 
-export const Reply = ({ commentId }) => {
+export const Reply = ({ articleId, commentId }) => {
   const [placeholder, setPlaceholder] = useState("답글을 입력하세요");
 
 	const replyInput = useRef();
-  const [replyData, setReplyData] = useState({
+  const [commentData, setCommentData] = useState({
     "content": "",
-    "parentId": "",
+    "parentId": commentId,
   });
 	
-	const handleReplyChange = (e, commentId) => {
-    setReplyData({ [e.target.name]: e.target.value, "parentId": commentId });
-		console.log(replyData)
+	const handleReplyChange = (e) => {
+    setCommentData({ ...commentData, [e.target.name]: e.target.value });
+		console.log(commentData)
   };
 
 	const handlePost = () => {
-		if (replyData.content.length < 1) {
+		if (commentData.content.length < 1) {
 			replyInput.current.focus();
 			return;
 		}
-
-		postComment({ articleId, replyData })
+    
+    console.log(articleId, commentData)
+		postComment({ articleId, commentData })
 		.then ((res) => {
 			console.log(res)
-			setReplyData({
+			setCommentData({
 				content: "",
-				parentId: "",
+				parentId: commentId,
 			})
 			window.location.reload()
 		})
@@ -41,14 +43,14 @@ export const Reply = ({ commentId }) => {
 				ref={replyInput}
 				name="content"
 				type="text"
-				value={replyData.content}
-				onChange={(e) => handleReplyChange(e, commentId)}
+				value={commentData.content}
+				onChange={(e) => handleReplyChange(e)}
 				placeholder={placeholder}
 				onFocus={() => setPlaceholder("")}
 				onBlur={() => setPlaceholder("답글을 입력하세요")}
 			/>
 			<C.ReplyBtns>
-				<C.ReplyButton onClick={() => handlePost('reply', comment.commentId)}>답글달기</C.ReplyButton>
+				<C.ReplyButton onClick={handlePost}>답글달기</C.ReplyButton>
 				<C.CancelButton onClick={() => toggleReplyInput(index)}>취소</C.CancelButton>
 			</C.ReplyBtns>
 		</C.ReplyWrapper>

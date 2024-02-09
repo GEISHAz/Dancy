@@ -1,4 +1,5 @@
 import styled, {keyframes, css} from "styled-components";
+import defaultProfileImg from '../../assets/profileIntro/ProfileImgDefault.png'
 
 export const CommentContainer = styled.div`
   font-family: 'NanumSquareRound';
@@ -96,7 +97,7 @@ export const CommentArea = styled.div`
   gap: 10px;
 `;
 
-export const CommentUserProfileImage = styled.button`
+export const CommentUserProfileImage = styled.img.attrs(({ src }) => ({ src: src || defaultProfileImg}))`
   width: 40px;
   height: 40px;
   border-radius: 50%;
