@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import defaultProfileImg from '../../assets/profileIntro/ProfileImgDefault.png'
 
 export const RecommentContainer = styled.div`
 	display: flex;
@@ -17,7 +18,7 @@ export const RecommentArea = styled.div`
   gap: 10px;
 `
 
-export const RecommentUserProfileImage = styled.div`
+export const RecommentUserProfileImage = styled.img.attrs(({ src }) => ({ src: src || defaultProfileImg}))`
 	width: 35px;
   height: 35px;
   border-radius: 50%;

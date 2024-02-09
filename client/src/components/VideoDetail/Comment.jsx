@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
-import Recomment from "./Recomment"
-import * as C from "./Comment.style"
-import { postComment } from "../../api/comment";
+import Recomment from "./Recomment";
+import * as C from "./Comment.style";
+import { getComment, postComment } from "../../api/comment";
 import { Reply } from "./Reply";
 
 const getTimeDifference = (prevDate) => {
@@ -18,11 +18,11 @@ const getTimeDifference = (prevDate) => {
   } else if (days > 0) {
     return `${days}일 전`;
   } else if (hours > 0) {
-    return `${hours}시간 전`
+    return `${hours}시간 전`;
   } else if (minutes > 0) {
-    return `${minutes}분 전`
+    return `${minutes}분 전`;
   } else {
-    return `${seconds}초 전`
+    return `${seconds}초 전`;
   }
 };
 
@@ -33,81 +33,106 @@ export default function Comment() {
   const [isRecommentOpen, setIsRecommentOpen] = useState([]);
   const [isReplyInputOpen, setIsReplyInputOpen] = useState([]);
   const [placeholder, setPlaceholder] = useState("답글을 입력하세요");
-  const [dropdownOpen, setDropdownOpen] = useState([]); 
+  const [dropdownOpen, setDropdownOpen] = useState([]);
 
   const state = useLocation();
-	const articleId = Number(state.pathname.split('/')[2])
+  const articleId = Number(state.pathname.split("/")[2]);
 
-  const fetchComments = async () => {
-    try {
-        const response = await axios.get(`http://i10d210.p.ssafy.io:8080/comment/${articleId}`);
-				setComments(response.data);
-        const initialLikeState = Array(response.data.length).fill(false);
-				setLike(initialLikeState);
-				setLikeCount(initialLikeState);
-				setIsRecommentOpen(initialLikeState);
-				setIsReplyInputOpen(initialLikeState);
-				setDropdownOpen(initialLikeState);
-				console.log(response)
-    } catch (error) {
-        console.error('댓글을 가져오는데 실패했습니다.', error);
-    }
-  };
+  // const fetchComments = async () => {
+  //   try {
+  //       const response = await axios.get(`http://i10d210.p.ssafy.io:8080/comment/${articleId}`);
+  // 			setComments(response.data);
+  //       const initialLikeState = Array(response.data.length).fill(false);
+  // 			setLike(initialLikeState);
+  // 			setLikeCount(initialLikeState);
+  // 			setIsRecommentOpen(initialLikeState);
+  // 			setIsReplyInputOpen(initialLikeState);
+  // 			setDropdownOpen(initialLikeState);
+  // 			console.log(response)
+  //   } catch (error) {
+  //       console.error('댓글을 가져오는데 실패했습니다.', error);
+  //   }
+  // };
 
   useEffect(() => {
-    fetchComments();
+    getComment(articleId, 0)
+    .then((res) => {
+      setComments(res)
+      return res
+    })
+    .then((res) => {
+      const initialLikeState = Array(res.length).fill(false);
+      setLike(initialLikeState);
+      setLikeCount(initialLikeState);
+      setIsRecommentOpen(initialLikeState);
+      setIsReplyInputOpen(initialLikeState);
+      setDropdownOpen(initialLikeState);
+    })
+    .catch((err) => console.log(err));
   }, []);
 
-	const commentInput = useRef();
+  const commentInput = useRef();
   const [commentData, setCommentData] = useState({
-		"content": "",
-    "parentId": 0,
+    content: "",
+    parentId: 0,
   });
 
-	const handleCommentChange = (e) => {
+  const handleCommentChange = (e) => {
     setCommentData({ ...commentData, [e.target.name]: e.target.value });
   };
 
-	const handlePost = () => {
-		if (commentData.content.length < 1) {
-			commentInput.current.focus();
-			return;
-		}
-	
-		postComment({ articleId, commentData })
-		.then ((res) => {
-			console.log(res)
-			setCommentData({
-				content: "",
-				parentId: 0,
-			})
-			window.location.reload()
-		})
-		.catch ((err) => {
-			console.error(err)
-		})
+  const handlePost = () => {
+    if (commentData.content.length < 1) {
+      commentInput.current.focus();
+      return;
+    }
+
+    postComment({ articleId, commentData })
+      .then((res) => {
+        console.log(res);
+        setCommentData({
+          content: "",
+          parentId: 0,
+        });
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const handleLike = (index) => {
-    setLike(like.map((state, i) => i === index ? !state : state));
+    setLike(like.map((state, i) => (i === index ? !state : state)));
     if (!like[index]) {
-      setLikeCount(likeCount.map((count, i) => i === index ? count + 1 : count));
+      setLikeCount(
+        likeCount.map((count, i) => (i === index ? count + 1 : count))
+      );
     } else {
-      setLikeCount(likeCount.map((count, i) => i === index ? count - 1 : count));
+      setLikeCount(
+        likeCount.map((count, i) => (i === index ? count - 1 : count))
+      );
     }
-  }
+  };
 
   const toggleRecomment = (index) => {
-    setIsRecommentOpen(isRecommentOpen.map((state, i) => i === index ? !state : state));
-  }
+    console.log('click')
+    setIsRecommentOpen(
+      isRecommentOpen.map((state, i) => (i === index ? !state : state))
+    );
+    console.log(isRecommentOpen)
+  };
 
   const toggleReplyInput = (index) => {
-    setIsReplyInputOpen(isReplyInputOpen.map((state, i) => i === index ? !state : state));
-  }
+    setIsReplyInputOpen(
+      isReplyInputOpen.map((state, i) => (i === index ? !state : state))
+    );
+  };
 
   const toggleDropdown = (index) => {
-    setDropdownOpen(dropdownOpen.map((state, i) => i === index ? !state : state));
-  }
+    setDropdownOpen(
+      dropdownOpen.map((state, i) => (i === index ? !state : state))
+    );
+  };
 
   return (
     <C.CommentContainer>
@@ -116,12 +141,12 @@ export default function Comment() {
         <C.CommentTitleLine />
       </C.CommentTitleArea>
       <C.CommentInputWrapper>
-        <C.CommentInput 
+        <C.CommentInput
           ref={commentInput}
-					name="content"
-					type="text"
-					value={commentData.content}
-					onChange={handleCommentChange}
+          name="content"
+          type="text"
+          value={commentData.content}
+          onChange={handleCommentChange}
           placeholder={placeholder}
           onFocus={() => setPlaceholder("")}
           onBlur={() => setPlaceholder("댓글을 입력하세요")}
@@ -140,32 +165,48 @@ export default function Comment() {
             <C.CommentUserNameArea>
               <div>
                 <Link to={`/profile/${comment.authorNickname}`}>
-                  <C.CommentUserName>{comment.authorNickname}</C.CommentUserName>
+                  <C.CommentUserName>
+                    {comment.authorNickname}
+                  </C.CommentUserName>
                 </Link>
-                <C.CommentCreatedAt>{getTimeDifference(comment.createdDate)}</C.CommentCreatedAt>
+                <C.CommentCreatedAt>
+                  {getTimeDifference(comment.createdDate)}
+                </C.CommentCreatedAt>
               </div>
-              <C.DropdownToggle onClick={() => toggleDropdown(index)}>⋮</C.DropdownToggle>
+              <C.DropdownToggle onClick={() => toggleDropdown(index)}>
+                ⋮
+              </C.DropdownToggle>
               {dropdownOpen[index] && (
                 <C.CommentEditDeleteArea>
-                  <C.CommentEditImage src="/src/assets/editimage.png"/>
-                  <C.CommentDeleteImage src="/src/assets/deleteimage.png"/>
+                  <C.CommentEditImage src="/src/assets/editimage.png" />
+                  <C.CommentDeleteImage src="/src/assets/deleteimage.png" />
                 </C.CommentEditDeleteArea>
               )}
             </C.CommentUserNameArea>
             <C.CommentContentArea>
               <C.CommentContent>{comment.content}</C.CommentContent>
-              <C.CommentLikeImage 
-                src={like[index] ? "/src/assets/likeimage.png" : "/src/assets/unlikeimage.png"}
-                onClick={() => handleLike(index)} 
+              <C.CommentLikeImage
+                src={
+                  like[index]
+                    ? "/src/assets/likeimage.png"
+                    : "/src/assets/unlikeimage.png"
+                }
+                onClick={() => handleLike(index)}
               />
             </C.CommentContentArea>
             <C.CommentCreateRecommentArea>
               <div>
-                <C.CommentCreateRecomment onClick={() => toggleReplyInput(index)}>답글달기</C.CommentCreateRecomment>
+                <C.CommentCreateRecomment onClick={() => toggleReplyInput(index)}>
+                  답글달기
+                </C.CommentCreateRecomment>
               </div>
-              <C.CommentNumberOfLikes>{likeCount[index]}</C.CommentNumberOfLikes>
+              <C.CommentNumberOfLikes>
+                {likeCount[index]}
+              </C.CommentNumberOfLikes>
             </C.CommentCreateRecommentArea>
-            {isReplyInputOpen[index] && <Reply articleId={articleId} commentId={comment.commentId} />}
+            {isReplyInputOpen[index] && (
+              <Reply articleId={articleId} commentId={comment.commentId} />
+            )}
             <C.RecommentArea>
               <C.RecommentLine />
               <C.MoreRecomments onClick={() => toggleRecomment(index)}>
@@ -173,11 +214,11 @@ export default function Comment() {
               </C.MoreRecomments>
             </C.RecommentArea>
             <C.AnimatedRecomment isOpen={isRecommentOpen[index]}>
-              <Recomment />
+              {isRecommentOpen[index] && <Recomment commentId={comment.commentId} />}
             </C.AnimatedRecomment>
           </C.CommentUserDetail>
         </C.CommentArea>
       ))}
     </C.CommentContainer>
-  )
+  );
 }

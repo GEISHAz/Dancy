@@ -2,8 +2,19 @@ import { privateApi, publicApi } from '../util/http-commons'
 
 const url = 'comment'
 
+export const getComment = async (articleId, parentId) => {
+  try {
+		const res = await privateApi.get(`/${url}/${articleId}`, { params: {"parentId": parentId}})
+		const commentInfo = res.data
+		// console.log(commentInfo)
+		return commentInfo
+	} catch (error) {
+    console.error(error);
+    throw error;
+	}
+}
+
 export const postComment = async ({ articleId, commentData }) => {
-  console.log(articleId, commentData)
 	try {
 		const res = await privateApi.post(`/${url}/${articleId}`, commentData)
 		const comment = res.data

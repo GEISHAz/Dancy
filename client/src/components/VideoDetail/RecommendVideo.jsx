@@ -13,7 +13,7 @@ export default function RecommendVideo() {
   return (
     <RecommendVideoContainer>
       <RecommendVideoTitleContainer>
-        <RecommendVideoTitle>추천영상</RecommendVideoTitle>
+        <RecommendVideoTitle>최신 영상</RecommendVideoTitle>
         <RecommendVideoTitleLine />
       </RecommendVideoTitleContainer>
       <RecommendVideos>

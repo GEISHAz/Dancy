@@ -19,10 +19,10 @@ export default function Card() {
     })
   }, [])
 
-  const handleClick = () => {
-    const videoUrl = "your_video_url_here.mp4";
-    onClick(videoUrl)
-  }
+  // const handleClick = () => {
+  //   const videoUrl = "your_video_url_here.mp4";
+  //   onClick(videoUrl)
+  // }
   const cards = articles.map((_, index) => {
     // 줄 별로 색상 선택
     const color = colors[Math.floor(index / 3) % colors.length];
@@ -30,7 +30,8 @@ export default function Card() {
     
     return (
       <Link to={`/detail/${item.articleId}`} key={index}>
-        <CardContainer key={index} onClick={handleClick}>
+        {/* <CardContainer key={index} onClick={handleClick}> */}
+        <CardContainer key={index}>
           <CardUpperContainer src={item.articleThumbnail} />
           <CardLowerContainer color={color}>
             <CardDetailContainer>
