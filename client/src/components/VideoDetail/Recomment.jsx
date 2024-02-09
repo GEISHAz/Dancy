@@ -2,52 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import * as R from "./Recomment.style.jsx";
 import { DropdownToggle } from "./Comment.style.jsx";
-import { getComment } from "../../api/comment";
-
-const Recomments = [
-  {
-    username: "namhyun._.",
-    content: "내용입니다1",
-    created_at: new Date(),
-  },
-  {
-    username: "sunovo._.",
-    content: "내용입니다2",
-    created_at: new Date(),
-  },
-  {
-    username: "minhodo._.",
-    content: "내용입니다3",
-    created_at: new Date(),
-  },
-];
-
-// const getTimeDifference = (prevDate) => {
-//   const diff = new Date() - prevDate;
-//   const seconds = Math.floor(diff / 1000);
-//   const minutes = Math.floor(seconds / 60);
-//   const hours = Math.floor(minutes / 60);
-//   const days = Math.floor(hours / 24);
-//   const weeks = Math.floor(days / 7);
-//   if (weeks > 0) {
-//     return `${weeks}주 전`;
-//   } else if (days > 0) {
-//     return `${days}일 전`;
-//   } else if (hours > 0) {
-//     return `${hours}시간 전`;
-//   } else if (minutes > 0) {
-//     return `${minutes}분 전`;
-//   } else {
-//     return `${seconds}초 전`;
-//   }
-// };
+import { getComment, deleteComment } from "../../api/comment";
 
 export default function Recomment({ commentId }) {
-  const [like, setLike] = useState(Recomments.map(() => false));
-  const [likeCount, setLikeCount] = useState(Recomments.map(() => 0));
-  const [dropdownOpen, setDropdownOpen] = useState(Recomments.map(() => false));
+  const [like, setLike] = useState([]);
+  const [likeCount, setLikeCount] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState([]);
   const [recomments, setRecomments] = useState([])
-	const [createdDate, setCreatedDate] = useState([0, 0, 0])
   const parentId = commentId
 
   const state = useLocation();
@@ -60,25 +21,22 @@ export default function Recomment({ commentId }) {
       return res
     })
     .then ((res) => {
-      if (res.length) {
-        console.log(res)
-        setCreatedDate(res[0].createdDate)
-      }
+      const initialLikeState = Array(res.length).fill(false);
+      setLike(initialLikeState);
+      setLikeCount(initialLikeState);
+      setDropdownOpen(initialLikeState)
     })
     .catch((err) => console.log(err));
   }, []);
 
+  const handleDelete = (commentId) => {
+    console.log(commentId)
+    deleteComment(commentId)
+    window.location.reload()
+  }
+
   const handleLike = (index) => {
-    setLike(like.map((state, i) => (i === index ? !state : state)));
-    if (!like[index]) {
-      setLikeCount(
-        likeCount.map((count, i) => (i === index ? count + 1 : count))
-      );
-    } else {
-      setLikeCount(
-        likeCount.map((count, i) => (i === index ? count - 1 : count))
-      );
-    }
+
   };
 
   const toggleDropdown = (index) => {
@@ -103,7 +61,7 @@ export default function Recomment({ commentId }) {
               {dropdownOpen[index] && (
                 <R.RecommentEditDeleteArea>
                   <R.RecommentEditImage src="/src/assets/editimage.png" />
-                  <R.RecommentDeleteImage src="/src/assets/deleteimage.png" />
+                  <R.RecommentDeleteImage onClick={() => handleDelete(recomment.commentId)} src="/src/assets/deleteimage.png" />
                 </R.RecommentEditDeleteArea>
               )}
             </R.RecommentUserNameArea>
@@ -122,7 +80,7 @@ export default function Recomment({ commentId }) {
               <div>
                 <R.RecommentCreatedAt>
                   {/* {getTimeDifference(recomment.createdDate)} */}
-                  {`${createdDate[0]}. ${createdDate[1]}. ${createdDate[2]}.`} &nbsp;
+                  {`${recomment.createdDate[0]}. ${recomment.createdDate[1]}. ${recomment.createdDate[2]}.`} &nbsp;
                 </R.RecommentCreatedAt>
               </div>
               <R.RecommentNumberOfLikes>

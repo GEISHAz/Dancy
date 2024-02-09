@@ -25,3 +25,14 @@ export const postComment = async ({ articleId, commentData }) => {
     throw error;
 	}
 }
+
+export const deleteComment = async (commentId) => {
+  console.log('del')
+  try {
+    const res = await privateApi.delete(`/${url}/${commentId}`, {params: {'commentId': commentId}})
+    console.log(res)
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

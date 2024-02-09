@@ -1,30 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 import Recomment from "./Recomment";
 import * as C from "./Comment.style";
-import { getComment, postComment } from "../../api/comment";
+import { deleteComment, getComment, postComment } from "../../api/comment";
 import { Reply } from "./Reply";
 
-const getTimeDifference = (prevDate) => {
-  const diff = new Date() - prevDate;
-  const seconds = Math.floor(diff / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-  const weeks = Math.floor(days / 7);
-  if (weeks > 0) {
-    return `${weeks}주 전`;
-  } else if (days > 0) {
-    return `${days}일 전`;
-  } else if (hours > 0) {
-    return `${hours}시간 전`;
-  } else if (minutes > 0) {
-    return `${minutes}분 전`;
-  } else {
-    return `${seconds}초 전`;
-  }
-};
+// const getTimeDifference = (prevDate) => {
+//   const diff = new Date() - prevDate;
+//   const seconds = Math.floor(diff / 1000);
+//   const minutes = Math.floor(seconds / 60);
+//   const hours = Math.floor(minutes / 60);
+//   const days = Math.floor(hours / 24);
+//   const weeks = Math.floor(days / 7);
+//   if (weeks > 0) {
+//     return `${weeks}주 전`;
+//   } else if (days > 0) {
+//     return `${days}일 전`;
+//   } else if (hours > 0) {
+//     return `${hours}시간 전`;
+//   } else if (minutes > 0) {
+//     return `${minutes}분 전`;
+//   } else {
+//     return `${seconds}초 전`;
+//   }
+// };
 
 export default function Comment() {
   const [comments, setComments] = useState([]);
@@ -37,22 +36,6 @@ export default function Comment() {
 
   const state = useLocation();
   const articleId = Number(state.pathname.split("/")[2]);
-
-  // const fetchComments = async () => {
-  //   try {
-  //       const response = await axios.get(`http://i10d210.p.ssafy.io:8080/comment/${articleId}`);
-  // 			setComments(response.data);
-  //       const initialLikeState = Array(response.data.length).fill(false);
-  // 			setLike(initialLikeState);
-  // 			setLikeCount(initialLikeState);
-  // 			setIsRecommentOpen(initialLikeState);
-  // 			setIsReplyInputOpen(initialLikeState);
-  // 			setDropdownOpen(initialLikeState);
-  // 			console.log(response)
-  //   } catch (error) {
-  //       console.error('댓글을 가져오는데 실패했습니다.', error);
-  //   }
-  // };
 
   useEffect(() => {
     getComment(articleId, 0)
@@ -100,6 +83,12 @@ export default function Comment() {
         console.error(err);
       });
   };
+
+  const handleDelete = (commentId) => { 
+    console.log(commentId)
+    deleteComment(commentId)
+    window.location.reload()
+  }
 
   const handleLike = (index) => {
     setLike(like.map((state, i) => (i === index ? !state : state)));
@@ -170,7 +159,8 @@ export default function Comment() {
                   </C.CommentUserName>
                 </Link>
                 <C.CommentCreatedAt>
-                  {getTimeDifference(comment.createdDate)}
+                  {/* {getTimeDifference(comment.createdDate)} */}
+                  {`${comment.createdDate[0]}. ${comment.createdDate[1]}. ${comment.createdDate[2]}.`} &nbsp;
                 </C.CommentCreatedAt>
               </div>
               <C.DropdownToggle onClick={() => toggleDropdown(index)}>
@@ -179,7 +169,7 @@ export default function Comment() {
               {dropdownOpen[index] && (
                 <C.CommentEditDeleteArea>
                   <C.CommentEditImage src="/src/assets/editimage.png" />
-                  <C.CommentDeleteImage src="/src/assets/deleteimage.png" />
+                  <C.CommentDeleteImage onClick={() => handleDelete(comment.commentId)} src="/src/assets/deleteimage.png" />
                 </C.CommentEditDeleteArea>
               )}
             </C.CommentUserNameArea>
