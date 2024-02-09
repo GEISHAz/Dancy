@@ -40,8 +40,6 @@ public class UserApiTest extends ApiTest {
     private UserSteps userSteps;
     @Autowired
     private UserRepository userRepository;
-    @MockBean
-    private AmazonS3 amazonS3;
     @Autowired
     private UserService userService;
 
