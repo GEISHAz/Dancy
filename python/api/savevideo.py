@@ -1,15 +1,11 @@
 import cv2
 import mediapipe as mp
-import numpy as np
 import json
-import time
 import os
-import metric
 import config
-import argparse
-import math
 
 def process_video_and_save_keypoints(video_path, target_video, key_path):
+
     x0, y0, x1, y1 = 1e+9, 1e+9, -1, -1
 
     # video 정보 저장 파일 생성
@@ -17,6 +13,8 @@ def process_video_and_save_keypoints(video_path, target_video, key_path):
 
     # video 불러오기 및 video 설정 저장
     cap = cv2.VideoCapture(os.path.join(video_path, target_video))
+    target_fps = 10  # 초당 30프레임을 유지하도록 설정
+    cap.set(cv2.CAP_PROP_FPS, target_fps)  # 초당 프레임 설정
     video_inform = {
         'frame_width': int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
         'frame_height': int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)),
@@ -34,22 +32,9 @@ def process_video_and_save_keypoints(video_path, target_video, key_path):
             if ret is False:
                 break
 
-            # get frame time and FPS
-            frame_time = cap.get(cv2.CAP_PROP_POS_MSEC)
-            resize_frame = cv2.resize(frame, None, fx=1, fy=1, interpolation=cv2.INTER_LINEAR)
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            results = pose.process(frame)
 
-            # Recolor image to RGB
-            image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            image.flags.writeable = False
-
-            # Make detection
-            results = pose.process(image)
-
-            # Recolor back to BGR
-            image.flags.writeable = True
-            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-
-            # Extract landmarks
             try:
                 landmarks = results.pose_landmarks.landmark
             except:
@@ -83,6 +68,9 @@ def process_video_and_save_keypoints(video_path, target_video, key_path):
             # 'q'누르면 캠 꺼짐
             if cv2.waitKey(10) & 0xFF == ord("q"):
                 break
+        print("gt 저장 최종 프레임수", i);
+    cap.release()
+    cv2.destroyAllWindows()
 
-        cap.release()
-        cv2.destroyAllWindows()
+# 사용 예시
+
