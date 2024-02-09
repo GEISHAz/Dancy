@@ -17,11 +17,10 @@ public class VideoStatus {
     private Long videoStatusId;
 
     @ManyToOne
-    @Column(name = "gt_video_id")
     private Video referenceVideo;
 
     @OneToOne
-    @Column(name = "prac_video_id")
+    @JoinColumn(name = "videoId")
     private Video practiceVideo;
 
     @Enumerated(EnumType.STRING)

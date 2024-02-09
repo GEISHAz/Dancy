@@ -1,8 +1,10 @@
 package com.ssafy.dancy.controller;
 
 import com.ssafy.dancy.entity.User;
+import com.ssafy.dancy.message.request.video.ConvertVideoRequest;
 import com.ssafy.dancy.message.request.video.PracticeVideoUploadRequest;
 import com.ssafy.dancy.message.request.video.ReferenceVideoUploadRequest;
+import com.ssafy.dancy.message.response.video.ConvertVideoResponse;
 import com.ssafy.dancy.message.response.video.UploadVideoResponse;
 import com.ssafy.dancy.service.video.CreateVideoService;
 import jakarta.validation.Valid;
@@ -36,6 +38,18 @@ public class VideoController {
 
         return videoService.uploadPracticeVideo(user, request.videoFile(), request.referenceVideoId());
     }
+
+    @PostMapping("/analyze")
+    public ConvertVideoResponse convertTwoVideo(@Valid @RequestBody ConvertVideoRequest request){
+
+        return videoService.requestConvertToFlask(request);
+    }
+
+    @GetMapping("/status")
+
+
+//    @GetMapping("/check")
+//    public List<>
 
     @PostMapping("")
     public String requestAccuracyData(@RequestBody String accuracyData){
