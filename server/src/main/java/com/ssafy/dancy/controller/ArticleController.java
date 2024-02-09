@@ -4,6 +4,7 @@ import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.request.article.ArticleModifyRequest;
 import com.ssafy.dancy.message.request.article.ArticleUpdateRequest;
 import com.ssafy.dancy.message.response.article.ArticleDetailResponse;
+import com.ssafy.dancy.message.response.article.ArticleSaveResponse;
 import com.ssafy.dancy.message.response.article.ArticleSimpleResponse;
 import com.ssafy.dancy.service.article.ArticleService;
 import jakarta.validation.Valid;
@@ -56,5 +57,9 @@ public class ArticleController {
         return articleService.deleteArticle(user,articleId);
     }
 
+    @PostMapping("/save/{articleId}")
+    public ArticleSaveResponse articleSave(@AuthenticationPrincipal User user, @PathVariable Long articleId){
+        return articleService.saveArticleForUser(user, articleId);
+    }
 
 }

@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.dancy.entity.Article;
 import com.ssafy.dancy.entity.Follow;
+import com.ssafy.dancy.entity.QSavedArticle;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.exception.article.LastArticleException;
 import com.ssafy.dancy.message.response.article.ArticleDetailResponse;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import static com.ssafy.dancy.entity.QArticle.article;
 import static com.ssafy.dancy.entity.QArticleLike.articleLike;
 import static com.ssafy.dancy.entity.QFollow.follow;
+import static com.ssafy.dancy.entity.QSavedArticle.savedArticle;
 
 @Repository
 @RequiredArgsConstructor
@@ -67,6 +69,11 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
     @Override
     public List<ArticleSimpleResponse> getArticleSearchByNickname(String nickname, int findCount, Long previousLastArticleId) {
         return getResultStagePage(findCount, previousLastArticleId, article.user.nickname.eq(nickname));
+    }
+
+    @Override
+    public List<ArticleSimpleResponse> getArticleSavedByPerson(String nickname, int findCount, Long previousLastArticleId) {
+        return getResultStagePage(findCount, previousLastArticleId, savedArticle.user.nickname.eq(nickname));
     }
 
     public List<ArticleSimpleResponse> getResultStagePage(int findCount, Long previousLastArticleId,

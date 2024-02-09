@@ -15,7 +15,7 @@ public class SavedArticle {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long savedArticleId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Article article;
 
     @ManyToOne

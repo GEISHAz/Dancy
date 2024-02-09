@@ -1,5 +1,6 @@
 package com.ssafy.dancy.article;
 
+import com.amazonaws.services.secretsmanager.model.CreateSecretRequest;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.restdocs.snippet.Snippet;
@@ -24,7 +25,7 @@ public class ArticleDocument {
 
     public static final Snippet stageRequestField = queryParameters(
             parameterWithName("limit").attributes(required()).description("받을 게시글 최대 갯수"),
-            parameterWithName("previousArticleId").description("무한 스크롤에서 마지막에 받은 게시글 아이디")
+            parameterWithName("previousArticleId").description("무한 스크롤에서 마지막에 받은 게시글 아이디").optional()
     );
 
     public static final Snippet keywordPathField = pathParameters(
@@ -77,5 +78,13 @@ public class ArticleDocument {
             fieldWithPath("[].authorProfileImage").type(JsonFieldType.VARIES).description("글쓴이 프로필 URL"),
             fieldWithPath("[].authorName").type(JsonFieldType.STRING).description("글쓴이 닉네임"),
             fieldWithPath("[].articleView").type(JsonFieldType.NUMBER).description("조회수")
+    );
+
+    public static final Snippet articleSaveResponseField =  responseFields(
+            fieldWithPath("saveId").type(JsonFieldType.NUMBER).description("게시물 저장 고유 아이디"),
+            fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("게시글 고유 아이디"),
+            fieldWithPath("saveUserNickname").type(JsonFieldType.STRING).description("저장한 유저의 닉네임"),
+            fieldWithPath("articleTitle").type(JsonFieldType.STRING).description("저장한 게시글 제목"),
+            fieldWithPath("articleAuthorNickname").type(JsonFieldType.STRING).description("저장한 게시글 작성자 닉네임")
     );
 }

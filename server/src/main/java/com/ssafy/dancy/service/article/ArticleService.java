@@ -1,13 +1,16 @@
 package com.ssafy.dancy.service.article;
 
 import com.ssafy.dancy.entity.Article;
+import com.ssafy.dancy.entity.SavedArticle;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.exception.article.ArticleNotFoundException;
 import com.ssafy.dancy.exception.article.ArticleNotOwnerException;
 import com.ssafy.dancy.message.request.article.ArticleModifyRequest;
 import com.ssafy.dancy.message.request.article.ArticleUpdateRequest;
 import com.ssafy.dancy.message.response.article.ArticleDetailResponse;
+import com.ssafy.dancy.message.response.article.ArticleSaveResponse;
 import com.ssafy.dancy.message.response.article.ArticleSimpleResponse;
+import com.ssafy.dancy.repository.ArticleSaveRepository;
 import com.ssafy.dancy.repository.article.ArticleRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ import java.util.List;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ArticleSaveRepository articleSaveRepository;
 
     public List<ArticleSimpleResponse> getStagePage(int limit, Long previousLastArticleId){
         return articleRepository.getStagePageInfo(limit, previousLastArticleId);
@@ -30,6 +34,10 @@ public class ArticleService {
     public ArticleDetailResponse getArticle(User user, long articleId) {
         return articleRepository.getArticleDetailInfo(user, articleId).orElseThrow(() ->
                 new ArticleNotFoundException("게시물을 찾을 수 없습니다."));
+    }
+
+    public List<ArticleSimpleResponse> getArticleOfPerson(String nickname, int findCount, Long previousArticleId) {
+        return articleRepository.getArticleSearchByNickname(nickname, findCount, previousArticleId);
     }
 
     public ArticleDetailResponse insertArticle(User user, ArticleUpdateRequest dto) {
@@ -76,6 +84,28 @@ public class ArticleService {
         articleRepository.delete(article);
 
         return article.getArticleId();
+    }
+
+    public ArticleSaveResponse saveArticleForUser(User user, Long articleId) {
+        Article article = articleRepository.findByArticleId(articleId).orElseThrow(() ->
+                new ArticleNotFoundException("요청한 게시글을 찾을 수 없습니다."));
+
+        SavedArticle savedArticle = articleSaveRepository.save(SavedArticle.builder()
+                .article(article)
+                .user(user)
+                .build());
+
+        return ArticleSaveResponse.builder()
+                .saveId(savedArticle.getSavedArticleId())
+                .articleId(articleId)
+                .saveUserNickname(user.getNickname())
+                .articleTitle(article.getArticleTitle())
+                .articleAuthorNickname(article.getUser().getNickname())
+                .build();
+    }
+
+    public List<ArticleSimpleResponse> getSavedArticleOfUser(String nickname, Integer findCount, Long previousArticleId) {
+        return articleRepository.getArticleSavedByPerson(nickname, findCount, previousArticleId);
     }
 
     public ArticleDetailResponse makeArticleDetailResponse(Article article, User user){
