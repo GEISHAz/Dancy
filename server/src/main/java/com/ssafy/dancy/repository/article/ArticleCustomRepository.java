@@ -17,4 +17,6 @@ public interface ArticleCustomRepository {
 
     List<ArticleSimpleResponse> getArticleSearchByNickname(String nickname, int findCount, Long previousLastArticleId);
 
+    List<ArticleSimpleResponse> getArticleSavedByPerson(String nickname, int findCount, Long previousLastArticleId);
+
 }

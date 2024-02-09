@@ -2,6 +2,7 @@ package com.ssafy.dancy.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Builder
@@ -15,18 +16,14 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long videoId;
 
-    @Column(nullable = false,length = 40)
+    @Column(nullable = false)
     private String videoTitle;
 
     @Column(nullable = false)
     private String fullVideoUrl;
 
+    @ColumnDefault("0")
     @Column(nullable = false)
-    private String thumbnailVideoUrl;
-
-    @Column(nullable = false)
-    private String thumbnailImageUrl;
-
-    @Column
-    private int score;
+    @Builder.Default
+    private int score =  0;
 }

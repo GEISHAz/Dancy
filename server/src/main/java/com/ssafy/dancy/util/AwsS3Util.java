@@ -47,4 +47,8 @@ public class AwsS3Util {
 
         return "";
     }
+
+    public boolean hasObjectInS3(String objectName){
+        return s3Client.doesObjectExist(bucketName, objectName);
+    }
 }

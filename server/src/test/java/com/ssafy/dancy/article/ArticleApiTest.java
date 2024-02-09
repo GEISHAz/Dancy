@@ -4,12 +4,15 @@ import com.ssafy.dancy.ApiTest;
 import com.ssafy.dancy.CommonDocument;
 import com.ssafy.dancy.auth.AuthSteps;
 import com.ssafy.dancy.entity.Article;
+import com.ssafy.dancy.entity.SavedArticle;
 import com.ssafy.dancy.follow.FollowSteps;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
+import com.ssafy.dancy.repository.ArticleSaveRepository;
 import com.ssafy.dancy.repository.article.ArticleRepository;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
 import groovy.util.logging.Slf4j;
+import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -19,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import java.util.List;
 import java.util.Set;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
@@ -39,6 +43,8 @@ public class ArticleApiTest extends ApiTest {
     private UserService userService;
     @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
+    private ArticleSaveRepository articleSaveRepository;
     private SignUpRequest signUpRequest;
     private SignUpRequest otherSignUpRequest;
 
@@ -583,6 +589,72 @@ public class ArticleApiTest extends ApiTest {
                 .pathParam("articleId", 123)
                 .when()
                 .delete("/stage/{articleId}")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 게시물_저장_성공_200(){
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+        Long articleId = 게시물_생성(token);
+
+        String otherToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
+
+        ExtractableResponse<Response> response = given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, "게시물을 저장하는 API 입니다. " +
+                        "<br>성공적으로 게시물을 저장했을 때, 200 OK 와 함께 저장 내역을 반환받습니다. " +
+                        "<br>로그인 토큰을 입력받지 않고 저장 시도를 하면, 401 Unauthorized 를 반환받습니다. " +
+                        "<br>존재하지 않는 articleId 를 저장 시도하면, 404 Not Found 가 반환됩니다.",
+                        "게시물저장",
+                        CommonDocument.AccessTokenHeader,
+                        ArticleDocument.articleIdPathField,
+                        ArticleDocument.articleSaveResponseField
+                        ))
+                .header("AUTH-TOKEN", otherToken)
+                .pathParams("articleId", articleId)
+                .when()
+                .post("/stage/save/{articleId}")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+
+        JsonPath jsonPath = response.jsonPath();
+        assertThat(articleSaveRepository.findById(jsonPath.getLong("saveId"))).isPresent();
+    }
+
+    @Test
+    void 게시물_저장_토큰없음_401(){
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+        Long articleId = 게시물_생성(token);
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH))
+                .pathParams("articleId", articleId)
+                .when()
+                .post("/stage/save/{articleId}")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 게시물_저장_해당게시물없음_404(){
+        String otherToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH,
+                        CommonDocument.AccessTokenHeader,
+                        ArticleDocument.articleIdPathField,
+                        CommonDocument.ErrorResponseFields
+                ))
+                .header("AUTH-TOKEN", otherToken)
+                .pathParams("articleId", 12345)
+                .when()
+                .post("/stage/save/{articleId}")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.NOT_FOUND.value())

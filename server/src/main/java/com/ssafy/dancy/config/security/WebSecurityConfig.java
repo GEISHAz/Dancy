@@ -68,6 +68,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/mypage/**").hasRole("USER")
                         .requestMatchers("/follow/request-follow").hasRole("USER")
                         .requestMatchers("/follow/request-unfollow").hasRole("USER")
+                        .requestMatchers("/video/upload/**").hasRole("USER")
+                        .requestMatchers("/stage/save/**").hasRole("USER")
                         .anyRequest().permitAll())
                 .exceptionHandling(config ->
                         config.authenticationEntryPoint(authenticationEntryPoint()).
