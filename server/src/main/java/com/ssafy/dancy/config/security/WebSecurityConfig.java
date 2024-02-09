@@ -53,9 +53,9 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.PUT,"/user/introduce").hasRole("USER")
                         .requestMatchers("/user/details").hasRole("USER")
                         .requestMatchers("/auth/change").hasRole("USER")
-                        .requestMatchers(HttpMethod.DELETE, "/auth").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/auth/delete").hasRole("USER")
                         .requestMatchers("/user/profile_image").hasRole("USER")
-                        .requestMatchers("/stage").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/stage").hasRole("USER")
                         .requestMatchers("/stage/**").hasRole("USER")
                         .requestMatchers("/auth/password/find").hasRole("USER")
                         .requestMatchers("/follow/request-follow").hasRole("USER")
@@ -66,6 +66,10 @@ public class WebSecurityConfig {
                         .requestMatchers("/like/article-like/**").hasRole("USER")
                         .requestMatchers("/like/comment-like/**").hasRole("USER")
                         .requestMatchers("/mypage/**").hasRole("USER")
+                        .requestMatchers("/follow/request-follow").hasRole("USER")
+                        .requestMatchers("/follow/request-unfollow").hasRole("USER")
+                        .requestMatchers("/video/upload/**").hasRole("USER")
+                        .requestMatchers("/stage/save/**").hasRole("USER")
                         .anyRequest().permitAll())
                 .exceptionHandling(config ->
                         config.authenticationEntryPoint(authenticationEntryPoint()).

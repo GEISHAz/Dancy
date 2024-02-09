@@ -70,7 +70,8 @@ public class UserDocument {
             fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
             fieldWithPath("birthDate").type(JsonFieldType.STRING).description("생년월일"),
             fieldWithPath("introduceText").type(JsonFieldType.STRING).description("소개메세지"),
-            fieldWithPath("profileImageUrl").type(JsonFieldType.VARIES).description("프로필이미지URL")
+            fieldWithPath("profileImageUrl").type(JsonFieldType.VARIES).description("프로필이미지URL"),
+            fieldWithPath("gender").type(JsonFieldType.STRING).description("성별")
     );
 
     public static final Snippet changeProfileImageResponseField = responseFields(

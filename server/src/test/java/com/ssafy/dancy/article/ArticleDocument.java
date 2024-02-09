@@ -1,12 +1,12 @@
 package com.ssafy.dancy.article;
 
+import com.amazonaws.services.secretsmanager.model.CreateSecretRequest;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 
 import static com.ssafy.dancy.DocumentFormatProvider.required;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 public class ArticleDocument {
 
@@ -20,6 +20,15 @@ public class ArticleDocument {
 
     public static final Snippet articleIdPathField = pathParameters(
             parameterWithName("articleId").attributes(required()).description("게시물 아이디")
+    );
+
+    public static final Snippet stageRequestField = queryParameters(
+            parameterWithName("limit").attributes(required()).description("받을 게시글 최대 갯수"),
+            parameterWithName("previousArticleId").description("무한 스크롤에서 마지막에 받은 게시글 아이디").optional()
+    );
+
+    public static final Snippet keywordPathField = pathParameters(
+            parameterWithName("keyword").attributes(required()).description("검색 키워드")
     );
 
     public static final Snippet ArticleWriteResponseField = responseFields(
@@ -58,5 +67,24 @@ public class ArticleDocument {
             fieldWithPath("nickname").type(JsonFieldType.STRING).description("글쓴이 닉네임"),
             fieldWithPath("profileImageUrl").type(JsonFieldType.VARIES).description("글쓴이 프로필 URL"),
             fieldWithPath("video").type(JsonFieldType.VARIES).description("비디오 URL")
+    );
+
+    public static final Snippet simpleArticleListResponseField = responseFields(
+            fieldWithPath("[].articleId").type(JsonFieldType.NUMBER).description("게시글 고유 아이디"),
+            fieldWithPath("[].articleTitle").type(JsonFieldType.STRING).description("게시글 제목"),
+            fieldWithPath("[].articleThumbnail").type(JsonFieldType.STRING).description("썸네일 이미지 URL"),
+            fieldWithPath("[].authorId").type(JsonFieldType.NUMBER).description("글쓴이 고유 아이디"),
+            fieldWithPath("[].authorProfileImage").type(JsonFieldType.VARIES).description("글쓴이 프로필 URL"),
+            fieldWithPath("[].authorName").type(JsonFieldType.STRING).description("글쓴이 닉네임"),
+            fieldWithPath("[].articleView").type(JsonFieldType.NUMBER).description("조회수"),
+            fieldWithPath("[].createdDate").type(JsonFieldType.ARRAY).description("생성일시")
+    );
+
+    public static final Snippet articleSaveResponseField =  responseFields(
+            fieldWithPath("saveId").type(JsonFieldType.NUMBER).description("게시물 저장 고유 아이디"),
+            fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("게시글 고유 아이디"),
+            fieldWithPath("saveUserNickname").type(JsonFieldType.STRING).description("저장한 유저의 닉네임"),
+            fieldWithPath("articleTitle").type(JsonFieldType.STRING).description("저장한 게시글 제목"),
+            fieldWithPath("articleAuthorNickname").type(JsonFieldType.STRING).description("저장한 게시글 작성자 닉네임")
     );
 }

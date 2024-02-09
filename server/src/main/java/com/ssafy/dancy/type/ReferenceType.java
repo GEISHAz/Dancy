@@ -8,6 +8,7 @@ import java.util.Locale;
 public enum ReferenceType {
 
     IMAGE(List.of("jpg","jpeg","png","svg","gif")),
+    VIDEO(List.of("mp4", "mov","wmv","avi","flv", "mkv")),
     TEST(List.of("txt","mp4"));
 
     // enum 을 통해 관리되어야 하는 것

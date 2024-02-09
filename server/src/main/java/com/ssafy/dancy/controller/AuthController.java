@@ -50,7 +50,7 @@ public class AuthController {
         jwtTokenProvider.removeRefreshTokenForClient(response);
     }
 
-    @DeleteMapping("")
+    @PutMapping("/delete")
     public void deleteUser(@AuthenticationPrincipal User user,
                            @RequestBody UserDeleteRequest request,
                            HttpServletResponse response){

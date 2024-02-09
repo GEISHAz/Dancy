@@ -4,15 +4,15 @@ import com.ssafy.dancy.ApiTest;
 import com.ssafy.dancy.CommonDocument;
 import com.ssafy.dancy.auth.AuthSteps;
 import com.ssafy.dancy.entity.Article;
-import com.ssafy.dancy.entity.User;
-import com.ssafy.dancy.follow.FollowDocument;
+import com.ssafy.dancy.entity.SavedArticle;
 import com.ssafy.dancy.follow.FollowSteps;
-import com.ssafy.dancy.like.LikeDocument;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
+import com.ssafy.dancy.repository.ArticleSaveRepository;
 import com.ssafy.dancy.repository.article.ArticleRepository;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
 import groovy.util.logging.Slf4j;
+import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import java.util.List;
 import java.util.Set;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
@@ -42,6 +43,8 @@ public class ArticleApiTest extends ApiTest {
     private UserService userService;
     @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
+    private ArticleSaveRepository articleSaveRepository;
     private SignUpRequest signUpRequest;
     private SignUpRequest otherSignUpRequest;
 
@@ -53,27 +56,27 @@ public class ArticleApiTest extends ApiTest {
         userService.signup(otherSignUpRequest, Set.of(Role.USER));
     }
 
-
-
     @Test
-    void 전체_게시물_조회(){
+    void 전체_게시물_조회_이전게시글아이디_존재_200(){
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+        게시물_작성(token);
+        Long lastId = 게시물_작성(token);
 
-        final String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-
-        given(this.spec)
-//                .filter(document(DEFAULT_RESTDOC_PATH,
-//                        "<br>stage 페이지에서 쓰는 전체 게시물을 조회하는 API 입니다." +
-//                        "<br>성공적으로 게시물 리스트가 반환되었을 때, 200 OK가 반환됩니다." +
-//                        "<br>게시물 관련 API는 모두 헤더에 AUTH-TOKEN을 넣어줘야 합니다." +
-//                        "<br>그렇지 않으면 401 Unauthorized 가 반환됩니다.", "전체 게시물 조회",
-//
-//
-//
-//
-//                        CommonDocument.AccessTokenHeader, CommonDocument.ErrorResponseFields))
-//                .filter(document(DEFAULT_RESTDOC_PATH, UserDocument.nicknamePathField, CommonDocument.ErrorResponseFields))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        ExtractableResponse<Response> response = given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH,
+                        "stage 페이지에서 게시물을 조회하는 API 입니다." +
+                                "<br>현재 무한 스크롤을 지원하고 있으며, previousArticleId 를 query string 으로 입력했을 때" +
+                                "<br>해당 article Id 를 기준으로 그보다 이전에 만들어진 article 정보가 나옵니다." +
+                                "<br>limit 정보 역시 query string 으로 입력해 주어야 하며, 몇 개의 게시글을 받아올지 지정하는 부분입니다." +
+                                "<br>query string 에서 limit 정보는 필수값이며, previousArticleId 는 선택값입니다." +
+                                "<br>성공적으로 게시물 리스트가 반환되었을 때, 200 OK가 반환됩니다." +
+                                "<br>게시글 리스트가 마지막이었다면, 204 No Content 가 반환됩니다. " +
+                                "<br>이때, 그냥 article 자체가 존재하지 않는 상황이더라도, 204 No Content 가 반환됩니다.",
+                        "전체 게시물 조회",
+                        ArticleDocument.stageRequestField, ArticleDocument.simpleArticleListResponseField))
                 .header("AUTH-TOKEN", token)
+                .param("limit", 10)
+                .param("previousArticleId", lastId)
                 .when()
                 .get("/stage")
                 .then()
@@ -81,6 +84,71 @@ public class ArticleApiTest extends ApiTest {
                 .statusCode(HttpStatus.OK.value())
                 .log().all().extract();
 
+        JsonPath jsonPath = response.jsonPath();
+        assertThat(jsonPath.getList("").size()).isEqualTo(1);
+    }
+
+
+    @Test
+    void 전체_게시물_조회_이전게시글아이디_없음_200(){
+
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+        게시물_작성(token);
+        게시물_작성(token);
+
+        ExtractableResponse<Response> response = given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, ArticleDocument.simpleArticleListResponseField))
+                .header("AUTH-TOKEN", token)
+                .param("limit", 10)
+                .when()
+                .get("/stage")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+
+        JsonPath jsonPath = response.jsonPath();
+        assertThat(jsonPath.getList("").size()).isEqualTo(2);
+    }
+
+    @Test
+    void 전체_게시물_조회_리미트처리_성공_200(){
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+        게시물_작성(token);
+        게시물_작성(token);
+
+        ExtractableResponse<Response> response = given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, ArticleDocument.simpleArticleListResponseField))
+                .header("AUTH-TOKEN", token)
+                .param("limit", 1)
+                .when()
+                .get("/stage")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+
+        JsonPath jsonPath = response.jsonPath();
+        assertThat(jsonPath.getList("").size()).isEqualTo(1);
+    }
+
+    @Test
+    void 전체_게시물_조회_마지막게시글_처리_204(){
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+        Long realLastId = 게시물_작성(token);
+        게시물_작성(token);
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH))
+                .header("AUTH-TOKEN", token)
+                .param("limit", 10)
+                .param("previousArticleId", realLastId)
+                .when()
+                .get("/stage")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NO_CONTENT.value())
+                .log().all().extract();
     }
 
     @Test
@@ -521,6 +589,72 @@ public class ArticleApiTest extends ApiTest {
                 .pathParam("articleId", 123)
                 .when()
                 .delete("/stage/{articleId}")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 게시물_저장_성공_200(){
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+        Long articleId = 게시물_생성(token);
+
+        String otherToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
+
+        ExtractableResponse<Response> response = given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, "게시물을 저장하는 API 입니다. " +
+                        "<br>성공적으로 게시물을 저장했을 때, 200 OK 와 함께 저장 내역을 반환받습니다. " +
+                        "<br>로그인 토큰을 입력받지 않고 저장 시도를 하면, 401 Unauthorized 를 반환받습니다. " +
+                        "<br>존재하지 않는 articleId 를 저장 시도하면, 404 Not Found 가 반환됩니다.",
+                        "게시물저장",
+                        CommonDocument.AccessTokenHeader,
+                        ArticleDocument.articleIdPathField,
+                        ArticleDocument.articleSaveResponseField
+                        ))
+                .header("AUTH-TOKEN", otherToken)
+                .pathParams("articleId", articleId)
+                .when()
+                .post("/stage/save/{articleId}")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+
+        JsonPath jsonPath = response.jsonPath();
+        assertThat(articleSaveRepository.findById(jsonPath.getLong("saveId"))).isPresent();
+    }
+
+    @Test
+    void 게시물_저장_토큰없음_401(){
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+        Long articleId = 게시물_생성(token);
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH))
+                .pathParams("articleId", articleId)
+                .when()
+                .post("/stage/save/{articleId}")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 게시물_저장_해당게시물없음_404(){
+        String otherToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH,
+                        CommonDocument.AccessTokenHeader,
+                        ArticleDocument.articleIdPathField,
+                        CommonDocument.ErrorResponseFields
+                ))
+                .header("AUTH-TOKEN", otherToken)
+                .pathParams("articleId", 12345)
+                .when()
+                .post("/stage/save/{articleId}")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.NOT_FOUND.value())

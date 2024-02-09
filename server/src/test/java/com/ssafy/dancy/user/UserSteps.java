@@ -1,5 +1,6 @@
 package com.ssafy.dancy.user;
 
+import com.ssafy.dancy.CommonSteps;
 import com.ssafy.dancy.message.request.user.IntroduceTextChangeRequest;
 import com.ssafy.dancy.message.request.user.NicknameRequest;
 import com.ssafy.dancy.type.CustomMultipartFile;
@@ -54,7 +55,7 @@ public class UserSteps {
             BufferedImage image = new BufferedImage(200,200,BufferedImage.TYPE_INT_ARGB);
             ImageIO.write(image,"png",file);
 
-            return createMultipartFileList(file, "profileImage");
+            return CommonSteps.createMultipartFileList(file, "profileImage");
         }catch(IOException e){
             e.printStackTrace();
             return null;
@@ -68,24 +69,10 @@ public class UserSteps {
 
             Path path = targetFile.toPath();
             Files.write(path, inputContent.getBytes());
-            return createMultipartFileList(targetFile, "profileImage");
+            return CommonSteps.createMultipartFileList(targetFile, "profileImage");
         }catch(IOException e){
             e.printStackTrace();
             return null;
         }
     }
-
-    private static MultiPartSpecification createMultipartFileList(File file, String fieldName) throws IOException {
-        DiskFileItem fileItem = new DiskFileItem("file", "application/octet-stream", false, file.getName(), (int) file.length() , file.getParentFile());
-        fileItem.getOutputStream().write(Files.readAllBytes(file.toPath()));
-
-        MultipartFile multipartFile = new CustomMultipartFile(fileItem.get(),fileItem.getName());
-        return new MultiPartSpecBuilder(multipartFile.getBytes())
-                .controlName(fieldName)
-                .fileName(multipartFile.getOriginalFilename())
-                .mimeType(multipartFile.getContentType())
-                .build();
-    }
-
-
 }

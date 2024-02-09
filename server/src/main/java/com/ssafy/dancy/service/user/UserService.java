@@ -9,7 +9,6 @@ import com.ssafy.dancy.message.request.email.VerifyEmailRequest;
 import com.ssafy.dancy.message.request.user.ChangeProfileImageRequest;
 import com.ssafy.dancy.message.request.user.IntroduceTextChangeRequest;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
-import com.ssafy.dancy.message.response.auth.JwtTokenResponse;
 import com.ssafy.dancy.message.response.user.ChangeIntroduceResponse;
 import com.ssafy.dancy.message.response.user.ChangedProfileImageResponse;
 import com.ssafy.dancy.message.response.user.UpdatedUserResponse;
@@ -144,6 +143,7 @@ public class UserService {
                         .birthDate(birthDateAsString)
                         .introduceText(user.getIntroduceText())
                         .profileImageUrl(user.getProfileImageUrl())
+                        .gender(user.getGender().toString())
                         .build();
     }
 
@@ -202,7 +202,7 @@ public class UserService {
         if(!savedVerifyCode.equals(request.verifyCode())){
             int wrongCount = redisRepository.stackWrongPasswordFindCode(
                     request.targetEmail(), PASSWORD_FIND_INFO_VALID_TIME, BLOCK_USER_TIME);
-            throw new VerifyCodeNotMatchException(String.format("인증 코드가 일치하지 않습니다. %d 번 틀렸습니다",wrongCount));
+            throw new VerifyCodeNotMatchException(String.format("인증 코드가 일치하지 않습니다.\n(%d/5)",wrongCount));
         }
 
         redisRepository.deletePasswordFindInfo(request.targetEmail());

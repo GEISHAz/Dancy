@@ -24,9 +24,9 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final ArticleRepository articleRepository;
 
-    public List<CommentResponse> searchComment(long articleId) {
+    public List<CommentResponse> searchComment(long articleId, long parentId) {
 
-        List<Comment> searchedComment = commentRepository.findCommentByArticle_ArticleId(articleId);
+        List<Comment> searchedComment = commentRepository.findCommentByArticle_ArticleIdAndParentId(articleId, parentId);
 
         List<CommentResponse> response = new ArrayList<>();
         for(Comment comment : searchedComment){
@@ -90,6 +90,7 @@ public class CommentService {
                 .createdDate(comment.getCreatedDate())
                 .commentLike(comment.getCommentLike())
                 .authorNickname(comment.getUser().getNickname())
+                .authorProfileImageUrl(comment.getUser().getProfileImageUrl())
                 .articleId(comment.getArticle().getArticleId())
                 .parentId(comment.getParentId())
                 .build();

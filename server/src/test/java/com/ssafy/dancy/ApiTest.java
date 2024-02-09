@@ -1,5 +1,7 @@
 package com.ssafy.dancy;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
@@ -45,6 +47,8 @@ public class ApiTest {
     protected ValueOperations<Object, Object> mockValueOp;
     @MockBean
     protected JavaMailSender mailSender;
+    @MockBean
+    protected AmazonS3 amazonS3;
 
 
     @LocalServerPort
@@ -69,6 +73,7 @@ public class ApiTest {
         Mockito.doNothing().when(mockValueOp).set(anyString(), anyString(), anyLong(), any());
         Mockito.when(redisTemplate.delete(anyString())).thenReturn(true);
         Mockito.doNothing().when(mailSender).send(any(SimpleMailMessage.class));
+        Mockito.doReturn(null).when(amazonS3).putObject(any());
     }
 
     @AfterEach

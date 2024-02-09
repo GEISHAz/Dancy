@@ -1,10 +1,11 @@
 package com.ssafy.dancy.controller;
 
-import com.ssafy.dancy.entity.Article;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.request.article.ArticleModifyRequest;
 import com.ssafy.dancy.message.request.article.ArticleUpdateRequest;
-import com.ssafy.dancy.message.response.ArticleDetailResponse;
+import com.ssafy.dancy.message.response.article.ArticleDetailResponse;
+import com.ssafy.dancy.message.response.article.ArticleSaveResponse;
+import com.ssafy.dancy.message.response.article.ArticleSimpleResponse;
 import com.ssafy.dancy.service.article.ArticleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +25,10 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-
     @GetMapping("")
-    public List<Article> getAllArticle(){
-        return articleService.getAllArticle();
+    public List<ArticleSimpleResponse> getAllArticle(@RequestParam int limit,
+                                                     @RequestParam(required = false) Long previousArticleId){
+        return articleService.getStagePage(limit, previousArticleId);
     }
 
     @GetMapping("/{articleId}")
@@ -56,5 +57,9 @@ public class ArticleController {
         return articleService.deleteArticle(user,articleId);
     }
 
+    @PostMapping("/save/{articleId}")
+    public ArticleSaveResponse articleSave(@AuthenticationPrincipal User user, @PathVariable Long articleId){
+        return articleService.saveArticleForUser(user, articleId);
+    }
 
 }

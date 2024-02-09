@@ -45,6 +45,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
 
 	// MariaDB
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
@@ -113,7 +115,7 @@ dependencies {
 openapi3 {
 	servers = [
 			//{ url = "http://배포중인 주소" },
-			{ url = "http://localhost:8080" },
+//			{ url = "http://localhost:8080" },
 			{ url = "http://i10d210.p.ssafy.io:8080" } // 이렇게 List 형태로 여러 server 를 지정해 줄 수 있다.
 	]
 	title = "SSAFY DANCY API" // API 문서 이름

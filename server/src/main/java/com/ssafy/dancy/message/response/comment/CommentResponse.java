@@ -11,6 +11,7 @@ public record CommentResponse(
         LocalDateTime createdDate,
         Integer commentLike,
         String authorNickname,
+        String authorProfileImageUrl,
         Long articleId,
         Long parentId
 ) {
