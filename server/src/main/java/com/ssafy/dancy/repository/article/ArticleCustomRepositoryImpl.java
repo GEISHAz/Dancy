@@ -4,10 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.dancy.entity.Article;
-import com.ssafy.dancy.entity.Follow;
-import com.ssafy.dancy.entity.QSavedArticle;
-import com.ssafy.dancy.entity.User;
+import com.ssafy.dancy.entity.*;
 import com.ssafy.dancy.exception.article.LastArticleException;
 import com.ssafy.dancy.message.response.article.ArticleDetailResponse;
 import com.ssafy.dancy.message.response.article.ArticleSimpleResponse;
@@ -101,24 +98,29 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
         User author = dto.getArticle().getUser();
         boolean isArticleLiked = dto.getArticleLike() != null && dto.getArticleLike().getUser().equals(user);
 
-        return ArticleDetailResponse.builder()
+        ArticleDetailResponse.ArticleDetailResponseBuilder builder = ArticleDetailResponse.builder()
                 .articleId(dto.getArticle().getArticleId())
                 .articleTitle(dto.getArticle().getArticleTitle())
                 .articleContent(dto.getArticle().getArticleContent())
-                .thumbnailImageUrl(dto.getArticle().getThumbnailImageUrl())
-                .thumbnailVideoUrl(dto.getArticle().getThumbnailVideoUrl())
                 .view(dto.getArticle().getView())
                 .articleLike(dto.getArticle().getArticleLike())
                 .createdDate(dto.getArticle().getCreatedDate())
                 .isArticleLiked(isArticleLiked)
                 .isAuthorFollowed(followInfo != null)
-                .score(-1) // TODO : 나중에 score 받을 수 있으면 집어넣기
-                .video(null) // TODO : video 처리하고 난 뒤에 하기
                 .follower(author.getFollowerCount())
                 .authorId(author.getUserId())
                 .nickname(author.getNickname())
-                .profileImageUrl(author.getProfileImageUrl())
-                .build();
+                .profileImageUrl(author.getProfileImageUrl());
+
+        if(dto.getArticle().getVideo() != null){
+            Video video = dto.getArticle().getVideo();
+            builder = builder
+                    .thumbnailImageUrl(video.getThumbnailImageUrl())
+                    .score(video.getScore()) // TODO : 나중에 score 받을 수 있으면 집어넣기
+                    .video(video); // TODO : video 처리하고 난 뒤에 하기
+        }
+
+        return builder.build();
     }
 
     private List<ArticleSimpleResponse> makeArticlesToSimpleList(List<Article> articles){

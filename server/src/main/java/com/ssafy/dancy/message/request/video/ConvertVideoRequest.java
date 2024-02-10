@@ -1,8 +1,10 @@
 package com.ssafy.dancy.message.request.video;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.hibernate.validator.constraints.URL;
 
+@Builder
 public record ConvertVideoRequest(
 
         @NotNull(message = "레퍼런스 비디오 URL 을 입력해주세요")

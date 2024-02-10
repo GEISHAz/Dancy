@@ -46,7 +46,6 @@ public class ArticleService {
                 .articleTitle(dto.articleTitle())
                 .articleContent(dto.articleContent())
                 .thumbnailImageUrl(dto.thumbnailImageUrl())
-                .thumbnailVideoUrl(dto.video())
                 .user(user)
                 .build();
 
@@ -109,23 +108,23 @@ public class ArticleService {
     }
 
     public ArticleDetailResponse makeArticleDetailResponse(Article article, User user){
+        // 본인이 입력하고, 본인이 수정하는 데 사용되는 메소드이다.
         return ArticleDetailResponse.builder()
                 .articleId(article.getArticleId())
                 .articleTitle(article.getArticleTitle())
                 .articleContent(article.getArticleContent())
                 .articleLike(article.getArticleLike())
-                .thumbnailImageUrl(article.getThumbnailImageUrl())
-                .thumbnailVideoUrl(article.getThumbnailVideoUrl())
                 .view(article.getView())
                 .createdDate(article.getCreatedDate())
                 .authorId(user.getUserId())
                 .nickname(user.getNickname())
                 .profileImageUrl(user.getProfileImageUrl())
-//                .isArticleLiked()
-//                .isAuthorFollowed()
-//                .follower()
+                .isArticleLiked(false) // 일단, 자기가 좋아요했는데 수정하는 부분을 배제
+                .isAuthorFollowed(false)
+                .follower(user.getFollowerCount())
+                .thumbnailImageUrl(article.getThumbnailImageUrl())
                 .video(null) // TODO : 추후, 비디오 부분도 집어넣기(비디오 부분 개발 완료 후)
-                .score(-1) // TODO : score 나오면 할 것.
+                .score(-1D) // TODO : score 나오면 할 것.
                 .build();
     }
 
