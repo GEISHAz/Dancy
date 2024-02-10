@@ -37,10 +37,11 @@ export const deleteComment = async (commentId) => {
   }
 }
 
-export const updateComment = async (updateData) => {
+export const updateComment = async ({commentId, updateData}) => {
   try {
     const res = await privateApi.put(`/${url}/${commentId}`, updateData)
-    console.log(res)
+    const update = res.data
+    console.log(update)
   } catch (error) {
     console.error(error);
     throw error;

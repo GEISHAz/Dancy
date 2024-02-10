@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Recomment from "./Recomment";
 import * as C from "./Comment.style";
-import { deleteComment, getComment, postComment, updateComment } from "../../api/comment";
+import { deleteComment, getComment, postComment } from "../../api/comment";
 import { Reply } from "./Reply";
-import { userState } from "../../recoil/LoginState";
+import UpdateComment from "./UpdateComment";
 
 // const getTimeDifference = (prevDate) => {
 //   const diff = new Date() - prevDate;
@@ -34,6 +34,7 @@ export default function Comment() {
   const [isReplyInputOpen, setIsReplyInputOpen] = useState([]);
   const [placeholder, setPlaceholder] = useState("답글을 입력하세요");
   const [dropdownOpen, setDropdownOpen] = useState([]);
+  const [isUpdate, setIsUpdate] = useState([])
 
   const state = useLocation();
   const articleId = Number(state.pathname.split("/")[2]);
@@ -92,45 +93,6 @@ export default function Comment() {
     window.location.reload()
   }
 
-  const updateInput = useRef();
-  const [updateData, setUpdateData] = useState({
-    content: commentData.content,
-    parentId: 0,
-  });
-
-  const [isUpdate, setIsUpdate] = useState(false)
-  const toggleUpdateInput = (index) => {
-    setIsUpdate(
-      isRecommentOpen.map((state, i) => (i === index ? !state : state))
-    );
-  }
-  const handleUpdateChange = (e) => {
-    setUpdateData({ ...updateData, [e.target.name]: e.target.value });
-  };
-
-  const handleUpdate = (inedx) => {
-    if (updateData.content.length < 1) {
-      updateInput.current.focus();
-      return;
-    }
-
-    if (updateData.content.length < 1) {
-      updateInput.current.focus();
-      return;
-    }
-    
-    toggleUpdateInput(index)
-
-    updateComment(updateData)
-    .then ((res) => {
-      // console.log(res)
-			// window.location.reload()
-    })
-    .catch ((err) => {
-      console.error(err)
-    })
-  };
-
   const handleLike = (index) => {
     setLike(like.map((state, i) => (i === index ? !state : state)));
     if (!like[index]) {
@@ -143,6 +105,13 @@ export default function Comment() {
       );
     }
   };
+
+  const toggleUpdateInput = (index) => {
+    setIsUpdate(
+      isUpdate.map((state, i) => (i === index ? !state : state))
+    );
+    console.log(isUpdate)
+  }
 
   const toggleRecomment = (index) => {
     setIsRecommentOpen(
@@ -214,16 +183,8 @@ export default function Comment() {
               )}
             </C.CommentUserNameArea>
             <C.CommentContentArea>
-              {isUpdate ? 
-              <C.CommentInput
-                ref={updateInput}
-                name="content"
-                type="text"
-                value={updateData.content}
-                onChange={handleUpdateChange}
-              /> :
-              <C.CommentContent>{comment.content}</C.CommentContent>
-              }
+              {isUpdate[index] ? <UpdateComment  commentId={comment.commentId} commentData={comment.content} /> :
+              <C.CommentContent>{comment.content}</C.CommentContent>}
               <C.CommentLikeImage
                 src={
                   like[index]

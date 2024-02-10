@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as V from "./VideoDetail.style";
-import { deleteArticle, getArticle } from "../../api/stage";
+import { deleteArticle, getArticle, saveArticle } from "../../api/stage";
 import VideoPlayer from "./VideoPlayer";
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../recoil/LoginState.js';
@@ -9,16 +9,6 @@ import UpdateModal from '../../components/VideoDetail/UpdateModal.jsx'
 import { articleLike, likeUsers } from "../../api/like.js";
 import { userInfo } from "../../api/myPage.js";
 import { followRequest, unFollowRequest } from '../../api/follow.js';
-
-
-const cardDetails = [
-  {
-    username: "namhyun._.2",
-    title: "남현이의 춤사위를 보세요",
-    created_at: new Date(),
-    view: 25,
-  },
-];
 
 const Hashtags = [
   { text: "#그녀가", color: "#FFF4B5" },
@@ -29,16 +19,6 @@ const Hashtags = [
 export default function VideoDetail({videoSrc}) {
   const [cardDetail, setCardDetail] = useState();
   const [hashtags, setHashtags] = useState();
-  const [save, setSave] = useState(false);
-
-  useEffect(() => {
-    setCardDetail(cardDetails);
-    setHashtags(Hashtags);
-  }, []);
-
-  const handleSave = () => {
-    setSave(!save)
-  }
 
   const navigate = useNavigate();
   const state = useLocation();
@@ -61,6 +41,7 @@ export default function VideoDetail({videoSrc}) {
     getArticle(articleId)
     .then ((res) => {
       setArticleInfo(res)
+      console.log('articleInfo', res)
 			return res
     })
 		.then ((res) => {
@@ -74,6 +55,7 @@ export default function VideoDetail({videoSrc}) {
 
       userInfo(res.nickname)
       .then ((res) => {
+        console.log('userinfo',res)
         setAuthorInfo(res.userInfo)
       })
       .catch ((err) => {
@@ -131,10 +113,15 @@ export default function VideoDetail({videoSrc}) {
       console.log(res)
 			window.location.reload()
     })
-    .catch((err) => {
-      console.error(err)
-    })
+    .catch((err) => {console.error(err)})
   };
+
+  // 게시글 보관 관리
+  const handleSave = () => {
+    saveArticle(articleId)
+    .then(() => console.log('save sucess'))
+    .catch((err) => console.error(err))
+  }
 
   // 게시글 작성자 팔로우/언팔로우 (자신의 글이라면 팔로우 버튼 노출 X)
   const followHandler = () => {
@@ -215,7 +202,7 @@ export default function VideoDetail({videoSrc}) {
 					<V.WithArea>
 						<V.WithBtn src="/src/assets/with.png"/>
 					</V.WithArea>
-					<V.SaveBtn src={save ? "/src/assets/saveimage.png" : "/src/assets/unsaveimage.png"} onClick={handleSave}/>
+					<V.SaveBtn src={articleInfo.isArticleLiked ? "/src/assets/saveimage.png" : "/src/assets/unsaveimage.png"} onClick={handleSave}/>
 					<V.LikeBtn src={articleInfo.isArticleLiked ? "/src/assets/likeimage.png" : "/src/assets/unlikeimage.png"} onClick={handleLike} />
 					<V.LikeRate>
 						<V.DropdownToggle onClick={handleLikeUser}> {articleInfo.articleLike} 
@@ -238,51 +225,48 @@ export default function VideoDetail({videoSrc}) {
 			<VideoPlayer src={videoSrc} />
 
 			<V.VideoDetailContainer>
-				{cardDetail &&
-					cardDetail.map((card, index) => (
-						<V.VideoDetailArea key={index}>
-							<V.VideoTitle>{articleInfo.articleTitle}</V.VideoTitle>
-							<V.VideoContentArea>
-								<V.VideoUserDetailArea>
-									<V.VideoUserProfileImage src={authorInfo.profileImageUrl} />
-									<V.VideoUserDetail>
-										<V.VideoUserName>{articleInfo.nickname}</V.VideoUserName>
-										<V.VideoFollowArea>
-											<V.VideoFollower>
-												<div>팔로워 {authorInfo.follower}</div>
-											</V.VideoFollower>
-                      {authorInfo.isMine ? null :                       
-                        <V.VideoFollowBtn $isFollow={authorInfo.followed} onClick={followHandler}>
-                          <div>{authorInfo.followed ? "팔로잉" : "팔로우"}</div>
-                        </V.VideoFollowBtn>
-                      }
-										</V.VideoFollowArea>
-									</V.VideoUserDetail>
-								</V.VideoUserDetailArea>
-								<V.VideoAccuracyArea>
-									<V.VideoUpperContainer>
-										<div>{`${createdDate[0]}. ${createdDate[1]}. ${createdDate[2]}.`} &nbsp; |&nbsp; 조회 수 {articleInfo.view}</div>
-									</V.VideoUpperContainer>
-									<V.VideoLowerContainer>
-										<V.VideoContent>{articleInfo.articleContent}</V.VideoContent>
-										<V.BtnContainer>
-											<V.AccuracyBtn>{articleInfo.score} %</V.AccuracyBtn>
-											<V.HashTagContainer>
-												<V.HashTagArea>
-													{hashtags &&
-														hashtags.map((hashtag, index) => (
-															<V.HashTagBtn key={index} color={hashtag.color}>
-																{hashtag.text}
-															</V.HashTagBtn>
-														))}
-												</V.HashTagArea>
-											</V.HashTagContainer>
-										</V.BtnContainer>
-									</V.VideoLowerContainer>
-								</V.VideoAccuracyArea>
-							</V.VideoContentArea>
-						</V.VideoDetailArea>
-					))}
+        <V.VideoDetailArea>
+          <V.VideoTitle>{articleInfo.articleTitle}</V.VideoTitle>
+          <V.VideoContentArea>
+            <V.VideoUserDetailArea>
+              <V.VideoUserProfileImage src={authorInfo.profileImageUrl} />
+              <V.VideoUserDetail>
+                <V.VideoUserName>{articleInfo.nickname}</V.VideoUserName>
+                <V.VideoFollowArea>
+                  <V.VideoFollower>
+                    <div>팔로워 {authorInfo.follower}</div>
+                  </V.VideoFollower>
+                  {authorInfo.isMine ? null :                       
+                    <V.VideoFollowBtn $isFollow={authorInfo.followed} onClick={followHandler}>
+                      <div>{authorInfo.followed ? "팔로잉" : "팔로우"}</div>
+                    </V.VideoFollowBtn>
+                  }
+                </V.VideoFollowArea>
+              </V.VideoUserDetail>
+            </V.VideoUserDetailArea>
+            <V.VideoAccuracyArea>
+              <V.VideoUpperContainer>
+                <div>{`${createdDate[0]}. ${createdDate[1]}. ${createdDate[2]}.`} &nbsp; |&nbsp; 조회 수 {articleInfo.view}</div>
+              </V.VideoUpperContainer>
+              <V.VideoLowerContainer>
+                <V.VideoContent>{articleInfo.articleContent}</V.VideoContent>
+                <V.BtnContainer>
+                  <V.AccuracyBtn>{articleInfo.score} %</V.AccuracyBtn>
+                  {/* <V.HashTagContainer>
+                    <V.HashTagArea>
+                      {hashtags &&
+                        hashtags.map((hashtag, index) => (
+                          <V.HashTagBtn key={index} color={hashtag.color}>
+                            {hashtag.text}
+                          </V.HashTagBtn>
+                        ))}
+                    </V.HashTagArea>
+                  </V.HashTagContainer> */}
+                </V.BtnContainer>
+              </V.VideoLowerContainer>
+            </V.VideoAccuracyArea>
+          </V.VideoContentArea>
+        </V.VideoDetailArea>
 			</V.VideoDetailContainer>
 		</>
   );
