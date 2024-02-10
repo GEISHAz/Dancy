@@ -131,7 +131,7 @@ public class SearchApiTest extends ApiTest {
                 .header("AUTH-TOKEN", token)
                 .param("limit", 10)
                 .param("previousArticleId", testLastId)
-                .pathParams("keyword", AuthSteps.nickname)
+                .pathParams("keyword", "do")
                 .when()
                 .get("/search/nickname/{keyword}")
                 .then()

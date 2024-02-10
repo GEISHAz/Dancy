@@ -67,7 +67,7 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
 
     @Override
     public List<ArticleSimpleResponse> getArticleSearchByNickname(String nickname, int findCount, Long previousLastArticleId) {
-        return getResultStagePage(findCount, previousLastArticleId, article.user.nickname.eq(nickname));
+        return getResultStagePage(findCount, previousLastArticleId, article.user.nickname.contains(nickname));
     }
 
     @Override
