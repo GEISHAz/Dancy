@@ -184,6 +184,14 @@ export default function FormArea() {
         console.log("상메잘바뀌었니?", introStatusCode);
       }
 
+      // 이미지가 있으면 일단 수정 요청을 해봅시다.
+      if (user.profileImageUrl) {
+        const formData = new FormData();
+        formData.set("profileImage", user.profileImageUrl);
+        const imgStatusCode = await userChangeImg(formData);
+        console.log("프사잘바뀌었니?", imgStatusCode);
+      }
+
       // recoil 상태 업데이트
       setUser({
         ...user,
@@ -207,6 +215,8 @@ export default function FormArea() {
       alert("서버 요청 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
     }
   };
+
+  console.log("userimg", user.profileImageUrl);
 
   return (
     <JoinFormArea>

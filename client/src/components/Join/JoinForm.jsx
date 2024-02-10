@@ -86,8 +86,8 @@ export default function JoinForm() {
     formData.set("gender", joinData.gender);
     formData.set("nickname", joinData.nickname);
     formData.set("authType", `DANCY`);
-    if (joinData.profileImage) {
-      formData.set("profileImage", joinData.profileImage);
+    if (joinData.profileImageUrl) {
+      formData.set("profileImage", joinData.profileImageUrl);
     }
 
     for (const pair of formData.entries()) {

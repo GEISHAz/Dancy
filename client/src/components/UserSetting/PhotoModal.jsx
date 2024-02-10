@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import AddImgLogo from "../../assets/UserSetting/AddImgIcon.png";
+import { useRecoilState } from "recoil";
+import { joinState } from "../../recoil/JoinState";
 
 const ModalOverlay = styled.div`
   display: ${(props) => (props.isOpen ? "flex" : "none")};
@@ -88,8 +90,10 @@ const ModalButton = styled.button`
   font-size: 20px;
 `;
 
-const PhotoModal = ({ isOpen, onClose }) => {
+const PhotoModal = ({ isOpen, onClose, fileState, setFileState }) => {
   const [selectedFile, setSelectedFile] = useState(null);
+  //const [joinData, setJoinData] = useRecoilState(joinState);
+
   const fileInputRef = useRef();
 
   const handleOverlayClick = (e) => {
@@ -113,11 +117,11 @@ const PhotoModal = ({ isOpen, onClose }) => {
     e.preventDefault();
   };
 
-  const handleUpload = () => {
+  const handleUpload = (e) => {
     // 선택된 파일 처리 로직 작성
     console.log("Selected File:", selectedFile);
-    // 여기에 선택된 파일을 업로드하거나 다른 작업 수행 axios 추가 !
-
+    // 여기에 선택된 파일을 업로드
+    setFileState({ ...fileState, profileImageUrl: selectedFile });
     // 모달 닫기
     onClose();
   };
