@@ -46,7 +46,6 @@ public class ArticleService {
                 .articleTitle(dto.articleTitle())
                 .articleContent(dto.articleContent())
                 .thumbnailImageUrl(dto.thumbnailImageUrl())
-                .thumbnailVideoUrl(dto.video())
                 .user(user)
                 .build();
 
@@ -114,8 +113,6 @@ public class ArticleService {
                 .articleTitle(article.getArticleTitle())
                 .articleContent(article.getArticleContent())
                 .articleLike(article.getArticleLike())
-                .thumbnailImageUrl(article.getThumbnailImageUrl())
-                .thumbnailVideoUrl(article.getThumbnailVideoUrl())
                 .view(article.getView())
                 .createdDate(article.getCreatedDate())
                 .authorId(user.getUserId())
@@ -124,8 +121,9 @@ public class ArticleService {
 //                .isArticleLiked()
 //                .isAuthorFollowed()
 //                .follower()
+                .thumbnailImageUrl(article.getThumbnailImageUrl())
                 .video(null) // TODO : 추후, 비디오 부분도 집어넣기(비디오 부분 개발 완료 후)
-                .score(-1) // TODO : score 나오면 할 것.
+                .score(-1D) // TODO : score 나오면 할 것.
                 .build();
     }
 

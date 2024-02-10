@@ -30,9 +30,6 @@ public class Article {
     @Column //(nullable = false)
     private String thumbnailImageUrl;
 
-    @Column //(nullable = false)
-    private String thumbnailVideoUrl;
-
     @Column(nullable = false)
     @ColumnDefault("0")
     @Builder.Default
@@ -50,6 +47,6 @@ public class Article {
     @ManyToOne //(optional = false)
     private User user;
 
-    @OneToOne // (optional = false)
+    @OneToOne(fetch = FetchType.EAGER) // (optional = false)
     private Video video;
 }

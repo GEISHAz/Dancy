@@ -1,5 +1,6 @@
 package com.ssafy.dancy.entity;
 
+import com.ssafy.dancy.type.VideoType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -16,14 +17,27 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long videoId;
 
+    @ManyToOne
+    private User user;
+
     @Column(nullable = false)
     private String videoTitle;
 
     @Column(nullable = false)
     private String fullVideoUrl;
 
+    private String thumbnailImageUrl;
+
+    @Column
+    @Enumerated(value = EnumType.STRING)
+    private VideoType videoType;
+
     @ColumnDefault("0")
     @Column(nullable = false)
     @Builder.Default
-    private int score =  0;
+    private double score =  0;
+
+    @OneToOne
+    @JoinColumn(name = "articleId")
+    private Article article;
 }
