@@ -32,12 +32,14 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
                 Projections.bean(
                         ArticleDetailDTO.class,
                         article.as("article"),
-                        articleLike.as("articleLike")
+                        articleLike.as("articleLike"),
+                        savedArticle.as("savedArticle")
                         )
                 )
                 .from(article)
                 .leftJoin(articleLike).on(article.articleId.eq(articleLike.article.articleId)
                         .and(articleLike.user.userId.eq(me.getUserId())))
+                .leftJoin(savedArticle).on(savedArticle.article.eq(article))
                 .where(article.articleId.eq(articleId))
                 .fetchOne();
 
@@ -126,6 +128,7 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
                 .createdDate(dto.getArticle().getCreatedDate())
                 .isArticleLiked(isArticleLiked)
                 .isAuthorFollowed(followInfo != null)
+                .isArticleSaved(dto.getSavedArticle() != null)
                 .follower(author.getFollowerCount())
                 .authorId(author.getUserId())
                 .nickname(author.getNickname())

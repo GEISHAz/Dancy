@@ -216,6 +216,7 @@ public class ArticleApiTest extends ApiTest {
 
         게시물_좋아요(opponentToken, articleId);
         팔로우_진행(opponentToken, AuthSteps.nickname);
+        게시글_저장_진행(opponentToken, articleId);
 
         ExtractableResponse<Response> response = given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH, CommonDocument.AccessTokenHeader,
@@ -688,5 +689,19 @@ public class ArticleApiTest extends ApiTest {
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .log().all().extract();
+    }
+
+    Long 게시글_저장_진행(String token, Long articleId){
+        ExtractableResponse<Response> response = given(this.spec)
+                .header("AUTH-TOKEN", token)
+                .pathParams("articleId", articleId)
+                .when()
+                .post("/stage/save/{articleId}")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+
+        return response.jsonPath().getLong("saveId");
     }
 }

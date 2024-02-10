@@ -17,6 +17,7 @@ public record ArticleDetailResponse(
     LocalDateTime createdDate,
     boolean isArticleLiked,
     boolean isAuthorFollowed,
+    boolean isArticleSaved,
     Double score,
     int follower,
     long authorId,
