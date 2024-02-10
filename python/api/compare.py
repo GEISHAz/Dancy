@@ -7,7 +7,7 @@ import os
 import metric
 import config
 import moviepy.editor as mpa
-
+from flask import jsonify
 
 small_parts = {
     "left thigh": [1, 2],
@@ -43,6 +43,7 @@ def compare_video(gt_url, prac_url, sync_frame):
 
     # 경로 설정
     key_path = "./dataset/json/"
+    key_path_image = "./dataset/image"
     gt_path = f"{gt_name}"
     target_video = f"{prac_name}"
 
@@ -235,6 +236,11 @@ def compare_video(gt_url, prac_url, sync_frame):
             # 두개의 이미지 하나는 스켈레톤, 하나는 연습영상에 스켈레톤 씌워진것을 가로로 병합하는 코드
             preimage = cv2.hconcat([gt_image, prac_image])
             image = cv2.cvtColor(preimage, cv2.IMREAD_COLOR)
+
+            if i == 60:
+                key_path_image = "./dataset/image"
+                os.makedirs(os.path.join(key_path_image), exist_ok=True)
+                cv2.imwrite(f"{key_path_image}/{target_video}.jpg",image)
 
 
             cTime = time.time()

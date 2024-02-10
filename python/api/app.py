@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 import os
 import s3connect as sc
@@ -12,7 +12,6 @@ app = Flask(__name__)
 
 @app.route('/uploadVideo', methods=['POST'])
 def upload_video():
-
     '''
     gt_url_arr = [video/gt/asap_gt.mp4]
     gt_url_arr = [video/gt/asap_gt_nickname.mp4]
@@ -81,45 +80,42 @@ def upload_video():
             # 싱크와 음악 이름을 받고 비교시작
         print("비교시작....")
         accuracy_result = compare_video(gt_url, prac_url, sync_frame)
+        imageurl = f"thumbnailimage/{gt_name_arr[0]}_image_{prac_name_arr[2]}_{prac_name_arr[3]}"
 
         ret = sc.s3_put_object(s3, "gumid210bucket",
                                f"dataset/result/{gt_name_arr[0]}_result_{prac_name_arr[2]}_{prac_name_arr[3]}",
                                f"video/result/{gt_name_arr[0]}_result_{prac_name_arr[2]}_{prac_name_arr[3]}")
 
+        sc.s3_put_object(s3, "gumid210bucket",
+                               f"dataset/image/{gt_name_arr[0]}_prac_{prac_name_arr[2]}_{prac_name_arr[3]}.jpg",
+                               imageurl)
+
         if ret:
             print("파일 저장 성공")
             # 새로 생성한 video의 링크와 정확도 계산 결과
             s3url = f"video/result/{gt_name_arr[0]}_result_{prac_name_arr[2]}_{prac_name_arr[3]}"
-            result = json.dumps([accuracy_result, s3url])
+            result = {
+                "list": accuracy_result,
+                "totalUrl": s3url,
+                "thumbnailImageUrl": imageurl
+            }
             print(result)
-            return result
+            return jsonify(result)
         else:
             print("파일 저장 실패")
             return "ERROR"
 
-
-
 @app.route('/sendData', methods=['POST'])
 def send_data():
     testData = {
-        "key1" : "value1",
-        "key2" : "value2"
+        "key1": "value1",
+        "key2": "value2"
     }
-
-    return testData
+    return jsonify(testData)
 
 @app.route('/test/<param>')
 def testfunc(param):
     return param
 
-
-# def main():
-    # music_name = raw_input("what is music name")
-    # if music_name is not None: upload_video(music_name)
-    # else : print("error : music_name 이 일치하지 않음")
-
-
-
 if __name__ == "__main__":
-    # main()
     app.run('0.0.0.0', port=5000, debug=True)
