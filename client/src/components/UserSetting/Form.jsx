@@ -158,14 +158,6 @@ export default function FormArea() {
     }
   };
 
-  // 이전 user 상태를 기록할 useRef
-  const prevUserRef = useRef(user);
-
-  useEffect(() => {
-    // 이전 user 상태 업데이트
-    prevUserRef.current = user;
-  }, [user]);
-
   // 서버로 제출 요청하기
   const readyToSubmit = async () => {
     // 닉네임 체크가 되지 않았다면 수행 불가해요. 그치만 닉네임 수정을 안하고 싶을수도 있잖아?
@@ -193,35 +185,28 @@ export default function FormArea() {
       }
 
       // recoil 상태 업데이트
-      setUser((prevUser) => ({
-        ...prevUser,
+      setUser({
+        ...user,
         nickname: nickname,
         introduceText: introduceText,
-      }));
+      });
 
       console.log("---------------");
 
       // 알림 및 페이지 이동
       alert("정보가 성공적으로 변경되었습니다.");
+      navigate(`/profile/${nickname}`);
     } catch (error) {
       console.error("서버 요청 중 에러가 발생했습니다.", error);
       // recoil 상태 업데이트
-      setUser((prevUser) => ({
-        ...prevUser,
+      setUser({
+        ...user,
         nickname: nickname,
         introduceText: introduceText,
-      }));
+      });
       alert("서버 요청 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
     }
   };
-
-  useEffect(() => {
-    // user 상태의 이전값과 현재값이 다른 경우에만 navigate 함수 호출
-    const prevUser = prevUserRef.current;
-    if (prevUser.nickname !== user.nickname || prevUser.introduceText !== user.introduceText) {
-      navigate(`/profile/${user.nickname}`);
-    }
-  }, [user, navigate]);
 
   return (
     <JoinFormArea>
