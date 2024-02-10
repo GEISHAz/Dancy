@@ -13,6 +13,7 @@ import com.ssafy.dancy.type.VideoType;
 import com.ssafy.dancy.util.AlarmHandler;
 import com.ssafy.dancy.util.AwsS3Util;
 import com.ssafy.dancy.util.FileStoreUtil;
+import com.ssafy.dancy.util.VideoProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -36,9 +37,11 @@ public class CreateVideoService {
     private final AwsS3Util awsS3Util;
     private final WebClient webClient;
     private final AlarmHandler alarmHandler;
+    private final VideoProcessor videoProcessor;
 
     private static final String PRACTICE_VIDEO_TARGET = "video/prac";
     private static final String REFERENCE_VIDEO_TARGET = "video/gt";
+    private static final String THUMBNAIL_IMAGE_TARGET = "thumbnailImage";
     private static final String CONVERT_COMPLETE_NAME = "CONVERT_COMPLETE";
 
     public UploadVideoResponse uploadReferenceVideo(User user, MultipartFile file){
@@ -145,20 +148,28 @@ public class CreateVideoService {
         String storeFilename = storeName + "." + ext;
         String referenceVideoUrl = fileStoreUtil.uploadVideoFileToS3(file, target, storeFilename);
 
+        String thumbnailImageName = "thumbnail_" + storeName + ".jpg";
+
+        MultipartFile thumbnailImage = videoProcessor.captureThumbnailFromVideo(file, 60, thumbnailImageName);
+        String thumbnailImageUrl = fileStoreUtil.uploadThumbnailImageToS3(thumbnailImage, THUMBNAIL_IMAGE_TARGET,
+                thumbnailImageName);
+
         Video savedVideo = videoRepository.save(Video.builder()
                 .user(user)
                 .videoTitle(storeName)
                 .fullVideoUrl(referenceVideoUrl)
+                .thumbnailImageUrl(thumbnailImageUrl)
                 .videoType(videoType)
                 .build());
 
-        return wrapUpVideoUrl(savedVideo.getVideoId(), referenceVideoUrl);
+        return wrapUpVideoUrl(savedVideo.getVideoId(), referenceVideoUrl, thumbnailImageUrl);
     }
 
-    private UploadVideoResponse wrapUpVideoUrl(Long videoId, String videoUrl){
+    private UploadVideoResponse wrapUpVideoUrl(Long videoId, String videoUrl, String thumbnailImageUrl){
         return UploadVideoResponse.builder()
                 .videoId(videoId)
                 .resultVideoUrl(videoUrl)
+                .thumbnailImageUrl(thumbnailImageUrl)
                 .build();
     }
 

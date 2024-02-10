@@ -5,6 +5,7 @@ import lombok.Builder;
 @Builder
 public record UploadVideoResponse(
         Long videoId,
-        String resultVideoUrl
+        String resultVideoUrl,
+        String thumbnailImageUrl
 ) {
 }

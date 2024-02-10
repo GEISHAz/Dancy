@@ -34,8 +34,6 @@ public class QArticle extends EntityPathBase<Article> {
 
     public final StringPath thumbnailImageUrl = createString("thumbnailImageUrl");
 
-    public final StringPath thumbnailVideoUrl = createString("thumbnailVideoUrl");
-
     public final QUser user;
 
     public final QVideo video;
@@ -61,7 +59,7 @@ public class QArticle extends EntityPathBase<Article> {
     public QArticle(Class<? extends Article> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.user = inits.isInitialized("user") ? new QUser(forProperty("user")) : null;
-        this.video = inits.isInitialized("video") ? new QVideo(forProperty("video")) : null;
+        this.video = inits.isInitialized("video") ? new QVideo(forProperty("video"), inits.get("video")) : null;
     }
 
 }

@@ -31,41 +31,41 @@ public class VideoApiTest extends ApiTest {
         userService.signup(signUpRequest, Set.of(Role.USER));
     }
 
-//    @Test
-//    void 비디오_테스트(){
-//
-//        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-//
-//        given(this.spec)
-//                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-//                .header("AUTH-TOKEN", token)
-//                .multiPart(VideoSteps.레퍼런스_비디오_생성())
-//                .when()
-//                .post("/video/upload/reference")
-//                .then()
-//                .assertThat()
-//                .statusCode(HttpStatus.OK.value())
-//                .log().all().extract();
-//    }
-//
-//    @Test
-//    void 연습_비디오_테스트(){
-//        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-//
-//        Long referenceVideoId = 레퍼런스_비디오_업로드(token);
-//
-//        given(this.spec)
-//                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-//                .header("AUTH-TOKEN", token)
-//                .multiPart("referenceVideoId", referenceVideoId)
-//                .multiPart(VideoSteps.연습_비디오_생성())
-//                .when()
-//                .post("/video/upload/practice")
-//                .then()
-//                .assertThat()
-//                .statusCode(HttpStatus.OK.value())
-//                .log().all().extract();
-//    }
+    @Test
+    void 비디오_테스트(){
+
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+
+        given(this.spec)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .header("AUTH-TOKEN", token)
+                .multiPart(VideoSteps.레퍼런스_비디오_생성())
+                .when()
+                .post("/video/upload/reference")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+    }
+
+    @Test
+    void 연습_비디오_테스트(){
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+
+        Long referenceVideoId = 레퍼런스_비디오_업로드(token);
+
+        given(this.spec)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .header("AUTH-TOKEN", token)
+                .multiPart("referenceVideoId", referenceVideoId)
+                .multiPart(VideoSteps.연습_비디오_생성())
+                .when()
+                .post("/video/upload/practice")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+    }
 
     Long 레퍼런스_비디오_업로드(String token){
         ExtractableResponse<Response> response = given(this.spec)

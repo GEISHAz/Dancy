@@ -22,6 +22,10 @@ public class FileStoreUtil {
         return uploadFileToS3(file, targetDirectory, storeImageFileName);
     }
 
+    public String uploadThumbnailImageToS3(MultipartFile file, String targetDirectory, String storeFilename){
+        return uploadFileToS3(file, targetDirectory, storeFilename);
+    }
+
     public String uploadVideoFileToS3(MultipartFile file, String targetDirectory, String storeFilename) {
         return uploadFileToS3(file, targetDirectory, storeFilename);
     }
