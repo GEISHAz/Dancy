@@ -1,19 +1,21 @@
 import * as C from './Reply.style'
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { postComment } from "../../api/comment";
 
 export const Reply = ({ articleId, commentId }) => {
   const [placeholder, setPlaceholder] = useState("답글을 입력하세요");
-
 	const replyInput = useRef();
   const [commentData, setCommentData] = useState({
     "content": "",
     "parentId": commentId,
   });
+
+  useEffect(() => {
+    replyInput.current.focus()
+  }, [])
 	
 	const handleReplyChange = (e) => {
     setCommentData({ ...commentData, [e.target.name]: e.target.value });
-		console.log(commentData)
   };
 
 	const handlePost = () => {
@@ -22,10 +24,8 @@ export const Reply = ({ articleId, commentId }) => {
 			return;
 		}
     
-    console.log(articleId, commentData)
 		postComment({ articleId, commentData })
 		.then ((res) => {
-			console.log(res)
 			setCommentData({
 				content: "",
 				parentId: commentId,
@@ -36,6 +36,12 @@ export const Reply = ({ articleId, commentId }) => {
 			console.error(err)
 		})
 	}
+
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      handlePost(e);
+    }
+  };
 
 	return (
 		<C.ReplyWrapper>
@@ -48,6 +54,7 @@ export const Reply = ({ articleId, commentId }) => {
 				placeholder={placeholder}
 				onFocus={() => setPlaceholder("")}
 				onBlur={() => setPlaceholder("답글을 입력하세요")}
+        onKeyDown={handleEnter}
 			/>
 			<C.ReplyBtns>
 				<C.ReplyButton onClick={handlePost}>답글달기</C.ReplyButton>

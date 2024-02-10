@@ -3,12 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import * as R from "./Recomment.style.jsx";
 import { DropdownToggle } from "./Comment.style.jsx";
 import { getComment, deleteComment } from "../../api/comment";
+import UpdateRecomment from './UpdateRecomment.jsx'
 
 export default function Recomment({ commentId }) {
   const [like, setLike] = useState([]);
   const [likeCount, setLikeCount] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState([]);
-  const [recomments, setRecomments] = useState([])
+  const [recomments, setRecomments] = useState([]);
+  const [isUpdate, setIsUpdate] = useState([]);
   const parentId = commentId
 
   const state = useLocation();
@@ -24,13 +26,13 @@ export default function Recomment({ commentId }) {
       const initialLikeState = Array(res.length).fill(false);
       setLike(initialLikeState);
       setLikeCount(initialLikeState);
-      setDropdownOpen(initialLikeState)
+      setDropdownOpen(initialLikeState);
+      setIsUpdate(initialLikeState);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
   }, []);
 
   const handleDelete = (commentId) => {
-    console.log(commentId)
     deleteComment(commentId)
     window.location.reload()
   }
@@ -38,6 +40,12 @@ export default function Recomment({ commentId }) {
   const handleLike = (index) => {
 
   };
+
+  const toggleUpdateInput = (index) => {
+    setIsUpdate(
+      isUpdate.map((state, i) => (i === index ? !state : state))
+    );
+  }
 
   const toggleDropdown = (index) => {
     setDropdownOpen(
@@ -60,13 +68,14 @@ export default function Recomment({ commentId }) {
               </DropdownToggle>
               {dropdownOpen[index] && (
                 <R.RecommentEditDeleteArea>
-                  <R.RecommentEditImage src="/src/assets/editimage.png" />
+                  <R.RecommentEditImage onClick={() => toggleUpdateInput(index)} src="/src/assets/editimage.png" />
                   <R.RecommentDeleteImage onClick={() => handleDelete(recomment.commentId)} src="/src/assets/deleteimage.png" />
                 </R.RecommentEditDeleteArea>
               )}
             </R.RecommentUserNameArea>
             <R.RecommentContentArea>
-              <R.RecommentContent>{recomment.content}</R.RecommentContent>
+              {isUpdate[index] ? <UpdateRecomment commentId={recomment.commentId} commentData={recomment.content} /> :
+              <R.RecommentContent>{recomment.content}</R.RecommentContent>}
               <R.RecommentLikeImage
                 src={
                   like[index]

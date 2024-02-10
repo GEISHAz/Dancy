@@ -41,7 +41,6 @@ export default function VideoDetail({videoSrc}) {
     getArticle(articleId)
     .then ((res) => {
       setArticleInfo(res)
-      console.log('articleInfo', res)
 			return res
     })
 		.then ((res) => {
@@ -55,11 +54,10 @@ export default function VideoDetail({videoSrc}) {
 
       userInfo(res.nickname)
       .then ((res) => {
-        console.log('userinfo',res)
         setAuthorInfo(res.userInfo)
       })
       .catch ((err) => {
-        console.log(err)
+        console.error(err)
       })
 
 			setBeforeData({
@@ -110,7 +108,6 @@ export default function VideoDetail({videoSrc}) {
 	const handleLike = () => {
 		articleLike(articleId)
     .then((res) => {
-      console.log(res)
 			window.location.reload()
     })
     .catch((err) => {console.error(err)})
@@ -202,7 +199,7 @@ export default function VideoDetail({videoSrc}) {
 					<V.WithArea>
 						<V.WithBtn src="/src/assets/with.png"/>
 					</V.WithArea>
-					<V.SaveBtn src={articleInfo.isArticleLiked ? "/src/assets/saveimage.png" : "/src/assets/unsaveimage.png"} onClick={handleSave}/>
+					<V.SaveBtn src={articleInfo.isArticleSaved ? "/src/assets/saveimage.png" : "/src/assets/unsaveimage.png"} onClick={handleSave}/>
 					<V.LikeBtn src={articleInfo.isArticleLiked ? "/src/assets/likeimage.png" : "/src/assets/unlikeimage.png"} onClick={handleLike} />
 					<V.LikeRate>
 						<V.DropdownToggle onClick={handleLikeUser}> {articleInfo.articleLike} 

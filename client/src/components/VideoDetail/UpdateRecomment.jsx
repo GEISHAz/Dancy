@@ -9,7 +9,7 @@ export default function UpdateComment ({ commentId, commentData }) {
     content: commentData,
     parentId: 0,
   });
-
+  
   useEffect(() => {
     updateInput.current.focus()
   }, [])
@@ -18,7 +18,7 @@ export default function UpdateComment ({ commentId, commentData }) {
     setUpdateData({ ...updateData, [e.target.name]: e.target.value });
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = (e) => {
     if (updateData.content.length < 1) {
       updateInput.current.focus();
       return;

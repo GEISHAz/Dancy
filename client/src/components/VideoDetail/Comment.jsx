@@ -34,7 +34,7 @@ export default function Comment() {
   const [isReplyInputOpen, setIsReplyInputOpen] = useState([]);
   const [placeholder, setPlaceholder] = useState("답글을 입력하세요");
   const [dropdownOpen, setDropdownOpen] = useState([]);
-  const [isUpdate, setIsUpdate] = useState([])
+  const [isUpdate, setIsUpdate] = useState([]);
 
   const state = useLocation();
   const articleId = Number(state.pathname.split("/")[2]);
@@ -54,7 +54,7 @@ export default function Comment() {
       setDropdownOpen(initialLikeState);
       setIsUpdate(initialLikeState)
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
   }, []);
 
   const commentInput = useRef();
@@ -75,7 +75,6 @@ export default function Comment() {
 
     postComment({ articleId, commentData })
       .then((res) => {
-        console.log(res);
         setCommentData({
           content: "",
           parentId: 0,
@@ -88,10 +87,16 @@ export default function Comment() {
   };
 
   const handleDelete = (commentId) => { 
-    console.log(commentId)
     deleteComment(commentId)
     window.location.reload()
   }
+
+  // 엔터 키 누르면 제출되도록
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      handlePost(e);
+    }
+  };
 
   const handleLike = (index) => {
     setLike(like.map((state, i) => (i === index ? !state : state)));
@@ -110,14 +115,12 @@ export default function Comment() {
     setIsUpdate(
       isUpdate.map((state, i) => (i === index ? !state : state))
     );
-    console.log(isUpdate)
   }
 
   const toggleRecomment = (index) => {
     setIsRecommentOpen(
       isRecommentOpen.map((state, i) => (i === index ? !state : state))
     );
-    console.log(isRecommentOpen)
   };
 
   const toggleReplyInput = (index) => {
@@ -148,6 +151,7 @@ export default function Comment() {
           placeholder={placeholder}
           onFocus={() => setPlaceholder("")}
           onBlur={() => setPlaceholder("댓글을 입력하세요")}
+        onKeyDown={handleEnter}
         />
         <C.CommentBtns>
           <C.CommentButton onClick={handlePost}>댓글 작성</C.CommentButton>
@@ -183,7 +187,7 @@ export default function Comment() {
               )}
             </C.CommentUserNameArea>
             <C.CommentContentArea>
-              {isUpdate[index] ? <UpdateComment  commentId={comment.commentId} commentData={comment.content} /> :
+              {isUpdate[index] ? <UpdateComment commentId={comment.commentId} commentData={comment.content} /> :
               <C.CommentContent>{comment.content}</C.CommentContent>}
               <C.CommentLikeImage
                 src={
