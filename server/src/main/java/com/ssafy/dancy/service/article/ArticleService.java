@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @RequiredArgsConstructor
@@ -85,17 +86,26 @@ public class ArticleService {
         return article.getArticleId();
     }
 
-    public ArticleSaveResponse saveArticleForUser(User user, Long articleId) {
+    public ArticleSaveResponse saveOrDeleteArticleForUser(User user, Long articleId) {
         Article article = articleRepository.findByArticleId(articleId).orElseThrow(() ->
                 new ArticleNotFoundException("요청한 게시글을 찾을 수 없습니다."));
 
-        SavedArticle savedArticle = articleSaveRepository.save(SavedArticle.builder()
+        SavedArticle savedInfo = SavedArticle.builder()
                 .article(article)
                 .user(user)
-                .build());
+                .build();
+
+        AtomicBoolean exist = new AtomicBoolean(true);
+        articleSaveRepository.findByArticle_ArticleIdAndUser(articleId, user).ifPresentOrElse(
+                result -> {
+                    exist.set(false);
+                    articleSaveRepository.delete(result);
+                },
+                () -> articleSaveRepository.save(savedInfo)
+        );
 
         return ArticleSaveResponse.builder()
-                .saveId(savedArticle.getSavedArticleId())
+                .isSaved(exist.get())
                 .articleId(articleId)
                 .saveUserNickname(user.getNickname())
                 .articleTitle(article.getArticleTitle())

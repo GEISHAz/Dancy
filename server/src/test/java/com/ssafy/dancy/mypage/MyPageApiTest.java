@@ -248,8 +248,8 @@ public class MyPageApiTest extends ApiTest {
     }
 
 
-    Long 게시글_저장_진행(String token, Long articleId){
-        ExtractableResponse<Response> response = given(this.spec)
+    void 게시글_저장_진행(String token, Long articleId){
+        given(this.spec)
                 .header("AUTH-TOKEN", token)
                 .pathParams("articleId", articleId)
                 .when()
@@ -258,8 +258,6 @@ public class MyPageApiTest extends ApiTest {
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .log().all().extract();
-
-        return response.jsonPath().getLong("saveId");
     }
 
     void 팔로우_진행(String token, String nickname) {

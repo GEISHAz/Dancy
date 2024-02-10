@@ -81,7 +81,7 @@ public class ArticleDocument {
     );
 
     public static final Snippet articleSaveResponseField =  responseFields(
-            fieldWithPath("saveId").type(JsonFieldType.NUMBER).description("게시물 저장 고유 아이디"),
+            fieldWithPath("isSaved").type(JsonFieldType.BOOLEAN).description("게시물 저장 여부"),
             fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("게시글 고유 아이디"),
             fieldWithPath("saveUserNickname").type(JsonFieldType.STRING).description("저장한 유저의 닉네임"),
             fieldWithPath("articleTitle").type(JsonFieldType.STRING).description("저장한 게시글 제목"),

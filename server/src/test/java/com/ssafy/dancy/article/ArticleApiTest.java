@@ -5,9 +5,11 @@ import com.ssafy.dancy.CommonDocument;
 import com.ssafy.dancy.auth.AuthSteps;
 import com.ssafy.dancy.entity.Article;
 import com.ssafy.dancy.entity.SavedArticle;
+import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.follow.FollowSteps;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.repository.ArticleSaveRepository;
+import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.repository.article.ArticleRepository;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
@@ -45,6 +47,8 @@ public class ArticleApiTest extends ApiTest {
     private ArticleRepository articleRepository;
     @Autowired
     private ArticleSaveRepository articleSaveRepository;
+    @Autowired
+    private UserRepository userRepository;
     private SignUpRequest signUpRequest;
     private SignUpRequest otherSignUpRequest;
 
@@ -603,7 +607,7 @@ public class ArticleApiTest extends ApiTest {
 
         String otherToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
 
-        ExtractableResponse<Response> response = given(this.spec)
+        given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH, "게시물을 저장하는 API 입니다. " +
                         "<br>성공적으로 게시물을 저장했을 때, 200 OK 와 함께 저장 내역을 반환받습니다. " +
                         "<br>로그인 토큰을 입력받지 않고 저장 시도를 하면, 401 Unauthorized 를 반환받습니다. " +
@@ -622,8 +626,34 @@ public class ArticleApiTest extends ApiTest {
                 .statusCode(HttpStatus.OK.value())
                 .log().all().extract();
 
-        JsonPath jsonPath = response.jsonPath();
-        assertThat(articleSaveRepository.findById(jsonPath.getLong("saveId"))).isPresent();
+        User user = userRepository.findByEmail(AuthSteps.opponentemail).get();
+        assertThat(articleSaveRepository.findByArticle_ArticleIdAndUser(articleId, user)).isPresent();
+    }
+
+    @Test
+    void 게시물_저장_취소_성공_200(){
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+        Long articleId = 게시물_생성(token);
+
+        String otherToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
+        게시글_저장_진행(otherToken, articleId);
+
+        given(this.spec)
+                .filter(document(DEFAULT_RESTDOC_PATH, CommonDocument.AccessTokenHeader,
+                        ArticleDocument.articleIdPathField,
+                        ArticleDocument.articleSaveResponseField
+                ))
+                .header("AUTH-TOKEN", otherToken)
+                .pathParams("articleId", articleId)
+                .when()
+                .post("/stage/save/{articleId}")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+
+        User user = userRepository.findByEmail(AuthSteps.opponentemail).get();
+        assertThat(articleSaveRepository.findByArticle_ArticleIdAndUser(articleId, user)).isEmpty();
     }
 
     @Test
@@ -691,8 +721,8 @@ public class ArticleApiTest extends ApiTest {
                 .log().all().extract();
     }
 
-    Long 게시글_저장_진행(String token, Long articleId){
-        ExtractableResponse<Response> response = given(this.spec)
+    void 게시글_저장_진행(String token, Long articleId){
+        given(this.spec)
                 .header("AUTH-TOKEN", token)
                 .pathParams("articleId", articleId)
                 .when()
@@ -701,7 +731,5 @@ public class ArticleApiTest extends ApiTest {
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .log().all().extract();
-
-        return response.jsonPath().getLong("saveId");
     }
 }

@@ -4,7 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record ArticleSaveResponse(
-        Long saveId,
+        boolean isSaved,
         Long articleId,
         String saveUserNickname,
         String articleTitle,

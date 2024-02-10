@@ -59,7 +59,7 @@ public class ArticleController {
 
     @PostMapping("/save/{articleId}")
     public ArticleSaveResponse articleSave(@AuthenticationPrincipal User user, @PathVariable Long articleId){
-        return articleService.saveArticleForUser(user, articleId);
+        return articleService.saveOrDeleteArticleForUser(user, articleId);
     }
 
 }
