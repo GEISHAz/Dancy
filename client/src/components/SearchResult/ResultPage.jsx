@@ -1,20 +1,16 @@
 import * as RP from "./ResultPage.style";
 import SearchItem from "./SearchItem";
 import { useState } from "react";
-// 수정됨.... 설연
+import { useRecoilValue } from 'recoil';
+import { searchResultsState } from '../../recoil/SearchState';
+
 export default function ResultPage() {
   const nickColor = { color: "#252525" };
-
   const [activeButton, setActiveButton] = useState("title");
+  const searchResults = useRecoilValue(searchResultsState);
 
   const archiveHandler = (lookWhere) => {
-    if (lookWhere === "title") {
-      setActiveButton("title");
-    } else if (lookWhere === "nickName") {
-      setActiveButton("nickName");
-    } else if (lookWhere === "hashTag") {
-      setActiveButton("hashTag");
-    }
+    setActiveButton(lookWhere);
   };
 
   return (
@@ -24,7 +20,6 @@ export default function ResultPage() {
           <RP.Archive>
             <b style={nickColor}>'첫영상'</b>의 검색 결과
           </RP.Archive>
-
           <RP.BtnBox>
             <RP.BtnContainer>
               <RP.ArchiveBtn
@@ -35,30 +30,19 @@ export default function ResultPage() {
               </RP.ArchiveBtn>
               <RP.ArchiveBtnBg $active={activeButton === "title"} />
             </RP.BtnContainer>
-
             <RP.BtnContainer>
               <RP.ArchiveBtn
-                onClick={() => archiveHandler("nickName")}
-                $active={activeButton === "nickName"}
+                onClick={() => archiveHandler("title")}
+                $active={activeButton === "title"}
               >
                 닉네임
               </RP.ArchiveBtn>
-              <RP.ArchiveBtnBg $active={activeButton === "nickName"} />
-            </RP.BtnContainer>
-
-            <RP.BtnContainer>
-              <RP.ArchiveBtn
-                onClick={() => archiveHandler("hashTag")}
-                $active={activeButton === "hashTag"}
-              >
-                해시태그
-              </RP.ArchiveBtn>
-              <RP.ArchiveBtnBg $active={activeButton === "hashTag"} />
+              <RP.ArchiveBtnBg $active={activeButton === "title"} />
             </RP.BtnContainer>
           </RP.BtnBox>
         </RP.SearchHeader>
         <RP.FeedBody>
-          <SearchItem/>
+          <SearchItem searchResults={searchResults}/>
         </RP.FeedBody>
       </RP.SearchContainer>
     </RP.SearchResultArea>

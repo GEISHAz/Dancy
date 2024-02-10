@@ -1,9 +1,9 @@
-import Card from '../components/Stage/Card'
 import styled from "styled-components";
 
 export const StageContainer = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  margin: 40px 0px;
   align-items: center;
   height: auto;
 `
@@ -17,13 +17,3 @@ export const CardThumbnail = styled.div`
   gap: 50px;
   text-align: center;
 `;
-
-export default function Stage() {
-    return (
-        <StageContainer>
-            <CardThumbnail>
-                <Card />
-            </CardThumbnail>
-        </StageContainer>
-    )
-}

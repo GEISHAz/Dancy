@@ -1,51 +1,48 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SearchContainer, SearchBarOutline, SearchBarInput, SearchButtonContainer, SearchButtonImage } from "./SearchBar.style";
+import { useRecoilState } from 'recoil';
+import { searchKeywordState, searchResultsState } from '../../recoil/SearchState';
+import { searchResultList } from '../../api/searchResult';
+import * as SB from './SearchBar.style'
 
 export default function SearchBar({ cardDetails }) {
   const [placeholder, setPlaceholder] = useState("search");
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
   const navigate = useNavigate();
+  const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
+  const [, setSearchResults] = useRecoilState(searchResultsState);
 
   // 검색어 입력 핸들러
   const handleSearchChange = (event) => {
     const searchText = event.target.value;
     setSearchTerm(searchText);
-    
-    // 검색어가 비어 있으면 모든 카드를 표시
-    if (!searchText.trim()) {
-      setSearchResults([]);
-      return;
-    }
-
-    // 검색어가 포함된 카드만 결과로 표시
-    const filteredResults = cardDetails.filter(card => 
-      card.title.toLowerCase().includes(searchText.toLowerCase())
-    );
-    setSearchResults(filteredResults);
   };
-  
+
   // 검색 실행 핸들러
-  const handleSearchSubmit = () => {
-    // 검색 결과를 보여주는 페이지로 이동
-    navigate(`/results?query=${searchTerm}`);
+  const handleSearchSubmit = async () => {
+    setSearchKeyword(searchTerm);
+    try {
+      const res = await searchResultList(searchTerm);
+      setSearchResults(res);
+      navigate(`/results?query=${searchTerm}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
-    <SearchContainer>
-      <SearchBarOutline />
-      <SearchBarInput
+    <SB.SearchContainer>
+      <SB.SearchBarOutline />
+      <SB.SearchBarInput
         type="text"
         placeholder={placeholder}
         onFocus={() => setPlaceholder("")}
         onBlur={() => setPlaceholder("search")}
         onChange={handleSearchChange}
       />
-      <SearchButtonContainer>
-        {/* 검색 기능 만들기 */}
-        <SearchButtonImage src="/src/assets/search.png" onClick={handleSearchSubmit}/>
-      </SearchButtonContainer>
-    </SearchContainer>
+      <SB.SearchButtonContainer>
+        <SB.SearchButtonImage src="/src/assets/search.png" onClick={handleSearchSubmit}/>
+      </SB.SearchButtonContainer>
+    </SB.SearchContainer>
   );
 };

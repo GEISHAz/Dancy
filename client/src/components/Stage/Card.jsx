@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {CardContainer, CardUpperContainer, CardLowerContainer, CardDetailContainer, CardDetailArea, CardProfileImage, CardTitle, CardUserName, CardViewAndDate } from './Card.Style'
+import * as C from './Card.Style'
 import { allArticles } from "../../api/stage";
 
 // 사용할 색상 배열
@@ -12,7 +12,7 @@ export default function Card() {
   useEffect(() => {
     allArticles()
     .then ((res) => {
-      console.log(res)
+      // console.log(res)
       setArticles(res)
     })
     .catch ((err) => {
@@ -31,22 +31,22 @@ export default function Card() {
     
     return (
       <Link to={`/detail/${item.articleId}`} key={index}>
-        <CardContainer key={index} onClick={handleClick}>
-          <CardUpperContainer src={item.articleThumbnail} />
-          <CardLowerContainer color={color}>
-            <CardDetailContainer>
-              <CardProfileImage src={item.authorProfileImage} />
-              <CardDetailArea>
-                <CardTitle>{item.articleTitle}</CardTitle>
-                <CardUserName>{item.authorName}</CardUserName>
-                <CardViewAndDate>
+        <C.CardContainer key={index} onClick={handleClick}>
+          <C.CardUpperContainer src={item.articleThumbnail} />
+          <C.CardLowerContainer color={color}>
+            <C.CardDetailContainer>
+              <C.CardProfileImage src={item.authorProfileImage} />
+              <C.CardDetailArea>
+                <C.CardTitle>{item.articleTitle}</C.CardTitle>
+                <C.CardUserName>{item.authorName}</C.CardUserName>
+                <C.CardViewAndDate>
                   조회 수 {item.articleView}회 |{" "}
                   {/* {item.created_at.toLocaleDateString()} */}
-                </CardViewAndDate>
-              </CardDetailArea>
-            </CardDetailContainer>
-          </CardLowerContainer>
-        </CardContainer>
+                </C.CardViewAndDate>
+              </C.CardDetailArea>
+            </C.CardDetailContainer>
+          </C.CardLowerContainer>
+        </C.CardContainer>
       </Link>
     );
   });
