@@ -3,125 +3,126 @@ import VideoList from './VideoList'
 import NoVideo from './NoVideo'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../../../recoil/LoginState'
-import { userInfo } from '../../../api/myPage.js';
+import { keepArticles, myArticles, userInfo } from '../../../api/myPage.js';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-const uploadVideos = [
-  // {
-  //   videoId: 1,
-  //   articleTitle: '남현이의 아이돌 댄스 ♡',
-  //   thumbnailImageUrl: 'src/assets/profileFeed/uploadThumb.png',
-  // },
-  // {
-  //   videoId: 2,
-  //   articleTitle: '민호의 팝핀 ♡',
-  //   thumbnailImageUrl: 'src/assets/profileFeed/uploadThumb.png',
-  // },
-  // {
-  //   videoId: 3,
-  //   articleTitle: '정수의 스트릿 댄스 ♡',
-  //   thumbnailImageUrl: 'src/assets/profileFeed/uploadThumb.png',
-  // },
-  // {
-  //   videoId: 4,
-  //   articleTitle: '설연이의 걸스힙합 ♡',
-  //   thumbnailImageUrl: 'src/assets/profileFeed/uploadThumb.png',
-  // },
-  // {
-  //   videoId: 5,
-  //   articleTitle: '동우의 브레이크 댄스 ♡',
-  //   thumbnailImageUrl: 'src/assets/profileFeed/uploadThumb.png',
-  // },
-]
+// const uploadVideos = [
+//   // {
+//   //   videoId: 1,
+//   //   articleTitle: '남현이의 아이돌 댄스 ♡',
+//   //   thumbnailImageUrl: 'src/assets/profileFeed/uploadThumb.png',
+//   // },
+//   // {
+//   //   videoId: 2,
+//   //   articleTitle: '민호의 팝핀 ♡',
+//   //   thumbnailImageUrl: 'src/assets/profileFeed/uploadThumb.png',
+//   // },
+//   // {
+//   //   videoId: 3,
+//   //   articleTitle: '정수의 스트릿 댄스 ♡',
+//   //   thumbnailImageUrl: 'src/assets/profileFeed/uploadThumb.png',
+//   // },
+//   // {
+//   //   videoId: 4,
+//   //   articleTitle: '설연이의 걸스힙합 ♡',
+//   //   thumbnailImageUrl: 'src/assets/profileFeed/uploadThumb.png',
+//   // },
+//   // {
+//   //   videoId: 5,
+//   //   articleTitle: '동우의 브레이크 댄스 ♡',
+//   //   thumbnailImageUrl: 'src/assets/profileFeed/uploadThumb.png',
+//   // },
+// ]
 
-const archiveVideos = [
-  {
-    videoId: 1,
-    articleTitle: '남현이의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-  {
-    videoId: 2,
-    articleTitle: '민호의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-  {
-    videoId: 3,
-    articleTitle: '정수의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-  {
-    videoId: 4,
-    articleTitle: '설연이의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-  {
-    videoId: 5,
-    articleTitle: '동우의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-  {
-    videoId: 1,
-    articleTitle: '남현이의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-  {
-    videoId: 2,
-    articleTitle: '민호의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-  {
-    videoId: 3,
-    articleTitle: '정수의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-  {
-    videoId: 4,
-    articleTitle: '설연이의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-  {
-    videoId: 5,
-    articleTitle: '동우의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-  {
-    videoId: 1,
-    articleTitle: '남현이의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-  {
-    videoId: 2,
-    articleTitle: '민호의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-  {
-    videoId: 3,
-    articleTitle: '정수의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-  {
-    videoId: 4,
-    articleTitle: '설연이의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-  {
-    videoId: 5,
-    articleTitle: '동우의 챌린지 ♡',
-    thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
-  },
-]
+// const archiveVideos = [
+//   {
+//     videoId: 1,
+//     articleTitle: '남현이의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+//   {
+//     videoId: 2,
+//     articleTitle: '민호의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+//   {
+//     videoId: 3,
+//     articleTitle: '정수의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+//   {
+//     videoId: 4,
+//     articleTitle: '설연이의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+//   {
+//     videoId: 5,
+//     articleTitle: '동우의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+//   {
+//     videoId: 1,
+//     articleTitle: '남현이의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+//   {
+//     videoId: 2,
+//     articleTitle: '민호의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+//   {
+//     videoId: 3,
+//     articleTitle: '정수의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+//   {
+//     videoId: 4,
+//     articleTitle: '설연이의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+//   {
+//     videoId: 5,
+//     articleTitle: '동우의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+//   {
+//     videoId: 1,
+//     articleTitle: '남현이의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+//   {
+//     videoId: 2,
+//     articleTitle: '민호의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+//   {
+//     videoId: 3,
+//     articleTitle: '정수의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+//   {
+//     videoId: 4,
+//     articleTitle: '설연이의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+//   {
+//     videoId: 5,
+//     articleTitle: '동우의 챌린지 ♡',
+//     thumbnailImageUrl: 'src/assets/profileFeed/archiveThumb.png',
+//   },
+// ]
 
 export default function ProfileFeed () {
 	const { user_id } = useParams();
 	const [ userDetail, setUserDetail ] = useState({})
+  const [ uploadVideos, setUploadVideos ] = useState([])
+  const [ archiveVideos, setArchiveVideos ] = useState([])
 
 	useEffect(() => {
 		userInfo(user_id)
 		.then((res) => {
 			setUserDetail(res.userInfo)
-			console.log(res.userInfo)
 		})
 		.catch((err) => {
 			console.error(err)
@@ -130,6 +131,18 @@ export default function ProfileFeed () {
 				navigate('/')
 			}
 		})
+
+    myArticles(user_id)
+    .then((res) => {
+      setUploadVideos(res)
+    })
+    .catch((err) => { console.error(err) })
+
+    keepArticles(user_id)
+    .then((res) => {
+      setArchiveVideos(res)
+    })
+    .catch((err) => { console.error(err) })
 	}, [])
 
   const nickColor = {color: '#252525'}

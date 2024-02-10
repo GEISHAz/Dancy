@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Recomment from "./Recomment";
 import * as C from "./Comment.style";
-import { deleteComment, getComment, postComment } from "../../api/comment";
+import { deleteComment, getComment, postComment, updateComment } from "../../api/comment";
 import { Reply } from "./Reply";
+import { userState } from "../../recoil/LoginState";
 
 // const getTimeDifference = (prevDate) => {
 //   const diff = new Date() - prevDate;
@@ -50,6 +51,7 @@ export default function Comment() {
       setIsRecommentOpen(initialLikeState);
       setIsReplyInputOpen(initialLikeState);
       setDropdownOpen(initialLikeState);
+      setIsUpdate(initialLikeState)
     })
     .catch((err) => console.log(err));
   }, []);
@@ -90,6 +92,45 @@ export default function Comment() {
     window.location.reload()
   }
 
+  const updateInput = useRef();
+  const [updateData, setUpdateData] = useState({
+    content: commentData.content,
+    parentId: 0,
+  });
+
+  const [isUpdate, setIsUpdate] = useState(false)
+  const toggleUpdateInput = (index) => {
+    setIsUpdate(
+      isRecommentOpen.map((state, i) => (i === index ? !state : state))
+    );
+  }
+  const handleUpdateChange = (e) => {
+    setUpdateData({ ...updateData, [e.target.name]: e.target.value });
+  };
+
+  const handleUpdate = (inedx) => {
+    if (updateData.content.length < 1) {
+      updateInput.current.focus();
+      return;
+    }
+
+    if (updateData.content.length < 1) {
+      updateInput.current.focus();
+      return;
+    }
+    
+    toggleUpdateInput(index)
+
+    updateComment(updateData)
+    .then ((res) => {
+      // console.log(res)
+			// window.location.reload()
+    })
+    .catch ((err) => {
+      console.error(err)
+    })
+  };
+
   const handleLike = (index) => {
     setLike(like.map((state, i) => (i === index ? !state : state)));
     if (!like[index]) {
@@ -104,7 +145,6 @@ export default function Comment() {
   };
 
   const toggleRecomment = (index) => {
-    console.log('click')
     setIsRecommentOpen(
       isRecommentOpen.map((state, i) => (i === index ? !state : state))
     );
@@ -168,13 +208,22 @@ export default function Comment() {
               </C.DropdownToggle>
               {dropdownOpen[index] && (
                 <C.CommentEditDeleteArea>
-                  <C.CommentEditImage src="/src/assets/editimage.png" />
+                  <C.CommentEditImage onClick={() => toggleUpdateInput(index)} src="/src/assets/editimage.png" />
                   <C.CommentDeleteImage onClick={() => handleDelete(comment.commentId)} src="/src/assets/deleteimage.png" />
                 </C.CommentEditDeleteArea>
               )}
             </C.CommentUserNameArea>
             <C.CommentContentArea>
+              {isUpdate ? 
+              <C.CommentInput
+                ref={updateInput}
+                name="content"
+                type="text"
+                value={updateData.content}
+                onChange={handleUpdateChange}
+              /> :
               <C.CommentContent>{comment.content}</C.CommentContent>
+              }
               <C.CommentLikeImage
                 src={
                   like[index]
