@@ -78,11 +78,11 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
         JPAQuery<Article> queryProcess = jpaQueryFactory.selectFrom(article);
 
         if(previousLastArticleId != null){
-            queryProcess = queryProcess.where(article.articleId.lt(previousLastArticleId)
-                    .and(searcher));
+            searcher = searcher.and(article.articleId.lt(previousLastArticleId));
         }
 
         List<Article> resultArticle = queryProcess
+                .where(searcher)
                 .orderBy(article.articleId.desc())
                 .limit(findCount)
                 .fetch();
