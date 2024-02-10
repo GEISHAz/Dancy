@@ -216,7 +216,7 @@ public class MyPageApiTest extends ApiTest {
                         ArticleDocument.stageRequestField,
                         ArticleDocument.simpleArticleListResponseField))
                 .header("AUTH-TOKEN", otherToken)
-                .pathParams("nickname", AuthSteps.otherNickname)
+                .pathParams("nickname", AuthSteps.opponentnickname)
                 .param("limit", 10)
                 .when()
                 .get("/mypage/keep/{nickname}")

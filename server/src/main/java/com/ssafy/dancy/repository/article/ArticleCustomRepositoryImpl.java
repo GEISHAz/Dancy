@@ -70,7 +70,26 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
 
     @Override
     public List<ArticleSimpleResponse> getArticleSavedByPerson(String nickname, int findCount, Long previousLastArticleId) {
-        return getResultStagePage(findCount, previousLastArticleId, savedArticle.user.nickname.eq(nickname));
+        JPAQuery<Article> queryProcess = jpaQueryFactory.select(article)
+                .from(article)
+                .leftJoin(savedArticle).on(savedArticle.article.eq(article));
+
+        BooleanExpression expression = savedArticle.user.nickname.eq(nickname);
+
+        if(previousLastArticleId != null){
+            expression = expression.and(article.articleId.lt(previousLastArticleId));
+        }
+
+        List<Article> resultArticle = queryProcess
+                .where(expression)
+                .orderBy(article.articleId.desc())
+                .limit(findCount)
+                .fetch();
+
+        if(resultArticle.isEmpty()){
+            throw new LastArticleException("마지막 게시글입니다.");
+        }
+        return makeArticlesToSimpleList(resultArticle);
     }
 
     public List<ArticleSimpleResponse> getResultStagePage(int findCount, Long previousLastArticleId,
