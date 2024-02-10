@@ -3,12 +3,13 @@ import { styled } from "styled-components";
 import * as SF from "./SettingForm.style";
 import QuitModal from "./QuitModal";
 import ChangePwdModal from "./ChangePwdModal";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { userState } from "../../recoil/LoginState";
 import { nickNameCheck } from "../../api/join";
 import { httpStatusCode } from "../../util/http-status";
 import { BrowserRouter as Router, Route, Link, useNavigate } from "react-router-dom";
 import { userChangeNickName, userChangeIntro, userChangeImg } from "../../api/user";
+import { selectedFileState } from "../../recoil/JoinState";
 
 // 전체 폼 구성
 export const JoinFormArea = styled.div`
@@ -76,6 +77,9 @@ export default function FormArea() {
   const [nickname, setNickname] = useState(user.nickname);
   const [introduceText, setIntroduceText] = useState(user.introduceText);
   const [isChecked, setIsChecked] = useState(false);
+
+  // 사진 파일 가져오기
+  const selectedFile = useRecoilValue(selectedFileState);
 
   const navigate = useNavigate();
 
@@ -161,7 +165,6 @@ export default function FormArea() {
   // 서버로 제출 요청하기
   const readyToSubmit = async () => {
     // 닉네임 체크가 되지 않았다면 수행 불가해요. 그치만 닉네임 수정을 안하고 싶을수도 있잖아?
-
     try {
       // 닉네임과 상태메시지가 변경된 경우에만 서버 요청
       if (nickname !== user.nickname) {
@@ -185,9 +188,9 @@ export default function FormArea() {
       }
 
       // 이미지가 있으면 일단 수정 요청을 해봅시다.
-      if (user.profileImageUrl) {
+      if (selectedFile !== null) {
         const formData = new FormData();
-        formData.set("profileImage", user.profileImageUrl);
+        formData.set("profileImage", selectedFile);
         const imgStatusCode = await userChangeImg(formData);
         console.log("프사잘바뀌었니?", imgStatusCode);
       }
@@ -197,6 +200,7 @@ export default function FormArea() {
         ...user,
         nickname: nickname,
         introduceText: introduceText,
+        profileImageUrl: selectedFile,
       });
 
       console.log("---------------");
@@ -211,6 +215,7 @@ export default function FormArea() {
         ...user,
         nickname: nickname,
         introduceText: introduceText,
+        profileImageUrl: selectedFile,
       });
       alert("서버 요청 중 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
     }

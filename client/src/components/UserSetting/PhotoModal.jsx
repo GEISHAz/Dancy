@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import AddImgLogo from "../../assets/UserSetting/AddImgIcon.png";
 import { useRecoilState } from "recoil";
-import { joinState } from "../../recoil/JoinState";
+import { joinState, selectedFileState } from "../../recoil/JoinState";
 
 const ModalOverlay = styled.div`
   display: ${(props) => (props.isOpen ? "flex" : "none")};
@@ -91,7 +91,8 @@ const ModalButton = styled.button`
 `;
 
 const PhotoModal = ({ isOpen, onClose, fileState, setFileState }) => {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [imgFile, setImgFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useRecoilState(selectedFileState);
   //const [joinData, setJoinData] = useRecoilState(joinState);
 
   const fileInputRef = useRef();
@@ -103,14 +104,15 @@ const PhotoModal = ({ isOpen, onClose, fileState, setFileState }) => {
   };
 
   const handleFileChange = (e) => {
+    // 이미 여기서 파일이 변경될때마다 저장해줍니다...
     const file = e.target.files[0];
-    setSelectedFile(file);
+    setImgFile(file);
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    setSelectedFile(file);
+    setImgFile(file);
   };
 
   const handleDragOver = (e) => {
@@ -119,9 +121,10 @@ const PhotoModal = ({ isOpen, onClose, fileState, setFileState }) => {
 
   const handleUpload = (e) => {
     // 선택된 파일 처리 로직 작성
-    console.log("Selected File:", selectedFile);
-    // 여기에 선택된 파일을 업로드
-    setFileState({ ...fileState, profileImageUrl: selectedFile });
+    console.log("Selected File:", imgFile);
+    // 여기에 선택된 파일을 업로드 -> 여기는 임시용 공간임.. 나중에 완전히 넣을때 넣어줘요
+    setSelectedFile(imgFile);
+
     // 모달 닫기
     onClose();
   };
@@ -145,8 +148,8 @@ const PhotoModal = ({ isOpen, onClose, fileState, setFileState }) => {
               onChange={handleFileChange}
             />
             <ImportLogo>
-              {selectedFile ? (
-                <img src={URL.createObjectURL(selectedFile)} alt="Selected" />
+              {imgFile ? (
+                <img src={URL.createObjectURL(imgFile)} alt="Selected" />
               ) : (
                 <img src={AddImgLogo} alt="Add" />
               )}
