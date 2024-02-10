@@ -138,15 +138,13 @@ export const FormInput = styled.input`
 
 // input 안내문구 -> 형식 체크
 export const InputNoticeText = styled.div`
-  position: absolute;
-  bottom: -24px;
-  right: 0;
   font-family: "NYJ Gothic L";
   font-size: 16px;
   font-weight: 400;
   line-height: nomal;
   color: #e2030f;
-  margin-top: 12px;
+  text-align: end;
+  height: 0px;
   display: ${(props) => (props.show ? "block" : "none")};
 `;
 

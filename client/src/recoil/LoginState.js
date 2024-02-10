@@ -14,6 +14,7 @@ export const userState = atom({
     nickname: "",
     birthDate: "",
     introduceText: "",
+	gender: "",
     profileImageUrl: null
 	},
 	effects_UNSTABLE: [persistAtom],     // 새로 고침이나 페이지 이동과 같은 상황에서도 Recoil 상태를 유지하도록 지속성 부여

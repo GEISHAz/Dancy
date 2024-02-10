@@ -29,8 +29,8 @@ const ModalContent = styled.div`
   border: 1px solid black;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
-  width: 590px;
-  height: 455px;
+  width: 450px;
+  height: 300px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -42,27 +42,31 @@ const ModalTitle = styled.div`
   font-family: "NYJ Gothic B";
   font-size: 28px;
   color: black;
-  margin-top: 43px;
-  margin-bottom: 45px;
+  margin-top: 24px;
+  margin-bottom: 20px;
 `;
 
 // 사진 첨부 공간(점선)
 const ImportContainer = styled.div`
   border: 1.5px dashed black;
   border-radius: 15px;
-  width: 460px;
-  height: 280px;
+  width: 320px;
+  height: 180px;
   display: flex;
   background-color: white;
   justify-content: center;
   align-items: center;
-  margin-bottom: 45px;
+  margin-bottom: 30px;
 `;
 
 const ImportLogo = styled.div`
-  width: 144px;
-  height: 132px;
-  object-fit: cover;
+  width: 150px;
+  height: 140px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const ModalButtonContainer = styled.div`
@@ -77,8 +81,8 @@ const ModalButton = styled.button`
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   background-color: #f9405e;
-  width: 590px;
-  height: 66px;
+  width: 450px;
+  height: 60px;
   color: white;
   font-family: "NYJ Gothic B";
   font-size: 20px;

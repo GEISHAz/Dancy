@@ -18,12 +18,12 @@ export default function Login() {
 
   // 사용자 로그인 데이터 관리 (id, password)
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const emailRegEx = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
+  const emailRegEx =
+    /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
   const [isEmailCorrect, setIsEmailCorrect] = useState(true);
-  // const [userInfo, setUserInfo] = useRecoilState(userState)
-  const setUserInfo = useSetRecoilState(userState)
+  const [userInfo, setUserInfo] = useRecoilState(userState);
   const setLogin = useSetRecoilState(loginState); // login유무 저장
-  const user = useRecoilValue(userState)
+  const user = useRecoilValue(userState);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,33 +32,31 @@ export default function Login() {
         setIsEmailCorrect(true);
       } else {
         setIsEmailCorrect(false);
-    }}
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       await login(formData);
       setLogin(true);
-			
+
       // 로그인 이후 user 정보를 가져옴
       const userDetailsData = await userDetails();
-      console.log("User Details:", userDetailsData.userInfo);
-      setUserInfo(userDetailsData)
-      
-      // console.log(userState)
+      console.log("User Details:", userDetailsData);
+      setUserInfo(userDetailsData);
+      console.log(userState);
     } catch (error) {
-			console.error("Login Error:", error);
+      console.error("Login Error:", error);
       const errorMsg = error.response?.data[0]?.message || "An error occurred";
-			
+
       setModalTxt(errorMsg);
       openModalHandler();
     }
-		navigate("/");
+    navigate("/");
   };
-
-
 
   const handleEnter = (e) => {
     if (e.key === "Enter") {
@@ -90,9 +88,7 @@ export default function Login() {
             value={formData.email}
             onChange={handleChange}
           />
-          {isEmailCorrect ? null : (
-            <L.ErrorEmail>이메일 형식이 올바르지 않습니다.</L.ErrorEmail>
-          )}
+          {isEmailCorrect ? null : <L.ErrorEmail>이메일 형식이 올바르지 않습니다.</L.ErrorEmail>}
         </div>
 
         {/* PW 입력란 */}
@@ -137,9 +133,7 @@ export default function Login() {
           </div>
 
           <div className="flex flex-row items-center gap-x-2 justify-end">
-            <L.ExplainJoinFindPw>
-              비밀번호를 잊어버리셨나요?
-            </L.ExplainJoinFindPw>
+            <L.ExplainJoinFindPw>비밀번호를 잊어버리셨나요?</L.ExplainJoinFindPw>
             <L.GoJoinFindPw>
               <Link to="/findpassword">비밀번호 찾기</Link>
             </L.GoJoinFindPw>

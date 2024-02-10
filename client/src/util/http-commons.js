@@ -61,3 +61,19 @@ authtokenApi.interceptors.request.use((config) => {
   return config;
 });
 
+
+export const profileImgApi = axios.create({
+  baseURL: baseURL,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    'AUTH-TOKEN': `${localStorage.getItem('token')}`,
+  },
+});
+
+profileImgApi.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers['AUTH-TOKEN'] = `${token}`;
+  }
+  return config;
+});
