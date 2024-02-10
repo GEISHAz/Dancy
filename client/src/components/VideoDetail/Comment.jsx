@@ -101,8 +101,8 @@ export default function Comment() {
 
   const handleLike = (commentId) => {
     commentLike(commentId)
-    .then((res) => { window.location.reload() })
-    .catch((err) => {console.error(err)})
+    .then(() => window.location.reload())
+    .catch((err) => console.error(err))
   };
 
   const toggleUpdateInput = (index) => {
