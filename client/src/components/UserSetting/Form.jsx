@@ -221,8 +221,6 @@ export default function FormArea() {
     }
   };
 
-  console.log("userimg", user.profileImageUrl);
-
   return (
     <JoinFormArea>
       <NoticeArea>

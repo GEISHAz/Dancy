@@ -7,20 +7,22 @@ import { loginState, userState } from "../../recoil/LoginState.js";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { logout } from "../../api/auth.js";
 import { userDetails } from "../../api/user.js";
+import { userInfo } from "../../api/myPage.js";
 
 export default function Navbar() {
   const [activeButton, setActiveButton] = useState("");
-  const [userInfo, setUserInfo] = useRecoilState(userState);
+  const [finduserInfo, setFindUserInfo] = useRecoilState(userState);
   const [isLoggedIn, setLoginState] = useRecoilState(loginState);
   const userDetailsInfo = useRecoilValue(userState);
   const navigate = useNavigate();
   const isLogin = useRecoilValue(loginState);
+  const [userDetail, setUserDetail] = useState({});
 
   const logoutHandler = () => {
     logout(setLoginState)
       .then((res) => {
         // Recoil 상태 초기화
-        setUserInfo({
+        setFindUserInfo({
           email: "",
           nickname: "",
           birthDate: "",
@@ -32,6 +34,23 @@ export default function Navbar() {
       })
       .catch((err) => console.error(err));
   };
+
+  useEffect(() => {
+    userInfo(userDetailsInfo.nickname)
+      .then((res) => {
+        setUserDetail(res);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+        if (err.response.status === 404) {
+          alert(err.response.data[0].message);
+          navigate("/");
+        }
+      });
+  }, []);
+
+  console.log("테스트좀해볼게요", userDetailsInfo.profileImageUrl);
 
   return (
     <N.NavArea>
@@ -89,7 +108,7 @@ export default function Navbar() {
             {isLogin ? (
               <N.NavLoginWrapper>
                 <Link to="/setting">
-                  <N.NavUserProfileImage src={userDetailsInfo.profileImageUrl} />
+                  <N.NavUserProfileImage src={userDetail.profileImageUrl} />
                 </Link>
                 <N.NavProfileArea>
                   <Link to="/setting">
