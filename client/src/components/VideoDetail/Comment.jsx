@@ -5,6 +5,7 @@ import * as C from "./Comment.style";
 import { deleteComment, getComment, postComment } from "../../api/comment";
 import { Reply } from "./Reply";
 import UpdateComment from "./UpdateComment";
+import { commentLike } from '../../api/like';
 
 // const getTimeDifference = (prevDate) => {
 //   const diff = new Date() - prevDate;
@@ -98,17 +99,10 @@ export default function Comment() {
     }
   };
 
-  const handleLike = (index) => {
-    setLike(like.map((state, i) => (i === index ? !state : state)));
-    if (!like[index]) {
-      setLikeCount(
-        likeCount.map((count, i) => (i === index ? count + 1 : count))
-      );
-    } else {
-      setLikeCount(
-        likeCount.map((count, i) => (i === index ? count - 1 : count))
-      );
-    }
+  const handleLike = (commentId) => {
+    commentLike(commentId)
+    .then(() => window.location.reload())
+    .catch((err) => console.error(err))
   };
 
   const toggleUpdateInput = (index) => {
@@ -191,11 +185,11 @@ export default function Comment() {
               <C.CommentContent>{comment.content}</C.CommentContent>}
               <C.CommentLikeImage
                 src={
-                  like[index]
+                  comment.commentLike
                     ? "/src/assets/likeimage.png"
                     : "/src/assets/unlikeimage.png"
                 }
-                onClick={() => handleLike(index)}
+                onClick={() => handleLike(comment.commentId)}
               />
             </C.CommentContentArea>
             <C.CommentCreateRecommentArea>

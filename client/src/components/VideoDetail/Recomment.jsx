@@ -4,6 +4,7 @@ import * as R from "./Recomment.style.jsx";
 import { DropdownToggle } from "./Comment.style.jsx";
 import { getComment, deleteComment } from "../../api/comment";
 import UpdateRecomment from './UpdateRecomment.jsx'
+import { commentLike } from '../../api/like';
 
 export default function Recomment({ commentId }) {
   const [like, setLike] = useState([]);
@@ -37,8 +38,10 @@ export default function Recomment({ commentId }) {
     window.location.reload()
   }
 
-  const handleLike = (index) => {
-
+  const handleLike = (commentId) => {
+    commentLike(commentId)
+    .then(() => window.location.reload())
+    .catch((err) => console.error(err))
   };
 
   const toggleUpdateInput = (index) => {
@@ -78,11 +81,11 @@ export default function Recomment({ commentId }) {
               <R.RecommentContent>{recomment.content}</R.RecommentContent>}
               <R.RecommentLikeImage
                 src={
-                  like[index]
+                  recomment.commentLike
                     ? "/src/assets/likeimage.png"
                     : "/src/assets/unlikeimage.png"
                 }
-                onClick={() => handleLike(index)}
+                onClick={() => handleLike(recomment.commentId)}
               />
             </R.RecommentContentArea>
             <R.RecommentCreateArea>

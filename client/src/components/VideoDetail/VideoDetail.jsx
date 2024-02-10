@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as V from "./VideoDetail.style";
 import { deleteArticle, getArticle, saveArticle } from "../../api/stage";
 import VideoPlayer from "./VideoPlayer";
@@ -10,15 +10,7 @@ import { articleLike, likeUsers } from "../../api/like.js";
 import { userInfo } from "../../api/myPage.js";
 import { followRequest, unFollowRequest } from '../../api/follow.js';
 
-const Hashtags = [
-  { text: "#그녀가", color: "#FFF4B5" },
-  { text: "#보고싶어", color: "#C0FFF4" },
-  { text: "#ㅠㅠ", color: "#D4DCFF" },
-];
-
 export default function VideoDetail({videoSrc}) {
-  const [cardDetail, setCardDetail] = useState();
-  const [hashtags, setHashtags] = useState();
 
   const navigate = useNavigate();
   const state = useLocation();
@@ -107,16 +99,14 @@ export default function VideoDetail({videoSrc}) {
 	// 게시글 좋아요 관리
 	const handleLike = () => {
 		articleLike(articleId)
-    .then((res) => {
-			window.location.reload()
-    })
-    .catch((err) => {console.error(err)})
+    .then((res) => { window.location.reload() })
+    .catch((err) => console.error(err))
   };
 
   // 게시글 보관 관리
   const handleSave = () => {
     saveArticle(articleId)
-    .then(() => console.log('save sucess'))
+    .then(() => window.location.reload())
     .catch((err) => console.error(err))
   }
 
@@ -175,7 +165,7 @@ export default function VideoDetail({videoSrc}) {
   const handleLikeUser = () => {
     likeUsers(articleId)
     .then((res) => {
-      // setLikeUser(res)
+      setLikeUser(res)
       setIsDropDown(!isDropDown)
     })
     .catch((err) => { console.error(err) })
@@ -206,10 +196,12 @@ export default function VideoDetail({videoSrc}) {
               {isDropDown && (
                   <V.LikeUserList>
                     {likeUser.map((user) => (
-                      <V.LikeUserInfo>
-                        <V.LikeUserImg src={user.profileImageUrl} />
-                        <V.LikeUserNickName>{user.nickname}</V.LikeUserNickName>
-                      </V.LikeUserInfo>
+                      <Link to={`/profile/${user.nickname}`}>
+                        <V.LikeUserInfo>
+                          <V.LikeUserImg src={user.profileImageUrl} />
+                          <V.LikeUserNickName>{user.nickname}</V.LikeUserNickName>
+                        </V.LikeUserInfo>
+                      </Link>
                       )
                     )}
                   </V.LikeUserList>
@@ -249,16 +241,6 @@ export default function VideoDetail({videoSrc}) {
                 <V.VideoContent>{articleInfo.articleContent}</V.VideoContent>
                 <V.BtnContainer>
                   <V.AccuracyBtn>{articleInfo.score} %</V.AccuracyBtn>
-                  {/* <V.HashTagContainer>
-                    <V.HashTagArea>
-                      {hashtags &&
-                        hashtags.map((hashtag, index) => (
-                          <V.HashTagBtn key={index} color={hashtag.color}>
-                            {hashtag.text}
-                          </V.HashTagBtn>
-                        ))}
-                    </V.HashTagArea>
-                  </V.HashTagContainer> */}
                 </V.BtnContainer>
               </V.VideoLowerContainer>
             </V.VideoAccuracyArea>
