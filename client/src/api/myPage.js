@@ -9,7 +9,7 @@ export const userInfo = async (nickname) => {
 
 		const userInfo = res.data
 
-    return { userInfo }
+    return userInfo
   } catch (error) {
     console.error(error);
     throw error;
