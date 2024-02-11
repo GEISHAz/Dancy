@@ -16,7 +16,7 @@ export default function Navbar() {
   const userDetailsInfo = useRecoilValue(userState);
   const navigate = useNavigate();
   const isLogin = useRecoilValue(loginState);
-  const [userDetail, setUserDetail] = useState({});
+  //const [userDetail, setUserDetail] = useState({});
 
   const logoutHandler = () => {
     logout(setLoginState)
@@ -30,6 +30,10 @@ export default function Navbar() {
           gender: "",
           profileImageUrl: null,
         });
+        // 초기화
+        // setUserDetail({
+        //   profileImageUrl: null,
+        // });
         navigate("/");
       })
       .catch((err) => console.error(err));
@@ -38,7 +42,11 @@ export default function Navbar() {
   useEffect(() => {
     userInfo(userDetailsInfo.nickname)
       .then((res) => {
-        setUserDetail(res);
+        //setUserDetail(res);
+        setFindUserInfo({
+          ...finduserInfo,
+          profileImageUrl: res.profileImageUrl,
+        });
         console.log(res);
       })
       .catch((err) => {
@@ -106,7 +114,7 @@ export default function Navbar() {
             {isLogin ? (
               <N.NavLoginWrapper>
                 <Link to="/setting">
-                  <N.NavUserProfileImage src={userDetail.profileImageUrl} />
+                  <N.NavUserProfileImage src={userDetailsInfo.profileImageUrl} />
                 </Link>
                 <N.NavProfileArea>
                   <Link to="/setting">

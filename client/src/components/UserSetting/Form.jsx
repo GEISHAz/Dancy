@@ -177,6 +177,10 @@ export default function FormArea() {
         // 닉네임 변경
         const nicknameStatusCode = await userChangeNickName(nickname);
         console.log("닉네임잘바뀌엇니?", nicknameStatusCode);
+        setUser({
+          ...user,
+          nickname: nickname,
+        });
       }
 
       console.log("-----------");
@@ -185,23 +189,23 @@ export default function FormArea() {
         // 상태메시지 변경
         const introStatusCode = await userChangeIntro(introduceText);
         console.log("상메잘바뀌었니?", introStatusCode);
+        setUser({
+          ...user,
+          introduceText: introduceText,
+        });
       }
 
       // 이미지가 있으면 일단 수정 요청을 해봅시다.
       if (selectedFile !== null) {
         const formData = new FormData();
         formData.set("profileImage", selectedFile);
-        const imgStatusCode = await userChangeImg(formData);
-        console.log("프사잘바뀌었니?", imgStatusCode);
+        const imgData = await userChangeImg(formData);
+        //console.log("프사잘바뀌었니?", imgData);
+        setUser({
+          ...user,
+          profileImageUrl: imgData.profileImageUrl,
+        });
       }
-
-      // recoil 상태 업데이트
-      setUser({
-        ...user,
-        nickname: nickname,
-        introduceText: introduceText,
-        profileImageUrl: selectedFile,
-      });
 
       console.log("---------------");
 
