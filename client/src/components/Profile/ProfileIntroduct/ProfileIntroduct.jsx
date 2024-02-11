@@ -9,7 +9,7 @@ import {
 } from "../../../api/follow.js";
 import * as P from "./ProfileIntroduct.style";
 import FollowModal from "./FollowModal";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { userState } from "../../../recoil/LoginState.js";
 
 export default function ProfileIntroduct() {
@@ -18,7 +18,8 @@ export default function ProfileIntroduct() {
   const [userDetail, setUserDetail] = useState({}); // 누구(=특정 유저)의 Profile페이지니?
   const [followerInfo, setFollowerInfo] = useState([]); // 특정 유저를 팔로우하는 사람의 목록
   const [followingInfo, setFollowingInfo] = useState([]); // 특정 유저가 팔로우하는 사람의 목록
-  const user = useRecoilValue(userState); // 로그인 한 유저 정보
+  //const user = useRecoilValue(userState); // 로그인 한 유저 정보
+  const [user, setUser] = useRecoilState(userState);
 
   // 누구의 Profile 페이지인지 확인
   useEffect(() => {

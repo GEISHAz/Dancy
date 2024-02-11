@@ -10,6 +10,7 @@ import FormHeader from "./FormHeader";
 import { BrowserRouter as Router, Route, Link, useNavigate } from "react-router-dom";
 import { signUp } from "../../api/join";
 import { httpStatusCode } from "../../util/http-status";
+import { selectedFileState } from "../../recoil/JoinState";
 
 export const JoinArea = styled.div`
   display: flex;
@@ -76,6 +77,8 @@ export default function JoinForm() {
   console.log(joinData);
 
   const [formData, setFormData] = useState(new FormData());
+  // 사진 파일 가져오기
+  const selectedFile = useRecoilValue(selectedFileState);
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
@@ -86,8 +89,8 @@ export default function JoinForm() {
     formData.set("gender", joinData.gender);
     formData.set("nickname", joinData.nickname);
     formData.set("authType", `DANCY`);
-    if (joinData.profileImageUrl) {
-      formData.set("profileImage", joinData.profileImageUrl);
+    if (selectedFile !== null) {
+      formData.set("profileImage", selectedFile);
     }
 
     for (const pair of formData.entries()) {

@@ -50,8 +50,6 @@ export default function Navbar() {
       });
   }, []);
 
-  console.log("테스트좀해볼게요", userDetailsInfo.profileImageUrl);
-
   return (
     <N.NavArea>
       <N.NavRed />

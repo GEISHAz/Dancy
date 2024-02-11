@@ -208,6 +208,7 @@ export default function FormArea() {
       // 알림 및 페이지 이동
       alert("정보가 성공적으로 변경되었습니다.");
       navigate(`/profile/${nickname}`);
+      window.location.reload();
     } catch (error) {
       console.error("서버 요청 중 에러가 발생했습니다.", error);
       // recoil 상태 업데이트
