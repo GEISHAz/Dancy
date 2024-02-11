@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from 'recoil';
 import { searchKeywordState, searchResultsState } from '../../recoil/SearchState';
-import { searchResultList } from '../../api/searchResult';
+import { searchResultListByTitle, searchResultListByNickname } from '../../api/searchResult';
 import * as SB from './SearchBar.style'
 
 export default function SearchBar({ cardDetails }) {
@@ -10,7 +10,7 @@ export default function SearchBar({ cardDetails }) {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const [searchKeyword, setSearchKeyword] = useRecoilState(searchKeywordState);
-  const [, setSearchResults] = useRecoilState(searchResultsState);
+  const [,setSearchResults] = useRecoilState(searchResultsState);
 
   // 검색어 입력 핸들러
   const handleSearchChange = (event) => {
@@ -18,17 +18,37 @@ export default function SearchBar({ cardDetails }) {
     setSearchTerm(searchText);
   };
 
-  // 검색 실행 핸들러
   const handleSearchSubmit = async () => {
+    if (searchTerm.length < 2) {
+      alert("검색어를 2자 이상으로 입력해주세요.");
+      return;
+    }
     setSearchKeyword(searchTerm);
     try {
-      const res = await searchResultList(searchTerm);
-      setSearchResults(res);
+      console.log("검색어:", searchTerm); // 검색어 확인
+      let res;
+      if (searchTerm.trim() !== "") { // 검색어가 비어있지 않을 때
+        if (searchKeyword && searchTerm === searchKeyword) { // 이전 검색어와 동일한 경우
+          res = await searchResultListByNickname(searchTerm); // 닉네임으로 검색
+        } else {
+          res = await searchResultListByTitle(searchTerm); // 제목으로 검색
+        }
+      }
+      if (res) {
+        console.log("검색 결과:", res); // 검색 결과 확인
+        setSearchResults(res);
+      } else {
+        console.log("검색어 없음");
+        // 결과가 없어도 빈 배열을 설정하여 검색 결과 창으로 이동할 수 있도록 함
+        setSearchResults([]);
+      }
       navigate(`/results?query=${searchTerm}`);
     } catch (error) {
       console.error(error);
     }
   };
+  
+
 
   return (
     <SB.SearchContainer>

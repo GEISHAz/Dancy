@@ -9,6 +9,13 @@ export const VideoListArea = styled.div`
   margin: 20px;
 `;
 
+export const NoResultMessage = styled.div`
+  font-size: 20px;
+  color: #888;
+  text-align: center;
+  padding-top: 50px;
+`
+
 // 검색 결과 컨테이너
 export const VideoContainer = styled.div`
   display: flex;

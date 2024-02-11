@@ -1,13 +1,14 @@
+import React, { useState } from "react";
 import * as RP from "./ResultPage.style";
 import SearchItem from "./SearchItem";
-import { useState } from "react";
 import { useRecoilValue } from 'recoil';
-import { searchResultsState } from '../../recoil/SearchState';
+import { searchResultsState, searchKeywordState } from '../../recoil/SearchState';
 
 export default function ResultPage() {
   const nickColor = { color: "#252525" };
   const [activeButton, setActiveButton] = useState("title");
   const searchResults = useRecoilValue(searchResultsState);
+  const searchKeyword = useRecoilValue(searchKeywordState);
 
   const archiveHandler = (lookWhere) => {
     setActiveButton(lookWhere);
@@ -18,7 +19,7 @@ export default function ResultPage() {
       <RP.SearchContainer>
         <RP.SearchHeader>
           <RP.Archive>
-            <b style={nickColor}>'첫영상'</b>의 검색 결과
+            <b style={nickColor}>"{searchKeyword}"</b>의 검색 결과
           </RP.Archive>
           <RP.BtnBox>
             <RP.BtnContainer>
@@ -32,17 +33,17 @@ export default function ResultPage() {
             </RP.BtnContainer>
             <RP.BtnContainer>
               <RP.ArchiveBtn
-                onClick={() => archiveHandler("title")}
-                $active={activeButton === "title"}
+                onClick={() => archiveHandler("nickname")}
+                $active={activeButton === "nickname"}
               >
                 닉네임
               </RP.ArchiveBtn>
-              <RP.ArchiveBtnBg $active={activeButton === "title"} />
+              <RP.ArchiveBtnBg $active={activeButton === "nickname"} />
             </RP.BtnContainer>
           </RP.BtnBox>
         </RP.SearchHeader>
         <RP.FeedBody>
-          <SearchItem searchResults={searchResults}/>
+          <SearchItem searchResults={searchResults} activeButton={activeButton} searchKeyword={searchKeyword}/>
         </RP.FeedBody>
       </RP.SearchContainer>
     </RP.SearchResultArea>
