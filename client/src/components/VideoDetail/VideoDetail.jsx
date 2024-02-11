@@ -46,7 +46,7 @@ export default function VideoDetail({videoSrc}) {
 
       userInfo(res.nickname)
       .then ((res) => {
-        setAuthorInfo(res.userInfo)
+        setAuthorInfo(res)
       })
       .catch ((err) => {
         console.error(err)
