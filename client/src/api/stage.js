@@ -59,3 +59,13 @@ export const UpdateArticle = async ({articleId, formData}) => {
     throw error;
   }
 }
+
+export const saveArticle = async (articleId) => {
+  try {
+    const res = await privateApi.post(`/${url}/save/${articleId}`);
+		console.log(res.data)
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

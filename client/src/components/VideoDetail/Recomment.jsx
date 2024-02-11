@@ -3,13 +3,19 @@ import { Link, useLocation } from "react-router-dom";
 import * as R from "./Recomment.style.jsx";
 import { DropdownToggle } from "./Comment.style.jsx";
 import { getComment, deleteComment } from "../../api/comment";
+import UpdateRecomment from './UpdateRecomment.jsx'
+import { commentLike } from "../../api/like.js";
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoil/LoginState.js';
 
 export default function Recomment({ commentId }) {
   const [like, setLike] = useState([]);
   const [likeCount, setLikeCount] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState([]);
-  const [recomments, setRecomments] = useState([])
+  const [recomments, setRecomments] = useState([]);
+  const [isUpdate, setIsUpdate] = useState([]);
   const parentId = commentId
+	const user = useRecoilValue(userState)              // 로그인 한 유저 정보
 
   const state = useLocation();
   const articleId = Number(state.pathname.split("/")[2]);
@@ -18,26 +24,35 @@ export default function Recomment({ commentId }) {
     getComment(articleId, parentId)
     .then((res) => {
       setRecomments(res)
+      console.log('recom', res)
       return res
     })
     .then ((res) => {
       const initialLikeState = Array(res.length).fill(false);
       setLike(initialLikeState);
       setLikeCount(initialLikeState);
-      setDropdownOpen(initialLikeState)
+      setDropdownOpen(initialLikeState);
+      setIsUpdate(initialLikeState);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
   }, []);
 
   const handleDelete = (commentId) => {
-    console.log(commentId)
     deleteComment(commentId)
     window.location.reload()
   }
 
-  const handleLike = (index) => {
-
+  const handleLike = (commentId) => {
+    commentLike(commentId)
+    .then(() => window.location.reload())
+    .catch((err) => console.error(err))
   };
+
+  const toggleUpdateInput = (index) => {
+    setIsUpdate(
+      isUpdate.map((state, i) => (i === index ? !state : state))
+    );
+  }
 
   const toggleDropdown = (index) => {
     setDropdownOpen(
@@ -55,25 +70,28 @@ export default function Recomment({ commentId }) {
               <Link to={`/profile/${recomment.authorNickname}`}>
                 <R.RecommentUserName>{recomment.authorNickname}</R.RecommentUserName>
               </Link>
-              <DropdownToggle onClick={() => toggleDropdown(index)}>
-                ⋮
-              </DropdownToggle>
+              { recomment.authorNickname === user.nickname ? 
+                <DropdownToggle onClick={() => toggleDropdown(index)}>
+                  ⋮
+                </DropdownToggle> : null
+              }
               {dropdownOpen[index] && (
                 <R.RecommentEditDeleteArea>
-                  <R.RecommentEditImage src="/src/assets/editimage.png" />
+                  <R.RecommentEditImage onClick={() => toggleUpdateInput(index)} src="/src/assets/editimage.png" />
                   <R.RecommentDeleteImage onClick={() => handleDelete(recomment.commentId)} src="/src/assets/deleteimage.png" />
                 </R.RecommentEditDeleteArea>
               )}
             </R.RecommentUserNameArea>
             <R.RecommentContentArea>
-              <R.RecommentContent>{recomment.content}</R.RecommentContent>
+              {isUpdate[index] ? <UpdateRecomment commentId={recomment.commentId} commentData={recomment.content} /> :
+              <R.RecommentContent>{recomment.content}</R.RecommentContent>}
               <R.RecommentLikeImage
                 src={
-                  like[index]
+                  recomment.commentLike
                     ? "/src/assets/likeimage.png"
                     : "/src/assets/unlikeimage.png"
                 }
-                onClick={() => handleLike(index)}
+                onClick={() => handleLike(recomment.commentId)}
               />
             </R.RecommentContentArea>
             <R.RecommentCreateArea>

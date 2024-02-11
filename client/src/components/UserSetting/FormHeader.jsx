@@ -3,6 +3,8 @@ import { styled } from "styled-components";
 import * as SF from "./SettingForm.style";
 import DefaultImg from "../../assets/join/picture.png";
 import PhotoModal from "./PhotoModal";
+import { useRecoilState } from "recoil";
+import { userState } from "../../recoil/LoginState";
 
 export const EnterArea = styled.div`
   display: flex;
@@ -23,6 +25,8 @@ export const Header = styled.div`
 
 export default function FormHeader() {
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달의 열림/닫힘 상태를 관리
+  // 유저 정보 변경 시 파일 상태를 관리하는 Recoil 상태
+  const [userData, setUserData] = useRecoilState(userState);
 
   // 모달을 열기 위한 함수
   const openModal = () => {
@@ -45,7 +49,12 @@ export default function FormHeader() {
       </EnterArea>
       <SF.FormBtn onClick={openModal}>사진 변경</SF.FormBtn>
       {/* PhotoModal 컴포넌트를 렌더링하고 isOpen, onClose을 props로 전달 */}
-      <PhotoModal isOpen={isModalOpen} onClose={closeModal} />
+      <PhotoModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        fileState={userData}
+        setFileState={setUserData}
+      />
     </Header>
   );
 }

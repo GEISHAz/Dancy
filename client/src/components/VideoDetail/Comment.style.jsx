@@ -154,13 +154,21 @@ export const CommentEditDeleteArea = styled.div`
 `;
 
 
-export const CommentEditImage = styled.img`
+export const CommentEditImage = styled.button`
+  width: 20px;
+  height: 20px;
   cursor: pointer;
+  background-image: url(${props => props.src});
+  background-size: cover;
 `;
 
-export const CommentDeleteImage = styled.img`
+export const CommentDeleteImage = styled.button`
+  width: 18px;
+  height: 20px;
   cursor: pointer;
   margin-left: 5px;
+  background-image: url(${props => props.src});
+  background-size: contain;
 `;
 
 export const CommentContentArea = styled.div`
