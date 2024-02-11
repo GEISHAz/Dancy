@@ -9,8 +9,8 @@ export const joinState = atom({
       checkpassword: '',
       birthdate: '',
       gender: '',
-    nickname: '',
-    profileImageUrl: null
+      nickname: '',
+      profileImageUrl: null
     },
 });
   

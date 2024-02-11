@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { postArticle } from "../../api/stage";
 import { useRef, useState } from "react";
 
-export default function PostModal({ getData }) {
+export default function PostModal({ getData, videoInfo }) {
   const navigate = useNavigate();
   const data = false;
   const postData = () => {
@@ -15,8 +15,8 @@ export default function PostModal({ getData }) {
   const [formData, setFormData] = useState({
     articleTitle: "",
     articleContent: "",
-    video: "test",
-    thumbnailImageUrl: "test",
+    video: videoInfo.totalUrl,
+    thumbnailImageUrl: videoInfo.thumbnailImageUrl,
   });
 
   const handleChange = (e) => {
@@ -40,7 +40,6 @@ export default function PostModal({ getData }) {
     .then ((res) => {
       // console.log(res)
       const articleId = res.articleId
-      console.log(articleId)
       navigate(`/detail/${articleId}`,  { state: { articleId } })
     })
     .catch ((err) => {

@@ -30,7 +30,7 @@ export const ErrorIdx = styled.div`
 `
 
 export const ErrorSec = styled.div`
-  width: 130px;
+  width: 125px;
 	font-family: 'NanumSquareRound';
 	font-size: 18px;
   font-weight: bold;

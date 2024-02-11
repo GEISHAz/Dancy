@@ -23,8 +23,8 @@ export default function VideoDetail({videoSrc}) {
 	const [beforeData, setBeforeData] = useState({
     'articleTitle': "",
     'articleContent': "",
-    'video': "test",
-    'thumbnailImageUrl': "test",
+    'video': "",
+    'thumbnailImageUrl': "",
   });
 
 	// 페이지 렌더링 시 기본 정보 호출 (onMount)
@@ -32,6 +32,7 @@ export default function VideoDetail({videoSrc}) {
     // 게시글 상세 정보 조회를 위한 api 요청
     getArticle(articleId)
     .then ((res) => {
+      console.log('article',res)
       setArticleInfo(res)
 			return res
     })
@@ -46,6 +47,7 @@ export default function VideoDetail({videoSrc}) {
 
       userInfo(res.nickname)
       .then ((res) => {
+        console.log(res)
         setAuthorInfo(res)
       })
       .catch ((err) => {
@@ -218,9 +220,13 @@ export default function VideoDetail({videoSrc}) {
           <V.VideoTitle>{articleInfo.articleTitle}</V.VideoTitle>
           <V.VideoContentArea>
             <V.VideoUserDetailArea>
+            <Link to={`/profile/${authorInfo.nickname}`}>
               <V.VideoUserProfileImage src={authorInfo.profileImageUrl} />
+            </Link>
               <V.VideoUserDetail>
+              <Link to={`/profile/${authorInfo.nickname}`}>
                 <V.VideoUserName>{articleInfo.nickname}</V.VideoUserName>
+              </Link>
                 <V.VideoFollowArea>
                   <V.VideoFollower>
                     <div>팔로워 {authorInfo.follower}</div>
