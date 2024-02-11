@@ -200,7 +200,7 @@ export default function FormArea() {
         const formData = new FormData();
         formData.set("profileImage", selectedFile);
         const imgData = await userChangeImg(formData);
-        //console.log("프사잘바뀌었니?", imgData);
+        console.log("프사잘바뀌었니?", imgData);
         setUser({
           ...user,
           profileImageUrl: imgData.profileImageUrl,
