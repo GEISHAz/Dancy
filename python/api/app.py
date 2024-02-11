@@ -70,7 +70,7 @@ def upload_video():
     if file_path_prac is not None:
         # # 여기서 g 파일이 업로드된 파일 -> prac 파일이다.
         # g = io.BytesIO(file_content_prac)
-        #
+        #z
         # # 파일 확장자 추가 및 prac 원본 저장
         # video_extension = "mp4"
         # temporary_location = f"./dataset/target/{music_name}_prac.{video_extension}"
@@ -79,9 +79,10 @@ def upload_video():
 
             # 싱크와 음악 이름을 받고 비교시작
         print("비교시작....")
-        accuracy_result = compare_video(gt_url, prac_url, sync_frame)
+        accuracy_result,total_accuracy = compare_video(gt_url, prac_url, sync_frame)
         imageurl = f"thumbnailimage/{gt_name_arr[0]}_image_{prac_name_arr[2]}_{prac_name_arr[3]}"
 
+        print(total_accuracy)
         ret = sc.s3_put_object(s3, "gumid210bucket",
                                f"dataset/result/{gt_name_arr[0]}_result_{prac_name_arr[2]}_{prac_name_arr[3]}",
                                f"video/result/{gt_name_arr[0]}_result_{prac_name_arr[2]}_{prac_name_arr[3]}")
@@ -92,12 +93,23 @@ def upload_video():
 
         if ret:
             print("파일 저장 성공")
+            # 결과를 원하는 형식으로 변환
+            converted_result = []
+            for item in accuracy_result:
+                converted_item = {
+                    "start": item[0],
+                    "end": item[1],
+                    "accuracy": round(item[2]*100,2)
+                }
+                converted_result.append(converted_item)
+
             # 새로 생성한 video의 링크와 정확도 계산 결과
             s3url = f"video/result/{gt_name_arr[0]}_result_{prac_name_arr[2]}_{prac_name_arr[3]}"
             result = {
-                "list": accuracy_result,
+                "list": converted_result,
                 "totalUrl": s3url,
-                "thumbnailImageUrl": imageurl
+                "thumbnailImageUrl": imageurl,
+                "total_accuracy": total_accuracy
             }
             print(result)
             return jsonify(result)
