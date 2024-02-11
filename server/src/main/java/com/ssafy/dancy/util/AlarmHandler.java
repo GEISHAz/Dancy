@@ -27,12 +27,18 @@ public class AlarmHandler {
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
 
         try{
+            log.info("SSeEmitter 전송 시작");
             emitter.send(SseEmitter.event().name("INIT"));
         }catch(IOException e){
             log.warn("{} 닉네임의 계정을 연결하는 데 있어 IOException 발생", user.getNickname());
         }
 
         SseEmitter previousEmitter = userEmitters.put(userId, emitter);
+
+        for(Map.Entry<Long, SseEmitter> entry : userEmitters.entrySet()){
+            log.info("현재까지 저장된 키 : {}", entry.getKey());
+        }
+
         if(previousEmitter != null){
             previousEmitter.complete();
         }
@@ -49,9 +55,11 @@ public class AlarmHandler {
     // 일정한 시간 간격으로, 혹은 특정 시간대에 Code 가 실행되도록 @Scheduled 를 설정할 수 있다.
     // 이 메소드는, 매 30초마다 클라이언트로 하트비트 전송을 보내, 계속 커넥션이 살아있음을 알려주는 장치이다.
     public void sentHeartbeatToClients(){
+        log.info("heartbeat 전송");
         for(Map.Entry<Long, SseEmitter> entry : userEmitters.entrySet()){
             try {
-                entry.getValue().send(SseEmitter.event().comment("heartbeat"));
+                log.info("저장된 키 : {}", entry.getKey());
+                entry.getValue().send(SseEmitter.event().name("heartbeat").data("heartbeat send"));
             } catch (IOException e) {
                 userEmitters.remove(entry.getKey());
             }
