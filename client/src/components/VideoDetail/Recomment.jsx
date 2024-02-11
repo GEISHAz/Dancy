@@ -5,6 +5,8 @@ import { DropdownToggle } from "./Comment.style.jsx";
 import { getComment, deleteComment } from "../../api/comment";
 import UpdateRecomment from './UpdateRecomment.jsx'
 import { commentLike } from "../../api/like.js";
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoil/LoginState.js';
 
 export default function Recomment({ commentId }) {
   const [like, setLike] = useState([]);
@@ -13,6 +15,7 @@ export default function Recomment({ commentId }) {
   const [recomments, setRecomments] = useState([]);
   const [isUpdate, setIsUpdate] = useState([]);
   const parentId = commentId
+	const user = useRecoilValue(userState)              // 로그인 한 유저 정보
 
   const state = useLocation();
   const articleId = Number(state.pathname.split("/")[2]);
@@ -67,9 +70,11 @@ export default function Recomment({ commentId }) {
               <Link to={`/profile/${recomment.authorNickname}`}>
                 <R.RecommentUserName>{recomment.authorNickname}</R.RecommentUserName>
               </Link>
-              <DropdownToggle onClick={() => toggleDropdown(index)}>
-                ⋮
-              </DropdownToggle>
+              { recomment.authorNickname === user.nickname ? 
+                <DropdownToggle onClick={() => toggleDropdown(index)}>
+                  ⋮
+                </DropdownToggle> : null
+              }
               {dropdownOpen[index] && (
                 <R.RecommentEditDeleteArea>
                   <R.RecommentEditImage onClick={() => toggleUpdateInput(index)} src="/src/assets/editimage.png" />
