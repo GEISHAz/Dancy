@@ -36,7 +36,7 @@ def compare_video(gt_url, prac_url, sync_frame):
     gt_name_arr = gt_name.split('_')        # len = 2 or 3
     prac_name_arr = prac_name.split('_')    # len = 4
 
-
+    average_accuracy = 0
     pTime = 0
 
     mp_pose = mp.solutions.pose
@@ -111,7 +111,7 @@ def compare_video(gt_url, prac_url, sync_frame):
 
 
     frame_count = 0
-    average_accuracy = 0
+    total_accuracy = 0
     FRAME = 30
 
     #정확도 배열
@@ -229,7 +229,6 @@ def compare_video(gt_url, prac_url, sync_frame):
                             else:
                                 eval_metric.append("NG")
 
-            array = (np.zeros((gt_inform['frame_height'], gt_inform['frame_width'], 3)) + 255).astype(np.uint8)
             prac_image = prac_video.visual_back_color(frame, keypoints, eval_metric)
             gt_image = gt_video.visual_back_color(frame_gt, gt_json, eval_metric)#
 
@@ -254,6 +253,8 @@ def compare_video(gt_url, prac_url, sync_frame):
 
             # 정확도 텍스트 추가 (FPS 텍스트 위치에)
             cv2.putText(image, f'Accuracy: {average_accuracy:.4f}', (70, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+
+            total_accuracy += average_accuracy
 
             # print("프레임 : ", frame_count, "정확도 : ", average_accuracy)
             if(frame_count%compare_frame == 0) :
@@ -307,7 +308,7 @@ def compare_video(gt_url, prac_url, sync_frame):
     analyzed_video_clip.write_videofile(f"dataset/result/{gt_name_arr[0]}_result_{prac_name_arr[2]}_{prac_name_arr[3]}")
 
 
-    return accuracy_interval_list
+    return accuracy_interval_list, round((total_accuracy/gt_inform['total_frame'])*100,2);
 
 def calculate_accuracy(lst, sec) :
     st = 0
