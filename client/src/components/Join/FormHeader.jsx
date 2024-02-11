@@ -3,6 +3,8 @@ import { styled } from "styled-components";
 import * as JF from "./JoinForm.style";
 import DefaultImg from "../../assets/join/picture.png";
 import PhotoModal from "../UserSetting/PhotoModal";
+import { useRecoilState } from "recoil";
+import { joinState } from "../../recoil/JoinState";
 
 export const EnterArea = styled.div`
   display: flex;
@@ -23,6 +25,7 @@ export const Header = styled.div`
 
 export default function FormHeader() {
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달의 열림/닫힘 상태를 관리
+  const [joinData, setJoinData] = useRecoilState(joinState);
 
   // 모달을 열기 위한 함수
   const openModal = () => {
@@ -44,7 +47,12 @@ export default function FormHeader() {
       </EnterArea>
       <JF.FormBtn onClick={openModal}>사진 변경</JF.FormBtn>
       {/* PhotoModal 컴포넌트를 렌더링하고 isOpen, onClose을 props로 전달 */}
-      <PhotoModal isOpen={isModalOpen} onClose={closeModal} />
+      <PhotoModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        fileState={joinData}
+        setFileState={setJoinData}
+      />
     </Header>
   );
 }
