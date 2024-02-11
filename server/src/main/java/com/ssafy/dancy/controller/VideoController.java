@@ -50,25 +50,4 @@ public class VideoController {
     public ConvertResultResponse convertResult(@AuthenticationPrincipal User user, @PathVariable Long videoId){
         return videoService.getResultVideoInfo(user, videoId);
     }
-
-    @PostMapping("")
-    public String requestAccuracyData(@RequestBody String accuracyData){
-
-        try{
-            String apiUrl = "http://i10d210.p.ssafy.io:5000/sendData";
-
-            return webClient.post()
-                    .uri(apiUrl)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue("Spring에서 저장한 url")
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
-        }
-        catch(Exception e){
-            return "ERROR";
-        }
-
-    }
-
 }

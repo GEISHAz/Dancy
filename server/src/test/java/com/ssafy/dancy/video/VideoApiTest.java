@@ -3,6 +3,7 @@ package com.ssafy.dancy.video;
 import com.ssafy.dancy.ApiTest;
 import com.ssafy.dancy.auth.AuthSteps;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
+import com.ssafy.dancy.message.request.video.ConvertVideoRequest;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
 import io.restassured.response.ExtractableResponse;
@@ -66,6 +67,27 @@ public class VideoApiTest extends ApiTest {
 //                .statusCode(HttpStatus.OK.value())
 //                .log().all().extract();
 //    }
+
+    @Test
+    void 비디오_변환_테스트(){
+        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+
+        ConvertVideoRequest request = ConvertVideoRequest.builder()
+                .practiceVideoUrl("https://gumid210bucket.s3.ap-northeast-2.amazonaws.com/video/prac/asap_prac_cnh2_uuid.mp4")
+                .referenceVideoUrl("https://gumid210bucket.s3.ap-northeast-2.amazonaws.com/video/gt/asap_gt_cnh2.mp4")
+                .build();
+
+        given(this.spec)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("AUTH-TOKEN", token)
+                .body(request)
+                .when()
+                .post("/video/analyze")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .log().all().extract();
+    }
 
     Long 레퍼런스_비디오_업로드(String token){
         ExtractableResponse<Response> response = given(this.spec)

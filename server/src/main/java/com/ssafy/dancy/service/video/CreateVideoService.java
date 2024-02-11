@@ -5,6 +5,7 @@ import com.ssafy.dancy.entity.Video;
 import com.ssafy.dancy.entity.WrongPick;
 import com.ssafy.dancy.exception.user.NotHavingPermissionException;
 import com.ssafy.dancy.exception.video.VideoNotFoundException;
+import com.ssafy.dancy.message.request.video.ConvertToPythonRequest;
 import com.ssafy.dancy.message.request.video.ConvertVideoRequest;
 import com.ssafy.dancy.message.response.video.*;
 import com.ssafy.dancy.repository.VideoRepository;
@@ -42,7 +43,7 @@ public class CreateVideoService {
     private static final String PRACTICE_VIDEO_TARGET = "video/prac";
     private static final String REFERENCE_VIDEO_TARGET = "video/gt";
     private static final String THUMBNAIL_IMAGE_TARGET = "thumbnailImage";
-    private static final String CONVERT_COMPLETE_NAME = "CONVERT_COMPLETE";
+    private static final String CONVERT_COMPLETE_NAME = "convert_complete";
 
     public UploadVideoResponse uploadReferenceVideo(User user, MultipartFile file){
 
@@ -68,23 +69,22 @@ public class CreateVideoService {
 
     public ConvertVideoResponse requestConvertToFlask(User user, ConvertVideoRequest request) {
 
-        String reference = extractNameFromUrl(request.referenceVideoUrl());
-        String practice = extractNameFromUrl(request.practiceVideoUrl());
+        String reference = extractSimpleUrlFromFull(request.referenceVideoUrl());
+        String practice = extractSimpleUrlFromFull(request.practiceVideoUrl());
 
         if(!awsS3Util.hasObjectInS3(reference) || !awsS3Util.hasObjectInS3(practice)){
             throw new VideoNotFoundException("레퍼런스나 연습 비디오가 존재하지 않습니다.");
         }
 
-
-//        String apiUrl = "http://i10d210.p.ssafy.io:5000/uploadVideo";
-        String apiUrl = "http://localhost:5000/sendData";
+        String apiUrl = "http://i10d210.p.ssafy.io:5000/uploadVideo";
 
         webClient.post()
                 .uri(apiUrl)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(makeSimpleRequest(request))
+                .bodyValue(makeSimpleRequest(reference, practice))
                 .retrieve()
                 .bodyToMono(VideoConvertResponse.class)
+                .doOnError(e -> log.warn(e.getMessage()))
                 .subscribe((result) -> afterCompleteConvert(user, result));
 
         return ConvertVideoResponse.builder()
@@ -113,6 +113,8 @@ public class CreateVideoService {
 
     protected void afterCompleteConvert(User user, VideoConvertResponse response){
         log.info("변환된 영상 : {}", response.totalUrl());
+        log.info("썸네일 : {}", response.thumbnailImageUrl());
+        log.info("측정 정확도 : {}", response.total_accuracy());
 
         // 해당 영상은 이미 S3 에 저장되어 있음
         // 스프링부트에서 해야 할 역할은, 이를 DB 에 저장하고
@@ -122,7 +124,8 @@ public class CreateVideoService {
 
         Video savedVideo = videoRepository.save(Video.builder()
                 .user(user)
-                .score(0.755) // TODO : score 정보 넘어오면 매핑해 줄 것
+                .videoTitle(extractNameFromUrl(response.totalUrl()))
+                .score(response.total_accuracy())
                 .thumbnailImageUrl(response.thumbnailImageUrl())
                 .videoType(VideoType.TOTAL)
                 .fullVideoUrl(response.totalUrl())
@@ -130,8 +133,11 @@ public class CreateVideoService {
 
         List<WrongPick> pickList = new ArrayList<>();
 
-        for (VideoWrongSection section : response.wrongSections()) {
+        for (VideoWrongSection section : response.list()) {
+            log.info("start : {}, end : {}, accuracy : {}", section.start(), section.end(), section.accuracy());
+
             pickList.add(WrongPick.builder()
+                    .video(savedVideo)
                     .startTime(section.start())
                     .endTime(section.end())
                     .accuracy(section.accuracy())
@@ -177,10 +183,11 @@ public class CreateVideoService {
         return originalFilename.substring(0, originalFilename.length() - ext.length() - 1);
     }
 
-    private ConvertVideoRequest makeSimpleRequest(ConvertVideoRequest request){
-        return ConvertVideoRequest.builder()
-                .practiceVideoUrl(extractSimpleUrlFromFull(request.practiceVideoUrl()))
-                .referenceVideoUrl(extractSimpleUrlFromFull(request.referenceVideoUrl()))
+    private ConvertToPythonRequest makeSimpleRequest(String gtUrl, String pracUrl){
+
+        return ConvertToPythonRequest.builder()
+                .gtUrl(gtUrl)
+                .pracUrl(pracUrl)
                 .build();
     }
     private String extractSimpleUrlFromFull(String fullUrl){
