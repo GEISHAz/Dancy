@@ -68,6 +68,13 @@ export default function Video({ videoInfo, getData }) {
     }
   };
 
+  // 초를 분:초 형태의 문자열로 변환하는 함수
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+
   return (
     <V.Wrap>
       <V.VideoNBtns>
@@ -93,7 +100,8 @@ export default function Video({ videoInfo, getData }) {
                       )
                     }
                   >
-                    {errorItem.start} ~ {errorItem.end}
+                    {/* {errorItem.start} ~ {errorItem.end} */}
+                    {`${formatTime(errorItem.start)} ~ ${formatTime(errorItem.end)}`}
                   </A.ErrorSec>
                   <A.ErrorAccu>{errorItem.accuracy}</A.ErrorAccu>
                 </div>
