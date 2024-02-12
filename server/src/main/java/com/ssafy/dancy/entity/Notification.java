@@ -4,6 +4,7 @@ import com.ssafy.dancy.type.NotificationContentType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Notification {
 
     @Id
@@ -29,10 +31,7 @@ public class Notification {
     @Enumerated(EnumType.STRING)
     private NotificationContentType contentType;
 
-    @Column(nullable = false)
-    private String notificationContent;
-
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Article article;
 
     @CreatedDate

@@ -111,8 +111,10 @@ dependencies {
 
 	// ffmpeg for capturing video frame
 	implementation group: 'org.bytedeco', name: 'javacv', version: '1.5.7'
-
 	implementation group: 'org.bytedeco', name: 'javacv-platform', version: '1.5.9'
+
+	// Spring AOP
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
 // 6. openapi3 스펙 생성시 설정 정보

@@ -30,8 +30,6 @@ public class QNotification extends EntityPathBase<Notification> {
 
     public final DateTimePath<java.time.LocalDateTime> createdTime = createDateTime("createdTime", java.time.LocalDateTime.class);
 
-    public final StringPath notificationContent = createString("notificationContent");
-
     public final NumberPath<Long> notificationId = createNumber("notificationId", Long.class);
 
     public final QUser targetUser;
