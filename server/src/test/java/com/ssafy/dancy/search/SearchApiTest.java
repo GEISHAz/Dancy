@@ -6,9 +6,9 @@ import com.ssafy.dancy.article.ArticleDocument;
 import com.ssafy.dancy.article.ArticleSteps;
 import com.ssafy.dancy.auth.AuthSteps;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
-import com.ssafy.dancy.repository.article.ArticleRepository;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
+import com.ssafy.dancy.video.VideoSteps;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -32,10 +32,17 @@ public class SearchApiTest extends ApiTest {
     private ArticleSteps articleSteps;
     @Autowired
     private UserService userService;
+    @Autowired
+    private VideoSteps videoSteps;
     private SignUpRequest signUpRequest;
     private SignUpRequest otherSignUpRequest;
     private Long testLastId;
     private Long whatFirstId;
+
+    private Long videoIdOne;
+    private Long videoIdTwo;
+    private Long videoIdThree;
+    private Long videoIdFour;
 
     @BeforeEach
     void settings(){
@@ -44,13 +51,18 @@ public class SearchApiTest extends ApiTest {
         userService.signup(signUpRequest, Set.of(Role.USER));
         userService.signup(otherSignUpRequest, Set.of(Role.USER));
 
+        videoIdOne = videoSteps.결과확인_사전작업(AuthSteps.email);
+        videoIdTwo = videoSteps.결과확인_사전작업(AuthSteps.email);
+        videoIdThree = videoSteps.결과확인_사전작업(AuthSteps.opponentemail);
+        videoIdFour = videoSteps.결과확인_사전작업(AuthSteps.opponentemail);
+
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        게시물_작성(token, "include test");
-        testLastId = 게시물_작성(token, "test title");
+        게시물_작성(token, "include test", videoIdOne);
+        testLastId = 게시물_작성(token, "test title", videoIdTwo);
 
         String oppositeToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
-        whatFirstId = 게시물_작성(oppositeToken, "what title");
-        게시물_작성(oppositeToken, "what is include?");
+        whatFirstId = 게시물_작성(oppositeToken, "what title", videoIdThree);
+        게시물_작성(oppositeToken, "what is include?", videoIdFour);
     }
 
 
@@ -131,7 +143,7 @@ public class SearchApiTest extends ApiTest {
                 .header("AUTH-TOKEN", token)
                 .param("limit", 10)
                 .param("previousArticleId", testLastId)
-                .pathParams("keyword", AuthSteps.nickname)
+                .pathParams("keyword", "do")
                 .when()
                 .get("/search/nickname/{keyword}")
                 .then()
@@ -162,11 +174,11 @@ public class SearchApiTest extends ApiTest {
                 .log().all().extract();
     }
 
-    Long 게시물_작성(String token, String title){
+    Long 게시물_작성(String token, String title, Long videoId){
         ExtractableResponse<Response> response = given(this.spec)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", token)
-                .body(articleSteps.게시물_생성(title))
+                .body(articleSteps.게시물_생성(title, videoId))
                 .when()
                 .post("/stage")
                 .then()

@@ -6,8 +6,9 @@ import java.util.List;
 
 @Builder
 public record VideoConvertResponse(
-        List<VideoWrongSection> wrongSections,
+        List<VideoWrongSection> list,
         String totalUrl,
-        String thumbnailImageUrl
+        String thumbnailImageUrl,
+        Double total_accuracy
 ) {
 }

@@ -1,21 +1,16 @@
 package com.ssafy.dancy;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Answers;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.data.redis.core.RedisKeyValueAdapter;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -26,7 +21,6 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.concurrent.TimeUnit;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
@@ -74,6 +68,8 @@ public class ApiTest {
         Mockito.when(redisTemplate.delete(anyString())).thenReturn(true);
         Mockito.doNothing().when(mailSender).send(any(SimpleMailMessage.class));
         Mockito.doReturn(null).when(amazonS3).putObject(any());
+        Mockito.doReturn(true).when(amazonS3).doesObjectExist(anyString(), anyString());
+
     }
 
     @AfterEach

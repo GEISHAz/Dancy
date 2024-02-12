@@ -32,12 +32,14 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
                 Projections.bean(
                         ArticleDetailDTO.class,
                         article.as("article"),
-                        articleLike.as("articleLike")
+                        articleLike.as("articleLike"),
+                        savedArticle.as("savedArticle")
                         )
                 )
                 .from(article)
                 .leftJoin(articleLike).on(article.articleId.eq(articleLike.article.articleId)
                         .and(articleLike.user.userId.eq(me.getUserId())))
+                .leftJoin(savedArticle).on(savedArticle.article.eq(article))
                 .where(article.articleId.eq(articleId))
                 .fetchOne();
 
@@ -65,12 +67,31 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
 
     @Override
     public List<ArticleSimpleResponse> getArticleSearchByNickname(String nickname, int findCount, Long previousLastArticleId) {
-        return getResultStagePage(findCount, previousLastArticleId, article.user.nickname.eq(nickname));
+        return getResultStagePage(findCount, previousLastArticleId, article.user.nickname.contains(nickname));
     }
 
     @Override
     public List<ArticleSimpleResponse> getArticleSavedByPerson(String nickname, int findCount, Long previousLastArticleId) {
-        return getResultStagePage(findCount, previousLastArticleId, savedArticle.user.nickname.eq(nickname));
+        JPAQuery<Article> queryProcess = jpaQueryFactory.select(article)
+                .from(article)
+                .leftJoin(savedArticle).on(savedArticle.article.eq(article));
+
+        BooleanExpression expression = savedArticle.user.nickname.eq(nickname);
+
+        if(previousLastArticleId != null){
+            expression = expression.and(article.articleId.lt(previousLastArticleId));
+        }
+
+        List<Article> resultArticle = queryProcess
+                .where(expression)
+                .orderBy(article.articleId.desc())
+                .limit(findCount)
+                .fetch();
+
+        if(resultArticle.isEmpty()){
+            throw new LastArticleException("마지막 게시글입니다.");
+        }
+        return makeArticlesToSimpleList(resultArticle);
     }
 
     public List<ArticleSimpleResponse> getResultStagePage(int findCount, Long previousLastArticleId,
@@ -78,11 +99,11 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
         JPAQuery<Article> queryProcess = jpaQueryFactory.selectFrom(article);
 
         if(previousLastArticleId != null){
-            queryProcess = queryProcess.where(article.articleId.lt(previousLastArticleId)
-                    .and(searcher));
+            searcher = searcher.and(article.articleId.lt(previousLastArticleId));
         }
 
         List<Article> resultArticle = queryProcess
+                .where(searcher)
                 .orderBy(article.articleId.desc())
                 .limit(findCount)
                 .fetch();
@@ -107,6 +128,7 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
                 .createdDate(dto.getArticle().getCreatedDate())
                 .isArticleLiked(isArticleLiked)
                 .isAuthorFollowed(followInfo != null)
+                .isArticleSaved(dto.getSavedArticle() != null)
                 .follower(author.getFollowerCount())
                 .authorId(author.getUserId())
                 .nickname(author.getNickname())
@@ -116,8 +138,8 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
             Video video = dto.getArticle().getVideo();
             builder = builder
                     .thumbnailImageUrl(video.getThumbnailImageUrl())
-                    .score(video.getScore()) // TODO : 나중에 score 받을 수 있으면 집어넣기
-                    .video(video); // TODO : video 처리하고 난 뒤에 하기
+                    .score(video.getScore())
+                    .videoUrl(video.getFullVideoUrl());
         }
 
         return builder.build();

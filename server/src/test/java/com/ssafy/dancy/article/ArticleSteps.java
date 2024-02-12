@@ -1,6 +1,7 @@
 package com.ssafy.dancy.article;
 
-import com.ssafy.dancy.message.request.article.ArticleUpdateRequest;
+import com.ssafy.dancy.message.request.article.ArticleModifyRequest;
+import com.ssafy.dancy.message.request.article.ArticleWriteRequest;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,44 +14,41 @@ public class ArticleSteps {
     public static final String testVideo = "test_video";
     public static final String testImage = "test_image";
 
-    public ArticleUpdateRequest 게시물_생성(String title){
-        return ArticleUpdateRequest.builder()
+    public ArticleWriteRequest 게시물_생성(String title, Long videoId){
+        return ArticleWriteRequest.builder()
                 .articleTitle(title)
                 .articleContent(testContent)
-                .video(testVideo)
-                .thumbnailImageUrl(testImage)
+                .videoId(videoId)
                 .build();
     }
 
-    public ArticleUpdateRequest 게시물_생성(){
+    public ArticleWriteRequest 게시물_생성(Long videoId){
 
-        return ArticleUpdateRequest.builder()
+        return ArticleWriteRequest.builder()
                 .articleTitle(testTitle)
                 .articleContent(testContent)
-                .video(testVideo)
-                .thumbnailImageUrl(testImage)
+                .videoId(videoId)
                 .build();
     }
 
-    public ArticleUpdateRequest 게시물_생성_타이틀공백(){
-        return ArticleUpdateRequest.builder()
+    public ArticleWriteRequest 게시물_생성_타이틀공백(Long videoId){
+        return ArticleWriteRequest.builder()
                 .articleTitle("")
                 .articleContent(testContent)
-                .video(testVideo)
-                .thumbnailImageUrl(testImage)
+                .videoId(videoId)
                 .build();
     }
 
-    public ArticleUpdateRequest 게시물_수정(){
+    public ArticleModifyRequest 게시물_수정(){
 
-        return ArticleUpdateRequest.builder()
+        return ArticleModifyRequest.builder()
                 .articleTitle(modifiedTestTitle)
                 .articleContent(modifiedTestContent)
                 .build();
     }
 
-    public ArticleUpdateRequest 게시물_수정_타이틀공백(){
-        return ArticleUpdateRequest.builder()
+    public ArticleModifyRequest 게시물_수정_타이틀공백(){
+        return ArticleModifyRequest.builder()
                 .articleTitle("")
                 .articleContent(modifiedTestContent)
                 .build();

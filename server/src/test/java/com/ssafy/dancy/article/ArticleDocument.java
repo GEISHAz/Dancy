@@ -14,8 +14,12 @@ public class ArticleDocument {
     public static final Snippet ArticleWriteRequestField = requestFields(
             fieldWithPath("articleTitle").type(JsonFieldType.STRING).attributes(required()).description("게시물 제목"),
             fieldWithPath("articleContent").type(JsonFieldType.STRING).attributes(required()).description("게시물 내용"),
-            fieldWithPath("video").type(JsonFieldType.VARIES).attributes(required()).description("비디오"),
-            fieldWithPath("thumbnailImageUrl").type(JsonFieldType.VARIES).attributes(required()).description("썸네일 이미지 URL")
+            fieldWithPath("videoId").type(JsonFieldType.NUMBER).attributes(required()).description("비디오 고유 ID")
+    );
+
+    public static final Snippet ArticleModifyRequestField = requestFields(
+            fieldWithPath("articleTitle").type(JsonFieldType.STRING).attributes(required()).description("게시물 제목"),
+            fieldWithPath("articleContent").type(JsonFieldType.STRING).attributes(required()).description("게시물 내용")
     );
 
     public static final Snippet articleIdPathField = pathParameters(
@@ -35,38 +39,38 @@ public class ArticleDocument {
             fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("게시물 ID"),
             fieldWithPath("articleTitle").type(JsonFieldType.STRING).description("게시물 제목"),
             fieldWithPath("articleContent").type(JsonFieldType.STRING).description("게시물 내용"),
-            fieldWithPath("thumbnailImageUrl").type(JsonFieldType.STRING).description("썸네일 이미지 URL"),
-            fieldWithPath("thumbnailVideoUrl").type(JsonFieldType.STRING).description("썸네일 비디오 URL"),
+            fieldWithPath("thumbnailImageUrl").type(JsonFieldType.VARIES).description("썸네일 이미지 URL"),
             fieldWithPath("view").type(JsonFieldType.NUMBER).description("게시물 조회수"),
             fieldWithPath("articleLike").type(JsonFieldType.NUMBER).description("게시물 좋아요"),
             fieldWithPath("createdDate").type(JsonFieldType.ARRAY).description("생성일시"),
             fieldWithPath("isArticleLiked").type(JsonFieldType.BOOLEAN).description("내가 좋아요했는지 여부"),
             fieldWithPath("isAuthorFollowed").type(JsonFieldType.BOOLEAN).description("해당 사람 팔로우 여부"),
-            fieldWithPath("score").type(JsonFieldType.NUMBER).description("점수"),
+            fieldWithPath("isArticleSaved").type(JsonFieldType.BOOLEAN).description("해당 글을 저장했는지 여부"),
+            fieldWithPath("score").type(JsonFieldType.VARIES).description("점수"),
             fieldWithPath("follower").type(JsonFieldType.NUMBER).description("팔로워 수"),
             fieldWithPath("authorId").type(JsonFieldType.NUMBER).description("유저 PK 아이디"),
             fieldWithPath("nickname").type(JsonFieldType.STRING).description("유저 닉네임"),
             fieldWithPath("profileImageUrl").type(JsonFieldType.VARIES).description("프로필 이미지 URL"),
-            fieldWithPath("video").type(JsonFieldType.VARIES).description("비디오")
+            fieldWithPath("videoUrl").type(JsonFieldType.VARIES).description("비디오 URL")
     );
 
     public static final Snippet articleDetailResponseField = responseFields(
             fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("게시글 고유 아이디"),
             fieldWithPath("articleTitle").type(JsonFieldType.STRING).description("게시글 제목"),
             fieldWithPath("articleContent").type(JsonFieldType.STRING).description("게시글 내용"),
-            fieldWithPath("thumbnailImageUrl").type(JsonFieldType.STRING).description("썸네일 이미지 URL"),
-            fieldWithPath("thumbnailVideoUrl").type(JsonFieldType.STRING).description("썸네일 비디오 URL"),
+            fieldWithPath("thumbnailImageUrl").type(JsonFieldType.VARIES).description("썸네일 이미지 URL"),
             fieldWithPath("view").type(JsonFieldType.NUMBER).description("조회수"),
             fieldWithPath("articleLike").type(JsonFieldType.NUMBER).description("게시글 좋아요 갯수"),
             fieldWithPath("createdDate").type(JsonFieldType.ARRAY).description("생성일시"),
             fieldWithPath("isArticleLiked").type(JsonFieldType.BOOLEAN).description("내가 좋아요했는지 여부"),
             fieldWithPath("isAuthorFollowed").type(JsonFieldType.BOOLEAN).description("내가 글쓴이를 팔로우했는지 여부"),
-            fieldWithPath("score").type(JsonFieldType.NUMBER).description("비디오 정확도"),
+            fieldWithPath("isArticleSaved").type(JsonFieldType.BOOLEAN).description("해당 글을 저장했는지 여부"),
+            fieldWithPath("score").type(JsonFieldType.VARIES).description("비디오 정확도"),
             fieldWithPath("follower").type(JsonFieldType.NUMBER).description("글쓴이 팔로워 수"),
             fieldWithPath("authorId").type(JsonFieldType.NUMBER).description("글쓴이 고유 아이디"),
             fieldWithPath("nickname").type(JsonFieldType.STRING).description("글쓴이 닉네임"),
             fieldWithPath("profileImageUrl").type(JsonFieldType.VARIES).description("글쓴이 프로필 URL"),
-            fieldWithPath("video").type(JsonFieldType.VARIES).description("비디오 URL")
+            fieldWithPath("videoUrl").type(JsonFieldType.STRING).description("비디오 URL")
     );
 
     public static final Snippet simpleArticleListResponseField = responseFields(
@@ -81,7 +85,7 @@ public class ArticleDocument {
     );
 
     public static final Snippet articleSaveResponseField =  responseFields(
-            fieldWithPath("saveId").type(JsonFieldType.NUMBER).description("게시물 저장 고유 아이디"),
+            fieldWithPath("isSaved").type(JsonFieldType.BOOLEAN).description("게시물 저장 여부"),
             fieldWithPath("articleId").type(JsonFieldType.NUMBER).description("게시글 고유 아이디"),
             fieldWithPath("saveUserNickname").type(JsonFieldType.STRING).description("저장한 유저의 닉네임"),
             fieldWithPath("articleTitle").type(JsonFieldType.STRING).description("저장한 게시글 제목"),

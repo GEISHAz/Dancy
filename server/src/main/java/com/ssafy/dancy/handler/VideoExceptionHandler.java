@@ -1,5 +1,7 @@
 package com.ssafy.dancy.handler;
 
+import com.ssafy.dancy.exception.video.LastVideoException;
+import com.ssafy.dancy.exception.video.VideoNotConvertedException;
 import com.ssafy.dancy.exception.video.VideoNotFoundException;
 import com.ssafy.dancy.message.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -18,5 +20,17 @@ public class VideoExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public List<ErrorResponse> videoNotFoundExceptionHandler(VideoNotFoundException e){
         return makeErrorResponse(e, "videoId");
+    }
+
+    @ExceptionHandler(LastVideoException.class)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public List<ErrorResponse> lastVideoExceptionHandler(LastVideoException e){
+        return makeErrorResponse(e, "previousVideoId");
+    }
+
+    @ExceptionHandler(VideoNotConvertedException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public List<ErrorResponse> videoNotConvertedExceptionHandler(VideoNotConvertedException e){
+        return makeErrorResponse(e, "video");
     }
 }
