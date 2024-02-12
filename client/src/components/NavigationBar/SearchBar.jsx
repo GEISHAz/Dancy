@@ -28,11 +28,9 @@ export default function SearchBar({ cardDetails }) {
       console.log("검색어:", searchTerm); // 검색어 확인
       let res;
       if (searchTerm.trim() !== "") { // 검색어가 비어있지 않을 때
-        if (searchKeyword && searchTerm === searchKeyword) { // 이전 검색어와 동일한 경우
-          res = await searchResultListByNickname(searchTerm); // 닉네임으로 검색
-        } else {
-          res = await searchResultListByTitle(searchTerm); // 제목으로 검색
-        }
+        const resByNickname = await searchResultListByNickname(searchTerm); // 닉네임으로 검색
+        const resByTitle = await searchResultListByTitle(searchTerm); // 제목으로 검색
+        res = resByNickname.length > 0 ? resByNickname : resByTitle;
       }
       if (res) {
         console.log("검색 결과:", res); // 검색 결과 확인
@@ -47,6 +45,7 @@ export default function SearchBar({ cardDetails }) {
       console.error(error);
     }
   };
+  
   
 
 
