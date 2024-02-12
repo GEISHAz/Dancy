@@ -1,14 +1,16 @@
 package com.ssafy.dancy.service.video;
 
+import com.amazonaws.encryptionsdk.model.EncryptionCompletionListener;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.entity.Video;
 import com.ssafy.dancy.entity.WrongPick;
 import com.ssafy.dancy.exception.user.NotHavingPermissionException;
+import com.ssafy.dancy.exception.video.VideoNotConvertedException;
 import com.ssafy.dancy.exception.video.VideoNotFoundException;
 import com.ssafy.dancy.message.request.video.ConvertToPythonRequest;
 import com.ssafy.dancy.message.request.video.ConvertVideoRequest;
 import com.ssafy.dancy.message.response.video.*;
-import com.ssafy.dancy.repository.VideoRepository;
+import com.ssafy.dancy.repository.video.VideoRepository;
 import com.ssafy.dancy.repository.WrongPickRepository;
 import com.ssafy.dancy.type.VideoType;
 import com.ssafy.dancy.util.AlarmHandler;
@@ -44,6 +46,13 @@ public class CreateVideoService {
     private static final String REFERENCE_VIDEO_TARGET = "video/gt";
     private static final String THUMBNAIL_IMAGE_TARGET = "thumbnailImage";
     private static final String CONVERT_COMPLETE_NAME = "convert_complete";
+
+    private static final String S3_URL_PREFIX = "https://gumid210bucket.s3.ap-northeast-2.amazonaws.com/";
+
+
+    public List<VideoReferenceResponse> getReferenceVideoList(int limit, Long previousVideoId) {
+        return videoRepository.findVideoReferenceList(limit, previousVideoId);
+    }
 
     public UploadVideoResponse uploadReferenceVideo(User user, MultipartFile file){
 
@@ -84,7 +93,7 @@ public class CreateVideoService {
                 .bodyValue(makeSimpleRequest(reference, practice))
                 .retrieve()
                 .bodyToMono(VideoConvertResponse.class)
-                .doOnError(e -> log.warn(e.getMessage()))
+                .onErrorMap(e -> new VideoNotConvertedException("변환 요청이 성공적으로 입력되지 않았습니다. 자세한 사항은 문의바랍니다."))
                 .subscribe((result) -> afterCompleteConvert(user, result));
 
         return ConvertVideoResponse.builder()
@@ -96,7 +105,7 @@ public class CreateVideoService {
 
     public ConvertResultResponse getResultVideoInfo(User user, Long videoId){
         Video video = videoRepository.findByVideoId(videoId).orElseThrow(() ->
-                new VideoNotFoundException("해당 영상을 찾을 수 없습니다."));
+                new VideoNotFoundException("해당 영상 정보를 찾을 수 없습니다."));
 
         if(!video.getUser().equals(user)){
             throw new NotHavingPermissionException("해당 유저의 비디오가 아닙니다.");
@@ -108,27 +117,24 @@ public class CreateVideoService {
                 .videoUrl(video.getFullVideoUrl())
                 .score(video.getScore())
                 .wrongSections(convertToWrongSection(wrongPickList))
+                .thumbnailImageUrl(video.getThumbnailImageUrl())
+                .nickname(user.getNickname())
+                .videoTitle(video.getVideoTitle())
                 .build();
     }
 
-    protected void afterCompleteConvert(User user, VideoConvertResponse response){
+    public void afterCompleteConvert(User user, VideoConvertResponse response){
         log.info("변환된 영상 : {}", response.totalUrl());
         log.info("썸네일 : {}", response.thumbnailImageUrl());
         log.info("측정 정확도 : {}", response.total_accuracy());
-
-        // 해당 영상은 이미 S3 에 저장되어 있음
-        // 스프링부트에서 해야 할 역할은, 이를 DB 에 저장하고
-        // 사용자에게 실시간으로 전달하는 일이 남았음.
-
-        // 일단, 확실한 것은 다 끝나고 받으면 이게 실행될 수 있다는 것이다.
 
         Video savedVideo = videoRepository.save(Video.builder()
                 .user(user)
                 .videoTitle(extractNameFromUrl(response.totalUrl()))
                 .score(response.total_accuracy())
-                .thumbnailImageUrl(response.thumbnailImageUrl())
+                .thumbnailImageUrl(S3_URL_PREFIX + response.thumbnailImageUrl())
                 .videoType(VideoType.TOTAL)
-                .fullVideoUrl(response.totalUrl())
+                .fullVideoUrl(S3_URL_PREFIX + response.totalUrl())
                 .build());
 
         List<WrongPick> pickList = new ArrayList<>();

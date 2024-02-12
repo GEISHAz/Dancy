@@ -6,6 +6,7 @@ import com.ssafy.dancy.message.request.video.PracticeVideoUploadRequest;
 import com.ssafy.dancy.message.request.video.ReferenceVideoUploadRequest;
 import com.ssafy.dancy.message.response.video.ConvertResultResponse;
 import com.ssafy.dancy.message.response.video.ConvertVideoResponse;
+import com.ssafy.dancy.message.response.video.VideoReferenceResponse;
 import com.ssafy.dancy.message.response.video.UploadVideoResponse;
 import com.ssafy.dancy.service.video.CreateVideoService;
 import jakarta.validation.Valid;
@@ -14,7 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,7 +25,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class VideoController {
 
     private final CreateVideoService videoService;
-    private final WebClient webClient;
+
+    @GetMapping("")
+    public List<VideoReferenceResponse> getReferenceVideoList(@RequestParam int limit,
+                                                              @RequestParam(required = false) Long previousVideoId){
+        return videoService.getReferenceVideoList(limit, previousVideoId);
+    }
 
     @PostMapping(value = "/upload/reference", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UploadVideoResponse uploadReferenceVideo(@AuthenticationPrincipal User user,
