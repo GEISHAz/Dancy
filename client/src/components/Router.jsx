@@ -36,7 +36,7 @@ export default function Router({ cardDetails, videoDetails }) {
     if (isLoggedIn) {
       const fetchSse = async () => {
         try {
-          const alarmConnectEndpoint = "http://i10d210.p.ssafy.io:8080//alarm/subscribe"
+          const alarmConnectEndpoint = "http://i10d210.p.ssafy.io:8080/alarm/subscribe"
           eventSource = new ssePolyfill.EventSourcePolyfill(alarmConnectEndpoint, {
             headers : {'AUTH-TOKEN': `${localStorage.getItem('token')}`}
           })

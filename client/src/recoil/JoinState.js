@@ -10,6 +10,12 @@ export const joinState = atom({
       birthdate: '',
       gender: '',
     nickname: '',
-    profileImage: null
+    profileImageUrl: null
     },
-  });
+});
+  
+// 사진 임시 저장 용 전역 관리
+export const selectedFileState = atom({
+  key: 'selectedFileState',
+  default: null,
+});
