@@ -16,6 +16,7 @@ import JoinComplete from "./Join/JoinComplete";
 import SendPin from "../pages/FindMyPwd";
 import { loginState } from "../recoil/LoginState";
 import { useRecoilValue } from "recoil";
+import * as ssePolyfill from 'event-source-polyfill'
 
 export default function Router({ cardDetails, videoDetails }) {
   const isLoggedIn = useRecoilValue(loginState);
@@ -28,6 +29,47 @@ export default function Router({ cardDetails, videoDetails }) {
       navigate('/login');
     }
   }, [isLoggedIn, navigate, location]);
+
+  useEffect(() => {
+    let eventSource;
+    if (isLoggedIn) {
+      const fetchSse = async () => {
+        try {
+          const alarmConnectEndpoint = "http://i10d210.p.ssafy.io:8080/alarm/subscribe"
+          eventSource = new ssePolyfill.EventSourcePolyfill(alarmConnectEndpoint, {
+            headers : {'AUTH-TOKEN': `${localStorage.getItem('token')}`}
+          })
+
+          eventSource.addEventListener('heartbeat', function (event) {
+            console.log('Latest news:', event.data);
+          });
+
+
+          eventSource.addEventListener('convert_complete', function(event){
+            console.log('result video id : ', event.data)
+          })
+
+          eventSource.addEventListener('notification', function(event){
+            console.log('notification : ', event.data)
+          })
+  
+          /* EVENTSOURCE ONERROR ------------------------------------------------------ */
+          eventSource.onerror = async (event) => {
+            if (!event.error.message.includes("No activity"))
+              eventSource.close();
+          };
+        } catch (error) {}
+      };
+      fetchSse();
+      return () => eventSource.close();
+    }else{
+      if(eventSource != undefined || eventSource != null){
+        eventSource.close();
+      }
+      eventSource = null;
+    }
+  }, [isLoggedIn]);
+
 
   return (
     <>
