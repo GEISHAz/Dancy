@@ -23,7 +23,7 @@ public record ArticleDetailResponse(
     long authorId,
     String nickname,
     String profileImageUrl,
-    Video video
+    String videoUrl
 
 ){
 

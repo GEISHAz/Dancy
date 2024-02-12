@@ -5,12 +5,17 @@ import com.ssafy.dancy.CommonDocument;
 import com.ssafy.dancy.auth.AuthSteps;
 import com.ssafy.dancy.entity.Article;
 import com.ssafy.dancy.entity.Comment;
+import com.ssafy.dancy.entity.User;
+import com.ssafy.dancy.entity.Video;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.message.response.comment.CommentResponse;
+import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.repository.article.ArticleRepository;
 import com.ssafy.dancy.repository.CommentRepository;
+import com.ssafy.dancy.repository.video.VideoRepository;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
+import com.ssafy.dancy.video.VideoSteps;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -37,10 +42,17 @@ public class CommentApiTest extends ApiTest {
     private ArticleRepository articleRepository;
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private VideoSteps videoSteps;
+    @Autowired
+    private VideoRepository videoRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     private SignUpRequest signUpRequest;
     private SignUpRequest otherSignupRequest;
     private Article savedArticle;
+    private Long videoId;
 
     @BeforeEach
     void settings(){
@@ -49,10 +61,16 @@ public class CommentApiTest extends ApiTest {
         userService.signup(signUpRequest, Set.of(Role.USER));
         userService.signup(otherSignupRequest, Set.of(Role.USER));
 
+        videoId = videoSteps.결과확인_사전작업(AuthSteps.email);
+        Video video = videoRepository.findByVideoId(videoId).get();
+        User user = userRepository.findByEmail(AuthSteps.email).get();
 
         Article article = Article.builder()
                 .articleTitle("fuck")
                 .articleContent("asedf")
+                .user(user)
+                .video(video)
+                .thumbnailImageUrl(video.getThumbnailImageUrl())
                 .build();
 
         savedArticle = articleRepository.save(article);

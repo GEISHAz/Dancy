@@ -27,7 +27,7 @@ public class Article {
     @Column(nullable = false)
     private String articleContent;
 
-    @Column //(nullable = false)
+    @Column(nullable = false)
     private String thumbnailImageUrl;
 
     @Column(nullable = false)
@@ -44,9 +44,9 @@ public class Article {
     @CreatedDate
     private LocalDateTime createdDate;
 
-    @ManyToOne //(optional = false)
+    @ManyToOne(optional = false)
     private User user;
 
-    @OneToOne(fetch = FetchType.EAGER) // (optional = false)
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
     private Video video;
 }

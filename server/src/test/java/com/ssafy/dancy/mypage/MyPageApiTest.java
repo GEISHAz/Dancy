@@ -11,6 +11,7 @@ import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
 import com.ssafy.dancy.user.UserDocument;
+import com.ssafy.dancy.video.VideoSteps;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -37,8 +38,11 @@ public class MyPageApiTest extends ApiTest {
     private UserService userService;
     @Autowired
     private ArticleSteps articleSteps;
+    @Autowired
+    private VideoSteps videoSteps;
     private SignUpRequest signUpRequest;
     private SignUpRequest opponentSignUpRequest;
+    private Long videoId;
 
     @BeforeEach
     void settings(){
@@ -46,6 +50,8 @@ public class MyPageApiTest extends ApiTest {
         opponentSignUpRequest = authSteps.상대방회원가입정보_생성();
         userService.signup(signUpRequest, Set.of(Role.USER));
         userService.signup(opponentSignUpRequest, Set.of(Role.USER));
+
+        videoId = videoSteps.결과확인_사전작업(AuthSteps.email);
     }
 
     @Test
@@ -153,7 +159,7 @@ public class MyPageApiTest extends ApiTest {
     @Test
     void 자기가_쓴_게시물_불러오기_200(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        게시물_생성(token);
+        게시물_생성(token, videoId);
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH, "해당 유저가 작성한 게시글을 불러오는 API 입니다." +
@@ -181,7 +187,7 @@ public class MyPageApiTest extends ApiTest {
     @Test
     void 자기가_쓴_게시물_불러오기_토큰없음_401(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        게시물_생성(token);
+        게시물_생성(token, videoId);
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH))
@@ -200,7 +206,7 @@ public class MyPageApiTest extends ApiTest {
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
         String otherToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
 
-        Long articleId = 게시물_생성(token);
+        Long articleId = 게시물_생성(token, videoId);
         게시글_저장_진행(otherToken, articleId);
 
         given(this.spec)
@@ -232,7 +238,7 @@ public class MyPageApiTest extends ApiTest {
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
         String otherToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
 
-        Long articleId = 게시물_생성(token);
+        Long articleId = 게시물_생성(token, videoId);
         게시글_저장_진행(otherToken, articleId);
 
         given(this.spec)
@@ -274,12 +280,12 @@ public class MyPageApiTest extends ApiTest {
                 .log().all().extract();
     }
 
-    Long 게시물_생성(String token){
+    Long 게시물_생성(String token, Long videoId){
         ExtractableResponse<Response> response = given(this.spec)
 
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", token)
-                .body(articleSteps.게시물_생성())
+                .body(articleSteps.게시물_생성(videoId))
                 .when()
                 .post("/stage")
                 .then()
