@@ -130,7 +130,7 @@ export const VideoUserDetail = styled.div`
 export const BtnContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
   margin-bottom: 5px;
 `;
@@ -141,7 +141,7 @@ export const HashTagArea = styled.div`
 `;
 
 export const AccuracyBtn = styled.button`
-  width: 70px;
+  width: 75px;
   height: 28px;
   border: 1px solid #252525;
   border-radius: 7px;

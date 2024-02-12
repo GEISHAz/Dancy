@@ -6,11 +6,14 @@ import com.ssafy.dancy.auth.AuthSteps;
 import com.ssafy.dancy.entity.Article;
 import com.ssafy.dancy.entity.Comment;
 import com.ssafy.dancy.entity.User;
+import com.ssafy.dancy.entity.Video;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
 import com.ssafy.dancy.repository.*;
 import com.ssafy.dancy.repository.article.ArticleRepository;
+import com.ssafy.dancy.repository.video.VideoRepository;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
+import com.ssafy.dancy.video.VideoSteps;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -43,10 +46,15 @@ public class LikeApiTest extends ApiTest {
     private ArticleLikeRepository articleLikeRepository;
     @Autowired
     private CommentLikeRepository commentLikeRepository;
+    @Autowired
+    private VideoSteps videoSteps;
+    @Autowired
+    private VideoRepository videoRepository;
 
     private SignUpRequest signUpRequest;
     private SignUpRequest signUpOpponentRequest;
     private Article savedArticle;
+    private Long videoId;
 
     @BeforeEach
     void settings(){
@@ -56,11 +64,16 @@ public class LikeApiTest extends ApiTest {
         userService.signup(signUpOpponentRequest, Set.of(Role.USER));
 
         User opponentUser = userRepository.findByEmail(AuthSteps.opponentemail).get();
+        videoId = videoSteps.결과확인_사전작업(opponentUser.getEmail());
+
+        Video video = videoRepository.findByVideoId(videoId).get();
 
         savedArticle = articleRepository.save(Article.builder()
                 .user(opponentUser)
-                .articleTitle("fuck")
+                .articleTitle("titleasd")
                 .articleContent("asedf")
+                .video(video)
+                .thumbnailImageUrl(video.getThumbnailImageUrl())
                 .build());
     }
 

@@ -8,6 +8,9 @@ import java.util.List;
 public record ConvertResultResponse(
         List<VideoWrongSection> wrongSections,
         String videoUrl,
+        String thumbnailImageUrl,
+        String nickname,
+        String videoTitle,
         Double score
 ) {
 }

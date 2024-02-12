@@ -2,7 +2,7 @@ package com.ssafy.dancy.controller;
 
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.request.article.ArticleModifyRequest;
-import com.ssafy.dancy.message.request.article.ArticleUpdateRequest;
+import com.ssafy.dancy.message.request.article.ArticleWriteRequest;
 import com.ssafy.dancy.message.response.article.ArticleDetailResponse;
 import com.ssafy.dancy.message.response.article.ArticleSaveResponse;
 import com.ssafy.dancy.message.response.article.ArticleSimpleResponse;
@@ -38,7 +38,7 @@ public class ArticleController {
 
 
     @PostMapping("")
-    public ArticleDetailResponse insertArticle(@AuthenticationPrincipal User user, @Valid @RequestBody ArticleUpdateRequest dto){
+    public ArticleDetailResponse insertArticle(@AuthenticationPrincipal User user, @Valid @RequestBody ArticleWriteRequest dto){
 
         return articleService.insertArticle(user,dto);
     }

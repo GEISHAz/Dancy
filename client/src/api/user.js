@@ -70,7 +70,7 @@ export const userChangeImg = async (img) => {
     // 응답 상태 코드 확인
     const statusCode = response.status;
     console.log(statusCode);
-    return statusCode;
+    return response.data;
   } catch (error) {
     console.log("error:", error.response.status)
     console.error("프로필사진 변경 응답에 에러가 발생함", error);

@@ -138,8 +138,8 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
             Video video = dto.getArticle().getVideo();
             builder = builder
                     .thumbnailImageUrl(video.getThumbnailImageUrl())
-                    .score(video.getScore()) // TODO : 나중에 score 받을 수 있으면 집어넣기
-                    .video(video); // TODO : video 처리하고 난 뒤에 하기
+                    .score(video.getScore())
+                    .videoUrl(video.getFullVideoUrl());
         }
 
         return builder.build();

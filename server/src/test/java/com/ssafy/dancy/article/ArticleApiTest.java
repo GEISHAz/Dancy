@@ -4,7 +4,6 @@ import com.ssafy.dancy.ApiTest;
 import com.ssafy.dancy.CommonDocument;
 import com.ssafy.dancy.auth.AuthSteps;
 import com.ssafy.dancy.entity.Article;
-import com.ssafy.dancy.entity.SavedArticle;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.follow.FollowSteps;
 import com.ssafy.dancy.message.request.user.SignUpRequest;
@@ -13,8 +12,8 @@ import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.repository.article.ArticleRepository;
 import com.ssafy.dancy.service.user.UserService;
 import com.ssafy.dancy.type.Role;
+import com.ssafy.dancy.video.VideoSteps;
 import groovy.util.logging.Slf4j;
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -24,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import java.util.List;
 import java.util.Set;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
@@ -49,8 +47,13 @@ public class ArticleApiTest extends ApiTest {
     private ArticleSaveRepository articleSaveRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private VideoSteps videoSteps;
     private SignUpRequest signUpRequest;
     private SignUpRequest otherSignUpRequest;
+
+    private Long videoIdOne;
+    private Long videoIdTwo;
 
     @BeforeEach
     void settings(){
@@ -58,13 +61,16 @@ public class ArticleApiTest extends ApiTest {
         otherSignUpRequest = authSteps.상대방회원가입정보_생성();
         userService.signup(signUpRequest, Set.of(Role.USER));
         userService.signup(otherSignUpRequest, Set.of(Role.USER));
+
+        videoIdOne = videoSteps.결과확인_사전작업(AuthSteps.email);
+        videoIdTwo = videoSteps.결과확인_사전작업(AuthSteps.email);
     }
 
     @Test
     void 전체_게시물_조회_이전게시글아이디_존재_200(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        게시물_작성(token);
-        Long lastId = 게시물_작성(token);
+        게시물_작성(token, videoIdOne);
+        Long lastId = 게시물_작성(token, videoIdTwo);
 
         ExtractableResponse<Response> response = given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH,
@@ -97,8 +103,8 @@ public class ArticleApiTest extends ApiTest {
     void 전체_게시물_조회_이전게시글아이디_없음_200(){
 
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        게시물_작성(token);
-        게시물_작성(token);
+        게시물_작성(token, videoIdOne);
+        게시물_작성(token, videoIdTwo);
 
         ExtractableResponse<Response> response = given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH, ArticleDocument.simpleArticleListResponseField))
@@ -118,8 +124,8 @@ public class ArticleApiTest extends ApiTest {
     @Test
     void 전체_게시물_조회_리미트처리_성공_200(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        게시물_작성(token);
-        게시물_작성(token);
+        게시물_작성(token, videoIdOne);
+        게시물_작성(token, videoIdTwo);
 
         ExtractableResponse<Response> response = given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH, ArticleDocument.simpleArticleListResponseField))
@@ -139,8 +145,8 @@ public class ArticleApiTest extends ApiTest {
     @Test
     void 전체_게시물_조회_마지막게시글_처리_204(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        Long realLastId = 게시물_작성(token);
-        게시물_작성(token);
+        Long realLastId = 게시물_작성(token, videoIdOne);
+        게시물_작성(token, videoIdTwo);
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH))
@@ -159,7 +165,7 @@ public class ArticleApiTest extends ApiTest {
     void 게시글_상세_조회_성공_좋아요클릭(){
 
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        Long articleId = 게시물_작성(token);
+        Long articleId = 게시물_작성(token, videoIdOne);
         게시물_좋아요(token, articleId);
 
         ExtractableResponse<Response> response = given(this.spec)
@@ -189,7 +195,7 @@ public class ArticleApiTest extends ApiTest {
     @Test
     void 게시글_상세_조회_해당유저팔로우(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        Long articleId = 게시물_작성(token);
+        Long articleId = 게시물_작성(token, videoIdOne);
 
         String opponentToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
         팔로우_진행(opponentToken, AuthSteps.nickname);
@@ -214,7 +220,7 @@ public class ArticleApiTest extends ApiTest {
     @Test
     void 게시글_상세_조회_둘다해당(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        Long articleId = 게시물_작성(token);
+        Long articleId = 게시물_작성(token, videoIdOne);
 
         String opponentToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
 
@@ -242,7 +248,7 @@ public class ArticleApiTest extends ApiTest {
     @Test
     void 게시글_상세_조회_좋아요_팔로우_아님(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        Long articleId = 게시물_작성(token);
+        Long articleId = 게시물_작성(token, videoIdOne);
 
         ExtractableResponse<Response> response = given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH, CommonDocument.AccessTokenHeader,
@@ -264,7 +270,7 @@ public class ArticleApiTest extends ApiTest {
     @Test
     void 게시글_상세_조회_토큰없음_401(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        Long articleId = 게시물_작성(token);
+        Long articleId = 게시물_작성(token, videoIdOne);
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH))
@@ -298,13 +304,15 @@ public class ArticleApiTest extends ApiTest {
     void 게시물_작성_성공_200(){
 
         final String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+        Long videoId = videoSteps.결과확인_사전작업(AuthSteps.email);
+
 
         ExtractableResponse<Response> response = given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH,
                         "게시물을 작성하는 API입니다." +
                         "<br>성공적으로 작성되면 200 OK와 함께 게시글 ID, 제목, 내용, 썸네일 등이 반환됩니다." +
                         "<br>게시물 제목을 40자 이하로 작성하지 않거나, 공백으로 둘 경우, 그리고 게시물 내용이 공백일 경우" +
-                        "<br>400 Bad Request 가 생성됩니다." +
+                        "<br>또는 videoId 가 없을 경우 400 Bad Request 가 생성됩니다." +
                         "<br>헤더에 로그인 토큰을 입력하지 않을 경우, 401 Unauthorized 가 반환됩니다." +
                         "<br>해시대크 부분은 추가 구현 예정입니다. 참고해 주세요.",
                         "게시물작성",
@@ -312,7 +320,7 @@ public class ArticleApiTest extends ApiTest {
                         ArticleDocument.ArticleWriteRequestField, ArticleDocument.ArticleWriteResponseField))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", token)
-                .body(articleSteps.게시물_생성())
+                .body(articleSteps.게시물_생성(videoId))
                 .when()
                 .post("/stage")
                 .then()
@@ -324,11 +332,12 @@ public class ArticleApiTest extends ApiTest {
         assertThat(articleRepository.findByArticleId(articleId)).isPresent();
     }
 
-    Long 게시물_작성(String token){
+    Long 게시물_작성(String token, Long videoId){
+
         ExtractableResponse<Response> response = given(this.spec)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", token)
-                .body(articleSteps.게시물_생성())
+                .body(articleSteps.게시물_생성(videoId))
                 .when()
                 .post("/stage")
                 .then()
@@ -363,7 +372,7 @@ public class ArticleApiTest extends ApiTest {
                         ArticleDocument.ArticleWriteRequestField, CommonDocument.ErrorResponseFields))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", token)
-                .body(articleSteps.게시물_생성_타이틀공백())
+                .body(articleSteps.게시물_생성_타이틀공백(videoIdOne))
                 .when()
                 .post("/stage")
                 .then()
@@ -377,7 +386,7 @@ public class ArticleApiTest extends ApiTest {
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(articleSteps.게시물_생성_타이틀공백())
+                .body(articleSteps.게시물_생성_타이틀공백(videoIdOne))
                 .when()
                 .post("/stage")
                 .then()
@@ -391,7 +400,7 @@ public class ArticleApiTest extends ApiTest {
 
         final String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
 
-        Long articleId = 게시물_생성(token);
+        Long articleId = 게시물_생성(token, videoIdOne);
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH,
@@ -404,7 +413,7 @@ public class ArticleApiTest extends ApiTest {
                         "<br>해당 글을 찾을 수 없을 경우, 404 Not Found 가 반환됩니다.",
                         "게시물 수정",
                         CommonDocument.AccessTokenHeader,
-                        ArticleDocument.ArticleWriteRequestField, ArticleDocument.ArticleWriteResponseField))
+                        ArticleDocument.ArticleModifyRequestField, ArticleDocument.ArticleWriteResponseField))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", token)
                 .pathParam("articleId", articleId)
@@ -427,12 +436,12 @@ public class ArticleApiTest extends ApiTest {
 
         final String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
 
-        Long articleId = 게시물_생성(token);
+        Long articleId = 게시물_생성(token, videoIdOne);
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH,
                         CommonDocument.AccessTokenHeader,
-                        ArticleDocument.ArticleWriteRequestField, CommonDocument.ErrorResponseFields))
+                        ArticleDocument.ArticleModifyRequestField, CommonDocument.ErrorResponseFields))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", token)
                 .pathParam("articleId", articleId)
@@ -450,7 +459,7 @@ public class ArticleApiTest extends ApiTest {
 
         final String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
 
-        Long articleId = 게시물_생성(token);
+        Long articleId = 게시물_생성(token, videoIdOne);
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH))
@@ -470,14 +479,14 @@ public class ArticleApiTest extends ApiTest {
 
         final String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
 
-        Long articleId = 게시물_생성(token);
+        Long articleId = 게시물_생성(token , videoIdOne);
 
         final String otherToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH,
                         CommonDocument.AccessTokenHeader,
-                        ArticleDocument.ArticleWriteRequestField, CommonDocument.ErrorResponseFields))
+                        ArticleDocument.ArticleModifyRequestField, CommonDocument.ErrorResponseFields))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", otherToken)
                 .pathParam("articleId", articleId)
@@ -499,7 +508,7 @@ public class ArticleApiTest extends ApiTest {
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH,
                         CommonDocument.AccessTokenHeader,
-                        ArticleDocument.ArticleWriteRequestField, CommonDocument.ErrorResponseFields))
+                        ArticleDocument.ArticleModifyRequestField, CommonDocument.ErrorResponseFields))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", token)
                 .pathParam("articleId", 123)
@@ -516,7 +525,7 @@ public class ArticleApiTest extends ApiTest {
     void 게시물_삭제(){
 
         final String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        Long articleId = 게시물_생성(token);
+        Long articleId = 게시물_생성(token, videoIdOne);
 
         given(this.spec)
                  .filter(document(DEFAULT_RESTDOC_PATH,
@@ -546,7 +555,7 @@ public class ArticleApiTest extends ApiTest {
     void 게시물_삭제_토큰없음_401(){
 
         final String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        Long articleId = 게시물_생성(token);
+        Long articleId = 게시물_생성(token, videoIdOne);
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH))
@@ -565,7 +574,7 @@ public class ArticleApiTest extends ApiTest {
     void 게시물_삭제_권한없음_403(){
 
         final String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        Long articleId = 게시물_생성(token);
+        Long articleId = 게시물_생성(token, videoIdOne);
         final String otherToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
 
         given(this.spec)
@@ -603,7 +612,7 @@ public class ArticleApiTest extends ApiTest {
     @Test
     void 게시물_저장_성공_200(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        Long articleId = 게시물_생성(token);
+        Long articleId = 게시물_생성(token, videoIdOne);
 
         String otherToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
 
@@ -633,7 +642,7 @@ public class ArticleApiTest extends ApiTest {
     @Test
     void 게시물_저장_취소_성공_200(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        Long articleId = 게시물_생성(token);
+        Long articleId = 게시물_생성(token, videoIdOne);
 
         String otherToken = authSteps.로그인액세스토큰정보(AuthSteps.상대방로그인_생성());
         게시글_저장_진행(otherToken, articleId);
@@ -659,7 +668,7 @@ public class ArticleApiTest extends ApiTest {
     @Test
     void 게시물_저장_토큰없음_401(){
         String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-        Long articleId = 게시물_생성(token);
+        Long articleId = 게시물_생성(token, videoIdOne);
 
         given(this.spec)
                 .filter(document(DEFAULT_RESTDOC_PATH))
@@ -692,12 +701,12 @@ public class ArticleApiTest extends ApiTest {
                 .log().all().extract();
     }
 
-    Long 게시물_생성(String token){
+    Long 게시물_생성(String token, Long videoId){
         ExtractableResponse<Response> response = given(this.spec)
 
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("AUTH-TOKEN", token)
-                .body(articleSteps.게시물_생성())
+                .body(articleSteps.게시물_생성(videoId))
                 .when()
                 .post("/stage")
                 .then()

@@ -15,7 +15,7 @@ export const ItemThumb = styled.div`
   border: 1px solid black;
   border-radius: 10px;
   /* background-image: url(${(props) => { props.src}}); */
-  background-image: url(${thumImg});
+  background-image: url(${props => props.src});
   background-size: 200px;
 `
 

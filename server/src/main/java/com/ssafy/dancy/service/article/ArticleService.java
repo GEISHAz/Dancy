@@ -3,15 +3,19 @@ package com.ssafy.dancy.service.article;
 import com.ssafy.dancy.entity.Article;
 import com.ssafy.dancy.entity.SavedArticle;
 import com.ssafy.dancy.entity.User;
+import com.ssafy.dancy.entity.Video;
 import com.ssafy.dancy.exception.article.ArticleNotFoundException;
 import com.ssafy.dancy.exception.article.ArticleNotOwnerException;
+import com.ssafy.dancy.exception.user.NotHavingPermissionException;
+import com.ssafy.dancy.exception.video.VideoNotFoundException;
 import com.ssafy.dancy.message.request.article.ArticleModifyRequest;
-import com.ssafy.dancy.message.request.article.ArticleUpdateRequest;
+import com.ssafy.dancy.message.request.article.ArticleWriteRequest;
 import com.ssafy.dancy.message.response.article.ArticleDetailResponse;
 import com.ssafy.dancy.message.response.article.ArticleSaveResponse;
 import com.ssafy.dancy.message.response.article.ArticleSimpleResponse;
 import com.ssafy.dancy.repository.ArticleSaveRepository;
 import com.ssafy.dancy.repository.article.ArticleRepository;
+import com.ssafy.dancy.repository.video.VideoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +31,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final ArticleSaveRepository articleSaveRepository;
+    private final VideoRepository videoRepository;
 
     public List<ArticleSimpleResponse> getStagePage(int limit, Long previousLastArticleId){
         return articleRepository.getStagePageInfo(limit, previousLastArticleId);
@@ -41,12 +46,20 @@ public class ArticleService {
         return articleRepository.getArticleSearchByNickname(nickname, findCount, previousArticleId);
     }
 
-    public ArticleDetailResponse insertArticle(User user, ArticleUpdateRequest dto) {
+    public ArticleDetailResponse insertArticle(User user, ArticleWriteRequest request) {
+
+        Video video = videoRepository.findByVideoId(request.videoId()).orElseThrow(() ->
+                new VideoNotFoundException("해당 비디오가 존재하지 않습니다."));
+
+        if(!video.getUser().equals(user)){
+            throw new NotHavingPermissionException("해당 비디오에 대한 업로드 권한이 없습니다.");
+        }
 
         Article article = Article.builder()
-                .articleTitle(dto.articleTitle())
-                .articleContent(dto.articleContent())
-                .thumbnailImageUrl(dto.thumbnailImageUrl())
+                .articleTitle(request.articleTitle())
+                .articleContent(request.articleContent())
+                .thumbnailImageUrl(video.getThumbnailImageUrl())
+                .video(video)
                 .user(user)
                 .build();
 
@@ -133,8 +146,8 @@ public class ArticleService {
                 .isAuthorFollowed(false)
                 .follower(user.getFollowerCount())
                 .thumbnailImageUrl(article.getThumbnailImageUrl())
-                .video(null) // TODO : 추후, 비디오 부분도 집어넣기(비디오 부분 개발 완료 후)
-                .score(-1D) // TODO : score 나오면 할 것.
+                .videoUrl(article.getVideo().getFullVideoUrl())
+                .score(article.getVideo().getScore())
                 .build();
     }
 

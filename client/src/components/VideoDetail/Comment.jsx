@@ -4,6 +4,10 @@ import Recomment from "./Recomment";
 import * as C from "./Comment.style";
 import { deleteComment, getComment, postComment } from "../../api/comment";
 import { Reply } from "./Reply";
+import UpdateComment from "./UpdateComment";
+import { commentLike } from "../../api/like.js";
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoil/LoginState.js';
 
 // const getTimeDifference = (prevDate) => {
 //   const diff = new Date() - prevDate;
@@ -33,6 +37,8 @@ export default function Comment() {
   const [isReplyInputOpen, setIsReplyInputOpen] = useState([]);
   const [placeholder, setPlaceholder] = useState("답글을 입력하세요");
   const [dropdownOpen, setDropdownOpen] = useState([]);
+  const [isUpdate, setIsUpdate] = useState([]);
+	const user = useRecoilValue(userState)              // 로그인 한 유저 정보
 
   const state = useLocation();
   const articleId = Number(state.pathname.split("/")[2]);
@@ -50,8 +56,9 @@ export default function Comment() {
       setIsRecommentOpen(initialLikeState);
       setIsReplyInputOpen(initialLikeState);
       setDropdownOpen(initialLikeState);
+      setIsUpdate(initialLikeState)
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
   }, []);
 
   const commentInput = useRef();
@@ -72,7 +79,6 @@ export default function Comment() {
 
     postComment({ articleId, commentData })
       .then((res) => {
-        console.log(res);
         setCommentData({
           content: "",
           parentId: 0,
@@ -85,30 +91,33 @@ export default function Comment() {
   };
 
   const handleDelete = (commentId) => { 
-    console.log(commentId)
     deleteComment(commentId)
     window.location.reload()
   }
 
-  const handleLike = (index) => {
-    setLike(like.map((state, i) => (i === index ? !state : state)));
-    if (!like[index]) {
-      setLikeCount(
-        likeCount.map((count, i) => (i === index ? count + 1 : count))
-      );
-    } else {
-      setLikeCount(
-        likeCount.map((count, i) => (i === index ? count - 1 : count))
-      );
+  // 엔터 키 누르면 제출되도록
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      handlePost(e);
     }
   };
 
+  const handleLike = (commentId) => {
+    commentLike(commentId)
+    .then(() => window.location.reload())
+    .catch((err) => console.error(err))
+  };
+
+  const toggleUpdateInput = (index) => {
+    setIsUpdate(
+      isUpdate.map((state, i) => (i === index ? !state : state))
+    );
+  }
+
   const toggleRecomment = (index) => {
-    console.log('click')
     setIsRecommentOpen(
       isRecommentOpen.map((state, i) => (i === index ? !state : state))
     );
-    console.log(isRecommentOpen)
   };
 
   const toggleReplyInput = (index) => {
@@ -139,6 +148,7 @@ export default function Comment() {
           placeholder={placeholder}
           onFocus={() => setPlaceholder("")}
           onBlur={() => setPlaceholder("댓글을 입력하세요")}
+        onKeyDown={handleEnter}
         />
         <C.CommentBtns>
           <C.CommentButton onClick={handlePost}>댓글 작성</C.CommentButton>
@@ -163,25 +173,28 @@ export default function Comment() {
                   {`${comment.createdDate[0]}. ${comment.createdDate[1]}. ${comment.createdDate[2]}.`} &nbsp;
                 </C.CommentCreatedAt>
               </div>
-              <C.DropdownToggle onClick={() => toggleDropdown(index)}>
-                ⋮
-              </C.DropdownToggle>
+              { comment.authorNickname === user.nickname ? 
+                <C.DropdownToggle onClick={() => toggleDropdown(index)}>
+                  ⋮
+                </C.DropdownToggle> : null
+              }
               {dropdownOpen[index] && (
                 <C.CommentEditDeleteArea>
-                  <C.CommentEditImage src="/src/assets/editimage.png" />
+                  <C.CommentEditImage onClick={() => toggleUpdateInput(index)} src="/src/assets/editimage.png" />
                   <C.CommentDeleteImage onClick={() => handleDelete(comment.commentId)} src="/src/assets/deleteimage.png" />
                 </C.CommentEditDeleteArea>
               )}
             </C.CommentUserNameArea>
             <C.CommentContentArea>
-              <C.CommentContent>{comment.content}</C.CommentContent>
+              {isUpdate[index] ? <UpdateComment commentId={comment.commentId} commentData={comment.content} /> :
+              <C.CommentContent>{comment.content}</C.CommentContent>}
               <C.CommentLikeImage
                 src={
-                  like[index]
+                  comment.commentLike
                     ? "/src/assets/likeimage.png"
                     : "/src/assets/unlikeimage.png"
                 }
-                onClick={() => handleLike(index)}
+                onClick={() => handleLike(comment.commentId)}
               />
             </C.CommentContentArea>
             <C.CommentCreateRecommentArea>

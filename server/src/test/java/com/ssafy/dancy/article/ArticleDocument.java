@@ -14,8 +14,12 @@ public class ArticleDocument {
     public static final Snippet ArticleWriteRequestField = requestFields(
             fieldWithPath("articleTitle").type(JsonFieldType.STRING).attributes(required()).description("게시물 제목"),
             fieldWithPath("articleContent").type(JsonFieldType.STRING).attributes(required()).description("게시물 내용"),
-            fieldWithPath("video").type(JsonFieldType.VARIES).attributes(required()).description("비디오"),
-            fieldWithPath("thumbnailImageUrl").type(JsonFieldType.VARIES).attributes(required()).description("썸네일 이미지 URL")
+            fieldWithPath("videoId").type(JsonFieldType.NUMBER).attributes(required()).description("비디오 고유 ID")
+    );
+
+    public static final Snippet ArticleModifyRequestField = requestFields(
+            fieldWithPath("articleTitle").type(JsonFieldType.STRING).attributes(required()).description("게시물 제목"),
+            fieldWithPath("articleContent").type(JsonFieldType.STRING).attributes(required()).description("게시물 내용")
     );
 
     public static final Snippet articleIdPathField = pathParameters(
@@ -47,7 +51,7 @@ public class ArticleDocument {
             fieldWithPath("authorId").type(JsonFieldType.NUMBER).description("유저 PK 아이디"),
             fieldWithPath("nickname").type(JsonFieldType.STRING).description("유저 닉네임"),
             fieldWithPath("profileImageUrl").type(JsonFieldType.VARIES).description("프로필 이미지 URL"),
-            fieldWithPath("video").type(JsonFieldType.VARIES).description("비디오")
+            fieldWithPath("videoUrl").type(JsonFieldType.VARIES).description("비디오 URL")
     );
 
     public static final Snippet articleDetailResponseField = responseFields(
@@ -66,7 +70,7 @@ public class ArticleDocument {
             fieldWithPath("authorId").type(JsonFieldType.NUMBER).description("글쓴이 고유 아이디"),
             fieldWithPath("nickname").type(JsonFieldType.STRING).description("글쓴이 닉네임"),
             fieldWithPath("profileImageUrl").type(JsonFieldType.VARIES).description("글쓴이 프로필 URL"),
-            fieldWithPath("video").type(JsonFieldType.VARIES).description("비디오 URL")
+            fieldWithPath("videoUrl").type(JsonFieldType.STRING).description("비디오 URL")
     );
 
     public static final Snippet simpleArticleListResponseField = responseFields(
