@@ -1,12 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useSetRecoilState } from "recoil";
 import * as Q from "./QuitModal.style"
 import { deleteUser } from "../../api/delete"
+import { loginState } from '../../recoil/LoginState';
 import { useNavigate } from "react-router-dom"
 
 
 const QuitModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
+  const setLoginState = useSetRecoilState(loginState);
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -14,7 +17,7 @@ const QuitModal = ({ isOpen, onClose }) => {
   
   const handleDeleteUser = async () => {
     try {
-      await deleteUser(password);
+      await deleteUser(password, setLoginState);
       onClose();
       navigate("/");
     } catch (error) {
