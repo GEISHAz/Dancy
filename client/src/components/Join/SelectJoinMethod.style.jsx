@@ -4,6 +4,37 @@ import NaverImg from "../../assets/join/naverSquare.png";
 import KakaoImg from "../../assets/join/kakaoSquare.png";
 import DancyImg from "../../assets/join/BigLogo.png";
 
+export const SelectJoinArea = styled.div`
+  width: 100%;
+  padding: 3.5rem;
+`;
+
+export const LogoArea = styled.div`
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+`;
+
+export const TextArea = styled.div`
+  width: 100%;
+  height: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+`;
+
+export const JoinArea = styled.div`
+  width: 100%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+`;
+
 // Dancy 로고
 export const JoinLogo = styled.div`
   width: 200px;
@@ -49,8 +80,8 @@ export const JoinBtnContainer = styled.button`
   align-items: center;
   padding-left: 24px;
   padding-right: 24px;
-  padding-top : 12px;
-  padding-bottom : 12px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 `;
 // 버튼 로고 -> 백그라운드에서 배치
 export const LogoBox = styled.div`

@@ -1,69 +1,11 @@
 import React, { useState } from "react";
-import { styled } from "styled-components";
 import { useRecoilState } from "recoil";
 import { joinState } from "../../recoil/JoinState";
 import * as JF from "./JoinForm.style";
+import * as F from "./Form.style";
 import CustomModal from "./PinModal";
 import { emailCheck, nickNameCheck } from "../../api/join";
 import { httpStatusCode } from "../../util/http-status";
-
-// 전체 폼 구성
-export const JoinFormArea = styled.div`
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 16px;
-`;
-
-// 필수 항목 공지
-export const NoticeArea = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
-`;
-
-// 폼 매 줄 마다 설정
-export const FormDetailArea = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  margin-top: 1rem;
-  gap: 20px;
-`;
-
-// 텍스트 엔터 처리
-export const EnterArea = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: start;
-  margin-right: ${(props) => props.margin || "0px"};
-`;
-
-export const InputContainer = styled.div`
-  position: relative;
-`;
-
-// 라디오 버튼 커스텀
-export const RadioContainer = styled.div`
-  display: flex;
-  font-family: "NYJ Gothic B";
-  font-size: 16px;
-  gap: 12px;
-
-  input {
-    accent-color: #f9405e;
-  }
-`;
-
-export const InputColunmArea = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
 
 export default function FormArea() {
   const [joinData, setJoinData] = useRecoilState(joinState);
@@ -240,7 +182,7 @@ export default function FormArea() {
 
   // 비밀번호 형식 체크
   const validatePW = (password) => {
-    const regex  = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[$@!^%#~?&])[A-Za-z\d$@!%~*^#?&]{8,}$/;
+    const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[$@!^%#~?&])[A-Za-z\d$@!%~*^#?&]{8,}$/;
     return regex.test(password);
   };
 
@@ -251,16 +193,16 @@ export default function FormArea() {
   };
 
   return (
-    <JoinFormArea>
-      <NoticeArea>
+    <F.JoinFormArea>
+      <F.NoticeArea>
         <JF.MustNoticeText>(&nbsp;</JF.MustNoticeText>
         <JF.MustIcon />
         <JF.MustNoticeText>&nbsp;)는 필수 입력 값입니다.</JF.MustNoticeText>
-      </NoticeArea>
-      <FormDetailArea>
+      </F.NoticeArea>
+      <F.FormDetailArea>
         <JF.MustIcon />
         <JF.FormCategory margin="76px">E-mail</JF.FormCategory>
-        <InputColunmArea>
+        <F.InputColunmArea>
           <JF.FormInput
             type="email"
             value={joinData.email}
@@ -269,7 +211,7 @@ export default function FormArea() {
           <JF.InputNoticeText show={showWarnings.email.show}>
             {showWarnings.email.message}
           </JF.InputNoticeText>
-        </InputColunmArea>
+        </F.InputColunmArea>
         <JF.FormBtn disabled={isPinChecked} onClick={handleAuthentication}>
           인증하기
         </JF.FormBtn>
@@ -280,11 +222,11 @@ export default function FormArea() {
           onClose={closeModal}
           onSubmit={handlePinSubmit}
         />
-      </FormDetailArea>
-      <FormDetailArea>
+      </F.FormDetailArea>
+      <F.FormDetailArea>
         <JF.MustIcon />
         <JF.FormCategory margin="62px">비밀번호</JF.FormCategory>
-        <InputContainer>
+        <F.InputContainer>
           <JF.FormInput
             type="password"
             value={joinData.password}
@@ -293,16 +235,16 @@ export default function FormArea() {
           <JF.InputNoticeText show={showWarnings.password}>
             형식을 만족하지 않는 비밀번호입니다.
           </JF.InputNoticeText>
-        </InputContainer>
-        <EnterArea>
+        </F.InputContainer>
+        <F.EnterArea>
           <JF.MustNoticeText>영문자, 숫자, 특수문자를 조합하여</JF.MustNoticeText>
           <JF.MustNoticeText>입력해주세요. (8자 이상)</JF.MustNoticeText>
-        </EnterArea>
-      </FormDetailArea>
-      <FormDetailArea>
+        </F.EnterArea>
+      </F.FormDetailArea>
+      <F.FormDetailArea>
         <JF.MustIcon />
         <JF.FormCategory margin="19px">비밀번호 확인</JF.FormCategory>
-        <InputContainer>
+        <F.InputContainer>
           <JF.FormInput
             type="password"
             value={joinData.checkpassword}
@@ -311,12 +253,12 @@ export default function FormArea() {
           <JF.InputNoticeText show={showWarnings.checkpassword}>
             비밀번호가 일치하지 않습니다.
           </JF.InputNoticeText>
-        </InputContainer>
-      </FormDetailArea>
-      <FormDetailArea>
+        </F.InputContainer>
+      </F.FormDetailArea>
+      <F.FormDetailArea>
         <JF.MustIcon />
         <JF.FormCategory margin="62px">생년월일</JF.FormCategory>
-        <InputContainer>
+        <F.InputContainer>
           <JF.FormInput
             type="date"
             value={joinData.birthdate}
@@ -325,12 +267,12 @@ export default function FormArea() {
           <JF.InputNoticeText show={showWarnings.birthdate}>
             날짜를 입력해주세요.
           </JF.InputNoticeText>
-        </InputContainer>
-      </FormDetailArea>
-      <FormDetailArea>
+        </F.InputContainer>
+      </F.FormDetailArea>
+      <F.FormDetailArea>
         <JF.MustIcon />
         <JF.FormCategory margin="99px">성별</JF.FormCategory>
-        <RadioContainer>
+        <F.RadioContainer>
           <input
             type="radio"
             name="gender"
@@ -345,12 +287,12 @@ export default function FormArea() {
             onChange={(e) => handleInputChange("gender", e.target.value)}
           />{" "}
           여성
-        </RadioContainer>
-      </FormDetailArea>
-      <FormDetailArea>
+        </F.RadioContainer>
+      </F.FormDetailArea>
+      <F.FormDetailArea>
         <JF.MustIcon />
         <JF.FormCategory margin="80px">닉네임</JF.FormCategory>
-        <InputContainer>
+        <F.InputContainer>
           <JF.FormInput
             value={joinData.nickname}
             onChange={(e) => handleInputChange("nickname", e.target.value)}
@@ -358,9 +300,9 @@ export default function FormArea() {
           <JF.InputNoticeText show={showWarnings.nickname.show}>
             {showWarnings.nickname.message}
           </JF.InputNoticeText>
-        </InputContainer>
+        </F.InputContainer>
         <JF.FormBtn onClick={handleNickNameCheck}>중복 확인</JF.FormBtn>
-      </FormDetailArea>
-    </JoinFormArea>
+      </F.FormDetailArea>
+    </F.JoinFormArea>
   );
 }
