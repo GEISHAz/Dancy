@@ -36,7 +36,7 @@ def compare_video(gt_url, prac_url, sync_frame):
     gt_name_arr = gt_name.split('_')        # len = 2 or 3
     prac_name_arr = prac_name.split('_')    # len = 4
 
-
+    average_accuracy = 0
     pTime = 0
 
     mp_pose = mp.solutions.pose
@@ -111,7 +111,7 @@ def compare_video(gt_url, prac_url, sync_frame):
 
 
     frame_count = 0
-    average_accuracy = 0
+    total_accuracy = 0
     FRAME = 30
 
     #정확도 배열
@@ -137,8 +137,8 @@ def compare_video(gt_url, prac_url, sync_frame):
             gt_frame_resized = cv2.resize(frame_gt, dsize=gt_resize, fx=1, fy=1, interpolation=cv2.INTER_LINEAR)
 
             # Make detection
-            resize_frame = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)
-            gt_frame_resized = cv2.cvtColor(gt_frame_resized, cv2.COLOR_BGR2RGB)
+            # resize_frame = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)
+            # gt_frame_resized = cv2.cvtColor(gt_frame_resized, cv2.COLOR_BGR2RGB)
             results = pose.process(resize_frame)
 
             # Recolor back to BGR
@@ -160,6 +160,8 @@ def compare_video(gt_url, prac_url, sync_frame):
 
             with open(os.path.join(key_path, gt_path,f'{max(int(i * match_frame + sync_frame), 0):0>4}.json')) as json_file:
                 gt_json = json.load(json_file)
+                if not gt_json:
+                    break
 
             if i % (compare_frame) == 0:
                 s_p = max(int(i * match_frame + sync_frame) - compare_frame, before_frame)  # start point
@@ -180,8 +182,8 @@ def compare_video(gt_url, prac_url, sync_frame):
                         with open(os.path.join(key_path, gt_path, f'{j - before_frame:0>4}.json')) as json_file:
                             displace_gt_temp = json.load(json_file)
                     except FileNotFoundError:
-                        print(f"Warning: JSON file not found for frame {j}. Skipping...")
-                        continue
+                        print(f"Warning: JSON file not found for frame {j}.")
+                        break
                     except Exception as e:
                         print(f"Error loading JSON file for frame {j}: {e}")
                         break
@@ -229,9 +231,8 @@ def compare_video(gt_url, prac_url, sync_frame):
                             else:
                                 eval_metric.append("NG")
 
-            array = (np.zeros((gt_inform['frame_height'], gt_inform['frame_width'], 3)) + 255).astype(np.uint8)
-            prac_image = prac_video.visual_back_color(frame, keypoints, eval_metric)
-            gt_image = gt_video.visual_back_color(frame_gt, gt_json, eval_metric)#
+            prac_image = prac_video.visual_back_color(resize_frame, keypoints, eval_metric)
+            gt_image = gt_video.visual_back_color(gt_frame_resized, gt_json, eval_metric)#
 
             # 두개의 이미지 하나는 스켈레톤, 하나는 연습영상에 스켈레톤 씌워진것을 가로로 병합하는 코드
             preimage = cv2.hconcat([gt_image, prac_image])
@@ -254,6 +255,8 @@ def compare_video(gt_url, prac_url, sync_frame):
 
             # 정확도 텍스트 추가 (FPS 텍스트 위치에)
             cv2.putText(image, f'Accuracy: {average_accuracy:.4f}', (70, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+
+            total_accuracy += average_accuracy
 
             # print("프레임 : ", frame_count, "정확도 : ", average_accuracy)
             if(frame_count%compare_frame == 0) :
@@ -307,7 +310,7 @@ def compare_video(gt_url, prac_url, sync_frame):
     analyzed_video_clip.write_videofile(f"dataset/result/{gt_name_arr[0]}_result_{prac_name_arr[2]}_{prac_name_arr[3]}")
 
 
-    return accuracy_interval_list
+    return accuracy_interval_list, round((total_accuracy/gt_inform['total_frame'])*100,2);
 
 def calculate_accuracy(lst, sec) :
     st = 0

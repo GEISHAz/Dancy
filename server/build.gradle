@@ -111,7 +111,7 @@ dependencies {
 
 	// ffmpeg for capturing video frame
 	implementation group: 'org.bytedeco', name: 'javacv', version: '1.5.7'
-	implementation group: 'org.bytedeco', name: 'javacv-platform', version: '1.5.9'
+	implementation group: 'org.bytedeco', name: 'javacv-platform', version: '1.5.7'
 
 	// Spring AOP
 	implementation 'org.springframework.boot:spring-boot-starter-aop'

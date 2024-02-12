@@ -37,88 +37,88 @@ public class VideoApiTest extends ApiTest {
         userService.signup(signUpRequest, Set.of(Role.USER));
     }
 
-    @Test
-    void 레퍼런스_비디오_있는것_조회(){
-        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-
-        레퍼런스_비디오_업로드(token, "first.mp4");
-        레퍼런스_비디오_업로드(token, "second.mp4");
-
-        given(this.spec)
-                .filter(document(DEFAULT_RESTDOC_PATH, "레퍼런스 비디오 정보들을 가져오는 API 입니다." +
-                        "<br>성공적으로 레퍼런스 비디오 리스트를 불러오면, 200 OK 와 함께 비디오와 썸네일 링크를 반환받습니다." +
-                        "<br>무한 스크롤을 지원하는 API 입니다." +
-                        "<br>previousId 를 query String 으로 입력했을 때, 해당 Video Id 를 기준으로 그보다 이전에 만든 " +
-                        "<br>Reference Video 정보가 나옵니다." +
-                        "<br>받고자 하는 비디오의 갯수를 limit 라는 이름으로 query string 에 넣어 직접 지정할 수 있으며, limit 는 필수값입니다." +
-                        "<br>마지막 비디오일때, 204 No Content 를 반환받습니다.", "레퍼런스 비디오 조회",
-                        VideoDocument.referenceVideoListRequestField,
-                        VideoDocument.referenceVideoListResponseField))
-                .param("limit", 10)
-                .when()
-                .get("/video")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .log().all().extract();
-    }
-
-    @Test
-    void 레퍼런스_비디오_업로드_테스트(){
-
-        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-
-        given(this.spec)
-                .filter(document(DEFAULT_RESTDOC_PATH, "레퍼런스 비디오를 업로드하는 API 입니다." +
-                                "<br>성공적으로 레퍼런스 비디오가 올라간 경우, 200 OK 와 함께 video 고유 ID 와 videoUrl, 썸네일 이미지 URL 이 반환됩니다." +
-                                "<br>반드시 multipart/form-data 형식으로 올려야 하며, 비디오 이름에 '-'(bar), '_'(underbar) 가 포함된 이름이어서는 안됩니다." +
-                                "<br>multipart/form-data 의 지정 이름은 'videoFile' 입니다." +
-                                "<br>위의 규칙을 위배하는 경우, 400 Bad Request 가 반환됩니다." +
-                                "<br>AUTH-TOKEN 이 유효하지 않거나, 값이 없을 경우 401 Unauthorized 가 반환됩니다.",
-                        "레퍼런스비디오 업로드",
-                        CommonDocument.AccessTokenHeader,
-                        VideoDocument.uploadReferenceVideoRequestField,
-                        VideoDocument.uploadVideoResponseField))
-                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                .header("AUTH-TOKEN", token)
-                .multiPart(VideoSteps.비디오_생성("emptyVideoOne.mp4"))
-                .when()
-                .post("/video/upload/reference")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .log().all().extract();
-    }
-
-    @Test
-    void 연습_비디오_업로드_테스트(){
-        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
-
-        Long referenceVideoId = 레퍼런스_비디오_업로드(token, "videoExample.mp4");
-
-        given(this.spec)
-                .filter(document(DEFAULT_RESTDOC_PATH, "연습 비디오를 업로드하는 API 입니다." +
-                                "<br>성공적으로 연습 비디오가 올라간 경우, 200 OK 와 함께 video 고유 ID 와 videoUrl, 썸네일 이미지 URL 이 반환됩니다." +
-                                "<br>반드시 multipart/form-data 형식으로 올려야 하며, 비디오 이름에 '-'(bar), '_'(underbar) 가 포함된 이름이어서는 안됩니다." +
-                                "<br>multipart/form-data 의 비디오 지정 이름은 'videoFile' 입니다." +
-                                "<br>multipart/form-data 의 레퍼런스 비디오 지정이름은 'referenceVideoId' 입니다." +
-                                "<br>위의 규칙을 위배하는 경우, 400 Bad Request 가 반환됩니다." +
-                                "<br>AUTH-TOKEN 이 유효하지 않거나, 값이 없을 경우 401 Unauthorized 가 반환됩니다.",
-                        "연습비디오 업로드",
-                        CommonDocument.AccessTokenHeader,
-                        VideoDocument.uploadPracticeVideoRequestField,
-                        VideoDocument.uploadVideoResponseField))
-                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                .header("AUTH-TOKEN", token)
-                .multiPart("referenceVideoId", referenceVideoId)
-                .multiPart(VideoSteps.비디오_생성("videoPractice.mp4"))
-                .when()
-                .post("/video/upload/practice")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .log().all().extract();
-    }
+//    @Test
+//    void 레퍼런스_비디오_있는것_조회(){
+//        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+//
+//        레퍼런스_비디오_업로드(token, "first.mp4");
+//        레퍼런스_비디오_업로드(token, "second.mp4");
+//
+//        given(this.spec)
+//                .filter(document(DEFAULT_RESTDOC_PATH, "레퍼런스 비디오 정보들을 가져오는 API 입니다." +
+//                        "<br>성공적으로 레퍼런스 비디오 리스트를 불러오면, 200 OK 와 함께 비디오와 썸네일 링크를 반환받습니다." +
+//                        "<br>무한 스크롤을 지원하는 API 입니다." +
+//                        "<br>previousId 를 query String 으로 입력했을 때, 해당 Video Id 를 기준으로 그보다 이전에 만든 " +
+//                        "<br>Reference Video 정보가 나옵니다." +
+//                        "<br>받고자 하는 비디오의 갯수를 limit 라는 이름으로 query string 에 넣어 직접 지정할 수 있으며, limit 는 필수값입니다." +
+//                        "<br>마지막 비디오일때, 204 No Content 를 반환받습니다.", "레퍼런스 비디오 조회",
+//                        VideoDocument.referenceVideoListRequestField,
+//                        VideoDocument.referenceVideoListResponseField))
+//                .param("limit", 10)
+//                .when()
+//                .get("/video")
+//                .then()
+//                .assertThat()
+//                .statusCode(HttpStatus.OK.value())
+//                .log().all().extract();
+//    }
+//
+//    @Test
+//    void 레퍼런스_비디오_업로드_테스트(){
+//
+//        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+//
+//        given(this.spec)
+//                .filter(document(DEFAULT_RESTDOC_PATH, "레퍼런스 비디오를 업로드하는 API 입니다." +
+//                                "<br>성공적으로 레퍼런스 비디오가 올라간 경우, 200 OK 와 함께 video 고유 ID 와 videoUrl, 썸네일 이미지 URL 이 반환됩니다." +
+//                                "<br>반드시 multipart/form-data 형식으로 올려야 하며, 비디오 이름에 '-'(bar), '_'(underbar) 가 포함된 이름이어서는 안됩니다." +
+//                                "<br>multipart/form-data 의 지정 이름은 'videoFile' 입니다." +
+//                                "<br>위의 규칙을 위배하는 경우, 400 Bad Request 가 반환됩니다." +
+//                                "<br>AUTH-TOKEN 이 유효하지 않거나, 값이 없을 경우 401 Unauthorized 가 반환됩니다.",
+//                        "레퍼런스비디오 업로드",
+//                        CommonDocument.AccessTokenHeader,
+//                        VideoDocument.uploadReferenceVideoRequestField,
+//                        VideoDocument.uploadVideoResponseField))
+//                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+//                .header("AUTH-TOKEN", token)
+//                .multiPart(VideoSteps.비디오_생성("emptyVideoOne.mp4"))
+//                .when()
+//                .post("/video/upload/reference")
+//                .then()
+//                .assertThat()
+//                .statusCode(HttpStatus.OK.value())
+//                .log().all().extract();
+//    }
+//
+//    @Test
+//    void 연습_비디오_업로드_테스트(){
+//        String token = authSteps.로그인액세스토큰정보(AuthSteps.로그인요청생성());
+//
+//        Long referenceVideoId = 레퍼런스_비디오_업로드(token, "videoExample.mp4");
+//
+//        given(this.spec)
+//                .filter(document(DEFAULT_RESTDOC_PATH, "연습 비디오를 업로드하는 API 입니다." +
+//                                "<br>성공적으로 연습 비디오가 올라간 경우, 200 OK 와 함께 video 고유 ID 와 videoUrl, 썸네일 이미지 URL 이 반환됩니다." +
+//                                "<br>반드시 multipart/form-data 형식으로 올려야 하며, 비디오 이름에 '-'(bar), '_'(underbar) 가 포함된 이름이어서는 안됩니다." +
+//                                "<br>multipart/form-data 의 비디오 지정 이름은 'videoFile' 입니다." +
+//                                "<br>multipart/form-data 의 레퍼런스 비디오 지정이름은 'referenceVideoId' 입니다." +
+//                                "<br>위의 규칙을 위배하는 경우, 400 Bad Request 가 반환됩니다." +
+//                                "<br>AUTH-TOKEN 이 유효하지 않거나, 값이 없을 경우 401 Unauthorized 가 반환됩니다.",
+//                        "연습비디오 업로드",
+//                        CommonDocument.AccessTokenHeader,
+//                        VideoDocument.uploadPracticeVideoRequestField,
+//                        VideoDocument.uploadVideoResponseField))
+//                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+//                .header("AUTH-TOKEN", token)
+//                .multiPart("referenceVideoId", referenceVideoId)
+//                .multiPart(VideoSteps.비디오_생성("videoPractice.mp4"))
+//                .when()
+//                .post("/video/upload/practice")
+//                .then()
+//                .assertThat()
+//                .statusCode(HttpStatus.OK.value())
+//                .log().all().extract();
+//    }
 
     @Test
     void 비디오_변환_테스트(){

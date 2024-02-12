@@ -19,6 +19,7 @@ import com.ssafy.dancy.util.FileStoreUtil;
 import com.ssafy.dancy.util.VideoProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,6 +49,9 @@ public class CreateVideoService {
     private static final String CONVERT_COMPLETE_NAME = "convert_complete";
 
     private static final String S3_URL_PREFIX = "https://gumid210bucket.s3.ap-northeast-2.amazonaws.com/";
+
+    @Value("${python.server}")
+    private String pythonServerUrl;
 
 
     public List<VideoReferenceResponse> getReferenceVideoList(int limit, Long previousVideoId) {
@@ -85,10 +89,8 @@ public class CreateVideoService {
             throw new VideoNotFoundException("레퍼런스나 연습 비디오가 존재하지 않습니다.");
         }
 
-        String apiUrl = "http://i10d210.p.ssafy.io:5000/uploadVideo";
-
         webClient.post()
-                .uri(apiUrl)
+                .uri(pythonServerUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(makeSimpleRequest(reference, practice))
                 .retrieve()
