@@ -15,8 +15,6 @@ export default function Video({ videoInfo, getData }) {
   const handlePlayButtonClick = (start, end) => {
     console.log(start, end);
 
-    // videoRef.current.removeEventListener('timeupdate', handleTimeUpdate);
-
     // 기존의 timeupdate 이벤트 리스너 제거
     videoRef.current.removeEventListener('timeupdate', handleTimeUpdate);
     // 기존의 ended 이벤트 리스너 제거
@@ -29,26 +27,12 @@ export default function Video({ videoInfo, getData }) {
     videoRef.current.currentTime = start;
     videoRef.current.play();
 
-    // // ended 이벤트에 대한 리스너 등록
-    // videoRef.current.addEventListener("ended", handleVideoEnded.bind(null, start));
-    
     // 새로운 timeupdate 이벤트 리스너 등록
     videoRef.current.addEventListener("timeupdate", () =>
       handleTimeUpdate(start, end)
     );
     // ended 이벤트에 대한 리스너 등록
   videoRef.current.addEventListener('ended', () => handleVideoEnded(start));
-
-    // const currentTime = videoRef.current.currentTime;
-
-    // if (end >= videoRef.current.duration) {
-    //   end = videoRef.current.duration
-    // }
-
-    // if (videoRef.current.currentTime >= end) {
-    //   // 재생이 끝나거나 전체 길이를 넘어가면 시작구간으로 되돌아감
-    //   videoRef.current.currentTime = start;
-    // }
   };
 
   // ended 이벤트 핸들러
@@ -73,6 +57,20 @@ export default function Video({ videoInfo, getData }) {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = Math.floor(timeInSeconds % 60);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+
+  const handleContinueButtonClick = () => {
+    console.log('click')
+    // 기존의 timeupdate 및 ended 이벤트 리스너 제거
+    videoRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+    videoRef.current.removeEventListener('ended', handleVideoEnded);
+  
+    // 비디오를 일시정지하고 처음으로 되돌리기
+    videoRef.current.pause();
+    videoRef.current.currentTime = 0;
+  
+    // 비디오 재생 시작
+    videoRef.current.play();
   };
 
   return (
@@ -108,6 +106,9 @@ export default function Video({ videoInfo, getData }) {
               </div>
             ))}
           </A.SectionInfo>
+          <A.ContinueBtn onClick={() => handleContinueButtonClick()}>
+            연속 재생
+          </A.ContinueBtn>
         </A.BgImg>
         <PostBtn getData={getData} />
       </V.AccuracyNPost>
