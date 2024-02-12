@@ -18,7 +18,6 @@ import { loginState } from "../recoil/LoginState";
 import { useRecoilValue } from "recoil";
 import * as ssePolyfill from 'event-source-polyfill'
 
-
 export default function Router({ cardDetails, videoDetails }) {
   const isLoggedIn = useRecoilValue(loginState);
   const navigate = useNavigate();
@@ -49,7 +48,11 @@ export default function Router({ cardDetails, videoDetails }) {
           eventSource.addEventListener('convert_complete', function(event){
             console.log('result video id : ', event.data)
           })
-  
+
+          eventSource.addEventListener('notification', function(event){
+            console.log('notification : ', event.data)
+          })
+
           /* EVENTSOURCE ONERROR ------------------------------------------------------ */
           eventSource.onerror = async (event) => {
             if (!event.error.message.includes("No activity"))
@@ -66,6 +69,7 @@ export default function Router({ cardDetails, videoDetails }) {
       eventSource = null;
     }
   }, [isLoggedIn]);
+
 
   return (
     <>

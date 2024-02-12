@@ -78,8 +78,10 @@ export default function VideoPlayer({ src }) {
   return (
     <>
       <VideoPlayerContainer>
-        <video src={src} ref={videoRef} />
-        <ControlsWrapper>
+        <video ref={videoRef}>
+          {/* <source src={videoInfo.totalUrl} type="video/mp4" /> */}
+        </video>
+        {/* <ControlsWrapper>
           <Controls>
             <div>
               <PlayBtn onClick={handlePlayPause}>
@@ -106,7 +108,7 @@ export default function VideoPlayer({ src }) {
               <img src="/src/assets/fullscreen.png" alt="전체화면" />
             </button>
           </VideoRightOptions>
-        </ControlsWrapper>
+        </ControlsWrapper> */}
       </VideoPlayerContainer>
     </>
   );

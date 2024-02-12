@@ -7,6 +7,9 @@ export const BgImg = styled.div`
 	background-image: url(${Note});
 	background-size: cover;
 	position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: end;
 `
 
 export const SectionInfo = styled.button`
@@ -30,7 +33,7 @@ export const ErrorIdx = styled.div`
 `
 
 export const ErrorSec = styled.div`
-  width: 130px;
+  width: 125px;
 	font-family: 'NanumSquareRound';
 	font-size: 18px;
   font-weight: bold;
@@ -43,4 +46,17 @@ export const ErrorAccu = styled.div`
 	font-size: 18px;
   font-weight: bold;
   text-align:center;
+`
+
+export const ContinueBtn = styled.button`
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 240px;
+  height: 50px;
+  margin-bottom: 20px;
+  margin-right: 10px;
+  font-family: 'NanumSquareRound';
+	font-size: 18px;
+  font-weight: bold;
+	background-color: #c3f2ff;
 `

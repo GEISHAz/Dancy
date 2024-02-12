@@ -40,8 +40,10 @@ export default function Card() {
                 <CardTitle>{item.articleTitle}</CardTitle>
                 <CardUserName>{item.authorName}</CardUserName>
                 <CardViewAndDate>
-                  조회 수 {item.articleView}회 |{" "}
+                  조회 수 {item.articleView}회 |{" "} &nbsp;
                   {/* {item.created_at.toLocaleDateString()} */}
+                  {`${item.createdDate[0]}. ${item.createdDate[1]}. ${item.createdDate[2]}.`}
+
                 </CardViewAndDate>
               </CardDetailArea>
             </CardDetailContainer>
