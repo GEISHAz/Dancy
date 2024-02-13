@@ -5,8 +5,7 @@ const url = 'stage'
 export const allArticles = async () => {
   try {
     const res = await privateApi.get(`/${url}`,   {params:{'limit': 200}} );
-    const allArticles = res.data
-
+    const allArticles = res.data;
     return allArticles
   } catch (error) {
     console.error(error);
