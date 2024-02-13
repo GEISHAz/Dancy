@@ -38,6 +38,7 @@ def process_video_and_save_keypoints(video_path, target_video, key_path):
             try:
                 landmarks = results.pose_landmarks.landmark
             except:
+                print("제외됨 ",i)
                 continue
 
             # Get coordinate
