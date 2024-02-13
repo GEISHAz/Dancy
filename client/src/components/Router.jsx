@@ -15,13 +15,14 @@ import JoinForm from "./Join/JoinForm";
 import JoinComplete from "./Join/JoinComplete";
 import SendPin from "../pages/FindMyPwd";
 import { loginState } from "../recoil/LoginState";
-import { alarmOccuredState } from "../recoil/AlarmState";
+import { alarmOccuredState, convertAlarmState } from "../recoil/AlarmState";
 import { useRecoilState, useRecoilValue } from "recoil";
 import * as ssePolyfill from "event-source-polyfill";
 
 export default function Router({ cardDetails, videoDetails }) {
   const isLoggedIn = useRecoilValue(loginState);
   const [isAlarmOccur, setIsAlarmOccur] = useRecoilState(alarmOccuredState);
+  const [isConverted, setIsConverted] = useRecoilState(convertAlarmState);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -56,6 +57,9 @@ export default function Router({ cardDetails, videoDetails }) {
 
           eventSource.addEventListener("convert_complete", function (event) {
             console.log("result video id : ", event.data);
+            if (event.data) {
+              setIsConverted(event.data); // 영상 변환이 완료 되었다고 알려줍니다...
+            }
           });
 
           eventSource.addEventListener("notification", function (event) {

@@ -22,5 +22,5 @@ export const alarmListState = atom({
 
 export const convertAlarmState = atom({
     key: "convertAlarmState",
-    default: false,
+    default: '',
 });
