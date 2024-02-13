@@ -2,6 +2,8 @@ package com.ssafy.dancy.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Builder
@@ -16,10 +18,10 @@ public class ArticleLike {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long articleLikeId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Article article;
 
     @PrePersist

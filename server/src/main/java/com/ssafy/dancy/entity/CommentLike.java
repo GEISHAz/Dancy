@@ -3,6 +3,8 @@ package com.ssafy.dancy.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Builder
@@ -17,10 +19,10 @@ public class CommentLike {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long commentLikeId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Comment comment;
 
 
