@@ -15,13 +15,15 @@ import JoinForm from "./Join/JoinForm";
 import JoinComplete from "./Join/JoinComplete";
 import SendPin from "../pages/FindMyPwd";
 import { loginState } from "../recoil/LoginState";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import * as ssePolyfill from 'event-source-polyfill'
+import { resultState } from "../recoil/PracticeState";
 
 export default function Router({ cardDetails, videoDetails }) {
   const isLoggedIn = useRecoilValue(loginState);
   const navigate = useNavigate();
   const location = useLocation();
+	const [result, setResult] = useRecoilState(resultState)
 
   useEffect(() => {
     // 로그인 상태가 아니고, 현재 페이지가 로그인 페이지나 회원가입 페이지가 아닐 경우 로그인 페이지로 이동하도록 이동
@@ -47,6 +49,7 @@ export default function Router({ cardDetails, videoDetails }) {
 
           eventSource.addEventListener('convert_complete', function(event){
             console.log('result video id : ', event.data)
+						setResult({'videoId' : event.data})
           })
 
           eventSource.addEventListener('notification', function(event){

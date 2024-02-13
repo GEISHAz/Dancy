@@ -10,7 +10,7 @@ import { articleLike, likeUsers } from "../../api/like.js";
 import { userInfo } from "../../api/myPage.js";
 import { followRequest, unFollowRequest } from '../../api/follow.js';
 
-export default function VideoDetail({videoSrc}) {
+export default function VideoDetail() {
 
   const navigate = useNavigate();
   const state = useLocation();
@@ -213,7 +213,7 @@ export default function VideoDetail({videoSrc}) {
 				</V.BtnWrap>
       </V.FunctionWrapper>
 			
-			<VideoPlayer src={videoSrc} />
+			<VideoPlayer src={articleInfo.videoUrl} />
 
 			<V.VideoDetailContainer>
         <V.VideoDetailArea>

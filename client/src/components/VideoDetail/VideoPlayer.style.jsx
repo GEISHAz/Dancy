@@ -8,10 +8,14 @@ export const VideoPlayerContainer = styled.div`
   color: white;
   border-radius: 20px;
   transition: background-color 0.3s;
+	justify-content: center;
+	align-items: center;
+	display: flex;
   video {
-    width: 100%;
+    /* width: 100%; */
     height: auto;
-  }
+		object-fit: contain;
+  };
 `;
 
 export const ControlsWrapper = styled.div`

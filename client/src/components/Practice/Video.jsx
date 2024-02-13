@@ -9,7 +9,8 @@ export default function Video({ videoInfo, getData }) {
   const [errorList, setErrorList] = useState([]);
 
   useEffect(() => {
-    setErrorList(videoInfo.list);
+		console.log(videoInfo)
+    setErrorList(videoInfo.wrongSections);
   }, []);
 
   const handlePlayButtonClick = (start, end) => {
@@ -76,11 +77,11 @@ export default function Video({ videoInfo, getData }) {
   return (
     <V.Wrap>
       <V.VideoNBtns>
-        <V.VideoArea ref={videoRef} controls loops>
-          <source src={videoInfo.totalUrl} type="video/mp4" />
+        <V.VideoArea ref={videoRef} controls>
+          <source src={videoInfo.videoUrl} type="video/mp4" />
         </V.VideoArea>
 
-        <VideoBtn avgAccuracy={videoInfo.total_accuracy} />
+        <VideoBtn avgAccuracy={videoInfo.score} />
       </V.VideoNBtns>
 
       <V.AccuracyNPost>
