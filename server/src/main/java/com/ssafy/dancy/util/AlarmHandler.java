@@ -27,17 +27,12 @@ public class AlarmHandler {
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
 
         try{
-            log.info("SSeEmitter 전송 시작");
             emitter.send(SseEmitter.event().name("INIT"));
         }catch(IOException e){
             log.warn("{} 닉네임의 계정을 연결하는 데 있어 IOException 발생", user.getNickname());
         }
 
         SseEmitter previousEmitter = userEmitters.put(userId, emitter);
-
-        for(Map.Entry<Long, SseEmitter> entry : userEmitters.entrySet()){
-            log.info("현재까지 저장된 키 : {}", entry.getKey());
-        }
 
         if(previousEmitter != null){
             previousEmitter.complete();
