@@ -144,7 +144,7 @@ export default function VideoDetail() {
 	}
 
   const [isDropDown, setIsDropDown] = useState(false)
-  
+  const [likeUser, setLikeUser] = useState([])
   // 게시글 좋아요한 유저 목록 조회
   const handleLikeUser = () => {
     likeUsers(articleId)
@@ -195,7 +195,10 @@ export default function VideoDetail() {
 				</V.BtnWrap>
       </V.FunctionWrapper>
 			
-			<VideoPlayer src={articleInfo.videoUrl} />
+			{/* <VideoPlayer src={articleInfo.videoUrl} /> */}
+      <V.VideoPlayer>
+        <video controls src={articleInfo.videoUrl} />
+      </V.VideoPlayer>
 
 			<V.VideoDetailContainer>
         <V.VideoDetailArea>

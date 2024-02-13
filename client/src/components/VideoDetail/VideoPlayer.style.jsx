@@ -14,7 +14,7 @@ export const VideoPlayerContainer = styled.div`
   video {
     width: 100%;	
     height: 552px;
-		object-fit: contain;
+		/* object-fit: contain; */
     border-radius: 20px; 
   };
 `;

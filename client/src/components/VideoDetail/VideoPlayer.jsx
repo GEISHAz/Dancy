@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PlaybackRate from "./PlaybackRate";
 import {
   VideoPlayerContainer,
@@ -9,7 +9,7 @@ import {
   VideoRightOptions,
 } from './VideoPlayer.style';
 
-export default function VideoPlayer({ src }) {
+const VideoPlayer = React.memo(({ src }) => {
   const videoRef = useRef();
   const [playbackRate, setPlaybackRate] = useState(1);
   const [volume, setVolume] = useState(1);
@@ -20,7 +20,6 @@ export default function VideoPlayer({ src }) {
   const [save, setSave] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
 
-	console.log(src)
   const handlePlayPause = () => {
     if (videoRef.current.paused) {
       videoRef.current.play();
@@ -63,11 +62,19 @@ export default function VideoPlayer({ src }) {
     setIsVolumeControlHovered(false);
   };
 
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    // 페이지가 처음 로드될 때 또는 의존성 배열의 값이 변경될 때 실행됨
+    // 여기서는 페이지 로드 시에 실행되도록 설정
+    setIndex(prevIndex => prevIndex + 1);
+    console.log(index)
+  }, []); // 빈 배열을 전달하여 페이지 로드 시에만 실행되도록 함
 
   return (
 		<VideoPlayerContainer>
 			<video ref={videoRef} controls>
-				<source src={src} type="video/mp4" />
+				<source key={index} src={src} type="video/mp4" />
 			</video>
 			{/* <ControlsWrapper>
 				<Controls>
@@ -99,5 +106,6 @@ export default function VideoPlayer({ src }) {
 			</ControlsWrapper> */}
 		</VideoPlayerContainer>
   );
-}
+});
 
+export default VideoPlayer;
