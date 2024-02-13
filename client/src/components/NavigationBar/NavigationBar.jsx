@@ -8,7 +8,7 @@ import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { logout } from "../../api/auth.js";
 import { userDetails } from "../../api/user.js";
 import { userInfo } from "../../api/myPage.js";
-import { alarmOccuredState, alarmListState } from "../../recoil/AlarmState";
+import { alarmOccuredState, alarmListState, convertAlarmState } from "../../recoil/AlarmState";
 
 export default function Navbar() {
   const [activeButton, setActiveButton] = useState("");
@@ -18,6 +18,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const isLogin = useRecoilValue(loginState);
   const [alarmList, setAlarmList] = useRecoilState(alarmListState);
+  const [isConverted, setIsConverted] = useRecoilState(convertAlarmState);
   //const [userDetail, setUserDetail] = useState({});
 
   const logoutHandler = () => {
@@ -33,6 +34,7 @@ export default function Navbar() {
           profileImageUrl: null,
         });
         setAlarmList({});
+        setIsConverted(null);
         // 초기화
         // setUserDetail({
         //   profileImageUrl: null,
