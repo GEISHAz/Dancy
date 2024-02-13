@@ -1,5 +1,6 @@
-import { atom } from 'recoil';
+import { atom, useRecoilState} from 'recoil';
 import { recoilPersist } from 'recoil-persist';
+import { useEffect} from 'react';
 
 const { persistAtom } = recoilPersist({
     key: "localStorage", // 고유한 key 값
@@ -13,4 +14,10 @@ export const alarmOccuredState = atom({
     effects_UNSTABLE: [persistAtom],
 });
 
+// 이전 알림 리스트 기억해야할듯?
+export const alarmListState = atom({
+    key: "alarmListState",
+    default: [],
+    effects_UNSTABLE: [persistAtom],
+});
 
