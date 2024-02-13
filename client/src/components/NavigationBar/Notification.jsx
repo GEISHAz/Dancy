@@ -1,22 +1,42 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NotificationImage, DropdownContainer, NotificationTitle, DropdownMenu, DropdownMenuContainer, DropdownItemContainer, DropdownItem, ProfileImage, NotificationContent, UserName, NotificationText, TimeStamp, NotificationArea } from './Notification.style';
-import { useSpring, animated } from 'react-spring';
+import {
+  NotificationImage,
+  DropdownContainer,
+  NotificationTitle,
+  DropdownMenu,
+  DropdownMenuContainer,
+  DropdownItemContainer,
+  DropdownItem,
+  ProfileImage,
+  NotificationContent,
+  UserName,
+  NotificationText,
+  TimeStamp,
+  NotificationArea,
+} from "./Notification.style";
+import { useSpring, animated } from "react-spring";
 import { Link } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { alarmOccuredState } from "../../recoil/AlarmState";
 
 export default function Notification() {
   const [isActive, setIsActive] = useState(false);
   const dropdownRef = useRef(null);
+  const [isAlarmOccur, setIsAlarmOccur] = useRecoilState(alarmOccuredState);
+  const [alarms, setAlarms] = useState([]);
 
   // Notification Form 닫기, 활성화시켜주는 핸들러
   const handleClick = (event) => {
     setIsActive(!isActive);
+    setIsAlarmOccur(!alarmOccuredState); // 알람을 확인했으니 배지를 바꿔줍시다.
+
     event.stopPropagation();
-  }
+  };
 
   // 드롭다운 메뉴 내부를 클릭한다면 form이 닫히지 않도록 하는 기능
   const dropdownClickHandler = (event) => {
     event.stopPropagation();
-  }
+  };
 
   const dropdownItems = Array(7).fill({
     username: "south.hyun_99",
@@ -38,11 +58,11 @@ export default function Notification() {
     } else if (days > 0) {
       return `${days}일 전`;
     } else if (hours > 0) {
-      return `${hours}시간 전`
+      return `${hours}시간 전`;
     } else if (minutes > 0) {
-      return `${minutes}분 전`
+      return `${minutes}분 전`;
     } else {
-      return `${seconds}초 전`
+      return `${seconds}초 전`;
     }
   };
 
@@ -57,33 +77,43 @@ export default function Notification() {
     const clickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsActive(false);
+        setIsAlarmOccur(false);
       }
-    }
+    };
 
     if (isActive) {
-      document.addEventListener("mousedown", clickOutside)
+      document.addEventListener("mousedown", clickOutside);
     }
 
     return () => {
       // 이벤트 활성화 X 부분
-      document.removeEventListener("mousedown", clickOutside)
-    }
+      document.removeEventListener("mousedown", clickOutside);
+    };
   }, [isActive]);
+
+  // 상태에 따라 다른 이미지 경로 설정
+  const getImageSrc = () => {
+    if (isAlarmOccur) {
+      return "/src/assets/notiLogo.png"; // 알람 발생 시 이미지
+    } else {
+      return "/src/assets/notification.png"; // 알람 미발생 시 이미지
+    }
+  };
+
+  // dropdownItems의 길이가 0이면 null 반환
+  if (dropdownItems.length === 0) {
+    return null;
+  }
 
   return (
     <>
-    <NotificationArea>
-      <NotificationImage
-        src="/src/assets/notification.png"
-        onClick={handleClick}
-      />
-    </NotificationArea>
+      <NotificationArea>
+        <NotificationImage src={getImageSrc()} onClick={handleClick} />
+      </NotificationArea>
       {isActive && (
         <animated.div style={animation} onClick={handleClick}>
           <DropdownContainer ref={dropdownRef} onClick={dropdownClickHandler}>
-            <NotificationTitle>
-              알람
-            </NotificationTitle>
+            <NotificationTitle>알람</NotificationTitle>
             <DropdownMenu>
               <DropdownMenuContainer>
                 {dropdownItems.map((item, index) => (
