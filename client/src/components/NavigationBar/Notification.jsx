@@ -18,6 +18,7 @@ import { useSpring, animated } from "react-spring";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { alarmOccuredState } from "../../recoil/AlarmState";
+import { allAlarms } from "../../api/alarm";
 
 export default function Notification() {
   const [isActive, setIsActive] = useState(false);
@@ -29,7 +30,14 @@ export default function Notification() {
   const handleClick = (event) => {
     setIsActive(!isActive);
     setIsAlarmOccur(!alarmOccuredState); // 알람을 확인했으니 배지를 바꿔줍시다.
-
+    allAlarms()
+      .then((res) => {
+        console.log("알람리스트잘오니?", res);
+        setAlarms(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
     event.stopPropagation();
   };
 
@@ -44,6 +52,12 @@ export default function Notification() {
     user_id: "1021555",
     created_at: new Date(),
   });
+
+  const getDateTransfer = (data) => {
+    const date = new Date(...data);
+    console.log(date);
+    return date;
+  };
 
   // 현재 시간 기준으로 작성된 시간 차이
   const getTimeDifference = (prevDate) => {
@@ -116,21 +130,21 @@ export default function Notification() {
             <NotificationTitle>알람</NotificationTitle>
             <DropdownMenu>
               <DropdownMenuContainer>
-                {dropdownItems.map((item, index) => (
+                {alarms.map((item, index) => (
                   <DropdownItemContainer key={index}>
                     <DropdownItem>
-                      <Link to={`/profile/${item.user_id}`} onClick={handleClick}>
-                        <ProfileImage src="/src/assets/profileimage.png" />
+                      <Link to={`/profile/${item.makerUserNickname}`} onClick={handleClick}>
+                        <ProfileImage src={item.makerUserProfileImageUrl} />
                       </Link>
                       <NotificationContent>
-                        <Link to={`/profile/${item.username}`} onClick={handleClick}>
-                          <UserName>{item.username} </UserName>
-                        </Link>
-                        <NotificationText>{item.notification}</NotificationText>
+                        {/* <Link to={`/profile/${item.makerUserNickname}`} onClick={handleClick}>
+                          <UserName>{item.makerUserNickname} </UserName>
+                        </Link> */}
+                        <NotificationText>{item.content}</NotificationText>
                       </NotificationContent>
                     </DropdownItem>
                     {/* created_at 기준으로 넣음 <- ERD 참고 */}
-                    <TimeStamp>{getTimeDifference(item.created_at)}</TimeStamp>
+                    <TimeStamp>{getTimeDifference(getDateTransfer(item.createdTime))}</TimeStamp>
                   </DropdownItemContainer>
                 ))}
               </DropdownMenuContainer>
