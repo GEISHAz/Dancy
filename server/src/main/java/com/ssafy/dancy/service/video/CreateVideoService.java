@@ -89,6 +89,8 @@ public class CreateVideoService {
             throw new VideoNotFoundException("레퍼런스나 연습 비디오가 존재하지 않습니다.");
         }
 
+        log.info("변환에 들어가는 API : {}", pythonServerUrl);
+
         webClient.post()
                 .uri(pythonServerUrl)
                 .contentType(MediaType.APPLICATION_JSON)
