@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const VideoPlayerContainer = styled.div`
   position: relative;
   width: 100%;
-  width: 1000px;
+  /* width: 1000px; */
   background-color: black;
   color: white;
   border-radius: 20px;
@@ -12,9 +12,10 @@ export const VideoPlayerContainer = styled.div`
 	align-items: center;
 	display: flex;
   video {
-    /* width: 100%; */
-    height: auto;
+    width: 100%;	
+    height: 552px;
 		object-fit: contain;
+    border-radius: 20px; 
   };
 `;
 

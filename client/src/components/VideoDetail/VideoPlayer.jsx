@@ -66,7 +66,7 @@ export default function VideoPlayer({ src }) {
 
   return (
 		<VideoPlayerContainer>
-			<video ref={videoRef}>
+			<video ref={videoRef} controls>
 				<source src={src} type="video/mp4" />
 			</video>
 			{/* <ControlsWrapper>

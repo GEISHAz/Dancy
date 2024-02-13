@@ -143,24 +143,6 @@ export default function VideoDetail() {
 		}
 	}
 
-  const [likeUser, setLikeUser] = useState([
-    {
-      "profileImageUrl": null,
-      "nickname": "dongw"
-    },
-    {
-      "profileImageUrl": null,
-      "nickname": "dongw"
-    },
-    {
-      "profileImageUrl": null,
-      "nickname": "dongw"
-    },
-    {
-      "profileImageUrl": null,
-      "nickname": "dongw"
-    }
-  ])
   const [isDropDown, setIsDropDown] = useState(false)
   
   // 게시글 좋아요한 유저 목록 조회
