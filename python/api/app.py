@@ -82,7 +82,7 @@ def upload_video():
             # 싱크와 음악 이름을 받고 비교시작
         print("비교시작....")
         accuracy_result,total_accuracy = compare_video(gt_url, prac_url, sync_frame)
-        imageurl = f"thumbnailimage/{gt_name_arr[0]}_image_{prac_name_arr[2]}_{prac_name_arr[3]}"
+        imageurl = f"thumbnailimage/{gt_name_arr[0]}_image_{prac_name_arr[2]}_{prac_name_arr[3]}.jpg"
 
         print(total_accuracy)
         ret = sc.s3_put_object(s3, "gumid210bucket",
