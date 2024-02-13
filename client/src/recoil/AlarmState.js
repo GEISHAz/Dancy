@@ -1,6 +1,5 @@
-import { atom, useRecoilState} from 'recoil';
+import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
-import { useEffect} from 'react';
 
 const { persistAtom } = recoilPersist({
     key: "localStorage", // 고유한 key 값
@@ -21,3 +20,7 @@ export const alarmListState = atom({
     effects_UNSTABLE: [persistAtom],
 });
 
+export const convertAlarmState = atom({
+    key: "convertAlarmState",
+    default: false,
+});
