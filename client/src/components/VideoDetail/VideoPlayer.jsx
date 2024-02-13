@@ -20,6 +20,7 @@ export default function VideoPlayer({ src }) {
   const [save, setSave] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
 
+	console.log(src)
   const handlePlayPause = () => {
     if (videoRef.current.paused) {
       videoRef.current.play();
@@ -62,55 +63,41 @@ export default function VideoPlayer({ src }) {
     setIsVolumeControlHovered(false);
   };
 
-  const handleLike = () => {
-    setLike(!like);
-    if (!like) {
-      setLikeCount(likeCount + 1);
-    } else {
-      setLikeCount(likeCount - 1);
-    }
-  };
-
-  const handleSave = () => {
-    setSave(!save)
-  }
 
   return (
-    <>
-      <VideoPlayerContainer>
-        <video ref={videoRef}>
-          {/* <source src={videoInfo.totalUrl} type="video/mp4" /> */}
-        </video>
-        {/* <ControlsWrapper>
-          <Controls>
-            <div>
-              <PlayBtn onClick={handlePlayPause}>
-                <img src={isPlaying ? "/src/assets/pause.png" : "/src/assets/play.png"} alt="재생/일시정지" />
-              </PlayBtn>
-              <VolumeControl isOpen={!isMuted && isVolumeControlHovered} onMouseEnter={() => setIsVolumeControlHovered(true)} onMouseLeave={() => setIsVolumeControlHovered(false)}>
-                <button onClick={handleMute}>
-                  <img src={isMuted ? "/src/assets/mute.png" : "/src/assets/volume.png"} alt="볼륨" />
-                </button>
-                <input
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.1"
-                  value={volume}
-                  onChange={handleVolumeChange}
-                />
-              </VolumeControl>
-            </div>
-          </Controls>
-          <VideoRightOptions>
-            <PlaybackRate onChange={handlePlaybackRateChange} />
-            <button onClick={handleFullScreen}>
-              <img src="/src/assets/fullscreen.png" alt="전체화면" />
-            </button>
-          </VideoRightOptions>
-        </ControlsWrapper> */}
-      </VideoPlayerContainer>
-    </>
+		<VideoPlayerContainer>
+			<video ref={videoRef} controls>
+				<source src={src} type="video/mp4" />
+			</video>
+			{/* <ControlsWrapper>
+				<Controls>
+					<div>
+						<PlayBtn onClick={handlePlayPause}>
+							<img src={isPlaying ? "/src/assets/pause.png" : "/src/assets/play.png"} alt="재생/일시정지" />
+						</PlayBtn>
+						<VolumeControl isOpen={!isMuted && isVolumeControlHovered} onMouseEnter={() => setIsVolumeControlHovered(true)} onMouseLeave={() => setIsVolumeControlHovered(false)}>
+							<button onClick={handleMute}>
+								<img src={isMuted ? "/src/assets/mute.png" : "/src/assets/volume.png"} alt="볼륨" />
+							</button>
+							<input
+								type="range"
+								min="0"
+								max="1"
+								step="0.1"
+								value={volume}
+								onChange={handleVolumeChange}
+							/>
+						</VolumeControl>
+					</div>
+				</Controls>
+				<VideoRightOptions>
+					<PlaybackRate onChange={handlePlaybackRateChange} />
+					<button onClick={handleFullScreen}>
+						<img src="/src/assets/fullscreen.png" alt="전체화면" />
+					</button>
+				</VideoRightOptions>
+			</ControlsWrapper> */}
+		</VideoPlayerContainer>
   );
 }
 
