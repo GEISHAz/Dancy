@@ -46,6 +46,7 @@ export default function Login() {
       // 로그인 이후 user 정보를 가져옴
       const userDetailsData = await userDetails();
       setUserInfo(userDetailsData);
+      navigate("/");
     } catch (error) {
       console.error("Login Error:", error);
       const errorMsg = error.response?.data[0]?.message || "An error occurred";
@@ -53,7 +54,6 @@ export default function Login() {
       setModalTxt(errorMsg);
       openModalHandler();
     }
-    navigate("/");
   };
 
   const handleEnter = (e) => {
