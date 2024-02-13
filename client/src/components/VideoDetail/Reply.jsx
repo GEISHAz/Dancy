@@ -5,6 +5,7 @@ import { postComment } from "../../api/comment";
 export const Reply = ({ articleId, commentId }) => {
   const [placeholder, setPlaceholder] = useState("답글을 입력하세요");
 	const replyInput = useRef();
+	const [recomments, setRecomments] = useState([]);
   const [commentData, setCommentData] = useState({
     "content": "",
     "parentId": commentId,
@@ -26,11 +27,11 @@ export const Reply = ({ articleId, commentId }) => {
     
 		postComment({ articleId, commentData })
 		.then ((res) => {
+			setRecomments([...recomments, res])
 			setCommentData({
 				content: "",
 				parentId: commentId,
 			})
-			window.location.reload()
 		})
 		.catch ((err) => {
 			console.error(err)
@@ -50,6 +51,7 @@ export const Reply = ({ articleId, commentId }) => {
 				name="content"
 				type="text"
 				value={commentData.content}
+				autoComplete='off'
 				onChange={(e) => handleReplyChange(e)}
 				placeholder={placeholder}
 				onFocus={() => setPlaceholder("")}

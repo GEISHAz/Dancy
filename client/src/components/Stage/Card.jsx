@@ -7,33 +7,25 @@ import { allArticles } from "../../api/stage";
 const colors = ["#fffbe5", "#d8fcf6", "#dfe5fe"]; 
 
 export default function Card() {
-  const [articles, setArticles] = useState([])
+  const [articles, setArticles] = useState([]);
 
   useEffect(() => {
     allArticles()
-    .then ((res) => {
-      setArticles(res)
-    })
-    .catch ((err) => {
-      console.error(err)
-    })
-  }, [])
+      .then((res) => {
+        setArticles(res);
+        console.log(res)
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
-  const handleClick = () => {
-    const videoUrl = "your_video_url_here.mp4";
-    onClick(videoUrl)
-  }
-  
-  const cards = () => {
-    if( articles && articles.length > 0 ){
-    articles.map((_, index) => {
-    // 줄 별로 색상 선택
+
+  const cards = articles.map((item, index) => {
     const color = colors[Math.floor(index / 3) % colors.length];
-    const item = articles[index % articles.length]
-    
     return (
       <Link to={`/detail/${item.articleId}`} key={index}>
-        <C.CardContainer key={index} onClick={handleClick}>
+        <C.CardContainer key={index}>
           <C.CardUpperContainer src={item.articleThumbnail} />
           <C.CardLowerContainer color={color}>
             <C.CardDetailContainer>
@@ -43,9 +35,7 @@ export default function Card() {
                 <C.CardUserName>{item.authorName}</C.CardUserName>
                 <C.CardViewAndDate>
                   조회 수 {item.articleView}회 |{" "} &nbsp;
-                  {/* {item.created_at.toLocaleDateString()} */}
                   {`${item.createdDate[0]}. ${item.createdDate[1]}. ${item.createdDate[2]}.`}
-
                 </C.CardViewAndDate>
               </C.CardDetailArea>
             </C.CardDetailContainer>
@@ -53,12 +43,7 @@ export default function Card() {
         </C.CardContainer>
       </Link>
     );
-    });
-  }
-  return (
-    <>
-      {cards}
-    </>
-  );
-  }
+  });
+
+  return <>{cards}</>;
 }

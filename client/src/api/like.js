@@ -27,13 +27,13 @@ export const likeUsers = async (articleId) => {
 }
 
 export const commentLike = async (commentId) => {
-	try {
-		const res = await privateApi.post(`/${url}/comment-like/${commentId}`)
-		const likeInfo = res.data
-		
-		return likeInfo
-	} catch (error) {
+  try {
+    const res = await privateApi.post(`/${url}/comment-like/${commentId}`)
+    const likeInfo = res.data
+    
+    return likeInfo;
+  } catch (error) {
     console.error(error);
     throw error;
-	}
-}
+  }
+};

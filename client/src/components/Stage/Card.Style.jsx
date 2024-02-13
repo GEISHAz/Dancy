@@ -6,6 +6,7 @@ export const CardContainer = styled.div`
   border-radius: 10px;
   box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.1);
   transition: scale 0.1s ease-in-out;
+
   &:hover,
   &:focus {
     scale: 1.05;

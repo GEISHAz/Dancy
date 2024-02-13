@@ -47,7 +47,7 @@ export default function Navbar() {
           ...finduserInfo,
           profileImageUrl: res.profileImageUrl,
         });
-        console.log(res);
+        // console.log(res);
       })
       .catch((err) => {
         console.error(err);

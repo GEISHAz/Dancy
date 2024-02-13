@@ -32,7 +32,7 @@ export default function VideoDetail({videoSrc}) {
     // 게시글 상세 정보 조회를 위한 api 요청
     getArticle(articleId)
     .then ((res) => {
-      console.log('article',res)
+      // console.log('article',res)
       setArticleInfo(res)
 			return res
     })
@@ -47,11 +47,11 @@ export default function VideoDetail({videoSrc}) {
 
       userInfo(res.nickname)
       .then ((res) => {
-        console.log(res)
+        // console.log(res)
         setAuthorInfo(res)
       })
       .catch ((err) => {
-        console.error(err)
+        // console.error(err)
       })
 
 			setBeforeData({
@@ -66,7 +66,7 @@ export default function VideoDetail({videoSrc}) {
     .catch ((err) => {
 			console.error(err)
     })
-  }, []);
+  }, [articleId]);
 
 	// 게시글 삭제 관리
   const handleDelete = () => {
