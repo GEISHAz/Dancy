@@ -116,9 +116,11 @@ export default function Navbar() {
         </N.NavLeft>
         <N.NavRight>
           <SearchBar />
-          <N.AlertButton>
-            <Notification />
-          </N.AlertButton>
+          {isLogin ? (
+            <N.AlertButton>
+              <Notification />
+            </N.AlertButton>
+          ) : null}
           <N.NavLogin>
             {isLogin ? (
               <N.NavLoginWrapper>

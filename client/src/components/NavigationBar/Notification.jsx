@@ -17,7 +17,7 @@ import {
 import { useSpring, animated } from "react-spring";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { alarmOccuredState } from "../../recoil/AlarmState";
+import { alarmOccuredState, alarmListState } from "../../recoil/AlarmState";
 import { allAlarms } from "../../api/alarm";
 
 export default function Notification() {
@@ -25,15 +25,17 @@ export default function Notification() {
   const dropdownRef = useRef(null);
   const [isAlarmOccur, setIsAlarmOccur] = useRecoilState(alarmOccuredState);
   const [alarms, setAlarms] = useState([]);
+  const [alarmList, setAlarmList] = useRecoilState(alarmListState);
 
   // Notification Form 닫기, 활성화시켜주는 핸들러
   const handleClick = (event) => {
     setIsActive(!isActive);
-    setIsAlarmOccur(!alarmOccuredState); // 알람을 확인했으니 배지를 바꿔줍시다.
+    setIsAlarmOccur(false); // 알람을 확인했으니 배지를 바꿔줍시다.
     allAlarms()
       .then((res) => {
         console.log("알람리스트잘오니?", res);
         setAlarms(res);
+        setAlarmList(res);
       })
       .catch((err) => {
         console.error(err);
@@ -45,13 +47,6 @@ export default function Notification() {
   const dropdownClickHandler = (event) => {
     event.stopPropagation();
   };
-
-  const dropdownItems = Array(7).fill({
-    username: "south.hyun_99",
-    notification: "님이 회원님의 게시물을 좋아합니다.",
-    user_id: "1021555",
-    created_at: new Date(),
-  });
 
   const getDateTransfer = (data) => {
     const date = new Date(...data);
@@ -105,6 +100,22 @@ export default function Notification() {
     };
   }, [isActive]);
 
+  useEffect(() => {
+    // 컴포넌트가 렌더링될 때마다 알림을 가져와서 비교합니다.
+    allAlarms()
+      .then((res) => {
+        console.log("알람리스트잘오니?", res);
+        if (alarmList[0].notificationId !== res[0].notificationId) {
+          console.log(alarmList[0]);
+          console.log(res[0]);
+          setIsAlarmOccur(true);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   // 상태에 따라 다른 이미지 경로 설정
   const getImageSrc = () => {
     if (isAlarmOccur) {
@@ -113,11 +124,6 @@ export default function Notification() {
       return "/src/assets/notification.png"; // 알람 미발생 시 이미지
     }
   };
-
-  // dropdownItems의 길이가 0이면 null 반환
-  if (dropdownItems.length === 0) {
-    return null;
-  }
 
   return (
     <>
