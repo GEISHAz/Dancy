@@ -3,7 +3,7 @@ import { Route, Routes, useNavigate, Navigate, useLocation } from "react-router-
 import Home from "../pages/Home";
 import Create from "../pages/Create";
 import Practice from "../pages/Practice";
-import Stage from "../pages/Stage";
+import Stage from "../pages/Stage/Stage";
 import Profile from "../pages/Profile";
 import Login from "./Login/LoginForm";
 import SignUp from "../pages/SignUp";

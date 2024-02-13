@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {CardContainer, CardUpperContainer, CardLowerContainer, CardDetailContainer, CardDetailArea, CardProfileImage, CardTitle, CardUserName, CardViewAndDate } from './Card.Style'
+import * as C from './Card.Style'
 import { allArticles } from "../../api/stage";
 
 // 사용할 색상 배열
@@ -30,8 +30,7 @@ export default function Card() {
     
     return (
       <Link to={`/detail/${item.articleId}`} key={index}>
-        {/* <CardContainer key={index} onClick={handleClick}> */}
-        <CardContainer key={index}>
+        <CardContainer key={index} onClick={handleClick}>
           <CardUpperContainer src={item.articleThumbnail} />
           <CardLowerContainer color={color}>
             <CardDetailContainer>
