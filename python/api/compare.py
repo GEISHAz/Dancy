@@ -7,6 +7,7 @@ import os
 import metric
 import config
 import moviepy.editor as mpa
+import math
 from flask import jsonify
 
 small_parts = {
@@ -25,7 +26,7 @@ small_parts = {
 small_name = list(small_parts.keys())
 
 
-def compare_video(gt_url, prac_url, sync_frame):
+def compare_video(gt_url, prac_url, sync_frame, start_frame):
     # compare_video 동작 체크
     print("compare_video 진입 ===")
 
@@ -148,6 +149,7 @@ def compare_video(gt_url, prac_url, sync_frame):
             try:
                 landmarks = results.pose_landmarks.landmark
             except:
+                # print("현재 ",i,"pose_landmarks 없음")
                 i = i + 1
                 continue
             # Get coordinate
@@ -231,11 +233,17 @@ def compare_video(gt_url, prac_url, sync_frame):
                             else:
                                 eval_metric.append("NG")
 
-            prac_image = prac_video.visual_back_color(resize_frame, keypoints, eval_metric)
-            gt_image = gt_video.visual_back_color(gt_frame_resized, gt_json, eval_metric)#
+            if(i >= start_frame) :
+                prac_image = prac_video.visual_back_color(resize_frame, keypoints, eval_metric)
+                gt_image = gt_video.visual_back_color(gt_frame_resized, gt_json, eval_metric)
+            else :
+                print("스켈레톤 없어야함", i)
+                prac_image = resize_frame
+                gt_image = gt_frame_resized
 
             # 두개의 이미지 하나는 스켈레톤, 하나는 연습영상에 스켈레톤 씌워진것을 가로로 병합하는 코드
             preimage = cv2.hconcat([gt_image, prac_image])
+
             image = cv2.cvtColor(preimage, cv2.IMREAD_COLOR)
 
             if i == 60:
@@ -250,17 +258,23 @@ def compare_video(gt_url, prac_url, sync_frame):
 
 
             frames_to_average = 10  # 평균을 내기 위한 프레임 수
+            # print("nan찾기 : ", i, " 프레임 : ", eval_graph_y)
             last_frames_accuracy = eval_graph_y[-1][-frames_to_average:]  # 마지막 30프레임 동안의 정확도 값들
             average_accuracy = np.mean(last_frames_accuracy)  # 마지막 30프레임 동안의 평균 정확도 계산
 
             # 정확도 텍스트 추가 (FPS 텍스트 위치에)
             cv2.putText(image, f'Accuracy: {average_accuracy:.4f}', (70, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
-            total_accuracy += average_accuracy
+            if not (math.isnan(average_accuracy)):
+                if(frame_count >= start_frame) :
+                    total_accuracy += average_accuracy
 
-            # print("프레임 : ", frame_count, "정확도 : ", average_accuracy)
+            # 구간정확도 계산
             if(frame_count%compare_frame == 0) :
-                accuracy_frame_list.append([frame_count, round(average_accuracy, 4)])
+                if not (math.isnan(average_accuracy)):
+                    if (frame_count >= start_frame):
+                        # print(i, "번째 프레임에 ", math.isnan(average_accuracy), type(average_accuracy))
+                        accuracy_frame_list.append([frame_count, round(average_accuracy, 4)])
             frame_count = frame_count+1
 
             # 시간이지남에 따라 이미지 frame+1 하는 코드
@@ -272,9 +286,12 @@ def compare_video(gt_url, prac_url, sync_frame):
 
             # 저장 디버그 체크
 
-        # 혹시 마지막 프레임이 10의 배수가 아니라 accuracy_frame_list에 저장이 안 되었을 경우 대비
+        # 구간정확도 계산 : 혹시 마지막 프레임이 10의 배수가 아니라 accuracy_frame_list에 저장이 안 되었을 경우 대비
         if((frame_count-1)%compare_frame != 0):
-            accuracy_frame_list.append([frame_count, round(average_accuracy, 4)])
+            if not (math.isnan(average_accuracy)):
+                if (frame_count >= start_frame):
+                    # print(i,"번째 프레임에 ", math.isnan(average_accuracy), type(average_accuracy))
+                    accuracy_frame_list.append([frame_count, round(average_accuracy, 4)])
 
         # 정확도 계산
         sec = 0

@@ -1,4 +1,4 @@
-from datetime import time
+from time import sleep
 
 from flask import Flask, request, jsonify
 
@@ -67,7 +67,12 @@ def upload_video():
     # json폴더는 gt/prac 따로 안 나눔
     os.makedirs(os.path.join("./dataset/json/", f"{gt_name}"), exist_ok=True)
     print("gt 분석 후 json 저장중....")
-    process_video_and_save_keypoints("./dataset/video/gt", f"{gt_name}", "./dataset/json")
+
+    start_frame = 0
+    if(len(gt_name_arr)==3):
+        start_frame = process_video_and_save_keypoints("./dataset/video/gt", f"{gt_name}", "./dataset/json")
+
+    # start_frame = process_video_and_save_keypoints("./dataset/video/gt", f"{gt_name}", "./dataset/json")
 
     if file_path_prac is not None:
         # # 여기서 g 파일이 업로드된 파일 -> prac 파일이다.
@@ -81,7 +86,7 @@ def upload_video():
 
             # 싱크와 음악 이름을 받고 비교시작
         print("비교시작....")
-        accuracy_result,total_accuracy = compare_video(gt_url, prac_url, sync_frame)
+        accuracy_result,total_accuracy = compare_video(gt_url, prac_url, sync_frame, start_frame)
         imageurl = f"thumbnailimage/{gt_name_arr[0]}_image_{prac_name_arr[2]}_{prac_name_arr[3]}.jpg"
 
         print(total_accuracy)
@@ -131,17 +136,15 @@ def send_data():
 def testfunc(param):
     return param
 
-if __name__ == "__main__":
-    app.run('0.0.0.0', port=5000, debug=True)
-
 
 @app.route('/uploadVideoTest', methods=['POST'])
-def upload_video():
+def upload_video_test():
+    print("uploadVideoTest 진입")
     data = request.get_json()
     gt_url = data.get('gtUrl')
     prac_url = data.get('pracUrl')
 
-    time.sleep(30)
+    sleep(30)
 
     s3Url = 'video/result/asap_result_cnh2_uuid.mp4'
     imageUrl = 'thumbnailimage/asap_image_cnh2_uuid.jpg'
@@ -170,3 +173,7 @@ def upload_video():
     }
 
     return jsonify(result)
+
+if __name__ == "__main__":
+    app.run('0.0.0.0', port=5000, debug=True)
+
