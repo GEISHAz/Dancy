@@ -4,7 +4,49 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0fd0e8ef-820e-4cae-8d1b-9c7cc38bf1de" name="Changes" comment="[FEATURE] 정확도 수정 및 테스트코드 추가" />
+    <list default="true" id="0fd0e8ef-820e-4cae-8d1b-9c7cc38bf1de" name="Changes" comment="[Fix] fix folder structure">
+      <change beforePath="$PROJECT_DIR$/api/dataset/audio/asap_gt_cnh2.mp4/asap_gt_cnh2.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/audio/dynamite_gt_jmh.mp4/dynamite_gt_jmh.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/audio/iam_gt_jmh.mp4/iam_gt_jmh.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/audio/lovemelikethis_gt_jmh.mp4/lovemelikethis_gt_jmh.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/audio/nextlevel_gt_jmh.mp4/nextlevel_gt_jmh.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/audio/obsession_gt_cnh2.mp4/obsession_gt_cnh2.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/audio/stepback_gt_jmh.mp4/stepback_gt_jmh.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/image/asap_prac_cnh2_uuid.mp4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/image/dynamite_prac_jmh_uuid.mp4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/image/iam_prac_jmh_uuid.mp4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/image/lovemelikethis_prac_jmh_uuid.mp4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/image/nextlevel_prac_jmh_uuid.mp4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/image/obsession_prac_cnh2_uuid.mp4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/image/stepback_prac_jmh_uuid.mp4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/result/asap_analyzed_cnh2_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/result/asap_result_cnh2_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/result/dynamite_analyzed_jmh_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/result/iam_analyzed_jmh_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/result/iam_result_jmh_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/result/lovemelikethis_analyzed_jmh_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/result/lovemelikethis_result_jmh_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/result/nextlevel_analyzed_jmh_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/result/nextlevel_result_jmh_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/result/obsession_analyzed_cnh2_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/result/obsession_result_cnh2_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/result/stepback_analyzed_jmh_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/result/stepback_result_jmh_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/gt/asap_gt_cnh2.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/gt/dynamite_gt_jmh.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/gt/iam_gt_jmh.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/gt/lovemelikethis_gt_jmh.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/gt/nextlevel_gt_jmh.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/gt/obsession_gt_cnh2.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/gt/stepback_gt_jmh.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/prac/asap_prac_cnh2_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/prac/dynamite_prac_jmh_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/prac/iam_prac_jmh_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/prac/lovemelikethis_prac_jmh_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/prac/nextlevel_prac_jmh_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/prac/obsession_prac_cnh2_uuid.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/prac/stepback_prac_jmh_uuid.mp4" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,27 +88,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.app.executor&quot;: &quot;Run&quot;,
-    &quot;Python.compare.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;fix/FolderStructure&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/SSAFY/Desktop/mediapipe/python/api/dataset/video/gt&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.new.ui&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.app.executor": "Run",
+    "Python.compare.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "fix/FolderStructure",
+    "last_opened_file_path": "C:/Users/SSAFY/Desktop/Project1_Backend/S10P12D210/python/api/dataset/audio",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\audio" />
+      <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\image" />
+      <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\result" />
+      <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\video\prac" />
       <recent name="C:\Users\SSAFY\Desktop\mediapipe\python\api\dataset\video\gt" />
-      <recent name="C:\Users\SSAFY\Desktop\mediapipe\python\api\dataset\video" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\SSAFY\Desktop\mediapipe\python\api\dataset\video\gt" />
@@ -139,6 +184,7 @@
       <workItem from="1707654654952" duration="8744000" />
       <workItem from="1707724398513" duration="7849000" />
       <workItem from="1707784397126" duration="69000" />
+      <workItem from="1707784471835" duration="144000" />
     </task>
     <task id="LOCAL-00001" summary="[FEATURE] 정확도 수정 및 테스트코드 추가">
       <option name="closed" value="true" />
@@ -148,7 +194,15 @@
       <option name="project" value="LOCAL" />
       <updated>1707745653595</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="[Fix] fix folder structure">
+      <option name="closed" value="true" />
+      <created>1707784513947</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1707784513947</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -167,7 +221,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="[FEATURE] 정확도 수정 및 테스트코드 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="[FEATURE] 정확도 수정 및 테스트코드 추가" />
+    <MESSAGE value="[Fix] fix folder structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="[Fix] fix folder structure" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
