@@ -17,7 +17,8 @@ public class WrongPick {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long wrongPickId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Video video;
 
     Integer startTime;

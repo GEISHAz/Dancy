@@ -19,10 +19,12 @@ public class CommentLike {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long commentLikeId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Comment comment;
 
 

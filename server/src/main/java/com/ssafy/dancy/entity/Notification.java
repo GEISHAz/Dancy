@@ -24,10 +24,12 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long notificationId;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User authorUser;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User targetUser;
 
     @Column(nullable = false,length = 20)
@@ -35,6 +37,7 @@ public class Notification {
     private NotificationContentType contentType;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Article article;
 
     @CreatedDate

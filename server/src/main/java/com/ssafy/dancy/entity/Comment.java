@@ -44,10 +44,12 @@ public class Comment {
     @Column(columnDefinition = "TIMESTAMP") //, nullable = false)
     private LocalDateTime updatedDate;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Article article;
 
     @ColumnDefault("0")

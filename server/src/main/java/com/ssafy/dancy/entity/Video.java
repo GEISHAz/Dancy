@@ -19,7 +19,8 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long videoId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Column(nullable = false)
@@ -39,7 +40,7 @@ public class Video {
     @Builder.Default
     private double score =  0;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "articleId")
     private Article article;
 }

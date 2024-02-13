@@ -17,10 +17,12 @@ public class SavedArticle {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long savedArticleId;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Article article;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
 }

@@ -46,9 +46,10 @@ public class Article {
     @CreatedDate
     private LocalDateTime createdDate;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
     private Video video;
 }

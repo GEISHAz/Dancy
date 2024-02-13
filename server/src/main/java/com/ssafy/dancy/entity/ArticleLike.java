@@ -18,10 +18,12 @@ public class ArticleLike {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long articleLikeId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Article article;
 
     @PrePersist

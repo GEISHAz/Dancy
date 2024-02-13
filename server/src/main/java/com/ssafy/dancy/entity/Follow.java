@@ -18,10 +18,12 @@ public class Follow {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long followId;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User fromUser;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User toUser;
     // FetchType.LAZY 를 걸었을 경우, n + 1 문제가 발생하는 케이스가 존재.
 
