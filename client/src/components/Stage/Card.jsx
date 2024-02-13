@@ -24,7 +24,9 @@ export default function Card() {
     onClick(videoUrl)
   }
   
-  const cards = articles.map((_, index) => {
+  const cards = () => {
+    if( articles && articles.length > 0 ){
+    articles.map((_, index) => {
     // 줄 별로 색상 선택
     const color = colors[Math.floor(index / 3) % colors.length];
     const item = articles[index % articles.length]
@@ -51,10 +53,12 @@ export default function Card() {
         </C.CardContainer>
       </Link>
     );
-  });
-
+    });
+  }
   return (
-    <>{cards}</>
+    <>
+      {cards}
+    </>
   );
+  }
 }
-

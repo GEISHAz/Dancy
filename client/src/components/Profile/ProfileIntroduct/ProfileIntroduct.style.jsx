@@ -59,6 +59,7 @@ export const FollowBox = styled.div`
 	display: flex;
 	align-items: center;
 	gap: 31px;
+	cursor: pointer;
 `
 
 export const FollowTitle = styled.div`
