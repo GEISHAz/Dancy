@@ -58,6 +58,12 @@ export default function Navbar() {
       });
   }, []);
 
+	window.addEventListener("unload", deleteToken)
+	function deleteToken() {
+		localStorage.removeItem("token")
+		localStorage.removeItem("localStorage")
+	}
+
   return (
     <N.NavArea>
       <N.NavRed />
