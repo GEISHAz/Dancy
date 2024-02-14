@@ -88,6 +88,7 @@ public class CreateVideoService {
         }
 
         log.info("변환에 들어가는 API : {}", pythonServerUrl);
+        log.info("변환 진입 -> reference : {}, practice : {}", reference, practice);
 
         webClient.post()
                 .uri(pythonServerUrl)
@@ -129,6 +130,7 @@ public class CreateVideoService {
         log.info("변환된 영상 : {}", response.totalUrl());
         log.info("썸네일 : {}", response.thumbnailImageUrl());
         log.info("측정 정확도 : {}", response.total_accuracy());
+        log.info("결과 total url : {}", response.totalUrl());
 
         Video savedVideo = videoRepository.save(Video.builder()
                 .user(user)
@@ -162,6 +164,7 @@ public class CreateVideoService {
         String storeFilename = storeName + "." + ext;
         String referenceVideoUrl = fileStoreUtil.uploadVideoFileToS3(file, target, storeFilename);
 
+        log.info("video upload : {}", referenceVideoUrl);
         String thumbnailImageName = "thumbnail_" + storeName + ".jpg";
 
         MultipartFile thumbnailImage = videoProcessor.captureThumbnailFromVideo(file, 60, thumbnailImageName);
