@@ -49,8 +49,9 @@ export default function Notification() {
   };
 
   const getDateTransfer = (data) => {
-    const date = new Date(...data);
-    console.log(date);
+    const [year, month, day, hour, minute, second] = data;
+    const date = new Date(year, month - 1, day, hour, minute, second);
+    console.log("date", date);
     return date;
   };
 
