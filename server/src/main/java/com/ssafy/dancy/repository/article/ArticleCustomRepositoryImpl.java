@@ -28,7 +28,7 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
 
     @Override
     public Optional<ArticleDetailResponse> getArticleDetailInfo(User me, long articleId) {
-        ArticleDetailDTO dto = jpaQueryFactory.select(
+        ArticleDetailDTO dto = jpaQueryFactory.selectDistinct(
                 Projections.bean(
                         ArticleDetailDTO.class,
                         article.as("article"),
@@ -39,7 +39,8 @@ public class ArticleCustomRepositoryImpl implements ArticleCustomRepository{
                 .from(article)
                 .leftJoin(articleLike).on(article.articleId.eq(articleLike.article.articleId)
                         .and(articleLike.user.userId.eq(me.getUserId())))
-                .leftJoin(savedArticle).on(savedArticle.article.eq(article))
+                .leftJoin(savedArticle).on(savedArticle.article.eq(article)
+                        .and(savedArticle.user.userId.eq(me.getUserId())))
                 .where(article.articleId.eq(articleId))
                 .fetchOne();
 
