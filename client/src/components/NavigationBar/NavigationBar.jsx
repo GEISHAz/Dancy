@@ -9,11 +9,16 @@ import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { logout } from "../../api/auth.js";
 import { userDetails } from "../../api/user.js";
 import { userInfo } from "../../api/myPage.js";
-import { alarmOccuredState, alarmListState, convertAlarmState, startToConvertState } from "../../recoil/AlarmState";
+import {
+  alarmOccuredState,
+  alarmListState,
+  convertAlarmState,
+  startToConvertState,
+} from "../../recoil/AlarmState";
 
 export default function Navbar() {
   const [activeButton, setActiveButton] = useState("");
-  const [finduserInfo, setFindUserInfo] = useRecoilState(userState);
+  const setFindUserInfo = useSetRecoilState(userState);
   const [isLoggedIn, setLoginState] = useRecoilState(loginState);
   const userDetailsInfo = useRecoilValue(userState);
   const navigate = useNavigate();
@@ -47,24 +52,25 @@ export default function Navbar() {
       .catch((err) => console.error(err));
   };
 
-  useEffect(() => {
-    userInfo(userDetailsInfo.nickname)
-      .then((res) => {
-        //setUserDetail(res);
-        setFindUserInfo({
-          ...finduserInfo,
-          profileImageUrl: res.profileImageUrl,
-        });
-        // console.log(res);
-      })
-      .catch((err) => {
-        console.error(err);
-        if (err.response.status === 404) {
-          alert(err.response.data[0].message);
-          navigate("/");
-        }
-      });
-  }, []);
+  //console.log("navuser", userDetailsInfo);
+  // useEffect(() => {
+  //   userInfo(userDetailsInfo.nickname)
+  //     .then((res) => {
+  //       //setUserDetail(res);
+  //       setFindUserInfo({
+  //         ...finduserInfo,
+  //         profileImageUrl: res.profileImageUrl,
+  //       });
+  //       // console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //       if (err.response.status === 404) {
+  //         alert(err.response.data[0].message);
+  //         navigate("/");
+  //       }
+  //     });
+  // }, []);
 
   // window.addEventListener("unload", deleteToken)
   // function deleteToken() {
@@ -72,7 +78,7 @@ export default function Navbar() {
   // 	localStorage.removeItem("localStorage")
   // }
 
-  console.log("convert을 시작했는지 " , convertStarted);
+  //console.log("convert을 시작했는지 " , convertStarted);
 
   return (
     <N.NavArea>
@@ -122,9 +128,7 @@ export default function Navbar() {
           </N.NavLeftContainer>
         </N.NavLeft>
         <N.NavRight>
-          {startConverting ? (
-            <LoadingConvert/>
-          ) : null}
+          {startConverting ? <LoadingConvert /> : null}
           <SearchBar />
           {isLogin ? (
             <N.AlertButton>
@@ -139,7 +143,7 @@ export default function Navbar() {
                 </Link>
                 <N.NavProfileArea>
                   <Link to="/setting">
-                    <N.NavUserName>{userDetailsInfo?.nickname} 님</N.NavUserName>
+                    <N.NavUserName>{userDetailsInfo.nickname} 님</N.NavUserName>
                   </Link>
                   <N.NavLogout onClick={logoutHandler}>Logout</N.NavLogout>
                 </N.NavProfileArea>

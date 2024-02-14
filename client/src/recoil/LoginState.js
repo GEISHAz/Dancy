@@ -10,7 +10,7 @@ const { persistAtom } = recoilPersist({
 export const userState = atom({
 	key: 'userState',
 	default: {
-		email: "",
+	email: "",
     nickname: "",
     birthDate: "",
     introduceText: "",
