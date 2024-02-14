@@ -1,11 +1,9 @@
 package com.ssafy.dancy.service.video;
 
-import com.amazonaws.encryptionsdk.model.EncryptionCompletionListener;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.entity.Video;
 import com.ssafy.dancy.entity.WrongPick;
 import com.ssafy.dancy.exception.user.NotHavingPermissionException;
-import com.ssafy.dancy.exception.video.VideoNotConvertedException;
 import com.ssafy.dancy.exception.video.VideoNotFoundException;
 import com.ssafy.dancy.message.request.video.ConvertToPythonRequest;
 import com.ssafy.dancy.message.request.video.ConvertVideoRequest;
