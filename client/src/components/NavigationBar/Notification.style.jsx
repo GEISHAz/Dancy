@@ -91,7 +91,8 @@ export const UserName = styled.span`
   cursor: pointer;
 `;
 
-export const NotificationText = styled.span``;
+export const NotificationText = styled.span`
+`;
 
 export const TimeStamp = styled.span`
   display: flex;

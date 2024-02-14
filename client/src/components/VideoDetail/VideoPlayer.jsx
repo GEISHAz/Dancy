@@ -1,66 +1,60 @@
 import React, { useState, useRef, useEffect } from "react";
-import PlaybackRate from "./PlaybackRate";
-import {
-  VideoPlayerContainer,
-  ControlsWrapper,
-  Controls,
-  VolumeControl,
-  PlayBtn,
-  VideoRightOptions,
-} from './VideoPlayer.style';
+// import PlaybackRate from "./PlaybackRate";
+import * as VP from "./VideoPlayer.style";
+
 
 const VideoPlayer = React.memo(({ src }) => {
   const videoRef = useRef();
-  const [playbackRate, setPlaybackRate] = useState(1);
-  const [volume, setVolume] = useState(1);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [isVolumeControlHovered, setIsVolumeControlHovered] = useState(false);
-  const [like, setLike] = useState(false);
-  const [save, setSave] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
+  // const [playbackRate, setPlaybackRate] = useState(1);
+  // const [volume, setVolume] = useState(1);
+  // const [isPlaying, setIsPlaying] = useState(false);
+  // const [isMuted, setIsMuted] = useState(false);
+  // const [isVolumeControlHovered, setIsVolumeControlHovered] = useState(false);
+  // const [like, setLike] = useState(false);
+  // const [save, setSave] = useState(false);
+  // const [likeCount, setLikeCount] = useState(0);
 
-  const handlePlayPause = () => {
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-      setIsPlaying(true);
-    } else {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
-  };
+  // const handlePlayPause = () => {
+  //   if (videoRef.current.paused) {
+  //     videoRef.current.play();
+  //     setIsPlaying(true);
+  //   } else {
+  //     videoRef.current.pause();
+  //     setIsPlaying(false);
+  //   }
+  // };
 
-  const handleVolumeChange = (e) => {
-    setVolume(e.target.value);
-    videoRef.current.volume = volume;
-  };
+  // const handleVolumeChange = (e) => {
+  //   setVolume(e.target.value);
+  //   videoRef.current.volume = volume;
+  // };
 
-  const handlePlaybackRateChange = (rate) => {
-    setPlaybackRate(rate);
-    videoRef.current.playbackRate = rate;
-  };
+  // const handlePlaybackRateChange = (rate) => {
+  //   setPlaybackRate(rate);
+  //   videoRef.current.playbackRate = rate;
+  // };
 
-  const handleFullScreen = () => {
-    if (videoRef.current.requestFullscreen) {
-      videoRef.current.requestFullscreen();
-    }
-  };
+  // const handleFullScreen = () => {
+  //   if (videoRef.current.requestFullscreen) {
+  //     videoRef.current.requestFullscreen();
+  //   }
+  // };
 
-  const handleMute = () => {
-    setIsMuted(!isMuted);
-    if (!isMuted) {
-      setVolume(0);
-      videoRef.current.volume = 0;
-    } else {
-      setVolume(1);
-      videoRef.current.volume = 1;
-    }
-  };
+  // const handleMute = () => {
+  //   setIsMuted(!isMuted);
+  //   if (!isMuted) {
+  //     setVolume(0);
+  //     videoRef.current.volume = 0;
+  //   } else {
+  //     setVolume(1);
+  //     videoRef.current.volume = 1;
+  //   }
+  // };
 
-  const handleVolumeBtnMouseUp = () => {
-    if (isMuted || isVolumeControlHovered) return;
-    setIsVolumeControlHovered(false);
-  };
+  // const handleVolumeBtnMouseUp = () => {
+  //   if (isMuted || isVolumeControlHovered) return;
+  //   setIsVolumeControlHovered(false);
+  // };
 
   const [index, setIndex] = useState(0);
 
@@ -72,7 +66,7 @@ const VideoPlayer = React.memo(({ src }) => {
   }, []); // 빈 배열을 전달하여 페이지 로드 시에만 실행되도록 함
 
   return (
-		<VideoPlayerContainer>
+		<VP.VideoPlayerContainer>
 			<video ref={videoRef} controls>
 				<source key={index} src={src} type="video/mp4" />
 			</video>
@@ -104,7 +98,7 @@ const VideoPlayer = React.memo(({ src }) => {
 					</button>
 				</VideoRightOptions>
 			</ControlsWrapper> */}
-		</VideoPlayerContainer>
+		</VP.VideoPlayerContainer>
   );
 });
 

@@ -1,18 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import * as M from "./Main.style"
 
-const StyledBody = styled.div`
-  height: 1000px;
-  width: 1000px;
-  overflow: hidden;
-`;
 
-const SampleCanvas = styled.canvas`
-  position: relative;
-  top: 65%;
-  left: 350px;
-  scale: 1.3;
-`;
 
 
 export default function MyComponent() {
@@ -92,8 +81,8 @@ export default function MyComponent() {
   }, [scrollActive]);
 
   return (
-    <StyledBody ref={componentRef}>
-      <SampleCanvas width="1920" height="1080" ref={canvasRef} />
-    </StyledBody>
+    <M.StyledBody ref={componentRef}>
+      <M.SampleCanvas width="1920" height="1080" ref={canvasRef} />
+    </M.StyledBody>
   );
 }

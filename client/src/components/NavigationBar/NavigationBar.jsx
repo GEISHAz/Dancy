@@ -38,10 +38,6 @@ export default function Navbar() {
         setAlarmList({});
         setIsConverted(null);
         setConvertStarted(null);
-        // 초기화
-        // setUserDetail({
-        //   profileImageUrl: null,
-        // });
         navigate("/");
       })
       .catch((err) => console.error(err));
@@ -50,7 +46,6 @@ export default function Navbar() {
   useEffect(() => {
     userInfo(userDetailsInfo.nickname)
       .then((res) => {
-        //setUserDetail(res);
         setFindUserInfo({
           ...finduserInfo,
           profileImageUrl: res.profileImageUrl,
@@ -65,12 +60,6 @@ export default function Navbar() {
         }
       });
   }, []);
-
-  // window.addEventListener("unload", deleteToken)
-  // function deleteToken() {
-  // 	localStorage.removeItem("token")
-  // 	localStorage.removeItem("localStorage")
-  // }
 
   console.log("convert을 시작했는지 " , convertStarted);
 
