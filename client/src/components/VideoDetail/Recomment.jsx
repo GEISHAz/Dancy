@@ -11,6 +11,7 @@ import { userState } from '../../recoil/LoginState.js';
 export default function Recomment({ commentId }) {
   const [like, setLike] = useState([]);
   const [likeCount, setLikeCount] = useState([]);
+  const [likeState, setLikeState] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState([]);
   const [recomments, setRecomments] = useState([]);
   const [isUpdate, setIsUpdate] = useState([]);
@@ -58,11 +59,12 @@ export default function Recomment({ commentId }) {
       const initialLikeState = Array(res.length).fill(false);
       setLike(initialLikeState);
       setLikeCount(initialLikeState);
+      setLikeState(initialLikeState);
       setDropdownOpen(initialLikeState);
       setIsUpdate(initialLikeState);
     })
     .catch((err) => console.error(err));
-  }, [recomments]);
+  }, []);
 
   // 대댓글 비동기 삭제
   const handleDelete = (commentId) => { 
@@ -77,7 +79,17 @@ export default function Recomment({ commentId }) {
 
   const handleLike = (commentId) => {
     commentLike(commentId)
-    .then(() => window.location.reload())
+    .then((res) => 
+			{console.log(res)
+			// window.location.reload()
+      let newLikeState = [...likeState];
+       // 해당 댓글의 좋아요 상태를 토글
+      newLikeState[index] = !newLikeState[index];
+      // likeState를 업데이트
+      setLikeState(newLikeState); 
+    }
+		)
+
     .catch((err) => console.error(err))
   };
 
