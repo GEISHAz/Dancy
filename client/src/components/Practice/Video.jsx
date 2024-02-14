@@ -1,57 +1,105 @@
 import * as V from "./Video.style";
 import * as A from "./Accuracy.style";
 import React, { useEffect, useRef, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { practiceState, resultState } from "../../recoil/PracticeState";
+import { analyzeResult } from "../../api/video";
 import PostBtn from "./PostBtn";
 import VideoBtn from "./VideoBtn";
 
-export default function Video({ videoInfo, getData }) {
+export default function Video({ getData }) {
   const videoRef = useRef(null);
   const [errorList, setErrorList] = useState([]);
+
+  const [loopStart, setLoopStart] = useState(0);
+  const [loopEnd, setLoopEnd] = useState(0);
+	
+	const transVideo = useRecoilValue(resultState)
+	const [videoInfo, setVideoInfo] = useRecoilState(practiceState);
+	const [totalDuration, setTotalDuration] = useState('')
+	
+  const [intervalId, setIntervalId] = useState(null);
+
+  useEffect(() => {
+		analyzeResult(transVideo.videoId)
+		.then((res) => {
+			setVideoInfo(res)
+		})
+  }, [])
+
 
   useEffect(() => {
 		console.log(videoInfo)
     setErrorList(videoInfo.wrongSections);
-  }, []);
+		handleVideoDuration()
+		}, [videoInfo]);
 
-  const handlePlayButtonClick = (start, end) => {
-    console.log(start, end);
 
-    // 기존의 timeupdate 이벤트 리스너 제거
-    videoRef.current.removeEventListener('timeupdate', handleTimeUpdate);
-    // 기존의 ended 이벤트 리스너 제거
-    videoRef.current.removeEventListener('ended', handleVideoEnded)
+    // 비디오 전체 길이를 확인하는 함수
+  const handleVideoDuration = () => {
+    setTotalDuration(videoRef.current.duration);
+	};
+	const handleTimeUpdateRef = useRef(null);
 
-    // 비디오를 일시정지
-    videoRef.current.pause();
+	// 구간 반복을 지정하는 함수
+	const handlePlayButtonClick = (start, end) => {
+		// 이전에 추가한 이벤트 리스너를 제거
+		if (handleTimeUpdateRef.current) {
+			videoRef.current.removeEventListener('timeupdate', handleTimeUpdateRef.current);
+		}
+	
+		const handleTimeUpdate = () => {
+			if (videoRef.current.currentTime >= end) {
+				videoRef.current.currentTime = start;
+			}
+		}
+		
+		// 현재 handleTimeUpdate 함수를 참조로 저장
+		handleTimeUpdateRef.current = handleTimeUpdate;
+	
+		videoRef.current.pause();
+	
+		if (start !== 0 || end !== 0) {
+			videoRef.current.currentTime = start;
+			videoRef.current.addEventListener('timeupdate', handleTimeUpdateRef.current);
+		} else {
+			videoRef.current.currentTime = 0;
+		}
+		
+		videoRef.current.play();
+	};
+	
+	// // 구간 반복을 지정하는 함수
+  // const handlePlayButtonClick = (start, end) => {
+	// 	const handleTimeUpdate = () => {
+	// 			if (videoRef.current.currentTime >= end) {
+	// 				videoRef.current.currentTime = start;
+	// 			}
+	// 		}
+		
+	// 	videoRef.current.pause();
+	// 	videoRef.current.removeEventListener('timeupdate', handleTimeUpdate)
 
-    // currentTime을 변경하고 다시 재생
-    videoRef.current.currentTime = start;
-    videoRef.current.play();
+	// 	if (start === 0 && end === 0) {
+	// 		videoRef.current.currentTime = 0;
+	// 	}
+	// 	else {
+	// 		videoRef.current.currentTime = start;
+	// 		videoRef.current.addEventListener('timeupdate', handleTimeUpdate);
+	// 	}
+	// 	videoRef.current.play();
+		
+  // };
+	
+	// const handleContinue = () => {
+	// 	videoRef.current.pause();
+		
+	// 	videoRef.current.currentTime = 0;
+	// 	videoRef.current.removeEventListener('timeupdate', handleTimeUpdate)
 
-    // 새로운 timeupdate 이벤트 리스너 등록
-    videoRef.current.addEventListener("timeupdate", () =>
-      handleTimeUpdate(start, end)
-    );
-    // ended 이벤트에 대한 리스너 등록
-  videoRef.current.addEventListener('ended', () => handleVideoEnded(start));
-  };
+	// 	videoRef.current.play()
+	// };
 
-  // ended 이벤트 핸들러
-  const handleVideoEnded = (start) => {
-    videoRef.current.currentTime = start;
-  };
-
-  // timeupdate 이벤트 핸들러
-  const handleTimeUpdate = (start, end) => {
-    if (end >= videoRef.current.duration) {
-        end = videoRef.current.duration
-      }
-
-    if (videoRef.current.currentTime >= end) {
-      // end 지점에 도달하면 시작구간으로 되돌아감
-      videoRef.current.currentTime = start;
-    }
-  };
 
   // 초를 분:초 형태의 문자열로 변환하는 함수
   const formatTime = (timeInSeconds) => {
@@ -60,27 +108,10 @@ export default function Video({ videoInfo, getData }) {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
-  const handleContinueButtonClick = () => {
-    console.log('click')
-    // 기존의 timeupdate 및 ended 이벤트 리스너 제거
-    videoRef.current.removeEventListener('timeupdate', handleTimeUpdate);
-    videoRef.current.removeEventListener('ended', handleVideoEnded);
-  
-    // 비디오를 일시정지하고 처음으로 되돌리기
-    videoRef.current.pause();
-    videoRef.current.currentTime = 0;
-  
-    // 비디오 재생 시작
-    videoRef.current.play();
-  };
-
   return (
     <V.Wrap>
       <V.VideoNBtns>
-        <V.VideoArea ref={videoRef} controls>
-          <source src={videoInfo.videoUrl} type="video/mp4" />
-        </V.VideoArea>
-
+        <V.VideoArea src={videoInfo.videoUrl} ref={videoRef} controls />
         <VideoBtn avgAccuracy={videoInfo.score} />
       </V.VideoNBtns>
 
@@ -107,7 +138,7 @@ export default function Video({ videoInfo, getData }) {
               </div>
             ))}
           </A.SectionInfo>
-          <A.ContinueBtn onClick={() => handleContinueButtonClick()}>
+          <A.ContinueBtn onClick={() => handlePlayButtonClick(0, 0)}>
             연속 재생
           </A.ContinueBtn>
         </A.BgImg>
