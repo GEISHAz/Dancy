@@ -23,7 +23,6 @@ export const emailCheck = async (formData) => {
 
 
 export const nickNameCheck = async (formData) => {
-  console.log(formData);
   try {
     const response = await noneApi.get(`/user/exists/${formData}`);
     console.log("response", response);

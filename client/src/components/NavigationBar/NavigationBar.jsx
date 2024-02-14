@@ -9,11 +9,16 @@ import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { logout } from "../../api/auth.js";
 import { userDetails } from "../../api/user.js";
 import { userInfo } from "../../api/myPage.js";
-import { alarmOccuredState, alarmListState, convertAlarmState, startToConvertState } from "../../recoil/AlarmState";
+import {
+  alarmOccuredState,
+  alarmListState,
+  convertAlarmState,
+  startToConvertState,
+} from "../../recoil/AlarmState";
 
 export default function Navbar() {
   const [activeButton, setActiveButton] = useState("");
-  const [finduserInfo, setFindUserInfo] = useRecoilState(userState);
+  const setFindUserInfo = useSetRecoilState(userState);
   const [isLoggedIn, setLoginState] = useRecoilState(loginState);
   const userDetailsInfo = useRecoilValue(userState);
   const navigate = useNavigate();
@@ -47,6 +52,7 @@ export default function Navbar() {
       .catch((err) => console.error(err));
   };
 
+  //console.log("navuser", userDetailsInfo);
   // useEffect(() => {
   //   userInfo(userDetailsInfo.nickname)
   //     .then((res) => {
@@ -72,7 +78,7 @@ export default function Navbar() {
   // 	localStorage.removeItem("localStorage")
   // }
 
-  console.log("convert을 시작했는지 " , convertStarted);
+  //console.log("convert을 시작했는지 " , convertStarted);
 
   return (
     <N.NavArea>
@@ -122,9 +128,7 @@ export default function Navbar() {
           </N.NavLeftContainer>
         </N.NavLeft>
         <N.NavRight>
-          {startConverting ? (
-            <LoadingConvert/>
-          ) : null}
+          {startConverting ? <LoadingConvert /> : null}
           <SearchBar />
           {isLogin ? (
             <N.AlertButton>
