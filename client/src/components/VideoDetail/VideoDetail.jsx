@@ -30,9 +30,10 @@ export default function VideoDetail() {
 	// 페이지 렌더링 시 기본 정보 호출 (onMount)
   useEffect(() => {
     // 게시글 상세 정보 조회를 위한 api 요청
+		console.log(articleId)
     getArticle(articleId)
     .then ((res) => {
-      // console.log('article',res)
+      console.log('article',res)
       setArticleInfo(res)
 			return res
     })
@@ -101,14 +102,28 @@ export default function VideoDetail() {
 	// 게시글 좋아요 관리
 	const handleLike = () => {
 		articleLike(articleId)
-    .then((res) => { window.location.reload() })
+    .then((res) => { 
+			console.log(res)
+			setArticleInfo({
+				...articleInfo,
+				isArticleLiked: res.isArticleLiked,
+			})
+		})
     .catch((err) => console.error(err))
   };
 
   // 게시글 보관 관리
   const handleSave = () => {
     saveArticle(articleId)
-    .then(() => window.location.reload())
+    .then((res) => {
+			console.log(res)
+			setArticleInfo({
+				...articleInfo,
+				isArticleSaved: res.isSaved,
+			})
+			// window.location.reload()
+		}
+		)
     .catch((err) => console.error(err))
   }
 
@@ -149,7 +164,11 @@ export default function VideoDetail() {
   const handleLikeUser = () => {
     likeUsers(articleId)
     .then((res) => {
+      setArticleInfo({
+				...articleInfo,
+				articleLike: res.articleLikeCount})
       setLikeUser(res)
+			// console.log(articleInfo)
       setIsDropDown(!isDropDown)
     })
     .catch((err) => { console.error(err) })

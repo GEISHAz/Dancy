@@ -14,25 +14,13 @@ export default function Create() {
     const originVideo = useRecoilValue(originState)
     const myVideo = useRecoilValue(myState)
     const [formData, setFormData] = useState({
-        "referenceVideoUrl": "",
-        "practiceVideoUrl": ""
+        "referenceVideoUrl": originVideo.resultVideoUrl,
+        "practiceVideoUrl": myVideo.resultVideoUrl,
     })
 
-    useEffect(() => {
-
-    }, [])
-    
     const navigate = useNavigate();
 
     const transHandler = async () => {
-        console.log(originVideo, myVideo)
-        setFormData({
-            "referenceVideoUrl": originVideo.resultVideoUrl,
-            "practiceVideoUrl": myVideo.resultVideoUrl
-        })
-
-        
-
         await plzAnalyze(formData)
         .then((res) => {
             console.log(res)
