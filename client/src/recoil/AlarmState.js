@@ -20,8 +20,18 @@ export const alarmListState = atom({
     effects_UNSTABLE: [persistAtom],
 });
 
+
+// 영상이 변환 완료 되었는지
 export const convertAlarmState = atom({
     key: "convertAlarmState",
-    default: '',
+    default: false, // 영상이 여러개일땐 숫자로 변경해줘야함
+    effects_UNSTABLE: [persistAtom],
+});
+
+
+//  영상이 변환 시작 되었는지 (create 페이지에서 true로 바꿔줘야함)
+export const startToConvertState = atom({
+    key: "startToConvertState",
+    default: false, 
     effects_UNSTABLE: [persistAtom],
 });

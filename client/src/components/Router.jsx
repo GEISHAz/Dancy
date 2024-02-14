@@ -58,7 +58,7 @@ export default function Router({ cardDetails, videoDetails }) {
           eventSource.addEventListener("convert_complete", function (event) {
             console.log("result video id : ", event.data);
             if (event.data) {
-              setIsConverted(event.data); // 영상 변환이 완료 되었다고 알려줍니다...
+              setIsConverted(true); // 영상 변환이 완료 되었다고 알려줍니다...아이디 알려줄것
             }
           });
 
