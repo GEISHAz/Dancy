@@ -2,13 +2,9 @@ import styled from "styled-components";
 import downBtn from '../..//assets/Practice/downloadBtn.png'
 
 export const Container = styled.div`
-	padding-right:5px;
+	padding-right:2px;
 	display: flex;
-	justify-content: space-between;
-`
-
-export const LabelContain = styled.div`
-	display: flex;
+	justify-content: end;
 `
 
 export const Label = styled.div`

@@ -41,7 +41,8 @@ export default function Create() {
 				<OriginDance />
 				<MyDance />
 			</div>
-
+			<div style={{color:'red', fontFamily:'NYJ Gothic B', fontSize:'20px'}}
+			>※ 단, 업로딩 영상의 제목은 '_' 혹은 '/'를 포함할 수 없습니다.</div>
 			<TransBtn onClick={() => transHandler()}>변환하기</TransBtn>
 		</div>
 	)
