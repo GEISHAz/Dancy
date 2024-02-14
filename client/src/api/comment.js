@@ -6,7 +6,7 @@ export const getComment = async (articleId, parentId) => {
   try {
 		const res = await privateApi.get(`/${url}/${articleId}`, { params: {"parentId": parentId}})
 		const commentInfo = res.data
-		console.log(commentInfo)
+		// console.log(commentInfo)
 		return commentInfo
 	} catch (error) {
     console.error(error);
