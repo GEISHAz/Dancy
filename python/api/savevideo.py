@@ -24,6 +24,7 @@ def process_video_and_save_keypoints(video_path, target_video, key_path):
     with open(os.path.join(key_path, target_video, f'_info.json'), "w") as f:
         json.dump(video_inform, f, indent='\t')
 
+    start_frame = 0
     # Setup mediapipe instance
     with mp.solutions.pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
         i = 0
@@ -39,6 +40,12 @@ def process_video_and_save_keypoints(video_path, target_video, key_path):
                 landmarks = results.pose_landmarks.landmark
             except:
                 print("제외됨 ",i)
+
+                skip_keypoints = config.make_skip_keypoints()
+                with open(os.path.join(key_path, target_video, f'{i:0>4}.json'), "w") as f:
+                    json.dump(skip_keypoints, f, indent='\t')
+                i = i + 1
+                start_frame = i
                 continue
 
             # Get coordinate
@@ -72,6 +79,7 @@ def process_video_and_save_keypoints(video_path, target_video, key_path):
         print("gt 저장 최종 프레임수", i);
     cap.release()
     cv2.destroyAllWindows()
+    return start_frame
 
 # 사용 예시
 
