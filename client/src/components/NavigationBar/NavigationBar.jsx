@@ -47,24 +47,24 @@ export default function Navbar() {
       .catch((err) => console.error(err));
   };
 
-  useEffect(() => {
-    userInfo(userDetailsInfo.nickname)
-      .then((res) => {
-        //setUserDetail(res);
-        setFindUserInfo({
-          ...finduserInfo,
-          profileImageUrl: res.profileImageUrl,
-        });
-        // console.log(res);
-      })
-      .catch((err) => {
-        console.error(err);
-        if (err.response.status === 404) {
-          alert(err.response.data[0].message);
-          navigate("/");
-        }
-      });
-  }, []);
+  // useEffect(() => {
+  //   userInfo(userDetailsInfo.nickname)
+  //     .then((res) => {
+  //       //setUserDetail(res);
+  //       setFindUserInfo({
+  //         ...finduserInfo,
+  //         profileImageUrl: res.profileImageUrl,
+  //       });
+  //       // console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //       if (err.response.status === 404) {
+  //         alert(err.response.data[0].message);
+  //         navigate("/");
+  //       }
+  //     });
+  // }, []);
 
   // window.addEventListener("unload", deleteToken)
   // function deleteToken() {
@@ -139,7 +139,7 @@ export default function Navbar() {
                 </Link>
                 <N.NavProfileArea>
                   <Link to="/setting">
-                    <N.NavUserName>{userDetailsInfo?.nickname} 님</N.NavUserName>
+                    <N.NavUserName>{userDetailsInfo.nickname} 님</N.NavUserName>
                   </Link>
                   <N.NavLogout onClick={logoutHandler}>Logout</N.NavLogout>
                 </N.NavProfileArea>

@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import { selectedFileState } from "../../recoil/JoinState";
 import * as PM from "./PhotoModal.style";
 
-const PhotoModal = ({ isOpen, onClose, fileState, setFileState }) => {
+const PhotoModal = ({ isOpen, onClose }) => {
   const [imgFile, setImgFile] = useState(null);
   const [selectedFile, setSelectedFile] = useRecoilState(selectedFileState);
 
