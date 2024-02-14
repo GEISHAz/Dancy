@@ -7,13 +7,15 @@ export const SearchContainer = styled.div`
 `;
 
 export const SearchBarOutline = styled.div`
-  width: 232px;
+  width: 188px;
   height: 38px;
   left: 0;
   position: absolute;
   background-color: white;
-  border: 2px solid #252525;
-  border-radius: 20px;
+  border: 1px solid #252525;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 `;
 
 export const SearchBarInput = styled.input`
@@ -25,7 +27,7 @@ export const SearchBarInput = styled.input`
   background-color: transparent;
   border: 0;
   outline: none;
-  padding-left: 12px;
+  padding: 0px 10px;
   letter-spacing: 0;
   
   &::placeholder {
@@ -42,12 +44,14 @@ export const SearchButtonContainer = styled.div`
   top: 0;
   position: absolute;
   background-color: #F28193;
-  border: 2px solid #252525;
+  border: 1px solid #252525;
+  border-left: none;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 `;
 
 export const SearchButtonImage = styled.img`

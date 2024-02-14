@@ -5,8 +5,7 @@ const url = 'stage'
 export const allArticles = async () => {
   try {
     const res = await privateApi.get(`/${url}`,   {params:{'limit': 200}} );
-    const allArticles = res.data
-
+    const allArticles = res.data;
     return allArticles
   } catch (error) {
     console.error(error);
@@ -63,7 +62,9 @@ export const UpdateArticle = async ({articleId, formData}) => {
 export const saveArticle = async (articleId) => {
   try {
     const res = await privateApi.post(`/${url}/save/${articleId}`);
-		console.log(res.data)
+		const saveInfo = res.data
+		// console.log(res.data)
+		return saveInfo
   } catch (error) {
     console.error(error);
     throw error;

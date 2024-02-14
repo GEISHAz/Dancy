@@ -9,44 +9,51 @@ import { commentLike } from "../../api/like.js";
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../recoil/LoginState.js';
 
-// const getTimeDifference = (prevDate) => {
-//   const diff = new Date() - prevDate;
-//   const seconds = Math.floor(diff / 1000);
-//   const minutes = Math.floor(seconds / 60);
-//   const hours = Math.floor(minutes / 60);
-//   const days = Math.floor(hours / 24);
-//   const weeks = Math.floor(days / 7);
-//   if (weeks > 0) {
-//     return `${weeks}주 전`;
-//   } else if (days > 0) {
-//     return `${days}일 전`;
-//   } else if (hours > 0) {
-//     return `${hours}시간 전`;
-//   } else if (minutes > 0) {
-//     return `${minutes}분 전`;
-//   } else {
-//     return `${seconds}초 전`;
-//   }
-// };
 
 export default function Comment() {
   const [comments, setComments] = useState([]);
   const [like, setLike] = useState([]);
   const [likeCount, setLikeCount] = useState([]);
+  const [likeState, setLikeState] = useState([]);
   const [isRecommentOpen, setIsRecommentOpen] = useState([]);
   const [isReplyInputOpen, setIsReplyInputOpen] = useState([]);
   const [placeholder, setPlaceholder] = useState("답글을 입력하세요");
-  const [dropdownOpen, setDropdownOpen] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isUpdate, setIsUpdate] = useState([]);
-	const user = useRecoilValue(userState)              // 로그인 한 유저 정보
-
+  const user = useRecoilValue(userState)              // 로그인 한 유저 정보
   const state = useLocation();
   const articleId = Number(state.pathname.split("/")[2]);
+
+  const getTimeDifference = (createdDateArray) => {
+    // 배열 해체하여 Date 객체로 변환
+    const [year, month, day, hours, minutes, seconds] = createdDateArray;
+    // Date 함수는 0월부터 시작하기 때문에 -1을 해줘야하고, 이렇게 해줬을 때 작성하게 되면 -1초가 뜸. 그래서 seconds에 -2를 줌
+    const createdDate = new Date(year, month - 1, day, hours, minutes, seconds - 2);
+    const diff = new Date() - createdDate;
+    const secondsDiff = Math.floor(diff / 1000);
+    const minutesDiff = Math.floor(secondsDiff / 60);
+    const hoursDiff = Math.floor(minutesDiff / 60);
+    const daysDiff = Math.floor(hoursDiff / 24);
+    const weeksDiff = Math.floor(daysDiff / 7);
+
+    if (weeksDiff > 0) {
+      return `${weeksDiff}주 전`;
+    } else if (daysDiff > 0) {
+      return `${daysDiff}일 전`;
+    } else if (hoursDiff > 0) {
+      return `${hoursDiff}시간 전`;
+    } else if (minutesDiff > 0) {
+      return `${minutesDiff}분 전`;
+    } else {
+      return `${secondsDiff}초 전`;
+    }
+  };
 
   useEffect(() => {
     getComment(articleId, 0)
     .then((res) => {
       setComments(res)
+      // console.log(res)
       return res
     })
     .then((res) => {
@@ -56,10 +63,10 @@ export default function Comment() {
       setIsRecommentOpen(initialLikeState);
       setIsReplyInputOpen(initialLikeState);
       setDropdownOpen(initialLikeState);
-      setIsUpdate(initialLikeState)
+      setIsUpdate(initialLikeState);
     })
     .catch((err) => console.error(err));
-  }, []);
+  }, [articleId]);
 
   const commentInput = useRef();
   const [commentData, setCommentData] = useState({
@@ -79,21 +86,31 @@ export default function Comment() {
 
     postComment({ articleId, commentData })
       .then((res) => {
+        setComments([...comments, res])
+        console.log(res)
+      })
+
+      .then(() => 
         setCommentData({
           content: "",
           parentId: 0,
-        });
-        window.location.reload();
-      })
+        })
+      )
       .catch((err) => {
         console.error(err);
       });
   };
 
+  // 댓글 비동기 삭제
   const handleDelete = (commentId) => { 
     deleteComment(commentId)
-    window.location.reload()
-  }
+    .then(() => {
+      setComments(comments.filter(comment => comment.commentId !== commentId));
+    })
+    .catch ((error) => {
+      console.error(error)
+    })
+  };
 
   // 엔터 키 누르면 제출되도록
   const handleEnter = (e) => {
@@ -102,34 +119,38 @@ export default function Comment() {
     }
   };
 
-  const handleLike = (commentId) => {
+  // 좋아요 비동기 처리
+  const handleLike = (commentId, index) => {
     commentLike(commentId)
-    .then(() => window.location.reload())
+    .then(() => {
+      let newLikeState = [...likeState];
+       // 해당 댓글의 좋아요 상태를 토글
+      newLikeState[index] = !newLikeState[index];
+      // likeState를 업데이트
+      setLikeState(newLikeState); 
+    })
     .catch((err) => console.error(err))
   };
 
-  const toggleUpdateInput = (index) => {
-    setIsUpdate(
-      isUpdate.map((state, i) => (i === index ? !state : state))
-    );
-  }
-
-  const toggleRecomment = (index) => {
-    setIsRecommentOpen(
-      isRecommentOpen.map((state, i) => (i === index ? !state : state))
-    );
+  const toggleRecomment = (commentId) => {
+    setIsRecommentOpen((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
   };
 
-  const toggleReplyInput = (index) => {
-    setIsReplyInputOpen(
-      isReplyInputOpen.map((state, i) => (i === index ? !state : state))
-    );
+  const toggleReplyInput = (commentId) => {
+    setIsReplyInputOpen((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
   };
 
-  const toggleDropdown = (index) => {
-    setDropdownOpen(
-      dropdownOpen.map((state, i) => (i === index ? !state : state))
-    );
+  const toggleDropdown = (commentId) => {
+    setDropdownOpen((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
   };
 
   return (
@@ -144,11 +165,12 @@ export default function Comment() {
           name="content"
           type="text"
           value={commentData.content}
+          autoComplete="off"
           onChange={handleCommentChange}
           placeholder={placeholder}
           onFocus={() => setPlaceholder("")}
           onBlur={() => setPlaceholder("댓글을 입력하세요")}
-        onKeyDown={handleEnter}
+          onKeyDown={handleEnter}
         />
         <C.CommentBtns>
           <C.CommentButton onClick={handlePost}>댓글 작성</C.CommentButton>
@@ -169,8 +191,8 @@ export default function Comment() {
                   </C.CommentUserName>
                 </Link>
                 <C.CommentCreatedAt>
-                  {/* {getTimeDifference(comment.createdDate)} */}
-                  {`${comment.createdDate[0]}. ${comment.createdDate[1]}. ${comment.createdDate[2]}.`} &nbsp;
+                  {getTimeDifference(comment.createdDate)}
+                  {/* {`${comment.createdDate[0]}. ${comment.createdDate[1]}. ${comment.createdDate[2]}.`} &nbsp; */}
                 </C.CommentCreatedAt>
               </div>
               { comment.authorNickname === user.nickname ? 
@@ -190,11 +212,11 @@ export default function Comment() {
               <C.CommentContent>{comment.content}</C.CommentContent>}
               <C.CommentLikeImage
                 src={
-                  comment.commentLike
+                  likeState[index]
                     ? "/src/assets/likeimage.png"
                     : "/src/assets/unlikeimage.png"
                 }
-                onClick={() => handleLike(comment.commentId)}
+                onClick={() => handleLike(comment.commentId, index)}
               />
             </C.CommentContentArea>
             <C.CommentCreateRecommentArea>

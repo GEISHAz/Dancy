@@ -10,7 +10,7 @@ import { articleLike, likeUsers } from "../../api/like.js";
 import { userInfo } from "../../api/myPage.js";
 import { followRequest, unFollowRequest } from '../../api/follow.js';
 
-export default function VideoDetail({videoSrc}) {
+export default function VideoDetail() {
 
   const navigate = useNavigate();
   const state = useLocation();
@@ -30,6 +30,7 @@ export default function VideoDetail({videoSrc}) {
 	// 페이지 렌더링 시 기본 정보 호출 (onMount)
   useEffect(() => {
     // 게시글 상세 정보 조회를 위한 api 요청
+		console.log(articleId)
     getArticle(articleId)
     .then ((res) => {
       console.log('article',res)
@@ -47,11 +48,11 @@ export default function VideoDetail({videoSrc}) {
 
       userInfo(res.nickname)
       .then ((res) => {
-        console.log(res)
+        // console.log(res)
         setAuthorInfo(res)
       })
       .catch ((err) => {
-        console.error(err)
+        // console.error(err)
       })
 
 			setBeforeData({
@@ -66,7 +67,7 @@ export default function VideoDetail({videoSrc}) {
     .catch ((err) => {
 			console.error(err)
     })
-  }, []);
+  }, [articleId]);
 
 	// 게시글 삭제 관리
   const handleDelete = () => {
@@ -101,14 +102,34 @@ export default function VideoDetail({videoSrc}) {
 	// 게시글 좋아요 관리
 	const handleLike = () => {
 		articleLike(articleId)
-    .then((res) => { window.location.reload() })
+    .then((res) => { 
+			console.log(res)
+			setArticleInfo({
+				...articleInfo,
+				isArticleLiked: res.isArticleLiked,	
+				articleLike: res.articleLikeCount,
+			})
+			likeUsers(articleId)
+			.then((res) => {
+				console.log(res)
+				setLikeUser(res)
+			})
+			.catch((err) => { console.error(err) })
+		})
     .catch((err) => console.error(err))
   };
 
   // 게시글 보관 관리
   const handleSave = () => {
     saveArticle(articleId)
-    .then(() => window.location.reload())
+    .then((res) => {
+			console.log(res)
+			setArticleInfo({
+				...articleInfo,
+				isArticleSaved: res.isSaved,
+			})
+		}
+		)
     .catch((err) => console.error(err))
   }
 
@@ -143,31 +164,15 @@ export default function VideoDetail({videoSrc}) {
 		}
 	}
 
-  const [likeUser, setLikeUser] = useState([
-    {
-      "profileImageUrl": null,
-      "nickname": "dongw"
-    },
-    {
-      "profileImageUrl": null,
-      "nickname": "dongw"
-    },
-    {
-      "profileImageUrl": null,
-      "nickname": "dongw"
-    },
-    {
-      "profileImageUrl": null,
-      "nickname": "dongw"
-    }
-  ])
   const [isDropDown, setIsDropDown] = useState(false)
-  
+  const [likeUser, setLikeUser] = useState([])
   // 게시글 좋아요한 유저 목록 조회
   const handleLikeUser = () => {
     likeUsers(articleId)
     .then((res) => {
+			console.log(res)
       setLikeUser(res)
+			// console.log(articleInfo)
       setIsDropDown(!isDropDown)
     })
     .catch((err) => { console.error(err) })
@@ -213,7 +218,10 @@ export default function VideoDetail({videoSrc}) {
 				</V.BtnWrap>
       </V.FunctionWrapper>
 			
-			<VideoPlayer src={videoSrc} />
+			{/* <VideoPlayer src={articleInfo.videoUrl} /> */}
+      <V.VideoPlayer>
+        <video controls src={articleInfo.videoUrl} />
+      </V.VideoPlayer>
 
 			<V.VideoDetailContainer>
         <V.VideoDetailArea>

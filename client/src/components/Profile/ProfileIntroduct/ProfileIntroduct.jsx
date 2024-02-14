@@ -38,7 +38,7 @@ export default function ProfileIntroduct() {
   }, []);
 
   const followBtnStyle = {
-    backgroundColor: userDetail.followed ? "#AABBFF" : "#898989",
+    backgroundColor: userDetail.followed ? "#898989" : "#AABBFF",
   };
 
   const [isOpen, setIsOpen] = useState(false); // Modal On/Off 여부
@@ -144,7 +144,7 @@ export default function ProfileIntroduct() {
 
         {userDetail.isMine ? null : (
           <P.FollowBtn onClick={followHandler} style={followBtnStyle}>
-            {userDetail.followed ? "팔로우" : "팔로잉"}
+            {userDetail.followed ? "팔로잉" : "팔로우"}
           </P.FollowBtn>
         )}
 

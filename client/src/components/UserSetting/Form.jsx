@@ -68,7 +68,8 @@ export default function FormArea() {
 
   // 닉네임 형식 체크
   const validateNickName = (nickname) => {
-    const regex = /^[A-Za-z_.\-]?[A-Za-z_.\-]{1,8}$/;
+    const regex = /^[A-Za-z0-9.-]{1,14}$/;
+    console.log("test 진행중..");
     return regex.test(nickname);
   };
 
