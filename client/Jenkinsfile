@@ -5,9 +5,7 @@ pipeline{
         stage('Build'){
             steps{
                 dir('client'){
-                    script{
-                        sh 'npm install'
-                        sh 'yarn install'                        
+                    script{             
                         sh 'chmod +x ./docker_install.sh'
                         sh './docker_install.sh'
                     }
