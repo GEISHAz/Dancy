@@ -106,7 +106,8 @@ export default function VideoDetail() {
 			console.log(res)
 			setArticleInfo({
 				...articleInfo,
-				isArticleLiked: res.isArticleLiked,
+				isArticleLiked: res.isArticleLiked,	
+				articleLike: res.articleLikeCount,
 			})
 		})
     .catch((err) => console.error(err))
@@ -121,7 +122,6 @@ export default function VideoDetail() {
 				...articleInfo,
 				isArticleSaved: res.isSaved,
 			})
-			// window.location.reload()
 		}
 		)
     .catch((err) => console.error(err))
@@ -164,9 +164,7 @@ export default function VideoDetail() {
   const handleLikeUser = () => {
     likeUsers(articleId)
     .then((res) => {
-      setArticleInfo({
-				...articleInfo,
-				articleLike: res.articleLikeCount})
+
       setLikeUser(res)
 			// console.log(articleInfo)
       setIsDropDown(!isDropDown)
