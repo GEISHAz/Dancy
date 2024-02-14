@@ -21,14 +21,19 @@ export default function Create() {
     const navigate = useNavigate();
 
     const transHandler = async () => {
-        await plzAnalyze(formData)
-        .then((res) => {
-            console.log(res)
-            navigate("/");
-            setConvertStarted(true);
-        }).catch((err) => {
-            alert("다시 시도해주세요.");
-        })
+      console.log(originVideo, myVideo)
+      setFormData({
+        "referenceVideoUrl": originVideo.resultVideoUrl,
+        "practiceVideoUrl": myVideo.resultVideoUrl,
+      })
+      await plzAnalyze(formData)
+      .then((res) => {
+          console.log(res)
+          navigate("/");
+          setConvertStarted(true);
+      }).catch((err) => {
+          alert("다시 시도해주세요.");
+      })
     };
 
     return (
