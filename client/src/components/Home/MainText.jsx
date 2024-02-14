@@ -51,14 +51,16 @@ export default function Main() {
     <M.Wrapper>
       <M.Container>
         <M.Context ref={context} src="/src/assets/title.png" onLoad={handleContextLoad} />
-        <M.DancyLogo ref={logo} src="/src/assets/DancyLogo.png" onLoad={handleLogoLoad}/>
-        <M.Text1 ref={text1} src="/src/assets/text1.png" onLoad={handletext1} />
+        <M.LogoWrap>
+          <M.DancyLogo ref={logo} src="/src/assets/DancyLogo.png" onLoad={handleLogoLoad}/>
+          <M.Text1 ref={text1} src="/src/assets/text1.png" onLoad={handletext1} />
+        </M.LogoWrap>
         <M.Text2 ref={text2} src="/src/assets/Homepage/1.png" onLoad={handletext2}/>
       </M.Container>
-      <div>
-        <MyComponent ref={ref} />
         <M.Text3 ref={text3} src="/src/assets/Homepage/text1.png" onLoad={handletext3} />
-      </div>
+      <M.ScrollWrapper>
+        <MyComponent ref={ref} />
+      </M.ScrollWrapper>
     </M.Wrapper>
   )
 };
