@@ -23,8 +23,12 @@ def upload_video():
     data = request.get_json()
     gt_url = data.get('gtUrl')
     prac_url = data.get('pracUrl')
+    standard = float(data.get('standard'))
     print("초기 세팅 ", gt_url)
     print("초기 세팅 ", prac_url)
+    print("초기 세팅 ", standard, type(standard))
+    if standard is None:
+        standard = 0.90
 
     gt_url_arr = gt_url.split('/')
     prac_url_arr = prac_url.split('/')
@@ -68,11 +72,12 @@ def upload_video():
     os.makedirs(os.path.join("./dataset/json/", f"{gt_name}"), exist_ok=True)
     print("gt 분석 후 json 저장중....")
 
-    start_frame = 0
+    frame_count_list = []
     if(len(gt_name_arr)==3):
-        start_frame = process_video_and_save_keypoints("./dataset/video/gt", f"{gt_name}", "./dataset/json")
+        frame_count_list = process_video_and_save_keypoints("./dataset/video/gt", f"{gt_name}", "./dataset/json")
 
-    # start_frame = process_video_and_save_keypoints("./dataset/video/gt", f"{gt_name}", "./dataset/json")
+    # frame_count_list = process_video_and_save_keypoints("./dataset/video/gt", f"{gt_name}", "./dataset/json")
+    print("제외되어야 하는 프레임 ", frame_count_list)
 
     if file_path_prac is not None:
         # # 여기서 g 파일이 업로드된 파일 -> prac 파일이다.
@@ -86,7 +91,7 @@ def upload_video():
 
             # 싱크와 음악 이름을 받고 비교시작
         print("비교시작....")
-        accuracy_result,total_accuracy = compare_video(gt_url, prac_url, sync_frame, start_frame)
+        accuracy_result,total_accuracy = compare_video(gt_url, prac_url, sync_frame, frame_count_list, standard)
         imageurl = f"thumbnailimage/{gt_name_arr[0]}_image_{prac_name_arr[2]}_{prac_name_arr[3]}.jpg"
 
         print(total_accuracy)
