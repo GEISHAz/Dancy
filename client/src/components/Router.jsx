@@ -26,7 +26,7 @@ export default function Router({ cardDetails, videoDetails }) {
   const [isConverted, setIsConverted] = useRecoilState(convertAlarmState);
   const navigate = useNavigate();
   const location = useLocation();
-    const [result, setResult] = useRecoilState(resultState)
+  const [result, setResult] = useRecoilState(resultState)
 
   useEffect(() => {
     // 로그인 상태가 아니고, 현재 페이지가 로그인 페이지나 회원가입 페이지가 아닐 경우 로그인 페이지로 이동하도록 이동

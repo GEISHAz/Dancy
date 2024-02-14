@@ -38,7 +38,7 @@ export default function OriginDance() {
 			'videoId': item.videoId,
 			'resultVideoUrl': item.videoUrl,
 		})
-    console.log(refVideo)
+    console.log(item)
 		setIsUpload(true)
 	}
 
