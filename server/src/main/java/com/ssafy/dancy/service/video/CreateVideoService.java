@@ -58,14 +58,20 @@ public class CreateVideoService {
 
     public UploadVideoResponse uploadReferenceVideo(User user, MultipartFile file){
 
+        log.info("입력한 유저 : {}, 입력한 파일 이름 : {}", user.getNickname(), file.getOriginalFilename());
+
         String originalFilename = file.getOriginalFilename();
         String ext = fileStoreUtil.extractExt(originalFilename);
         String storeName = String.format("%s_%s_%s", getOriginalName(originalFilename, ext), "gt", user.getNickname());
+
+        log.info("변환한 비디오 이름 : {}", storeName);
 
         return uploadVideo(storeName, user, ext, file, REFERENCE_VIDEO_TARGET, VideoType.REFERENCE);
     }
 
     public UploadVideoResponse uploadPracticeVideo(User user, MultipartFile file, Long referenceVideoId){
+
+        log.info("입력한 유저 : {}, 입력한 파일 이름 : {}", user.getNickname(), file.getOriginalFilename());
 
         Video video = videoRepository.findByVideoId(referenceVideoId).orElseThrow(() ->
                 new VideoNotFoundException("해당 레퍼런스 비디오를 찾을 수 없습니다."));
@@ -74,6 +80,8 @@ public class CreateVideoService {
         String uuid = UUID.randomUUID().toString();
         String[] videoNames = video.getVideoTitle().split("_");
         String storeName = String.format("%s_%s_%s_%s", videoNames[0], "prac", user.getNickname(), uuid);
+
+        log.info("변환한 비디오 이름 : {}", storeName);
 
         return uploadVideo(storeName, user, ext, file, PRACTICE_VIDEO_TARGET, VideoType.PRACTICE);
     }
