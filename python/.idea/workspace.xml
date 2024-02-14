@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0fd0e8ef-820e-4cae-8d1b-9c7cc38bf1de" name="Changes" comment="[Fix] fix folder structure">
+    <list default="true" id="0fd0e8ef-820e-4cae-8d1b-9c7cc38bf1de" name="Changes" comment="[Fix] frame 안맞는 부분 분석 안하도록 수정">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/compare.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/compare.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/gt/lovemelikethis_gt.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/gt/nextlevel_gt.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/gt/obsession_gt.mp4" beforeDir="false" afterPath="$PROJECT_DIR$/api/dataset/video/gt/obsession_gt.mp4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/dataset/video/gt/stepback_gt_jmh.mp4" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/api/savevideo.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/savevideo.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,30 +55,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.app.executor": "Run",
-    "Python.compare.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "BE",
-    "last_opened_file_path": "C:/Users/SSAFY/Desktop/Project1_Backend/S10P12D210/python/api/dataset/json",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.app.executor&quot;: &quot;Run&quot;,
+    &quot;Python.compare.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;BE&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/SSAFY/Desktop/Project1_Backend/S10P12D210/python/api/dataset/video/gt&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.new.ui&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\video\gt" />
       <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\json" />
       <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\audio" />
       <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\image" />
       <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\result" />
-      <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\video\prac" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\SSAFY\Desktop\mediapipe\python\api\dataset\video\gt" />
@@ -149,6 +152,8 @@
       <workItem from="1707724398513" duration="7849000" />
       <workItem from="1707784397126" duration="69000" />
       <workItem from="1707784471835" duration="144000" />
+      <workItem from="1707869587382" duration="8241000" />
+      <workItem from="1707892319482" duration="2366000" />
     </task>
     <task id="LOCAL-00001" summary="[FEATURE] 정확도 수정 및 테스트코드 추가">
       <option name="closed" value="true" />
@@ -166,7 +171,15 @@
       <option name="project" value="LOCAL" />
       <updated>1707784513947</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="[Fix] frame 안맞는 부분 분석 안하도록 수정">
+      <option name="closed" value="true" />
+      <created>1707810764787</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1707810764787</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -186,7 +199,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="[FEATURE] 정확도 수정 및 테스트코드 추가" />
     <MESSAGE value="[Fix] fix folder structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="[Fix] fix folder structure" />
+    <MESSAGE value="[Fix] frame 안맞는 부분 분석 안하도록 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="[Fix] frame 안맞는 부분 분석 안하도록 수정" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -200,7 +214,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/python$app.coverage" NAME="app Coverage Results" MODIFIED="1707809915207" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />
+    <SUITE FILE_PATH="coverage/python$app.coverage" NAME="app Coverage Results" MODIFIED="1707896879462" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />
     <SUITE FILE_PATH="coverage/python$compare.coverage" NAME="compare Coverage Results" MODIFIED="1707099588398" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />
   </component>
 </project>
