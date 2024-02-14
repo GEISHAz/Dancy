@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as M from "./Main.style"
 
 
-
-
 export default function MyComponent() {
   const canvasRef = useRef(null);
   const componentRef = useRef(null);

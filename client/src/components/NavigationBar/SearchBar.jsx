@@ -46,9 +46,6 @@ export default function SearchBar({ cardDetails }) {
     }
   };
   
-  
-
-
   return (
     <SB.SearchContainer>
       <SB.SearchBarOutline />
