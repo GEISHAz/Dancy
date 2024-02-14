@@ -14,21 +14,29 @@ export default function Create() {
     const originVideo = useRecoilValue(originState)
     const myVideo = useRecoilValue(myState)
     const [formData, setFormData] = useState({
-        "referenceVideoUrl": originVideo.resultVideoUrl,
-        "practiceVideoUrl": myVideo.resultVideoUrl,
+        "referenceVideoUrl": '',
+        "practiceVideoUrl": '',
     })
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+      setFormData({
+        "referenceVideoUrl": originVideo.resultVideoUrl,
+        "practiceVideoUrl": myVideo.resultVideoUrl,
+      })
+    },[originVideo, myVideo])
+
     const transHandler = async () => {
-        await plzAnalyze(formData)
-        .then((res) => {
-            console.log(res)
-            navigate("/");
-            setConvertStarted(true);
-        }).catch((err) => {
-            alert("다시 시도해주세요.");
-        })
+      console.log(originVideo, myVideo)
+      await plzAnalyze(formData)
+      .then((res) => {
+          console.log(res)
+          navigate("/");
+          setConvertStarted(true);
+      }).catch((err) => {
+          alert("다시 시도해주세요.");
+      })
     };
 
     return (

@@ -26,6 +26,7 @@ export default function Practice() {
 		.then((res) => {
 			setVideoInfo(res)
 		})
+    .catch((err) => console.error(err))
   }, [])
 
 	const [isOpen, setIsOpen] = useState(false);
