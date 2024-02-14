@@ -22,8 +22,6 @@ public class QVideo extends EntityPathBase<Video> {
 
     public static final QVideo video = new QVideo("video");
 
-    public final QArticle article;
-
     public final StringPath fullVideoUrl = createString("fullVideoUrl");
 
     public final NumberPath<Double> score = createNumber("score", Double.class);
@@ -56,7 +54,6 @@ public class QVideo extends EntityPathBase<Video> {
 
     public QVideo(Class<? extends Video> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.article = inits.isInitialized("article") ? new QArticle(forProperty("article"), inits.get("article")) : null;
         this.user = inits.isInitialized("user") ? new QUser(forProperty("user")) : null;
     }
 

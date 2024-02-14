@@ -32,7 +32,7 @@ public class VideoCustomRepositoryImpl implements VideoCustomRepository{
                 )
                 .from(video);
 
-        BooleanExpression expression = video.videoType.eq(VideoType.REFERENCE);
+        BooleanExpression expression = video.videoType.eq(VideoType.SAMPLE);
 
         if(previousVideoId != null){
             expression = expression.and(video.videoId.lt(previousVideoId));

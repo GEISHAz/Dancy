@@ -40,7 +40,4 @@ public class Video {
     @Builder.Default
     private double score =  0;
 
-    @OneToOne
-    @JoinColumn(name = "articleId")
-    private Article article;
 }
