@@ -97,8 +97,7 @@ public class CreateVideoService {
                 .bodyValue(makeSimpleRequest(reference, practice))
                 .retrieve()
                 .bodyToMono(VideoConvertResponse.class)
-                .doOnError(this::sendErrorMessage)
-                .onErrorMap(e -> new VideoNotConvertedException("변환 요청이 성공적으로 입력되지 않았습니다. 자세한 사항은 문의바랍니다."))
+                .doOnError(e -> sendErrorMessage(user, e))
                 .subscribe((result) -> afterCompleteConvert(user, result));
 
         return ConvertVideoResponse.builder()
@@ -224,7 +223,7 @@ public class CreateVideoService {
         return resultList;
     }
 
-    private void sendErrorMessage(Throwable e){
-        alarmHandler.sendEventToUser(-1L, "convert_error", "파이썬 요청 실패");
+    private void sendErrorMessage(User user, Throwable e){
+        alarmHandler.sendEventToUser(user.getUserId(), "convert_error", "파이썬 요청 실패");
     }
 }
