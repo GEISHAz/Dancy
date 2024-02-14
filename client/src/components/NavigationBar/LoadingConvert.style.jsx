@@ -13,19 +13,18 @@ export const SpinnerArea = styled.div`
 
 // 스피너 
 export const SpinnerImg = styled.img`
-    width : 5%;
+    width : 80%;
     position: absolute; // 절대 위치로 설정
-    top: 0; // 부모 요소에 대해 상단 정렬
+    top: 5px; // 부모 요소에 대해 상단 정렬
 `;
 
 // 스피너 하단 텍스트
 export const SpinnerTitle = styled.div`
-    font-family: "NanumSquareRound";
-    font-size: 8px;
-    font-weight: bold;
+    font-family: "NanumSquareRoundB";
+    font-size: 10px;
     color: #252525;
     position: absolute; // 절대 위치로 설정
-    bottom: 0; // 부모 요소에 대해 하단 정렬
+    bottom: 10px; // 부모 요소에 대해 하단 정렬
 `;
 
 // 완료된 버튼
