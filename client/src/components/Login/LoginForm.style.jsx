@@ -84,6 +84,7 @@ export const AutoLogin = styled.label`
 `
 
 export const LoginButton = styled.button`
+	margin-top: 10px;
   background-color: #E23E59;
   height: 43px;
   border-radius: 5px;

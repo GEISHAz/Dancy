@@ -62,14 +62,12 @@ export default function Recomment({ commentId }) {
       setIsUpdate(initialLikeState);
     })
     .catch((err) => console.error(err));
-  }, [recomments]);
+  }, []);
 
   // 대댓글 비동기 삭제
   const handleDelete = (commentId) => { 
     deleteComment(commentId)
-    .then(() => {
-      setRecomments(recomments.filter(comment => comment.commentId !== commentId));
-    })
+    .then(() => window.location.reload())
     .catch ((error) => {
       console.error(error)
     })
@@ -77,7 +75,10 @@ export default function Recomment({ commentId }) {
 
   const handleLike = (commentId) => {
     commentLike(commentId)
-    .then(() => window.location.reload())
+    .then((res) => 
+			{console.log(res)
+			setLike(recomments.filter(comment => comment.commentId !== commentId))}
+		)
     .catch((err) => console.error(err))
   };
 
