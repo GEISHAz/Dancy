@@ -140,18 +140,29 @@ export default function Notification() {
                 {alarms.map((item, index) => (
                   <DropdownItemContainer key={index}>
                     <DropdownItem>
-                      <Link to={`/profile/${item.makerUserNickname}`} onClick={handleClick}>
+                      <Link
+                        to={`/profile/${item.makerUserNickname}`}
+                        onClick={handleClick}
+                      >
                         <ProfileImage src={item.makerUserProfileImageUrl} />
                       </Link>
                       <NotificationContent>
-                        {/* <Link to={`/profile/${item.makerUserNickname}`} onClick={handleClick}>
-                          <UserName>{item.makerUserNickname} </UserName>
-                        </Link> */}
-                        <NotificationText>{item.content}</NotificationText>
+                        {item.articleId ? (
+                          <Link
+                            to={`/detail/${item.articleId}`}
+                            onClick={handleClick}
+                          >
+                            <NotificationText>{item.content}</NotificationText>
+                          </Link>
+                        ) : (
+                          <NotificationText>{item.content}</NotificationText>
+                        )}
                       </NotificationContent>
                     </DropdownItem>
                     {/* created_at 기준으로 넣음 <- ERD 참고 */}
-                    <TimeStamp>{getTimeDifference(getDateTransfer(item.createdTime))}</TimeStamp>
+                    <TimeStamp>
+                      {getTimeDifference(getDateTransfer(item.createdTime))}
+                    </TimeStamp>
                   </DropdownItemContainer>
                 ))}
               </DropdownMenuContainer>
