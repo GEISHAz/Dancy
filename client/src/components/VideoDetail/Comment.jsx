@@ -66,7 +66,7 @@ export default function Comment() {
       setIsUpdate(initialLikeState);
     })
     .catch((err) => console.error(err));
-  }, []);
+  }, [articleId]);
 
   const commentInput = useRef();
   const [commentData, setCommentData] = useState({
