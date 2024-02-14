@@ -201,6 +201,8 @@ public class CreateVideoService {
                 .build();
     }
     private String extractSimpleUrlFromFull(String fullUrl){
+
+        log.info("입력받은 full url : {}", fullUrl);
         int startIndex = fullUrl.indexOf("video/");
         return fullUrl.substring(startIndex);
     }
