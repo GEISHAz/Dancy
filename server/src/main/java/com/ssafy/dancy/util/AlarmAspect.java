@@ -1,10 +1,8 @@
 package com.ssafy.dancy.util;
 
-import com.ssafy.dancy.entity.Article;
-import com.ssafy.dancy.entity.ArticleLike;
-import com.ssafy.dancy.entity.Notification;
-import com.ssafy.dancy.entity.User;
+import com.ssafy.dancy.entity.*;
 import com.ssafy.dancy.message.request.comment.CommentWriteRequest;
+import com.ssafy.dancy.repository.CommentRepository;
 import com.ssafy.dancy.repository.NotificationRepository;
 import com.ssafy.dancy.repository.UserRepository;
 import com.ssafy.dancy.repository.article.ArticleRepository;
@@ -29,6 +27,7 @@ public class AlarmAspect {
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
+    private final CommentRepository commentRepository;
 
     @AfterReturning("execution(public * com.ssafy.dancy.service.follow.FollowService.follow(..))")
     public void afterFollow(JoinPoint joinPoint){
@@ -59,15 +58,23 @@ public class AlarmAspect {
         CommentWriteRequest request = (CommentWriteRequest)args[2];
 
         Article article = articleRepository.findByArticleId(articleId).get();
-        User targetUser = article.getUser();
 
-        NotificationContentType type = COMMENT_ON_ARTICLE;
-
-        if(request.parentId() != 0){
-            type = COMMENT_ON_COMMENT;
+        if(request.parentId() == 0){
+            insertCommentOnArticle(article, authorUser);
+        }else{
+            insertCommentOnComment(article, authorUser, request.parentId());
         }
+    }
 
-        afterProcess(authorUser, targetUser, article, type, "comment");
+    void insertCommentOnArticle(Article article, User authorUser){
+        User targetUser = article.getUser();
+        afterProcess(authorUser, targetUser, article, COMMENT_ON_ARTICLE, "comment");
+    }
+
+    void insertCommentOnComment(Article article, User authorUser, Long parentCommentId){
+        Comment comment = commentRepository.findByCommentId(parentCommentId).get();
+        User targetUser = comment.getUser();
+        afterProcess(authorUser, targetUser, article, COMMENT_ON_COMMENT, "comment");
     }
 
 
