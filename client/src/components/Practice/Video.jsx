@@ -21,18 +21,24 @@ export default function Video({ getData }) {
   const [intervalId, setIntervalId] = useState(null);
 
   useEffect(() => {
+    console.log(transVideo.videoId)
 		analyzeResult(transVideo.videoId)
 		.then((res) => {
+      console.log(res)
 			setVideoInfo(res)
+      return res
 		})
-  }, [])
+    .then((res) => {
+      setErrorList(res.wrongSections);
+    })
+  }, [transVideo])
 
 
   useEffect(() => {
 		console.log(videoInfo)
     setErrorList(videoInfo.wrongSections);
 		handleVideoDuration()
-		}, [videoInfo]);
+		}, []);
 
 
     // 비디오 전체 길이를 확인하는 함수
@@ -69,38 +75,6 @@ export default function Video({ getData }) {
 		videoRef.current.play();
 	};
 	
-	// // 구간 반복을 지정하는 함수
-  // const handlePlayButtonClick = (start, end) => {
-	// 	const handleTimeUpdate = () => {
-	// 			if (videoRef.current.currentTime >= end) {
-	// 				videoRef.current.currentTime = start;
-	// 			}
-	// 		}
-		
-	// 	videoRef.current.pause();
-	// 	videoRef.current.removeEventListener('timeupdate', handleTimeUpdate)
-
-	// 	if (start === 0 && end === 0) {
-	// 		videoRef.current.currentTime = 0;
-	// 	}
-	// 	else {
-	// 		videoRef.current.currentTime = start;
-	// 		videoRef.current.addEventListener('timeupdate', handleTimeUpdate);
-	// 	}
-	// 	videoRef.current.play();
-		
-  // };
-	
-	// const handleContinue = () => {
-	// 	videoRef.current.pause();
-		
-	// 	videoRef.current.currentTime = 0;
-	// 	videoRef.current.removeEventListener('timeupdate', handleTimeUpdate)
-
-	// 	videoRef.current.play()
-	// };
-
-
   // 초를 분:초 형태의 문자열로 변환하는 함수
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
