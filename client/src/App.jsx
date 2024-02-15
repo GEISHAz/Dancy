@@ -21,7 +21,7 @@ export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'BM JUA_TTF';
     src: url(${bmJUATTF}) format('truetype');
-    font-weight: bold;
+    font-weight: normal;
   }
 
   @font-face {
