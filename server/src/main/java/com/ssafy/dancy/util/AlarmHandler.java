@@ -66,6 +66,7 @@ public class AlarmHandler {
         SseEmitter emitter = userEmitters.get(userId);
         if(emitter != null){
             try{
+                log.info("{} 번 유저에게 {} 관련 알람 발송 : {}", userId, eventName, dataToSend);
                 emitter.send(SseEmitter.event().name(eventName).data(dataToSend));
             }catch (IOException e){
                 emitter.completeWithError(e);
