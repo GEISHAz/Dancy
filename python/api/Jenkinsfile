@@ -4,7 +4,7 @@ pipeline{
     stages{
         stage('Build'){
             steps{
-                dir('python'){
+                dir('python/api'){
                     script{
                         sh 'chmod +x ./docker_install.sh'
                         sh './docker_install.sh'
@@ -14,7 +14,7 @@ pipeline{
         }
         stage('Deploy'){
             steps{
-                dir('python'){
+                dir('python/api'){
                     script{
                         sh 'docker build -t backend-python .'
                         sh 'docker rm -f backend-python'

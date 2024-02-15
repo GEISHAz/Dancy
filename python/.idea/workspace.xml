@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0fd0e8ef-820e-4cae-8d1b-9c7cc38bf1de" name="Changes" comment="[Fix] BGR -&gt; RGB 변환">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/dataset/video/gt/stepback_gt.mp4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/api/Jenkinsfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +190,15 @@
       <option name="project" value="LOCAL" />
       <updated>1707972484948</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="[Fix] BGR -&gt; RGB 변환">
+      <option name="closed" value="true" />
+      <created>1707974436779</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1707974436779</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
