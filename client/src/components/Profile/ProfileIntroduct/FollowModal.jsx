@@ -11,7 +11,6 @@ export default function FollowModal ({ getData, info, isFollow }) {
 	return (
 		<F.Modal>
 			<F.ModalBackdrop onClick={postData} />
-
 			<F.ModalWrap>
 				<F.ModalView>
           <F.Txt>{isFollow ? '팔로잉' : '팔로우'}</F.Txt>

@@ -7,6 +7,7 @@ import CustomModal from "./PinModal";
 import { emailCheck, nickNameCheck } from "../../api/join";
 import { httpStatusCode } from "../../util/http-status";
 
+
 export default function FormArea() {
   const [joinData, setJoinData] = useRecoilState(joinState);
   // const [inputValues, setInputValues] = useState({

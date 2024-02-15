@@ -35,8 +35,6 @@ export default function FormHeader() {
       <PhotoModal
         isOpen={isModalOpen}
         onClose={closeModal}
-        fileState={userData}
-        setFileState={setUserData}
       />
     </FH.Header>
   );

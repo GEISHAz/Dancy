@@ -1,69 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import styled from "styled-components";
+import * as S from "./SendPin.style";
 import { publicApi } from "../../util/http-commons";
 import VerifyPin from "./VerifyPin";
 
-// 전체 화면 구성
-export const FindArea = styled.div`
-  width: 100%;
-  height: 680px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
-
-export const InputArea = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 41px;
-`;
-
-//제목
-export const FindPWTitle = styled.div`
-  font-family: "NYJ Gothic B";
-  font-size: 36px;
-  color: black;
-  margin-right: 32px;
-  margin-bottom: 80px;
-`;
-
-// 입력창
-export const FindInput = styled.input`
-  width: 465px;
-  height: 57px;
-  border: 1px solid black;
-  border-radius: 5px;
-  margin-right: 86px;
-  padding: 10px;
-
-  &:focus {
-    outline: 2px solid #e23e59;
-    border: none;
-  }
-`;
-
-// 인풋 제목
-export const InputTitle = styled.div`
-  font-family: "NYJ Gothic B";
-  font-size: 28px;
-  margin-right: 19px;
-  color: black;
-`;
-
-// 버튼 사이즈
-export const SendPinButton = styled.button`
-  width: 465px;
-  height: 57px;
-  background-color: #f9405e;
-  border-radius: 5px;
-  border: 1px solid black;
-  color: white;
-  text-align: center;
-  font-family: "NYJ Gothic B";
-  font-size: 32px;
-`;
 
 export default function SendPin() {
   const [targetEmail, setTargetEmail] = useState('');
@@ -91,13 +31,13 @@ export default function SendPin() {
   }
 
   return (
-    <FindArea>
-      <FindPWTitle>비밀번호 찾기</FindPWTitle>
-      <InputArea>
-        <InputTitle>Email</InputTitle>
-        <FindInput value={targetEmail} onChange={(e) => setTargetEmail(e.target.value)}></FindInput>
-      </InputArea>
-      <SendPinButton onClick={sendEmail}>인증번호 전송</SendPinButton>
-    </FindArea>
+    <S.FindArea>
+      <S.FindPWTitle>비밀번호 찾기</S.FindPWTitle>
+      <S.InputArea>
+        <S.InputTitle>Email</S.InputTitle>
+        <S.FindInput value={targetEmail} onChange={(e) => setTargetEmail(e.target.value)}></S.FindInput>
+      </S.InputArea>
+      <S.SendPinButton onClick={sendEmail}>인증번호 전송</S.SendPinButton>
+    </S.FindArea>
   );
 }

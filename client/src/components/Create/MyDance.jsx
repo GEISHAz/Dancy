@@ -21,6 +21,7 @@ export default function MyDance () {
 			console.log(res)
 			setMyVideo(res)
 			setIsUpload(true)
+      console.log(myVideo)
 		})
 		.catch((err) => console.error(err))
 	}

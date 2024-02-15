@@ -122,12 +122,14 @@ export default function Comment() {
   // 좋아요 비동기 처리
   const handleLike = (commentId, index) => {
     commentLike(commentId)
-    .then(() => {
-      let newLikeState = [...likeState];
-       // 해당 댓글의 좋아요 상태를 토글
-      newLikeState[index] = !newLikeState[index];
-      // likeState를 업데이트
-      setLikeState(newLikeState); 
+    .then((res) => {
+      console.log(res)
+      window.location.reload()
+      // let newLikeState = [...likeState];
+      //  // 해당 댓글의 좋아요 상태를 토글
+      // newLikeState[index] = !newLikeState[index];
+      // // likeState를 업데이트
+      // setLikeState(newLikeState); 
     })
     .catch((err) => console.error(err))
   };
@@ -146,6 +148,12 @@ export default function Comment() {
       [commentId]: !prev[commentId],
     }));
   };
+  
+  const toggleUpdateInput = (index) => {
+    setIsUpdate(
+      isUpdate.map((state, i) => (i === index ? !state : state))
+    );
+  }
 
   const toggleReplyInput = (commentId) => {
     setIsReplyInputOpen((prev) => ({
@@ -220,7 +228,8 @@ export default function Comment() {
               <C.CommentContent>{comment.content}</C.CommentContent>}
               <C.CommentLikeImage
                 src={
-                  likeState[index]
+                  // likeState[index]
+                  comment.commentLike
                     ? "/src/assets/likeimage.png"
                     : "/src/assets/unlikeimage.png"
                 }
