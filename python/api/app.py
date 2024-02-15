@@ -23,12 +23,14 @@ def upload_video():
     data = request.get_json()
     gt_url = data.get('gtUrl')
     prac_url = data.get('pracUrl')
-    standard = float(data.get('standard'))
+    standard = data.get('standard')
     print("초기 세팅 ", gt_url)
     print("초기 세팅 ", prac_url)
     print("초기 세팅 ", standard, type(standard))
     if standard is None:
         standard = 0.90
+    else :
+        standard = float(standard)
 
     gt_url_arr = gt_url.split('/')
     prac_url_arr = prac_url.split('/')
