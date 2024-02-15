@@ -4,6 +4,7 @@ import ProfileImgDefault from "../../assets/profileIntro/ProfileImgDefault.png";
 export const NotificationArea = styled.div`
   display: flex;
   align-items: center;
+  margin-right: 20px;
 `;
 
 export const NotificationImage = styled.img`
@@ -91,8 +92,7 @@ export const UserName = styled.span`
   cursor: pointer;
 `;
 
-export const NotificationText = styled.span`
-`;
+export const NotificationText = styled.span``;
 
 export const TimeStamp = styled.span`
   display: flex;

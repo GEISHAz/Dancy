@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import * as N from "./Notification.style"
+import * as N from "./Notification.style";
 import { useSpring, animated } from "react-spring";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -126,18 +126,12 @@ export default function Notification() {
                 {alarms.map((item, index) => (
                   <N.DropdownItemContainer key={index}>
                     <N.DropdownItem>
-                      <Link
-                        to={`/profile/${item.makerUserNickname}`}
-                        onClick={handleClick}
-                      >
+                      <Link to={`/profile/${item.makerUserNickname}`} onClick={handleClick}>
                         <N.ProfileImage src={item.makerUserProfileImageUrl} />
                       </Link>
                       <N.NotificationContent>
                         {item.articleId ? (
-                          <Link
-                            to={`/detail/${item.articleId}`}
-                            onClick={handleClick}
-                          >
+                          <Link to={`/detail/${item.articleId}`} onClick={handleClick}>
                             <N.NotificationText>{item.content}</N.NotificationText>
                           </Link>
                         ) : (
