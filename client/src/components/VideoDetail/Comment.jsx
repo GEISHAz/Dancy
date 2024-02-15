@@ -134,13 +134,6 @@ export default function Comment() {
     .catch((err) => console.error(err))
   };
 	
-	const toggleUpdateInput = (index) => {
-    setIsUpdate(
-      isUpdate.map((state, i) => (i === index ? !state : state))
-    );
-    console.log(isUpdate)
-  }
-
 
   const toggleRecomment = (commentId) => {
     setIsRecommentOpen((prev) => ({
