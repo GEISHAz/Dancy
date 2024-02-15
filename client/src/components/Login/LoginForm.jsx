@@ -85,6 +85,7 @@ export default function Login() {
             placeholder="Email을 입력해주세요 ♬"
             value={formData.email}
             onChange={handleChange}
+            autoComplete="off"
           />
           {isEmailCorrect ? null : <L.ErrorEmail>이메일 형식이 올바르지 않습니다.</L.ErrorEmail>}
         </div>
