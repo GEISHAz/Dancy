@@ -71,7 +71,6 @@ public class WebSecurityConfig {
                         .requestMatchers("/video/upload/**").hasRole("USER")
                         .requestMatchers("/stage/save/**").hasRole("USER")
                         .requestMatchers("/notification").hasRole("USER")
-                        .requestMatchers("/alarm/subscribe").hasRole("USER")
                         .anyRequest().permitAll())
                 .exceptionHandling(config ->
                         config.authenticationEntryPoint(authenticationEntryPoint()).
