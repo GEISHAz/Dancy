@@ -121,7 +121,7 @@ dependencies {
 openapi3 {
 	servers = [
 			//{ url = "http://배포중인 주소" },
-			{ url = "http://i10d210.p.ssafy.io/api" },
+			{ url = "https://i10d210.p.ssafy.io/api" },
 			{ url = "http://i10d210.p.ssafy.io:8080" }, // 이렇게 List 형태로 여러 server 를 지정해 줄 수 있다.
 			{ url = "http://localhost:8080" }
 	]

@@ -30,7 +30,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://localhost:8080", "http://localhost:5173",
                         "http://i10d210.p.ssafy.io:8080", "http://i10d210.p.ssafy.io:5173",
-                        "http://i10d210.p.ssafy.io", "https://i10d210.p.ssafy.io", "https://i10d210.p.ssafy.io:8080"
+                        "http://i10d210.p.ssafy.io", "https://i10d210.p.ssafy.io", "https://i10d210.p.ssafy.io:8080",
+                        "https://i10d210.p.ssafy.io/api"
                 )
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("headers")
