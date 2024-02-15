@@ -13,6 +13,7 @@ export const ProfileImg = styled.img.attrs(({src}) => ({
   width: 44px;
   height: 44px;
   border-radius: 50%;
+  object-fit: cover;
 `
 
 export const NickName = styled.div`

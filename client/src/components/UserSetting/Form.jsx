@@ -29,8 +29,6 @@ export default function FormArea() {
 
   const navigate = useNavigate();
 
-  console.log("user", user);
-
   // 각 모달을 열기 위한 함수
   const openChangePwdModal = () => {
     setIsChangePwdModalOpen(true);
@@ -68,7 +66,7 @@ export default function FormArea() {
 
   // 닉네임 형식 체크
   const validateNickName = (nickname) => {
-    const regex = /^[A-Za-z_.\-]?[A-Za-z_.\-]{1,8}$/;
+    const regex = /^[A-Za-z0-9.-]{1,14}$/;
     return regex.test(nickname);
   };
 
@@ -122,11 +120,11 @@ export default function FormArea() {
 
         // 닉네임 변경
         const nicknameStatusCode = await userChangeNickName(nickname);
-        console.log("닉네임잘바뀌엇니?", nicknameStatusCode);
-        setUser({
-          ...user,
+        //console.log("닉네임잘바뀌엇니?", nicknameStatusCode);
+        setUser((prevUser) => ({
+          ...prevUser,
           nickname: nickname,
-        });
+        }));
       }
 
       console.log("-----------");
@@ -134,11 +132,11 @@ export default function FormArea() {
       if (introduceText !== user.introduceText) {
         // 상태메시지 변경
         const introStatusCode = await userChangeIntro(introduceText);
-        console.log("상메잘바뀌었니?", introStatusCode);
-        setUser({
-          ...user,
+        //console.log("상메잘바뀌었니?", introStatusCode);
+        setUser((prevUser) => ({
+          ...prevUser,
           introduceText: introduceText,
-        });
+        }));
       }
 
       // 이미지가 있으면 일단 수정 요청을 해봅시다.
@@ -146,19 +144,18 @@ export default function FormArea() {
         const formData = new FormData();
         formData.set("profileImage", selectedFile);
         const imgData = await userChangeImg(formData);
-        console.log("프사잘바뀌었니?", imgData);
-        setUser({
-          ...user,
+        //console.log("프사잘바뀌었니?", imgData);
+        setUser((prevUser) => ({
+          ...prevUser,
           profileImageUrl: imgData.profileImageUrl,
-        });
+        }));
       }
 
       console.log("---------------");
-
-      // 알림 및 페이지 이동
       alert("정보가 성공적으로 변경되었습니다.");
-      navigate(`/profile/${nickname}`);
-      window.location.reload();
+      setTimeout(() => {
+        navigate(`/profile/${nickname}`);
+      }, 100);
     } catch (error) {
       console.error("서버 요청 중 에러가 발생했습니다.", error);
       // recoil 상태 업데이트

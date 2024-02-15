@@ -2,6 +2,8 @@ import * as P from "./PostModal.style";
 import { useNavigate } from "react-router-dom";
 import { postArticle } from "../../api/stage";
 import { useRef, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { resultState } from "../../recoil/PracticeState";
 
 export default function PostModal({ getData, videoInfo }) {
   const navigate = useNavigate();
@@ -10,13 +12,13 @@ export default function PostModal({ getData, videoInfo }) {
     getData(data);
   };
 
+	const resultVideo = useRecoilValue(resultState)
   const articleTitleInput = useRef();
   const articleContentInput = useRef();
   const [formData, setFormData] = useState({
     articleTitle: "",
     articleContent: "",
-    video: videoInfo.totalUrl,
-    thumbnailImageUrl: videoInfo.thumbnailImageUrl,
+    videoId: resultVideo.videoId,
   });
 
   const handleChange = (e) => {

@@ -11,6 +11,7 @@ import { userState } from '../../recoil/LoginState.js';
 export default function Recomment({ commentId }) {
   const [like, setLike] = useState([]);
   const [likeCount, setLikeCount] = useState([]);
+  const [likeState, setLikeState] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState([]);
   const [recomments, setRecomments] = useState([]);
   const [isUpdate, setIsUpdate] = useState([]);
@@ -20,31 +21,75 @@ export default function Recomment({ commentId }) {
   const state = useLocation();
   const articleId = Number(state.pathname.split("/")[2]);
 
+  // const getTimeDifference = (createdDateArray) => {
+  //   // 배열 해체하여 Date 객체로 변환
+  //   const [year, month, day, hours, minutes, seconds] = createdDateArray;
+  //   // Date 함수는 0월부터 시작하기 때문에 -1을 해줘야하고, 이렇게 해줬을 때 작성하게 되면 -1초가 뜸. 그래서 seconds에 -2를 줌
+  //   const createdDate = new Date(year, month - 1, day, hours, minutes, seconds - 2);
+  //   const diff = new Date() - createdDate;
+  //   const secondsDiff = Math.floor(diff / 1000);
+  //   const minutesDiff = Math.floor(secondsDiff / 60);
+  //   const hoursDiff = Math.floor(minutesDiff / 60);
+  //   const daysDiff = Math.floor(hoursDiff / 24);
+  //   const weeksDiff = Math.floor(daysDiff / 7);
+
+  //   if (weeksDiff > 0) {
+  //     return `${weeksDiff}주 전`;
+  //   } else if (daysDiff > 0) {
+  //     return `${daysDiff}일 전`;
+  //   } else if (hoursDiff > 0) {
+  //     return `${hoursDiff}시간 전`;
+  //   } else if (minutesDiff > 0) {
+  //     return `${minutesDiff}분 전`;
+  //   } else {
+  //     return `${secondsDiff}초 전`;
+  //   }
+  // };
+
+
+
   useEffect(() => {
     getComment(articleId, parentId)
     .then((res) => {
       setRecomments(res)
-      console.log('recom', res)
+      // console.log('recom', res)
       return res
     })
     .then ((res) => {
       const initialLikeState = Array(res.length).fill(false);
       setLike(initialLikeState);
       setLikeCount(initialLikeState);
+      setLikeState(initialLikeState);
       setDropdownOpen(initialLikeState);
       setIsUpdate(initialLikeState);
     })
     .catch((err) => console.error(err));
   }, []);
 
-  const handleDelete = (commentId) => {
+  // 대댓글 비동기 삭제
+  const handleDelete = (commentId) => { 
     deleteComment(commentId)
-    window.location.reload()
-  }
+    .then(() => {
+      setRecomments(recomments.filter(comment => comment.commentId !== commentId));
+    })
+    .catch ((error) => {
+      console.error(error)
+    })
+  };
 
   const handleLike = (commentId) => {
     commentLike(commentId)
-    .then(() => window.location.reload())
+    .then((res) => 
+			{console.log(res)
+			// window.location.reload()
+      let newLikeState = [...likeState];
+       // 해당 댓글의 좋아요 상태를 토글
+      newLikeState[index] = !newLikeState[index];
+      // likeState를 업데이트
+      setLikeState(newLikeState); 
+    }
+		)
+
     .catch((err) => console.error(err))
   };
 
@@ -58,6 +103,7 @@ export default function Recomment({ commentId }) {
     setDropdownOpen(
       dropdownOpen.map((state, i) => (i === index ? !state : state))
     );
+    // console.log(dropdownOpen);
   };
 
   return (

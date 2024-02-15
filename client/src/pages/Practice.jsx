@@ -1,25 +1,32 @@
 import Video from "../components/Practice/Video"
 import { useEffect, useState } from 'react';
 import PostModal from "../components/Practice/PostModal"
-import { practiceState } from "../recoil/PracticeState";
-import { useRecoilState } from "recoil";
+import { practiceState, resultState } from "../recoil/PracticeState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { analyzeResult } from "../api/video";
 
-const video = {
-  'list': [
-    {'start': 6, 'end': 11, 'accuracy': 89.31},
-    {'start': 25, 'end': 25, 'accuracy': 92.79},
-    {'start': 29, 'end': 30, 'accuracy': 84.25}
-  ], 
-  'totalUrl': 'https://gumid210bucket.s3.ap-northeast-2.amazonaws.com/video/result/asap_result_cnh2_uuid.mp4',
-  'thumbnailImageUrl': 'thumbnailimage/asap_image_cnh2_uuid.mp4',
-  'total_accuracy': 94.69
-}
+// const video = {
+//   "wrongSections": [
+//     {"start": 6, "end": 11, "accuracy": 89.31},
+//     {"start": 25, "end": 25, "accuracy": 92.79},
+//   ],
+//   "videoUrl": "https://gumid210bucket.s3.ap-northeast-2.amazonaws.com/video/result/asap_result_cnh2_uuid.mp4",
+//   "thumbnailImageUrl": "https://gumid210bucket.s3.ap-northeast-2.amazonaws.com/thumbnailimage/asap_image_cnh2_uuid.jpg",
+//   "nickname": "dongw",
+//   "videoTitle": "gt_asdf_url.mp4",
+//   "score": 94.66
+// }
 
 export default function Practice() {
+	const transVideo = useRecoilValue(resultState)
   const [videoInfo, setVideoInfo] = useRecoilState(practiceState);
 
   useEffect(() => {
-    setVideoInfo(video)
+		analyzeResult(transVideo.videoId)
+		.then((res) => {
+			setVideoInfo(res)
+		})
+    .catch((err) => console.error(err))
   }, [])
 
 	const [isOpen, setIsOpen] = useState(false);

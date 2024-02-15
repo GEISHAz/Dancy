@@ -9,6 +9,16 @@ const hashTagColors = {
   "#D4DCFF": "#D4DCFF"
 };
 
+export const VideoPlayer = styled.div`
+  background-color: black;
+  width: 100%;
+  height: 552px;
+  display: flex;
+  justify-content: center;
+  border-radius: 20px;
+  object-fit: contain;
+  /* align-items: center; */
+`
 
 export const VideoDetailContainer = styled.div`
   margin-top: 20px;

@@ -6,7 +6,7 @@ export const getComment = async (articleId, parentId) => {
   try {
 		const res = await privateApi.get(`/${url}/${articleId}`, { params: {"parentId": parentId}})
 		const commentInfo = res.data
-		// console.log(commentInfo)
+		console.log(commentInfo)
 		return commentInfo
 	} catch (error) {
     console.error(error);
@@ -18,7 +18,6 @@ export const postComment = async ({ articleId, commentData }) => {
 	try {
 		const res = await privateApi.post(`/${url}/${articleId}`, commentData)
 		const comment = res.data
-		
 		return comment
 	} catch (error) {
     console.error(error);
@@ -27,7 +26,6 @@ export const postComment = async ({ articleId, commentData }) => {
 }
 
 export const deleteComment = async (commentId) => {
-  console.log('del')
   try {
     const res = await privateApi.delete(`/${url}/${commentId}`, {params: {'commentId': commentId}})
     console.log(res)

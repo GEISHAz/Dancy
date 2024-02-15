@@ -1,22 +1,26 @@
 import React, { useEffect, useRef } from "react";
-import { Container, Context, DancyLogo, Text1 } from "./MainText.style";
+import MyComponent from "./Main"
+import * as M from "./MainText.style";
 
 export default function Main() {
   const ref = useRef();
   const context = useRef();
   const logo = useRef();
 	const text1 = useRef();
+  const text2 = useRef();
+  const text3 = useRef();
 
   useEffect(() => {
     if (ref.current) {
       ref.current.classList.add("show");
+      ref.current.classList.add("moveRight");
     }
   }, []);
 
   const handleContextLoad = () => {
     if (context.current) {
       context.current.classList.add("show")
-    } 
+    }
   }
 
   const handleLogoLoad = () => {
@@ -31,11 +35,32 @@ export default function Main() {
 		}
 	}
 
+  const handletext2 = () => {
+    if (text2.current) {
+      text2.current.classList.add("show");
+    }
+  }
+
+  const handletext3 = () => {
+    if (text3.current) {
+      text3.current.classList.add("show");
+    }
+  }
+
   return (
-    <Container>
-      <Context ref={context} src="/src/assets/title.png" onLoad={handleContextLoad} />
-      <DancyLogo ref={logo} src="/src/assets/DancyLogo.png" onLoad={handleLogoLoad}/>
-			<Text1 ref={text1} src="/src/assets/text1.png" onLoad={handletext1} />
-    </Container>
+    <M.Wrapper>
+      <M.Container>
+        <M.Context ref={context} src="/src/assets/title.png" onLoad={handleContextLoad} />
+        <M.LogoWrap>
+          <M.DancyLogo ref={logo} src="/src/assets/DancyLogo.png" onLoad={handleLogoLoad}/>
+          <M.Text1 ref={text1} src="/src/assets/text1.png" onLoad={handletext1} />
+        </M.LogoWrap>
+        <M.Text2 ref={text2} src="/src/assets/Homepage/1.png" onLoad={handletext2}/>
+      </M.Container>
+        <M.Text3 ref={text3} src="/src/assets/Homepage/text1.png" onLoad={handletext3} />
+      <M.ScrollWrapper>
+        <MyComponent ref={ref} />
+      </M.ScrollWrapper>
+    </M.Wrapper>
   )
 };

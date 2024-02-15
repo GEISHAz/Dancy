@@ -1,0 +1,27 @@
+pipeline{
+    agent any
+
+    stages{
+        stage('Build'){
+            steps{
+                dir('client'){
+                    script{             
+                        sh 'chmod +x ./docker_install.sh'
+                        sh './docker_install.sh'
+                    }
+                }
+            }
+        }
+        stage('Deploy'){
+            steps{
+                dir('client'){
+                    script{
+                        sh 'docker build -t frontend-react .'
+                        sh 'docker rm -f frontend-react'
+                        sh 'docker run -d -p 5173:5173 --name frontend-react frontend-react'
+                    }
+                }
+            }
+        }
+    }
+}
