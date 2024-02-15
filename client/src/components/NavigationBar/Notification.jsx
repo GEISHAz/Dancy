@@ -1,19 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  NotificationImage,
-  DropdownContainer,
-  NotificationTitle,
-  DropdownMenu,
-  DropdownMenuContainer,
-  DropdownItemContainer,
-  DropdownItem,
-  ProfileImage,
-  NotificationContent,
-  UserName,
-  NotificationText,
-  TimeStamp,
-  NotificationArea,
-} from "./Notification.style";
+import * as N from "./Notification.style"
 import { useSpring, animated } from "react-spring";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -128,35 +114,46 @@ export default function Notification() {
 
   return (
     <>
-      <NotificationArea>
-        <NotificationImage src={getImageSrc()} onClick={handleClick} />
-      </NotificationArea>
+      <N.NotificationArea>
+        <N.NotificationImage src={getImageSrc()} onClick={handleClick} />
+      </N.NotificationArea>
       {isActive && (
         <animated.div style={animation} onClick={handleClick}>
-          <DropdownContainer ref={dropdownRef} onClick={dropdownClickHandler}>
-            <NotificationTitle>알람</NotificationTitle>
-            <DropdownMenu>
-              <DropdownMenuContainer>
+          <N.DropdownContainer ref={dropdownRef} onClick={dropdownClickHandler}>
+            <N.NotificationTitle>알람</N.NotificationTitle>
+            <N.DropdownMenu>
+              <N.DropdownMenuContainer>
                 {alarms.map((item, index) => (
-                  <DropdownItemContainer key={index}>
-                    <DropdownItem>
-                      <Link to={`/profile/${item.makerUserNickname}`} onClick={handleClick}>
-                        <ProfileImage src={item.makerUserProfileImageUrl} />
+                  <N.DropdownItemContainer key={index}>
+                    <N.DropdownItem>
+                      <Link
+                        to={`/profile/${item.makerUserNickname}`}
+                        onClick={handleClick}
+                      >
+                        <N.ProfileImage src={item.makerUserProfileImageUrl} />
                       </Link>
-                      <NotificationContent>
-                        {/* <Link to={`/profile/${item.makerUserNickname}`} onClick={handleClick}>
-                          <UserName>{item.makerUserNickname} </UserName>
-                        </Link> */}
-                        <NotificationText>{item.content}</NotificationText>
-                      </NotificationContent>
-                    </DropdownItem>
+                      <N.NotificationContent>
+                        {item.articleId ? (
+                          <Link
+                            to={`/detail/${item.articleId}`}
+                            onClick={handleClick}
+                          >
+                            <N.NotificationText>{item.content}</N.NotificationText>
+                          </Link>
+                        ) : (
+                          <N.NotificationText>{item.content}</N.NotificationText>
+                        )}
+                      </N.NotificationContent>
+                    </N.DropdownItem>
                     {/* created_at 기준으로 넣음 <- ERD 참고 */}
-                    <TimeStamp>{getTimeDifference(getDateTransfer(item.createdTime))}</TimeStamp>
-                  </DropdownItemContainer>
+                    <N.TimeStamp>
+                      {getTimeDifference(getDateTransfer(item.createdTime))}
+                    </N.TimeStamp>
+                  </N.DropdownItemContainer>
                 ))}
-              </DropdownMenuContainer>
-            </DropdownMenu>
-          </DropdownContainer>
+              </N.DropdownMenuContainer>
+            </N.DropdownMenu>
+          </N.DropdownContainer>
         </animated.div>
       )}
     </>

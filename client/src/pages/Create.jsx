@@ -14,33 +14,29 @@ export default function Create() {
     const originVideo = useRecoilValue(originState)
     const myVideo = useRecoilValue(myState)
     const [formData, setFormData] = useState({
-        "referenceVideoUrl": "",
-        "practiceVideoUrl": ""
+        "referenceVideoUrl": '',
+        "practiceVideoUrl": '',
     })
 
-    useEffect(() => {
-
-    }, [])
-    
     const navigate = useNavigate();
 
+    useEffect(() => {
+      setFormData({
+        "referenceVideoUrl": originVideo.resultVideoUrl,
+        "practiceVideoUrl": myVideo.resultVideoUrl,
+      })
+    },[originVideo, myVideo])
+
     const transHandler = async () => {
-        console.log(originVideo, myVideo)
-        setFormData({
-            "referenceVideoUrl": originVideo.resultVideoUrl,
-            "practiceVideoUrl": myVideo.resultVideoUrl
-        })
-
-        
-
-        await plzAnalyze(formData)
-        .then((res) => {
-            console.log(res)
-            navigate("/");
-            setConvertStarted(true);
-        }).catch((err) => {
-            alert("다시 시도해주세요.");
-        })
+      console.log(originVideo, myVideo)
+      await plzAnalyze(formData)
+      .then((res) => {
+          console.log(res)
+          navigate("/");
+          setConvertStarted(true);
+      }).catch((err) => {
+          alert("다시 시도해주세요.");
+      })
     };
 
     return (
@@ -49,6 +45,8 @@ export default function Create() {
                 <OriginDance />
                 <MyDance />
             </div>
+						<div style={{color:'red', fontFamily:'NYJ Gothic B', fontSize:'20px'}}
+						>※ 단, 업로딩 영상의 제목은 '_' 혹은 '/'를 포함할 수 없습니다.</div>
 
             <TransBtn onClick={() => transHandler()}>변환하기</TransBtn>
         </div>

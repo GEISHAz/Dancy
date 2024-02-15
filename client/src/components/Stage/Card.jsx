@@ -13,7 +13,7 @@ export default function Card() {
     allArticles()
       .then((res) => {
         setArticles(res);
-        console.log(res)
+        console.log(res);
       })
       .catch((err) => {
         console.error(err);
