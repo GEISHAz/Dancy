@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import * as I from './VideoItem.style'
+import { Link } from "react-router-dom";
+import * as I from "./VideoItem.style";
 
 const VideoItem = ({ articleTitle, articleThumbnail, articleId }) => {
   return (
@@ -7,11 +7,13 @@ const VideoItem = ({ articleTitle, articleThumbnail, articleId }) => {
       <I.ItemCotainer>
         {/* <I.ItemThumb src={thumbnailImageUrl} alt="" /> */}
         <I.ItemThumb src={articleThumbnail} />
-        <I.ItemTitle>{articleTitle}</I.ItemTitle>
+        <I.ItemTitleDiv>
+          <I.ItemTitle>{articleTitle}</I.ItemTitle>
+        </I.ItemTitleDiv>
       </I.ItemCotainer>
     </Link>
-  )
-}
+  );
+};
 
 VideoItem.defaultProps = {
   videoItem: [],
