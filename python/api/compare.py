@@ -138,8 +138,11 @@ def compare_video(gt_url, prac_url, sync_frame, frame_count_list, standard):
             gt_frame_resized = cv2.resize(frame_gt, dsize=gt_resize, fx=1, fy=1, interpolation=cv2.INTER_LINEAR)
 
             # Make detection
-            # resize_frame = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)
-            # gt_frame_resized = cv2.cvtColor(gt_frame_resized, cv2.COLOR_BGR2RGB)
+            # RGB 변경=================================================================
+            resize_frame = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)
+            gt_frame_resized = cv2.cvtColor(gt_frame_resized, cv2.COLOR_BGR2RGB)
+            # =================================================================
+
             results = pose.process(resize_frame)
 
             # Recolor back to BGR
@@ -251,7 +254,10 @@ def compare_video(gt_url, prac_url, sync_frame, frame_count_list, standard):
             # 두개의 이미지 하나는 스켈레톤, 하나는 연습영상에 스켈레톤 씌워진것을 가로로 병합하는 코드
             preimage = cv2.hconcat([gt_image, prac_image])
 
-            image = cv2.cvtColor(preimage, cv2.IMREAD_COLOR)
+            # RGB 변경 =================================================================
+            # image = cv2.cvtColor(preimage, cv2.IMREAD_COLOR)
+            image = cv2.cvtColor(preimage, cv2.COLOR_BGR2RGB)
+            # =================================================================
 
             if i == 60:
                 key_path_image = "./dataset/image"
