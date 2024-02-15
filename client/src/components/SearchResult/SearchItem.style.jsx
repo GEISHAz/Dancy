@@ -85,7 +85,8 @@ export const SearchResultProfile = styled.img`
 
 // 유저이름
 export const SearchResultAuthor = styled.div`
-  font-family: "NanumSquareRound-Bold";
+  font-family: "NanumSquareRound";
+  font-weight: bold;
   font-size: 20px;
   color: #434343;
 `;
