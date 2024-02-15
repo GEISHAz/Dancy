@@ -1,6 +1,6 @@
 import { noneApi, privateApi, publicApi, joinApi, textApi} from '../util/http-commons'
 
-const baseURL = 'http://i10d210.p.ssafy.io:8080'
+//const baseURL = 'http://i10d210.p.ssafy.io:8080'
 
 
 export const emailCheck = async (formData) => {

@@ -20,8 +20,9 @@ export const SpinnerImg = styled.img`
 
 // 스피너 하단 텍스트
 export const SpinnerTitle = styled.div`
-    font-family: "NanumSquareRoundB";
+    font-family: "NanumSquareRound";
     font-size: 10px;
+    font-weight: bold;
     color: #252525;
     position: absolute; // 절대 위치로 설정
     bottom: 10px; // 부모 요소에 대해 하단 정렬
@@ -43,7 +44,8 @@ export const CompleteContainer = styled.div`
 `;
 
 export const CompleteText = styled.div`
-    font-family: "NanumSquareRoundB";
+    font-family: "NanumSquareRound";
     font-size: 10px;
+    font-weight: bold;
     color: #252525;
 `;

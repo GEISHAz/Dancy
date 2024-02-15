@@ -5,7 +5,71 @@ import Router from "./components/Router";
 import Footer from "./components/Footer/Footer";
 import GoCreate from "./components/Footer/GoCreate";
 
+import bmJUA from "./fonts/BM JUA_TTF.ttf";
+import nsB from "./fonts/NanumSquareRoundB.ttf";
+import nsEB from "./fonts/NanumSquareRoundEB.ttf";
+import nsL from "./fonts/NanumSquareRoundL.ttf";
+import nsR from "./fonts/NanumSquareRoundR.ttf";
+import psr from "./fonts/PartialSansKR-Regular.otf";
+import nyjB from "./fonts/남양주 고딕 B.otf";
+import nyjEB from "./fonts/남양주 고딕 EB.otf";
+import nyjL from "./fonts/남양주 고딕 L.otf";
+
+
+
 export const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'BM JUA_TTF';
+    src: url(${bmJUA}) format('truetype');
+    font-weight: normal;
+  }
+
+  @font-face {
+    font-family: 'NanumSquareRound';
+    src: url(${nsB}) format('truetype');
+    font-weight: bold;
+  }
+
+  @font-face {
+    font-family: 'NanumSquareRound';
+    src: url(${nsEB}) format('truetype');
+    font-weight: 800; // Extra Bold
+  }
+
+  @font-face {
+    font-family: 'NanumSquareRound';
+    src: url(${nsL}) format('truetype');
+    font-weight: 300; // Light
+  }
+
+  @font-face {
+    font-family: 'NanumSquareRound';
+    src: url(${nsR}) format('truetype');
+    font-weight: normal;
+  }
+
+  @font-face {
+    font-family: 'PartialSansKR';
+    src: url(${psr}) format('opentype');
+  }
+
+  @font-face {
+    font-family: 'NYJ Gothic B';
+    src: url(${nyjB}) format('opentype');
+    font-weight: bold;
+  }
+
+  @font-face {
+    font-family: 'NYJ Gothic EB';
+    src: url(${nyjEB}) format('opentype');
+    font-weight: 800; // Extra Bold
+  }
+
+  @font-face {
+    font-family: 'NYJ Gothic L';
+    src: url(${nyjL}) format('opentype');
+    font-weight: 300; // Light
+  }
   body {
     margin: 0;
     padding: 0;

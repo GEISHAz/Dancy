@@ -25,6 +25,7 @@ export const RecommentUserProfileImage = styled.img.attrs(({ src }) => ({ src: s
   background-color: lightgray;
   border: none;
   cursor: pointer;
+  object-fit: cover;
 `
 
 export const RecommentUserDetail = styled.div`

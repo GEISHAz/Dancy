@@ -193,9 +193,9 @@ export default function VideoDetail() {
 					<V.DeleteBtn onClick={handleDelete} />
 				</V.EditWrap>
 				<V.BtnWrap>
-					<V.WithArea>
+					{/* <V.WithArea>
 						<V.WithBtn src="/src/assets/with.png"/>
-					</V.WithArea>
+					</V.WithArea> */}
 					<V.SaveBtn src={articleInfo.isArticleSaved ? "/src/assets/saveimage.png" : "/src/assets/unsaveimage.png"} onClick={handleSave}/>
 					<V.LikeBtn src={articleInfo.isArticleLiked ? "/src/assets/likeimage.png" : "/src/assets/unlikeimage.png"} onClick={handleLike} />
 					<V.LikeRate>

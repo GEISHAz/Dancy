@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { privateApi, publicApi } from '../util/http-commons'
 
-const baseURL = 'http://i10d210.p.ssafy.io:8080';
+const baseURL = 'https://i10d210.p.ssafy.io/api';
 const url = 'video'
 
 export const getRef = async () => {

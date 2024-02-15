@@ -24,7 +24,7 @@ export const ModalWrap = styled.div`
 
 export const ModalView = styled.div.attrs((props) => ({role: "dialog"}))`
   width: 505px;
-  height: 510px;
+  height:400px;
 	border: 1px solid black;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
@@ -33,7 +33,7 @@ export const ModalView = styled.div.attrs((props) => ({role: "dialog"}))`
 	padding: 33px;
   display: flex;
   flex-direction: column;
-	row-gap: 16px;
+	row-gap: 10px;
 `
 
 export const Gap = styled.div`
@@ -47,7 +47,7 @@ export const GapRadio = styled(Gap)`
 `
 
 export const Txt = styled(Gap)`
-	row-gap: 12px;
+	row-gap: 20px;
 `
 
 export const InputWrap = styled.div`
@@ -70,15 +70,16 @@ export const RadioBox = styled.div`
 
 export const Title = styled.div`
 	width: 55px;
-  font-family: "BM JUA_TTF";
+  font-family: "NanumSquareRound";
+  font-weight: 800;
   font-size: 24px;
 	text-align: center;
-	padding: 6px;
+	padding: 2px;
 `
 
 export const BigTitle = styled(Title)`
   font-size: 40px;
-	font-weight: bold;
+	font-weight: 800;
 `
 
 export const HashTitle = styled(Title)`
@@ -87,7 +88,7 @@ export const HashTitle = styled(Title)`
 `
 
 export const SmallTitle = styled.div`
-  font-family: "BM JUA_TTF";
+  font-family: "NanumSquareRound";
   font-size: 20px;
 `
 

@@ -79,6 +79,7 @@ export const VideoUserProfileImage = styled.img.attrs(props => ({
   width: 60px;
   height: 60px;
   border-radius: 100%;
+  object-fit: cover;
 `;
 
 export const VideoFollowBtn = styled.button`
@@ -263,6 +264,7 @@ export const LikeUserImg = styled.img.attrs(({ src }) => ({ src: src || DefaultP
   width: 28px;
   height: 28px;
   border-radius: 50%;
+  object-fit: cover;
 `
 export const LikeUserNickName = styled.div`
   font-family: 'NYJ Gothic L';

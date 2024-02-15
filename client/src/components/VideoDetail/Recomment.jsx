@@ -69,9 +69,7 @@ export default function Recomment({ commentId }) {
   // 대댓글 비동기 삭제
   const handleDelete = (commentId) => { 
     deleteComment(commentId)
-    .then(() => {
-      setRecomments(recomments.filter(comment => comment.commentId !== commentId));
-    })
+    .then(() => window.location.reload())
     .catch ((error) => {
       console.error(error)
     })
