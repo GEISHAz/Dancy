@@ -85,13 +85,13 @@ export default function PostModal({ getData, videoInfo }) {
                 </P.InputWrap>
               </P.Txt>
 
-              <P.InputWrap>
+              {/* <P.InputWrap>
                 <P.HashTitle>해시태그</P.HashTitle>
                 <P.Input />
-              </P.InputWrap>
+              </P.InputWrap> */}
             </P.Gap>
 
-            <P.RadioWrap>
+            {/* <P.RadioWrap>
               <P.RadioBox>
                 <P.SmallTitle>스켈레톤</P.SmallTitle>
                 <P.Radio />
@@ -101,7 +101,7 @@ export default function PostModal({ getData, videoInfo }) {
                 <P.SmallTitle>평균 정확도</P.SmallTitle>
                 <P.Radio />
               </P.RadioBox>
-            </P.RadioWrap>
+            </P.RadioWrap> */}
           </P.GapRadio>
         </P.ModalView>
 
