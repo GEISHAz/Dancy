@@ -80,6 +80,10 @@ public class AlarmAspect {
 
     private void afterProcess(User authorUser, User targetUser, Article article, NotificationContentType type, String sendData){
 
+        if(authorUser.equals(targetUser)){
+            return;
+        }
+
         Notification notification = Notification.builder()
                 .authorUser(authorUser)
                 .targetUser(targetUser)
