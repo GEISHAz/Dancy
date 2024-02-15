@@ -6,7 +6,7 @@ import { allArticles } from "../../api/stage";
 // 사용할 색상 배열
 const colors = ["#fffbe5", "#d8fcf6", "#dfe5fe"];
 
-export default function Card() {
+export default function Card({ maxDisplay }) {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
@@ -20,7 +20,10 @@ export default function Card() {
       });
   }, []);
 
-  const cards = articles.map((item, index) => {
+  // 카드 개수 제한을 위해서 추가
+  const displayedArticles = articles.slice(0, maxDisplay || articles.length);
+
+  const cards = displayedArticles.map((item, index) => {
     const color = colors[Math.floor(index / 3) % colors.length];
     return (
       <Link to={`/detail/${item.articleId}`} key={index}>
