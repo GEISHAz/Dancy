@@ -5,7 +5,7 @@ import Router from "./components/Router";
 import Footer from "./components/Footer/Footer";
 import GoCreate from "./components/Footer/GoCreate";
 
-import bmJUATTF from "./fonts/BM JUA_TTF.ttf";
+import bmJUA from "./fonts/BM JUA_TTF.ttf";
 import nsB from "./fonts/NanumSquareRoundB.ttf";
 import nsEB from "./fonts/NanumSquareRoundEB.ttf";
 import nsL from "./fonts/NanumSquareRoundL.ttf";
@@ -20,7 +20,7 @@ import nyjL from "./fonts/남양주 고딕 L.otf";
 export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'BM JUA_TTF';
-    src: url(${bmJUATTF}) format('truetype');
+    src: url(${bmJUA}) format('truetype');
     font-weight: normal;
   }
 

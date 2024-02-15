@@ -70,15 +70,16 @@ export const RadioBox = styled.div`
 
 export const Title = styled.div`
 	width: 55px;
-  font-family: "BM JUA_TTF";
+  font-family: "NanumSquareRound";
+  font-weight: 800;
   font-size: 24px;
 	text-align: center;
-	padding: 6px;
+	padding: 2px;
 `
 
 export const BigTitle = styled(Title)`
   font-size: 40px;
-	font-weight: bold;
+	font-weight: 800;
 `
 
 export const HashTitle = styled(Title)`
@@ -87,7 +88,7 @@ export const HashTitle = styled(Title)`
 `
 
 export const SmallTitle = styled.div`
-  font-family: "BM JUA_TTF";
+  font-family: "NanumSquareRound";
   font-size: 20px;
 `
 
