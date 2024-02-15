@@ -21,7 +21,6 @@ public class AlarmController {
 
     @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribe(@AuthenticationPrincipal User user){
-        log.info("subscribe 진입");
         return alarmHandler.subscribe(user);
     }
 }

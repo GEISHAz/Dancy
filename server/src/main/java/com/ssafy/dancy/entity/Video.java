@@ -4,6 +4,8 @@ import com.ssafy.dancy.type.VideoType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Builder
@@ -18,6 +20,7 @@ public class Video {
     private Long videoId;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Column(nullable = false)
@@ -37,7 +40,4 @@ public class Video {
     @Builder.Default
     private double score =  0;
 
-    @OneToOne
-    @JoinColumn(name = "articleId")
-    private Article article;
 }

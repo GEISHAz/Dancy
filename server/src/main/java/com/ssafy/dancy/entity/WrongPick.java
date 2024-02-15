@@ -2,6 +2,8 @@ package com.ssafy.dancy.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Builder
@@ -16,6 +18,7 @@ public class WrongPick {
     private Long wrongPickId;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Video video;
 
     Integer startTime;

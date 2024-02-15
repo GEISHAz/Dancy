@@ -190,6 +190,9 @@ public class ArticleApiTest extends ApiTest {
         JsonPath jsonPath = response.jsonPath();
         assertThat(jsonPath.getBoolean("isArticleLiked")).isTrue();
         assertThat(jsonPath.getBoolean("isAuthorFollowed")).isFalse();
+
+        Article article = articleRepository.findByArticleId(articleId).get();
+        assertThat(article.getView()).isEqualTo(1);
     }
 
     @Test

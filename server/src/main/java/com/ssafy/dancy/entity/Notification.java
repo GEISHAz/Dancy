@@ -3,7 +3,11 @@ package com.ssafy.dancy.entity;
 import com.ssafy.dancy.type.NotificationContentType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Notification {
 
     @Id
@@ -20,19 +25,19 @@ public class Notification {
     private Long notificationId;
 
     @ManyToOne(optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User authorUser;
 
     @ManyToOne(optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User targetUser;
 
     @Column(nullable = false,length = 20)
     @Enumerated(EnumType.STRING)
     private NotificationContentType contentType;
 
-    @Column(nullable = false)
-    private String notificationContent;
-
-    @ManyToOne(optional = false)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Article article;
 
     @CreatedDate

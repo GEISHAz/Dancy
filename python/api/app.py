@@ -1,3 +1,5 @@
+from time import sleep
+
 from flask import Flask, request, jsonify
 
 import os
@@ -21,8 +23,14 @@ def upload_video():
     data = request.get_json()
     gt_url = data.get('gtUrl')
     prac_url = data.get('pracUrl')
+    standard = data.get('standard')
     print("초기 세팅 ", gt_url)
     print("초기 세팅 ", prac_url)
+    print("초기 세팅 ", standard, type(standard))
+    if standard is None:
+        standard = 0.90
+    else :
+        standard = float(standard)
 
     gt_url_arr = gt_url.split('/')
     prac_url_arr = prac_url.split('/')
@@ -65,12 +73,18 @@ def upload_video():
     # json폴더는 gt/prac 따로 안 나눔
     os.makedirs(os.path.join("./dataset/json/", f"{gt_name}"), exist_ok=True)
     print("gt 분석 후 json 저장중....")
-    process_video_and_save_keypoints("./dataset/video/gt", f"{gt_name}", "./dataset/json")
+
+    frame_count_list = []
+    if(len(gt_name_arr)==3):
+        frame_count_list = process_video_and_save_keypoints("./dataset/video/gt", f"{gt_name}", "./dataset/json")
+
+    # frame_count_list = process_video_and_save_keypoints("./dataset/video/gt", f"{gt_name}", "./dataset/json")
+    print("제외되어야 하는 프레임 ", frame_count_list)
 
     if file_path_prac is not None:
         # # 여기서 g 파일이 업로드된 파일 -> prac 파일이다.
         # g = io.BytesIO(file_content_prac)
-        #
+        #z
         # # 파일 확장자 추가 및 prac 원본 저장
         # video_extension = "mp4"
         # temporary_location = f"./dataset/target/{music_name}_prac.{video_extension}"
@@ -79,9 +93,10 @@ def upload_video():
 
             # 싱크와 음악 이름을 받고 비교시작
         print("비교시작....")
-        accuracy_result = compare_video(gt_url, prac_url, sync_frame)
-        imageurl = f"thumbnailimage/{gt_name_arr[0]}_image_{prac_name_arr[2]}_{prac_name_arr[3]}"
+        accuracy_result,total_accuracy = compare_video(gt_url, prac_url, sync_frame, frame_count_list, standard)
+        imageurl = f"thumbnailimage/{gt_name_arr[0]}_image_{prac_name_arr[2]}_{prac_name_arr[3]}.jpg"
 
+        print(total_accuracy)
         ret = sc.s3_put_object(s3, "gumid210bucket",
                                f"dataset/result/{gt_name_arr[0]}_result_{prac_name_arr[2]}_{prac_name_arr[3]}",
                                f"video/result/{gt_name_arr[0]}_result_{prac_name_arr[2]}_{prac_name_arr[3]}")
@@ -92,12 +107,23 @@ def upload_video():
 
         if ret:
             print("파일 저장 성공")
+            # 결과를 원하는 형식으로 변환
+            converted_result = []
+            for item in accuracy_result:
+                converted_item = {
+                    "start": item[0],
+                    "end": item[1],
+                    "accuracy": round(item[2]*100,2)
+                }
+                converted_result.append(converted_item)
+
             # 새로 생성한 video의 링크와 정확도 계산 결과
             s3url = f"video/result/{gt_name_arr[0]}_result_{prac_name_arr[2]}_{prac_name_arr[3]}"
             result = {
-                "list": accuracy_result,
+                "list": converted_result,
                 "totalUrl": s3url,
-                "thumbnailImageUrl": imageurl
+                "thumbnailImageUrl": imageurl,
+                "total_accuracy": total_accuracy
             }
             print(result)
             return jsonify(result)
@@ -117,5 +143,44 @@ def send_data():
 def testfunc(param):
     return param
 
+
+@app.route('/uploadVideoTest', methods=['POST'])
+def upload_video_test():
+    print("uploadVideoTest 진입")
+    data = request.get_json()
+    gt_url = data.get('gtUrl')
+    prac_url = data.get('pracUrl')
+
+    sleep(30)
+
+    s3Url = 'video/result/asap_result_cnh2_uuid.mp4'
+    imageUrl = 'thumbnailimage/asap_image_cnh2_uuid.jpg'
+
+    accuracy_list = []
+    converted_item_one = {
+        "start": 6,
+        "end": 11,
+        "accuracy": 89.31
+    }
+
+    converted_item_two = {
+        "start": 25,
+        "end": 25,
+        "accuracy": 92.79
+    }
+
+    accuracy_list.append(converted_item_one)
+    accuracy_list.append(converted_item_two)
+
+    result = {
+        "list": accuracy_list,
+        "totalUrl": s3Url,
+        "thumbnailImageUrl": imageUrl,
+        "total_accuracy": 94.69
+    }
+
+    return jsonify(result)
+
 if __name__ == "__main__":
     app.run('0.0.0.0', port=5000, debug=True)
+

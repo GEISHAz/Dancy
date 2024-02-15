@@ -7,6 +7,7 @@ import os
 import metric
 import config
 import moviepy.editor as mpa
+import math
 from flask import jsonify
 
 small_parts = {
@@ -25,7 +26,7 @@ small_parts = {
 small_name = list(small_parts.keys())
 
 
-def compare_video(gt_url, prac_url, sync_frame):
+def compare_video(gt_url, prac_url, sync_frame, frame_count_list, standard):
     # compare_video 동작 체크
     print("compare_video 진입 ===")
 
@@ -36,7 +37,7 @@ def compare_video(gt_url, prac_url, sync_frame):
     gt_name_arr = gt_name.split('_')        # len = 2 or 3
     prac_name_arr = prac_name.split('_')    # len = 4
 
-
+    average_accuracy = 0
     pTime = 0
 
     mp_pose = mp.solutions.pose
@@ -111,7 +112,7 @@ def compare_video(gt_url, prac_url, sync_frame):
 
 
     frame_count = 0
-    average_accuracy = 0
+    total_accuracy = 0
     FRAME = 30
 
     #정확도 배열
@@ -137,29 +138,39 @@ def compare_video(gt_url, prac_url, sync_frame):
             gt_frame_resized = cv2.resize(frame_gt, dsize=gt_resize, fx=1, fy=1, interpolation=cv2.INTER_LINEAR)
 
             # Make detection
-            resize_frame = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)
-            gt_frame_resized = cv2.cvtColor(gt_frame_resized, cv2.COLOR_BGR2RGB)
+            # resize_frame = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2RGB)
+            # gt_frame_resized = cv2.cvtColor(gt_frame_resized, cv2.COLOR_BGR2RGB)
             results = pose.process(resize_frame)
 
             # Recolor back to BGR
             resize_frame.flags.writeable = True
 
+            available = True
             # Extract landmarks
             try:
                 landmarks = results.pose_landmarks.landmark
             except:
-                i = i + 1
-                continue
+                # print("현재 ",i,"pose_landmarks 없음")
+                available = False
+                if(i not in frame_count_list):
+                    frame_count_list.append(i)
+                # i = i + 1
+                # continue
             # Get coordinate
 
             # save keypoints
-            keypoints = config.make_keypoints(landmarks, mp_pose, video_inform)
+            if available==True:
+                keypoints = config.make_keypoints(landmarks, mp_pose, video_inform)
+            else :
+                keypoints = config.make_skip_keypoints()
             if len(prac_temp) > before_frame:
                 prac_temp = prac_temp[1:]
             prac_temp.append(keypoints)
 
             with open(os.path.join(key_path, gt_path,f'{max(int(i * match_frame + sync_frame), 0):0>4}.json')) as json_file:
                 gt_json = json.load(json_file)
+                if not gt_json:
+                    break
 
             if i % (compare_frame) == 0:
                 s_p = max(int(i * match_frame + sync_frame) - compare_frame, before_frame)  # start point
@@ -180,8 +191,8 @@ def compare_video(gt_url, prac_url, sync_frame):
                         with open(os.path.join(key_path, gt_path, f'{j - before_frame:0>4}.json')) as json_file:
                             displace_gt_temp = json.load(json_file)
                     except FileNotFoundError:
-                        print(f"Warning: JSON file not found for frame {j}. Skipping...")
-                        continue
+                        print(f"Warning: JSON file not found for frame {j}.")
+                        break
                     except Exception as e:
                         print(f"Error loading JSON file for frame {j}: {e}")
                         break
@@ -229,12 +240,17 @@ def compare_video(gt_url, prac_url, sync_frame):
                             else:
                                 eval_metric.append("NG")
 
-            array = (np.zeros((gt_inform['frame_height'], gt_inform['frame_width'], 3)) + 255).astype(np.uint8)
-            prac_image = prac_video.visual_back_color(frame, keypoints, eval_metric)
-            gt_image = gt_video.visual_back_color(frame_gt, gt_json, eval_metric)#
+            if not(i in frame_count_list) :
+                prac_image = prac_video.visual_back_color(resize_frame, keypoints, eval_metric)
+                gt_image = gt_video.visual_back_color(gt_frame_resized, gt_json, eval_metric)
+            else :
+                print("스켈레톤 없어야함", i)
+                prac_image = resize_frame
+                gt_image = gt_frame_resized
 
             # 두개의 이미지 하나는 스켈레톤, 하나는 연습영상에 스켈레톤 씌워진것을 가로로 병합하는 코드
             preimage = cv2.hconcat([gt_image, prac_image])
+
             image = cv2.cvtColor(preimage, cv2.IMREAD_COLOR)
 
             if i == 60:
@@ -249,16 +265,23 @@ def compare_video(gt_url, prac_url, sync_frame):
 
 
             frames_to_average = 10  # 평균을 내기 위한 프레임 수
+            # print("nan찾기 : ", i, " 프레임 : ", eval_graph_y)
             last_frames_accuracy = eval_graph_y[-1][-frames_to_average:]  # 마지막 30프레임 동안의 정확도 값들
             average_accuracy = np.mean(last_frames_accuracy)  # 마지막 30프레임 동안의 평균 정확도 계산
 
             # 정확도 텍스트 추가 (FPS 텍스트 위치에)
-            cv2.putText(image, f'Accuracy: {average_accuracy:.4f}', (70, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+            # cv2.putText(image, f'Accuracy: {average_accuracy:.4f}', (70, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
-            # print("프레임 : ", frame_count, "정확도 : ", average_accuracy)
-            if(frame_count%compare_frame == 0) :
-                accuracy_frame_list.append([frame_count, round(average_accuracy, 4)])
-            frame_count = frame_count+1
+            if not (math.isnan(average_accuracy)):
+                if not(i in frame_count_list) :
+                    total_accuracy += average_accuracy
+
+            # 구간정확도 계산
+            if(i%compare_frame == 0) :
+                if not (math.isnan(average_accuracy)):
+                    if not(i in frame_count_list) :
+                        # print(i, "번째 프레임에 ", math.isnan(average_accuracy), type(average_accuracy))
+                        accuracy_frame_list.append([i, round(average_accuracy, 4)])
 
             # 시간이지남에 따라 이미지 frame+1 하는 코드
             i = i + 1
@@ -269,9 +292,12 @@ def compare_video(gt_url, prac_url, sync_frame):
 
             # 저장 디버그 체크
 
-        # 혹시 마지막 프레임이 10의 배수가 아니라 accuracy_frame_list에 저장이 안 되었을 경우 대비
-        if((frame_count-1)%compare_frame != 0):
-            accuracy_frame_list.append([frame_count, round(average_accuracy, 4)])
+        # 구간정확도 계산 : 혹시 마지막 프레임이 10의 배수가 아니라 accuracy_frame_list에 저장이 안 되었을 경우 대비
+        if((i-1)%compare_frame != 0):
+            if not (math.isnan(average_accuracy)):
+                if not(i in frame_count_list) :
+                    # print(i,"번째 프레임에 ", math.isnan(average_accuracy), type(average_accuracy))
+                    accuracy_frame_list.append([i, round(average_accuracy, 4)])
 
         # 정확도 계산
         sec = 0
@@ -287,7 +313,7 @@ def compare_video(gt_url, prac_url, sync_frame):
             elif(idx%3==2) :
                 third_acc = frame_accuracy[1]
                 #일정 정확도 미만인 경우, 틀린 구간에 추가
-                standard = 0.93
+                # standard = 0.93
                 if(first_acc<standard or second_acc<standard or third_acc<standard) :
                     accuracy_second_list.append([sec, min(first_acc, second_acc, third_acc)])
                 sec = sec+1
@@ -307,7 +333,7 @@ def compare_video(gt_url, prac_url, sync_frame):
     analyzed_video_clip.write_videofile(f"dataset/result/{gt_name_arr[0]}_result_{prac_name_arr[2]}_{prac_name_arr[3]}")
 
 
-    return accuracy_interval_list
+    return accuracy_interval_list, round((total_accuracy/gt_inform['total_frame'])*100,2);
 
 def calculate_accuracy(lst, sec) :
     st = 0

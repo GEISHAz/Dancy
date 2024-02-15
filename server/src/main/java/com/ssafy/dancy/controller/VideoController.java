@@ -27,8 +27,8 @@ public class VideoController {
     private final CreateVideoService videoService;
 
     @GetMapping("")
-    public List<VideoReferenceResponse> getReferenceVideoList(@RequestParam int limit,
-                                                              @RequestParam(required = false) Long previousVideoId){
+    public List<VideoReferenceResponse> getSampleVideoList(@RequestParam int limit,
+                                                           @RequestParam(required = false) Long previousVideoId){
         return videoService.getReferenceVideoList(limit, previousVideoId);
     }
 

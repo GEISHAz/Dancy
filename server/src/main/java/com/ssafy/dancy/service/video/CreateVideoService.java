@@ -1,11 +1,9 @@
 package com.ssafy.dancy.service.video;
 
-import com.amazonaws.encryptionsdk.model.EncryptionCompletionListener;
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.entity.Video;
 import com.ssafy.dancy.entity.WrongPick;
 import com.ssafy.dancy.exception.user.NotHavingPermissionException;
-import com.ssafy.dancy.exception.video.VideoNotConvertedException;
 import com.ssafy.dancy.exception.video.VideoNotFoundException;
 import com.ssafy.dancy.message.request.video.ConvertToPythonRequest;
 import com.ssafy.dancy.message.request.video.ConvertVideoRequest;
@@ -60,14 +58,20 @@ public class CreateVideoService {
 
     public UploadVideoResponse uploadReferenceVideo(User user, MultipartFile file){
 
+        log.info("입력한 유저 : {}, 입력한 파일 이름 : {}", user.getNickname(), file.getOriginalFilename());
+
         String originalFilename = file.getOriginalFilename();
         String ext = fileStoreUtil.extractExt(originalFilename);
         String storeName = String.format("%s_%s_%s", getOriginalName(originalFilename, ext), "gt", user.getNickname());
+
+        log.info("변환한 비디오 이름 : {}", storeName);
 
         return uploadVideo(storeName, user, ext, file, REFERENCE_VIDEO_TARGET, VideoType.REFERENCE);
     }
 
     public UploadVideoResponse uploadPracticeVideo(User user, MultipartFile file, Long referenceVideoId){
+
+        log.info("입력한 유저 : {}, 입력한 파일 이름 : {}", user.getNickname(), file.getOriginalFilename());
 
         Video video = videoRepository.findByVideoId(referenceVideoId).orElseThrow(() ->
                 new VideoNotFoundException("해당 레퍼런스 비디오를 찾을 수 없습니다."));
@@ -76,6 +80,8 @@ public class CreateVideoService {
         String uuid = UUID.randomUUID().toString();
         String[] videoNames = video.getVideoTitle().split("_");
         String storeName = String.format("%s_%s_%s_%s", videoNames[0], "prac", user.getNickname(), uuid);
+
+        log.info("변환한 비디오 이름 : {}", storeName);
 
         return uploadVideo(storeName, user, ext, file, PRACTICE_VIDEO_TARGET, VideoType.PRACTICE);
     }
@@ -89,13 +95,16 @@ public class CreateVideoService {
             throw new VideoNotFoundException("레퍼런스나 연습 비디오가 존재하지 않습니다.");
         }
 
+        log.info("변환에 들어가는 API : {}", pythonServerUrl);
+        log.info("변환 진입 -> reference : {}, practice : {}", reference, practice);
+
         webClient.post()
                 .uri(pythonServerUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(makeSimpleRequest(reference, practice))
                 .retrieve()
                 .bodyToMono(VideoConvertResponse.class)
-                .onErrorMap(e -> new VideoNotConvertedException("변환 요청이 성공적으로 입력되지 않았습니다. 자세한 사항은 문의바랍니다."))
+                .doOnError(e -> sendErrorMessage(user, e))
                 .subscribe((result) -> afterCompleteConvert(user, result));
 
         return ConvertVideoResponse.builder()
@@ -129,6 +138,7 @@ public class CreateVideoService {
         log.info("변환된 영상 : {}", response.totalUrl());
         log.info("썸네일 : {}", response.thumbnailImageUrl());
         log.info("측정 정확도 : {}", response.total_accuracy());
+        log.info("결과 total url : {}", response.totalUrl());
 
         Video savedVideo = videoRepository.save(Video.builder()
                 .user(user)
@@ -162,6 +172,7 @@ public class CreateVideoService {
         String storeFilename = storeName + "." + ext;
         String referenceVideoUrl = fileStoreUtil.uploadVideoFileToS3(file, target, storeFilename);
 
+        log.info("video upload : {}", referenceVideoUrl);
         String thumbnailImageName = "thumbnail_" + storeName + ".jpg";
 
         MultipartFile thumbnailImage = videoProcessor.captureThumbnailFromVideo(file, 60, thumbnailImageName);
@@ -199,6 +210,8 @@ public class CreateVideoService {
                 .build();
     }
     private String extractSimpleUrlFromFull(String fullUrl){
+
+        log.info("입력받은 full url : {}", fullUrl);
         int startIndex = fullUrl.indexOf("video/");
         return fullUrl.substring(startIndex);
     }
@@ -219,5 +232,9 @@ public class CreateVideoService {
                     .build());
         }
         return resultList;
+    }
+
+    private void sendErrorMessage(User user, Throwable e){
+        alarmHandler.sendEventToUser(user.getUserId(), "convert_error", "파이썬 요청 실패");
     }
 }

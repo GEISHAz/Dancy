@@ -111,16 +111,19 @@ dependencies {
 
 	// ffmpeg for capturing video frame
 	implementation group: 'org.bytedeco', name: 'javacv', version: '1.5.7'
-
 	implementation group: 'org.bytedeco', name: 'javacv-platform', version: '1.5.7'
+
+	// Spring AOP
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
 // 6. openapi3 스펙 생성시 설정 정보
 openapi3 {
 	servers = [
 			//{ url = "http://배포중인 주소" },
-//			{ url = "http://localhost:8080" },
-			{ url = "http://i10d210.p.ssafy.io:8080" } // 이렇게 List 형태로 여러 server 를 지정해 줄 수 있다.
+			{ url = "https://i10d210.p.ssafy.io/api" },
+			{ url = "http://i10d210.p.ssafy.io:8080" }, // 이렇게 List 형태로 여러 server 를 지정해 줄 수 있다.
+			{ url = "http://localhost:8080" }
 	]
 	title = "SSAFY DANCY API" // API 문서 이름
 	description = "SSAFY 공통프로젝트 DANCY 에서 사용할 API 문서입니다." // API 상세 정보

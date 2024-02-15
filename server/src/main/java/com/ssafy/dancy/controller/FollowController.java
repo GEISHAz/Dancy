@@ -2,7 +2,7 @@ package com.ssafy.dancy.controller;
 
 import com.ssafy.dancy.entity.User;
 import com.ssafy.dancy.message.request.follow.FollowRequest;
-import com.ssafy.dancy.message.response.FollowResponse;
+import com.ssafy.dancy.message.response.follow.FollowResponse;
 import com.ssafy.dancy.message.response.follow.FollowerResultInfoResponse;
 import com.ssafy.dancy.service.follow.FollowService;
 import lombok.RequiredArgsConstructor;
