@@ -30,7 +30,8 @@ export const ModalContent = styled.div`
 `;
 
 export const ModalTitle = styled.div`
-  font-family: "NYJ Gothic L";
+  font-family: "NYJ Gothic";
+  font-weight: 300;
   font-size: 32px;
   color: black;
   margin-top: 40px;
@@ -48,7 +49,8 @@ export const PinInput = styled.div`
   height: 70px;
   margin: 0 5px;
   text-align: center;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 40px;
   border: 1px solid black;
   border-radius: 5px;
@@ -72,6 +74,7 @@ export const ModalButton = styled.button`
   width: 549px;
   height: 66px;
   color: white;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 20px;
 `;

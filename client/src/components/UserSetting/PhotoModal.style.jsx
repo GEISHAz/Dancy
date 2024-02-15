@@ -37,7 +37,8 @@ export const ModalContent = styled.div`
 
 // 모달 제목
 export const ModalTitle = styled.div`
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 28px;
   color: black;
   margin-top: 24px;
@@ -82,6 +83,7 @@ export const ModalButton = styled.button`
   width: 450px;
   height: 60px;
   color: white;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 20px;
 `;

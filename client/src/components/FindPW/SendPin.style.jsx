@@ -18,8 +18,9 @@ export const InputArea = styled.div`
 
 //제목
 export const FindPWTitle = styled.div`
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
   font-size: 36px;
+  font-weight: bold;
   color: black;
   margin-right: 32px;
   margin-bottom: 80px;
@@ -42,7 +43,8 @@ export const FindInput = styled.input`
 
 // 인풋 제목
 export const InputTitle = styled.div`
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 28px;
   margin-right: 19px;
   color: black;
@@ -57,6 +59,7 @@ export const SendPinButton = styled.button`
   border: 1px solid black;
   color: white;
   text-align: center;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 32px;
 `;

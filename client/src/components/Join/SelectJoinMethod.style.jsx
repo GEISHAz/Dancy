@@ -51,8 +51,8 @@ export const JoinLogo = styled.div`
 // Dancy 제목
 export const WelcomeTitle = styled.div`
   color: #454545;
-  font-family: "NYJ Gothic B";
-  font-weight: 400;
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 28px;
   margin-top: 12px;
 `;
@@ -60,8 +60,8 @@ export const WelcomeTitle = styled.div`
 // dancy 회원가입 선택
 export const JoinChoiceTitle = styled.div`
   color: #454545;
-  font-family: "NYJ Gothic L";
-  font-weight: 400;
+  font-family: "NYJ Gothic";
+  font-weight: 300;
   font-size: 16px;
 `;
 
@@ -121,8 +121,8 @@ export const KakaoLogo = styled(LogoBox)`
 // 회원가입 방법 text
 export const JoinMethodText = styled.div`
   color: #252525;
-  font-family: "NYJ Gothic L";
-  font-weight: 400;
+  font-family: "NYJ Gothic";
+  font-weight: 300;
   font-size: 18px;
   line-height: normal;
 `;
@@ -130,8 +130,8 @@ export const JoinMethodText = styled.div`
 // 회원가입 방법 textinfo
 export const JoinMethodInfoText = styled.div`
   color: #252525;
-  font-family: "NYJ Gothic L";
-  font-weight: 400;
+  font-family: "NYJ Gothic";
+  font-weight: 300;
   font-size: 12px;
   line-height: normal;
 `;

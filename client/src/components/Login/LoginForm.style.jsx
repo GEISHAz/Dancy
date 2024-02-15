@@ -1,15 +1,15 @@
 import { styled } from "styled-components";
-import GoogleImg from '../../assets/socialLogin/socialGoogle.png'
-import KakaoImg from '../../assets/socialLogin/socialKakao.png'
-import NaverImg from '../../assets/socialLogin/socialNaver.png'
-import DancyImg from '../../assets/DancyLogo.png'
+import GoogleImg from "../../assets/socialLogin/socialGoogle.png";
+import KakaoImg from "../../assets/socialLogin/socialKakao.png";
+import NaverImg from "../../assets/socialLogin/socialNaver.png";
+import DancyImg from "../../assets/DancyLogo.png";
 
 export const Container = styled.div`
   height: 900px;
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 export const DancyLogo = styled.div`
   width: 350px;
@@ -17,7 +17,7 @@ export const DancyLogo = styled.div`
   background-image: url(${DancyImg});
   background-size: contain;
   align-self: center;
-`
+`;
 
 export const SocialLoginLogo = styled.div`
   border-radius: 50%;
@@ -38,10 +38,10 @@ export const SocialNaver = styled(SocialLoginLogo)`
 
 export const InputTitle = styled.div`
   color: #000;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
   font-size: 20px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: bold;
   line-height: normal;
 `;
 
@@ -51,11 +51,12 @@ export const InputBox = styled.input`
   width: 412px;
   height: 46px;
   padding: 10px;
-  font-family: "NYJ Gothic L";
+  font-family: "NYJ Gothic";
+  font-weight: normal;
   font-size: 16px;
 
   &:focus {
-    outline: 2px solid #E23E59;
+    outline: 2px solid #e23e59;
     border: none;
   }
 `;
@@ -63,60 +64,65 @@ export const InputBox = styled.input`
 export const ErrorEmail = styled.div`
   height: 0;
   color: #c00000;
-  font-family: 'NYJ Gothic L';
+  font-family: "NYJ Gothic";
+  font-weight: normal;
   font-size: 12px;
   text-align: end;
-`
+`;
 
-export const AutoLoginChkBox = styled.input.attrs({ 
-  type: 'checkbox' })`
-	accent-color: #ff919a;
-	transform: scale(1.2);
-`
+export const AutoLoginChkBox = styled.input.attrs({
+  type: "checkbox",
+})`
+  accent-color: #ff919a;
+  transform: scale(1.2);
+`;
 
 export const AutoLogin = styled.label`
   color: #000;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
   font-size: 16px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: bold;
   line-height: normal;
-`
+`;
 
 export const LoginButton = styled.button`
-	margin-top: 10px;
-  background-color: #E23E59;
+  margin-top: 10px;
+  background-color: #e23e59;
   height: 43px;
   border-radius: 5px;
-  color: #FFFFFF;
-  font-family: "NYJ Gothic B";
+  color: #ffffff;
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 20px;
 
   &:hover {
-    background-color: #C0354C;
+    background-color: #c0354c;
   }
-`
+`;
 
 export const ExplainJoinFindPw = styled.div`
-  color: #6C6C6C;
-  font-family: "NYJ Gothic L";
+  color: #6c6c6c;
+  font-family: "NYJ Gothic";
+  font-weight: 300;
   font-size: 14px;
-`
+`;
 
 export const GoJoinFindPw = styled.div`
-  color: #6C6C6C;
-  font-family: "NYJ Gothic B";
+  color: #6c6c6c;
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 16px;
 
   &:hover {
-    color: #E23E59;
+    color: #e23e59;
   }
-`
+`;
 
 // Modal
 export const ModalBackdrop = styled.div`
-	background-color: rgba(0, 0, 0, 0.4);
-	width: 100vw;
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 100vw;
   height: 100vh;
   /*스크롤이 되도 모달창이 고정 되도록 position:fixed*/
   position: fixed;
@@ -126,9 +132,9 @@ export const ModalBackdrop = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 5000;
-`
+`;
 
-export const ModalView = styled.div.attrs((props) => ({role: "dialog"}))`
+export const ModalView = styled.div.attrs((props) => ({ role: "dialog" }))`
   display: flex;
   flex-direction: column;
   align-content: space-between;
@@ -139,16 +145,17 @@ export const ModalView = styled.div.attrs((props) => ({role: "dialog"}))`
   padding-bottom: 28px;
   padding-right: 32px;
   border-radius: 1rem;
-  background-color: #FFFFFF;
-`
+  background-color: #ffffff;
+`;
 
 export const ModalTxt = styled.div`
-  font-family: "NYJ Gothic L";
+  font-family: "NYJ Gothic";
+  font-weight: 300;
   font-size: 16px;
-`
+`;
 
 export const ModalBtn = styled.button`
-  background-color: #E23E59;
+  background-color: #e23e59;
   width: 71px;
   height: 33px;
   border: 1px solid black;
@@ -156,16 +163,15 @@ export const ModalBtn = styled.button`
   margin-top: 70px;
   align-self: flex-end;
   text-align: center;
-  color: #FFFFFF;
-  font-family: "NYJ Gothic B";
+  color: #ffffff;
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 16px;
   cursor: pointer;
 
   &:hover {
-    background-color: #C0354C;
+    background-color: #c0354c;
   }
-`
+`;
 
-export const FeedContainer = styled.div`
-
-`
+export const FeedContainer = styled.div``;

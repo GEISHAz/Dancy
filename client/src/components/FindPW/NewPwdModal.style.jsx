@@ -37,11 +37,12 @@ export const ModalContent = styled.div`
 
 // 모달 제목
 export const ModalTitle = styled.div`
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
   font-size: 28px;
   color: black;
   margin-top: 43px;
   margin-bottom: 30px;
+  font-weight: bold;
 `;
 
 // 텍스트 엔터 처리
@@ -57,8 +58,9 @@ export const EnterArea = styled.div`
 `;
 
 export const ChangePwdTitle = styled.div`
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
   font-size: 18px;
+  font-weight: bold;
   color: black;
   margin-left: 74px;
   align-self: flex-start;
@@ -72,7 +74,6 @@ export const ChangeInput = styled.input`
   border-radius: 3px;
   margin-bottom: 16px;
   padding-left: 10px;
-
 
   &:focus {
     outline: 2px solid #e23e59;
@@ -95,12 +96,14 @@ export const ModalButton = styled.button`
   width: 595px;
   height: 66px;
   color: white;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 20px;
 `;
 
 export const InfoText = styled.div`
-  font-family: "NYJ Gothic L";
+  font-family: "NYJ Gothic";
+  font-weight: normal;
   font-size: 16px;
   color: #6c6c6c;
   align-self: flex-start;

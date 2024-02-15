@@ -99,7 +99,8 @@ export const Input = styled.input`
   border-radius: 15px;
   padding: 5px;
   word-break: break-all;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
 
   &:focus {
     outline: 2px solid #ff3d5d;
@@ -115,7 +116,8 @@ export const DetailInput = styled.textarea`
   padding: 5px;
   word-break: break-all;
   resize: none;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
 
   &:focus {
     outline: 2px solid #ff3d5d;
@@ -150,7 +152,8 @@ export const ModalPost = styled.button`
   /* align-self: flex-end; */
   text-align: center;
   color: #ffffff;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 24px;
   cursor: pointer;
 

@@ -37,7 +37,8 @@ export const ModalContent = styled.div`
 
 // 모달 제목
 export const ModalTitle = styled.div`
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 28px;
   color: black;
   margin-top: 43px;
@@ -57,7 +58,8 @@ export const EnterArea = styled.div`
 `;
 
 export const ChangePwdTitle = styled.div`
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 18px;
   color: black;
   margin-left: 74px;
@@ -94,12 +96,14 @@ export const ModalButton = styled.button`
   width: 595px;
   height: 66px;
   color: white;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 20px;
 `;
 
 export const InfoText = styled.div`
-  font-family: "NYJ Gothic L";
+  font-family: "NYJ Gothic";
+  font-weight: normal;
   font-size: 16px;
   color: #6c6c6c;
   align-self: flex-start;
