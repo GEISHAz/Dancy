@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0fd0e8ef-820e-4cae-8d1b-9c7cc38bf1de" name="Changes" comment="[Fix] frame 안맞는 부분 분석 안하도록 수정">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-02-09__11_03__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-02-09__11_03__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-02-10__3_28__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2024-02-10__3_28__Changes_.xml" afterDir="false" />
+    <list default="true" id="0fd0e8ef-820e-4cae-8d1b-9c7cc38bf1de" name="Changes" comment="[Fix] Python Jenkins">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +56,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "BE",
-    "last_opened_file_path": "C:/Users/SSAFY/Desktop/Project1_Backend/S10P12D210/python/api/dataset/video/gt",
+    "last_opened_file_path": "C:/Users/SSAFY/Desktop/Project1_Backend/S10P12D210/python/api",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -73,11 +68,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api" />
       <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\video\gt" />
       <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\json" />
       <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\audio" />
       <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\image" />
-      <recent name="C:\Users\SSAFY\Desktop\Project1_Backend\S10P12D210\python\api\dataset\result" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\SSAFY\Desktop\mediapipe\python\api\dataset\video\gt" />
@@ -178,7 +173,39 @@
       <option name="project" value="LOCAL" />
       <updated>1707810764787</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="[Fix] standard None 처리">
+      <option name="closed" value="true" />
+      <created>1707962776284</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1707962776284</updated>
+    </task>
+    <task id="LOCAL-00005" summary="[Fix] BGR -&gt; RGB 변환">
+      <option name="closed" value="true" />
+      <created>1707972484948</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1707972484948</updated>
+    </task>
+    <task id="LOCAL-00006" summary="[Fix] BGR -&gt; RGB 변환">
+      <option name="closed" value="true" />
+      <created>1707974436779</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1707974436779</updated>
+    </task>
+    <task id="LOCAL-00007" summary="[Fix] Python Jenkins">
+      <option name="closed" value="true" />
+      <created>1707974673067</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1707974673067</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,7 +226,10 @@
     <MESSAGE value="[FEATURE] 정확도 수정 및 테스트코드 추가" />
     <MESSAGE value="[Fix] fix folder structure" />
     <MESSAGE value="[Fix] frame 안맞는 부분 분석 안하도록 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="[Fix] frame 안맞는 부분 분석 안하도록 수정" />
+    <MESSAGE value="[Fix] standard None 처리" />
+    <MESSAGE value="[Fix] BGR -&gt; RGB 변환" />
+    <MESSAGE value="[Fix] Python Jenkins" />
+    <option name="LAST_COMMIT_MESSAGE" value="[Fix] Python Jenkins" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -213,7 +243,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/python$app.coverage" NAME="app Coverage Results" MODIFIED="1707896879462" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />
+    <SUITE FILE_PATH="coverage/python$app.coverage" NAME="app Coverage Results" MODIFIED="1707971074017" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />
     <SUITE FILE_PATH="coverage/python$compare.coverage" NAME="compare Coverage Results" MODIFIED="1707099588398" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/api" />
   </component>
 </project>

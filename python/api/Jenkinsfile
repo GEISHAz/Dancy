@@ -1,0 +1,27 @@
+pipeline{
+    agent any
+
+    stages{
+        stage('Build'){
+            steps{
+                dir('python/api'){
+                    script{
+                        sh 'chmod +x ./docker_install.sh'
+                        sh './docker_install.sh'
+                    }
+                }
+            }
+        }
+        stage('Deploy'){
+            steps{
+                dir('python/api'){
+                    script{
+                        sh 'docker build -t backend-python .'
+                        sh 'docker rm -f backend-python'
+                        sh 'docker run -d -p 5000:5000 --name backend-python backend-python'
+                    }
+                }
+            }
+        }
+    }
+}
