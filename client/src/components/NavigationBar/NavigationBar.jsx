@@ -2,21 +2,31 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import Notification from "./Notification";
+import LoadingConvert from "./LoadingConvert.jsx";
 import * as N from "./NavigationBar.style";
 import { loginState, userState } from "../../recoil/LoginState.js";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { logout } from "../../api/auth.js";
 import { userDetails } from "../../api/user.js";
 import { userInfo } from "../../api/myPage.js";
+import {
+  alarmOccuredState,
+  alarmListState,
+  convertAlarmState,
+  startToConvertState,
+} from "../../recoil/AlarmState";
 
 export default function Navbar() {
   const [activeButton, setActiveButton] = useState("");
-  const [finduserInfo, setFindUserInfo] = useRecoilState(userState);
+  const setFindUserInfo = useSetRecoilState(userState);
   const [isLoggedIn, setLoginState] = useRecoilState(loginState);
   const userDetailsInfo = useRecoilValue(userState);
   const navigate = useNavigate();
   const isLogin = useRecoilValue(loginState);
-  //const [userDetail, setUserDetail] = useState({});
+  const [alarmList, setAlarmList] = useRecoilState(alarmListState);
+  const [isConverted, setIsConverted] = useRecoilState(convertAlarmState);
+  const [convertStarted, setConvertStarted] = useRecoilState(startToConvertState); // Recoil 상태를 로컬 상태로 변경
+  const startConverting = useRecoilValue(startToConvertState);
 
   const logoutHandler = () => {
     logout(setLoginState)
@@ -30,33 +40,41 @@ export default function Navbar() {
           gender: "",
           profileImageUrl: null,
         });
-        // 초기화
-        // setUserDetail({
-        //   profileImageUrl: null,
-        // });
+        setAlarmList({});
+        setIsConverted(null);
+        setConvertStarted(null);
         navigate("/");
       })
       .catch((err) => console.error(err));
   };
 
-  useEffect(() => {
-    userInfo(userDetailsInfo.nickname)
-      .then((res) => {
-        //setUserDetail(res);
-        setFindUserInfo({
-          ...finduserInfo,
-          profileImageUrl: res.profileImageUrl,
-        });
-        console.log(res);
-      })
-      .catch((err) => {
-        console.error(err);
-        if (err.response.status === 404) {
-          alert(err.response.data[0].message);
-          navigate("/");
-        }
-      });
-  }, []);
+  //console.log("navuser", userDetailsInfo);
+  // useEffect(() => {
+  //   userInfo(userDetailsInfo.nickname)
+  //     .then((res) => {
+  //       //setUserDetail(res);
+  //       setFindUserInfo({
+  //         ...finduserInfo,
+  //         profileImageUrl: res.profileImageUrl,
+  //       });
+  //       // console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //       if (err.response.status === 404) {
+  //         alert(err.response.data[0].message);
+  //         navigate("/");
+  //       }
+  //     });
+  // }, []);
+
+  // window.addEventListener("unload", deleteToken)
+  // function deleteToken() {
+  // 	localStorage.removeItem("token")
+  // 	localStorage.removeItem("localStorage")
+  // }
+
+  //console.log("convert을 시작했는지 " , convertStarted);
 
   return (
     <N.NavArea>
@@ -106,10 +124,13 @@ export default function Navbar() {
           </N.NavLeftContainer>
         </N.NavLeft>
         <N.NavRight>
+          {startConverting ? <LoadingConvert /> : null}
           <SearchBar />
-          <N.AlertButton>
-            <Notification />
-          </N.AlertButton>
+          {isLogin ? (
+            <N.AlertButton>
+              <Notification />
+            </N.AlertButton>
+          ) : null}
           <N.NavLogin>
             {isLogin ? (
               <N.NavLoginWrapper>
@@ -118,7 +139,7 @@ export default function Navbar() {
                 </Link>
                 <N.NavProfileArea>
                   <Link to="/setting">
-                    <N.NavUserName>{userDetailsInfo?.nickname} 님</N.NavUserName>
+                    <N.NavUserName>{userDetailsInfo.nickname} 님</N.NavUserName>
                   </Link>
                   <N.NavLogout onClick={logoutHandler}>Logout</N.NavLogout>
                 </N.NavProfileArea>

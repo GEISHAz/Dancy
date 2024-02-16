@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { styled } from "styled-components";
 import * as SF from "./SettingForm.style";
+import * as F from "./Form.style";
 import QuitModal from "./QuitModal";
 import ChangePwdModal from "./ChangePwdModal";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -10,60 +10,6 @@ import { httpStatusCode } from "../../util/http-status";
 import { BrowserRouter as Router, Route, Link, useNavigate } from "react-router-dom";
 import { userChangeNickName, userChangeIntro, userChangeImg } from "../../api/user";
 import { selectedFileState } from "../../recoil/JoinState";
-
-// 전체 폼 구성
-export const JoinFormArea = styled.div`
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 16px;
-`;
-
-// 필수 항목 공지
-export const NoticeArea = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
-`;
-
-// 폼 매 줄 마다 설정
-export const FormDetailArea = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  margin-top: 1rem;
-  gap: 20px;
-`;
-
-// 텍스트 엔터 처리
-export const EnterArea = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: start;
-  margin-right: ${(props) => props.margin || "0px"};
-`;
-
-export const InputContainer = styled.div`
-  position: relative;
-`;
-
-// 라디오 버튼 커스텀
-export const RadioContainer = styled.div`
-  display: flex;
-  font-family: "NYJ Gothic B";
-  font-size: 16px;
-  gap: 12px;
-  margin-right: ${(props) => props.margin || "0px"};
-
-  input {
-    accent-color: #f9405e;
-  }
-`;
 
 export default function FormArea() {
   const [showWarnings, setShowWarnings] = useState({
@@ -82,8 +28,6 @@ export default function FormArea() {
   const selectedFile = useRecoilValue(selectedFileState);
 
   const navigate = useNavigate();
-
-  console.log("user", user);
 
   // 각 모달을 열기 위한 함수
   const openChangePwdModal = () => {
@@ -122,7 +66,7 @@ export default function FormArea() {
 
   // 닉네임 형식 체크
   const validateNickName = (nickname) => {
-    const regex = /^[A-Za-z_.\-]?[A-Za-z_.\-]{1,8}$/;
+    const regex = /^[A-Za-z0-9.-]{1,14}$/;
     return regex.test(nickname);
   };
 
@@ -131,7 +75,7 @@ export default function FormArea() {
     if (!validateNickName(nickname)) {
       setShowWarnings((prevWarnings) => ({
         ...prevWarnings,
-        nickname: { show: true, message: "불가능한 형식의 닉네임입니다." },
+        nickname: { show: true, message: "불가능한 형식입니다. (가능: 영문자, 숫자, -, .)" },
       }));
       setIsChecked(false);
       return;
@@ -176,11 +120,11 @@ export default function FormArea() {
 
         // 닉네임 변경
         const nicknameStatusCode = await userChangeNickName(nickname);
-        console.log("닉네임잘바뀌엇니?", nicknameStatusCode);
-        setUser({
-          ...user,
+        //console.log("닉네임잘바뀌엇니?", nicknameStatusCode);
+        setUser((prevUser) => ({
+          ...prevUser,
           nickname: nickname,
-        });
+        }));
       }
 
       console.log("-----------");
@@ -188,11 +132,11 @@ export default function FormArea() {
       if (introduceText !== user.introduceText) {
         // 상태메시지 변경
         const introStatusCode = await userChangeIntro(introduceText);
-        console.log("상메잘바뀌었니?", introStatusCode);
-        setUser({
-          ...user,
+        //console.log("상메잘바뀌었니?", introStatusCode);
+        setUser((prevUser) => ({
+          ...prevUser,
           introduceText: introduceText,
-        });
+        }));
       }
 
       // 이미지가 있으면 일단 수정 요청을 해봅시다.
@@ -200,19 +144,18 @@ export default function FormArea() {
         const formData = new FormData();
         formData.set("profileImage", selectedFile);
         const imgData = await userChangeImg(formData);
-        console.log("프사잘바뀌었니?", imgData);
-        setUser({
-          ...user,
+        //console.log("프사잘바뀌었니?", imgData);
+        setUser((prevUser) => ({
+          ...prevUser,
           profileImageUrl: imgData.profileImageUrl,
-        });
+        }));
       }
 
       console.log("---------------");
-
-      // 알림 및 페이지 이동
       alert("정보가 성공적으로 변경되었습니다.");
-      navigate(`/profile/${nickname}`);
-      window.location.reload();
+      setTimeout(() => {
+        navigate(`/profile/${nickname}`);
+      }, 100);
     } catch (error) {
       console.error("서버 요청 중 에러가 발생했습니다.", error);
       // recoil 상태 업데이트
@@ -227,16 +170,16 @@ export default function FormArea() {
   };
 
   return (
-    <JoinFormArea>
-      <NoticeArea>
+    <F.JoinFormArea>
+      <F.NoticeArea>
         <SF.MustNoticeText>(&nbsp;</SF.MustNoticeText>
         <SF.MustIcon />
         <SF.MustNoticeText>&nbsp;)는 필수 입력 값입니다.</SF.MustNoticeText>
-      </NoticeArea>
-      <FormDetailArea>
+      </F.NoticeArea>
+      <F.FormDetailArea>
         <SF.MustIcon />
         <SF.FormCategory margin="72px">닉네임</SF.FormCategory>
-        <InputContainer>
+        <F.InputContainer>
           <SF.FormInput
             type="text"
             name="nickname"
@@ -246,25 +189,25 @@ export default function FormArea() {
           <SF.InputNoticeText show={showWarnings.nickname.show}>
             {showWarnings.nickname.message}
           </SF.InputNoticeText>
-        </InputContainer>
+        </F.InputContainer>
         <SF.FormBtn onClick={handleNickNameCheck}>중복 체크</SF.FormBtn>
-      </FormDetailArea>
-      <FormDetailArea>
+      </F.FormDetailArea>
+      <F.FormDetailArea>
         <SF.MustIcon visibility="hidden" />
         <SF.FormCategory margin="36px">상태메세지</SF.FormCategory>
-        <InputContainer>
+        <F.InputContainer>
           <SF.FormInput
             type="text"
             name="introduceText"
             value={introduceText}
             onChange={(e) => handleChange("introduceText", e.target.value)}
           ></SF.FormInput>
-        </InputContainer>
-      </FormDetailArea>
-      <FormDetailArea>
+        </F.InputContainer>
+      </F.FormDetailArea>
+      <F.FormDetailArea>
         <SF.MustIcon />
         <SF.FormCategory margin="68px">E-mail</SF.FormCategory>
-        <InputContainer>
+        <F.InputContainer>
           <SF.FormInput
             type="email"
             name="email"
@@ -272,9 +215,9 @@ export default function FormArea() {
             onChange={handleChange}
             readOnly
           ></SF.FormInput>
-        </InputContainer>
-      </FormDetailArea>
-      <FormDetailArea>
+        </F.InputContainer>
+      </F.FormDetailArea>
+      <F.FormDetailArea>
         <SF.MustIcon />
         <SF.FormCategory margin="54px">생년월일</SF.FormCategory>
         <SF.FormInput
@@ -284,11 +227,11 @@ export default function FormArea() {
           onChange={handleChange}
           readOnly
         ></SF.FormInput>
-      </FormDetailArea>
-      <FormDetailArea>
+      </F.FormDetailArea>
+      <F.FormDetailArea>
         <SF.MustIcon />
         <SF.FormCategory margin="91px">성별</SF.FormCategory>
-        <RadioContainer margin="104.1px">
+        <F.RadioContainer margin="104.1px">
           <input
             type="radio"
             name="gender"
@@ -305,23 +248,23 @@ export default function FormArea() {
             disabled="true"
           />{" "}
           여성
-        </RadioContainer>
+        </F.RadioContainer>
         <SF.FormBtn width="167px" onClick={openChangePwdModal}>
           비밀번호 변경
         </SF.FormBtn>
         {/*ChangePwdModal 컴포넌트를 렌더링하고 isOpen, onClose을 props로 전달 */}
         <ChangePwdModal isOpen={isChangePwdModalOpen} onClose={closeChangePwdModal} />
-      </FormDetailArea>
-      <FormDetailArea>
+      </F.FormDetailArea>
+      <F.FormDetailArea>
         <SF.QuitText onClick={openQuitModal}>회원 탈퇴</SF.QuitText>
         {/* QuitModal 컴포넌트를 렌더링하고 isOpen, onClose을 props로 전달 */}
         <QuitModal isOpen={isQuitModalOpen} onClose={closeQuitModal} />
-      </FormDetailArea>
-      <FormDetailArea>
+      </F.FormDetailArea>
+      <F.FormDetailArea>
         <SF.RegisterBtn onClick={readyToSubmit} margin="217px">
           완료
         </SF.RegisterBtn>
-      </FormDetailArea>
-    </JoinFormArea>
+      </F.FormDetailArea>
+    </F.JoinFormArea>
   );
 }

@@ -4,9 +4,9 @@ import { styled } from "styled-components";
 // 약관제목
 export const TermTitle = styled.div`
   color: #454545;
-  font-family: "NYJ Gothic EB-Regular", Helvetica;
+  font-family: "NYJ Gothic", Helvetica;
   font-size: 32px;
-  font-weight: 400;
+  font-weight: 800;
   line-height: normal;
 `;
 

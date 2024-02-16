@@ -1,6 +1,6 @@
 import { noneApi, privateApi, publicApi, joinApi, textApi} from '../util/http-commons'
 
-const baseURL = 'http://i10d210.p.ssafy.io:8080'
+//const baseURL = 'http://i10d210.p.ssafy.io:8080'
 
 
 export const emailCheck = async (formData) => {
@@ -23,7 +23,6 @@ export const emailCheck = async (formData) => {
 
 
 export const nickNameCheck = async (formData) => {
-  console.log(formData);
   try {
     const response = await noneApi.get(`/user/exists/${formData}`);
     console.log("response", response);

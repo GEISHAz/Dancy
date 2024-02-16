@@ -93,7 +93,7 @@ sigma = {
 
 
 def color_map(speed, compare_frame=15):
-    if speed == "NG": return (0, 0, 255)
+    if speed == "NG": return (255, 0, 0)
     if speed == "normal": return (0, 0, 0)
     R_s = np.linspace(70, 51, num=compare_frame, endpoint=True, retstep=False, dtype=np.uint8)
     G_s = np.linspace(133, 102, num=compare_frame, endpoint=True, retstep=False, dtype=np.uint8)
@@ -102,9 +102,9 @@ def color_map(speed, compare_frame=15):
     G_f = np.linspace(102, 80, num=compare_frame, endpoint=False, retstep=False, dtype=np.uint8)
     B_f = np.linspace(255, 200, num=compare_frame, endpoint=False, retstep=False, dtype=np.uint8)
 
-    red = list(np.concatenate((R_s, R_f)))
+    blue = list(np.concatenate((R_s, R_f)))
     green = list(np.concatenate((G_s, G_f)))
-    blue = list(np.concatenate((B_s, B_f)))
+    red = list(np.concatenate((B_s, B_f)))
     return (int(blue[speed]), int(green[speed]), int(red[speed]))
 
 

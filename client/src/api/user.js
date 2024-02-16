@@ -12,11 +12,12 @@ export const userDetails = async () => {
       birthDate: res.data.birthDate,
       introduceText: res.data.introduceText,
       profileImageUrl: res.data.profileImageUrl,
-      gender: res.data.gender
+      gender: res.data.gender,
     }
 
     return userInfo
-  } catch (error) {
+  }
+  catch (error) {
     console.error(error);
     throw error;
   }

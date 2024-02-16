@@ -2,21 +2,23 @@ import * as P from "./PostModal.style";
 import { useNavigate } from "react-router-dom";
 import { postArticle } from "../../api/stage";
 import { useRef, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { resultState } from "../../recoil/PracticeState";
 
-export default function PostModal({ getData }) {
+export default function PostModal({ getData, videoInfo }) {
   const navigate = useNavigate();
   const data = false;
   const postData = () => {
     getData(data);
   };
 
+	const resultVideo = useRecoilValue(resultState)
   const articleTitleInput = useRef();
   const articleContentInput = useRef();
   const [formData, setFormData] = useState({
     articleTitle: "",
     articleContent: "",
-    video: "test",
-    thumbnailImageUrl: "test",
+    videoId: resultVideo.videoId,
   });
 
   const handleChange = (e) => {
@@ -40,7 +42,6 @@ export default function PostModal({ getData }) {
     .then ((res) => {
       // console.log(res)
       const articleId = res.articleId
-      console.log(articleId)
       navigate(`/detail/${articleId}`,  { state: { articleId } })
     })
     .catch ((err) => {
@@ -84,13 +85,13 @@ export default function PostModal({ getData }) {
                 </P.InputWrap>
               </P.Txt>
 
-              <P.InputWrap>
+              {/* <P.InputWrap>
                 <P.HashTitle>해시태그</P.HashTitle>
                 <P.Input />
-              </P.InputWrap>
+              </P.InputWrap> */}
             </P.Gap>
 
-            <P.RadioWrap>
+            {/* <P.RadioWrap>
               <P.RadioBox>
                 <P.SmallTitle>스켈레톤</P.SmallTitle>
                 <P.Radio />
@@ -100,7 +101,7 @@ export default function PostModal({ getData }) {
                 <P.SmallTitle>평균 정확도</P.SmallTitle>
                 <P.Radio />
               </P.RadioBox>
-            </P.RadioWrap>
+            </P.RadioWrap> */}
           </P.GapRadio>
         </P.ModalView>
 

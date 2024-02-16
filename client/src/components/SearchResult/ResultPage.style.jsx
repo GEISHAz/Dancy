@@ -29,7 +29,8 @@ export const SearchHeader = styled.div`
 `;
 
 export const Archive = styled.div`
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 16px;
   color: #434343;
   display: flex;
@@ -46,6 +47,40 @@ export const BtnContainer = styled.div`
   scale: 0.85;
 `;
 
+export const TitleBtn = styled.button`
+  border: 1px solid #000000;
+  width: 120px;
+  height: 34px;
+  text-align: center;
+  border-radius: 5px;
+  position: relative;
+  z-index: 1;
+  background-color: #898989;
+  font-family: "NYJ Gothic";
+  font-weight: bold;
+  font-size: 16px;
+  color: #ffffff;
+
+  ${({ $active }) =>
+    $active &&
+    css`
+      transform: translate(1px, 1px);
+      box-shadow: inset 3px 3px rgba(0, 0, 0, 0.3);
+      background-color: #f9405e;
+      transition: transform 0.2s ease-in-out;
+
+      &:after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 5px;
+        z-index: 1;
+      }
+    `}
+`;
+
 export const ArchiveBtn = styled.button`
   border: 1px solid #000000;
   width: 120px;
@@ -55,7 +90,8 @@ export const ArchiveBtn = styled.button`
   position: relative;
   z-index: 1;
   background-color: #898989;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 16px;
   color: #ffffff;
 
@@ -104,7 +140,6 @@ export const FeedBody = styled.div`
   border-bottom-right-radius: 10px;
   background-color: #ffffff;
   padding: 40px;
-
 
   overflow-y: scroll;
   &::-webkit-scrollbar {

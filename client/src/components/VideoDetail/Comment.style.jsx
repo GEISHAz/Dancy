@@ -104,6 +104,7 @@ export const CommentUserProfileImage = styled.img.attrs(({ src }) => ({ src: src
   background-color: lightgray;
   border: none;
   cursor: pointer;
+  object-fit: cover;
 `;
 
 export const CommentUserDetail = styled.div`

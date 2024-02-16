@@ -1,37 +1,94 @@
-import * as O from './OriginDance.style'
-
-const imgList = [
-	{key: 1, src: 'src/assets/profileFeed/archiveThumb.png'},
-	{key: 2, src: 'src/assets/profileFeed/uploadThumb.png'},
-	{key: 3, src: 'src/assets/profileFeed/archiveThumb.png'},
-	{key: 4, src: 'src/assets/profileFeed/uploadThumb.png'},
-	{key: 5, src: 'src/assets/profileFeed/archiveThumb.png'},
-	{key: 6, src: 'src/assets/profileFeed/uploadThumb.png'},
-	{key: 7, src: 'src/assets/profileFeed/uploadThumb.png'},
-	{key: 8, src: 'src/assets/profileFeed/uploadThumb.png'},
-	{key: 9, src: 'src/assets/profileFeed/uploadThumb.png'},
-	{key: 10, src: 'src/assets/profileFeed/uploadThumb.png'},
-]
+import { useEffect, useState, useRef } from "react";
+import { getRef, uploadRef } from "../../api/video";
+import * as O from "./OriginDance.style";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { originState } from "../../recoil/PracticeState";
 
 export default function OriginDance() {
-	return (
-		<O.Wrap>
-			<O.Title>안무 영상</O.Title>
+  const [refVideoList, setRefVideoList] = useState([]);
+  const [refVideo, setRefVideo] = useRecoilState(originState);
+  const refInputRef = useRef(null);
+  const [isUpload, setIsUpload] = useState(false);
+  const refThumb = useRecoilValue(originState);
 
-			<O.Container>
-				<O.VideoBox>
-					{imgList.map((imgItem) => (
-						<O.VideoThumb key={imgItem.key} src={imgItem.src} />
-					))}
-				</O.VideoBox>
+  useEffect(() => {
+    getRef()
+      .then((res) => {
+        console.log(res);
+        setRefVideoList(res);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
-				<O.UploadBox> 
-					<input type="file" />
-					<O.UploadBtn src='src/assets/Create/uploadBtn.png' />
-					{/* <O.UploadBtn src='src/assets/Practice/uploadBtn.png' /> */}
-					<O.UploadTxt>영상을 업로드 해주세요.</O.UploadTxt>
-				</O.UploadBox>
-			</O.Container>
-		</O.Wrap>
-	)
+  const handleUploadRef = async (e) => {
+    const newFormData = new FormData();
+    newFormData.set("videoFile", e.target.files[0]);
+
+    await uploadRef(newFormData)
+      .then((res) => {
+        setRefVideo(res);
+        setIsUpload(true);
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("원본 영상 업로드 실패");
+      });
+  };
+
+  const handleSelectRef = (item) => {
+    setRefVideo({
+      thumbnailImageUrl: item.thumbnailImageUrl,
+      videoId: item.videoId,
+      resultVideoUrl: item.videoUrl,
+    });
+    console.log(item);
+    setIsUpload(true);
+  };
+
+  const handleIsUpload = () => {
+    setIsUpload(false);
+  };
+
+  return (
+    <O.Wrap>
+      <O.Title>안무 영상</O.Title>
+
+      <O.Container>
+        {isUpload ? (
+          <>
+            <O.UploadImg src={refThumb.thumbnailImageUrl} />
+            <O.Trash onClick={() => handleIsUpload()}>
+              <O.TrashImg src="src/assets/Create/delete.png" />
+            </O.Trash>
+          </>
+        ) : (
+          <>
+            <O.VideoBox>
+              {refVideoList.map((item, index) => (
+                <O.VideoThumb
+                  key={index}
+                  src={item.thumbnailImageUrl}
+                  onClick={() => handleSelectRef(item)}
+                />
+              ))}
+            </O.VideoBox>
+            <O.UploadBox>
+              <label for="file">
+                <O.UploadBtn src="src/assets/Create/uploadBtn.png" />
+              </label>
+              <input
+                type="file"
+                name="file"
+                id="file"
+                style={{ display: "none" }}
+                ref={refInputRef}
+                onChange={(e) => handleUploadRef(e)}
+              />
+              <O.UploadTxt>영상을 업로드 해주세요.</O.UploadTxt>
+            </O.UploadBox>
+          </>
+        )}
+      </O.Container>
+    </O.Wrap>
+  );
 }
