@@ -97,19 +97,24 @@ Dancy로 어서와 ~~ 💃🕺
 
 ### 인프라
 
+<div align="middle">
+
 <img src="https://img.shields.io/badge/gitlab-F05032?style=for-the-badge&logo=gitlab&logoColor=white">
 <img src="https://img.shields.io/badge/AWS EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
 <img src="https://img.shields.io/badge/maria DB-4479A1?style=for-the-badge&logo=mariadb&logoColor=white">
 <img src="https://img.shields.io/badge/jenkins-111111?style=for-the-badge&logo=jenkins&logoColor=white">
 <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
-
+<img src="https://img.shields.io/badge/nginx-00953B?style=for-the-badge&logo=nginx&logoColor=white">
 
 
 **DB |** MariaDB 10.11 LTS
 
-**Server |** GitLab, Jenkins, Docker
+**Server |** GitLab, Jenkins, Docker, Nginx
 
 </div>
+
+<br>
+<br>
 
 ## 시스템 아키텍처
 <div align="middle">
@@ -118,36 +123,52 @@ Dancy로 어서와 ~~ 💃🕺
   <br />
 </div>
 
+<br>
+<br>
+
 ## 기능소개
 
 <img src = "image/메인페이지.gif" width="600">
 
 - 메인페이지
+<br>
+<br>
 
 <img src = "image/CREATE.gif" width="600">
 
 - 영상 변환 페이지
+<br>
+<br>
 
 <img src = "image/PRACTICE.gif" width="600">
 
 - PRACTICE 페이지
+<br>
+<br>
 
 <img src = "image/STAGE (FEED).gif" width="600">
 
 - STAGE 페이지
+<br>
+<br>
 
 <img src = "image/PROFILE.gif" width="600">
 
 - PROFILE 페이지
+<br>
+<br>
 
 <img src = "image/DETAIL.gif" width="600">
 
 - 영상 상세 페이지
+<br>
+<br>
 
 <img src = "image/SEARCH.gif" width="600">
 
 - 검색 결과 페이지
-
+<br>
+<br>
 
 ## 프로젝트 산출물
 
@@ -155,6 +176,8 @@ Dancy로 어서와 ~~ 💃🕺
 
 https://www.notion.so/API-a481909030e84aedb5ef9d27b407e68a?pvs=4
 
+<br>
+<br>
 
 - ERD
 <div align="middle">
@@ -162,11 +185,15 @@ https://www.notion.so/API-a481909030e84aedb5ef9d27b407e68a?pvs=4
   <img src="image/erd.png" width="70%"/>
   <br />
 </div>
+<br>
+<br>
 
 - 와이어프레임
 
 https://www.figma.com/file/H3b5XPTkYYCEY0vn283EsU/%EC%B5%9C%EA%B0%95D210%ED%94%BC%EA%B7%B8%EB%A7%88-(Copy)?type=design&node-id=2%3A2&mode=design&t=4V5T39w1D0HACvVE-1
 
+<br>
+<br>
 
 - 컨벤션
 
