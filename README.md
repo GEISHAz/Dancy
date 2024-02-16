@@ -120,31 +120,31 @@ Dancy로 어서와 ~~ 💃🕺
 
 ## 기능소개
 
-<img src = "image/메인페이지.gif">
+<img src = "image/메인페이지.gif" width="400">
 
 - 메인페이지
 
-<img src = "image/CREATE.gif">
+<img src = "image/CREATE.gif" width="400">
 
 - 영상 변환 페이지
 
-<img src = "image/PRACTICE.gif">
+<img src = "image/PRACTICE.gif" width="400">
 
 - PRACTICE 페이지
 
-<img src = "image/STAGE (FEED).gif">
+<img src = "image/STAGE (FEED).gif" width="400">
 
 - STAGE 페이지
 
-<img src = "image/PROFILE.gif">
+<img src = "image/PROFILE.gif" width="400">
 
 - PROFILE 페이지
 
-<img src = "image/DETAIL.gif">
+<img src = "image/DETAIL.gif" width="400">
 
 - 영상 상세 페이지
 
-<img src = "image/SEARCH.gif">
+<img src = "image/SEARCH.gif" width="400">
 
 - 검색 결과 페이지
 
@@ -152,7 +152,6 @@ Dancy로 어서와 ~~ 💃🕺
 ## 프로젝트 산출물
 
 - API 명세서
-
 <br>
 https://www.notion.so/API-a481909030e84aedb5ef9d27b407e68a?pvs=4
 </br>
@@ -163,8 +162,8 @@ https://www.notion.so/API-a481909030e84aedb5ef9d27b407e68a?pvs=4
   <img src="image/erd.png" width="70%"/>
   <br />
 </div>
-- 와이어프레임
 
+- 와이어프레임
 <br>
 https://www.figma.com/file/H3b5XPTkYYCEY0vn283EsU/%EC%B5%9C%EA%B0%95D210%ED%94%BC%EA%B7%B8%EB%A7%88-(Copy)?type=design&node-id=2%3A2&mode=design&t=4V5T39w1D0HACvVE-1
 </br>
