@@ -18,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AlarmHandler {
 
     private final Map<Long, SseEmitter> userEmitters = new ConcurrentHashMap<>();
-
     // 이 부분을 활용하려면, text/event-stream 유형으로 produce 하여 서비스를 제공해야 한다.
     // SSE 는 양방향 통신이 필요하지 않고, 단방향으로 한번씩만 알람을 보내면 되는 서비스에 적합하다고 알려져 있다.
     // WebSocket 보다 서버 부하가 적다는 장점이 있다는 것 같아, 한번 사용해 보려고 한다.
