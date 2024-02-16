@@ -203,3 +203,5 @@ Dancy로 어서와 ~~ 💃🕺
 <br>
 <br>
 - 포팅메뉴얼
+
+[포팅메뉴얼](https://lab.ssafy.com/s10-webmobile2-sub2/S10P12D210/exec)
