@@ -4,6 +4,7 @@ import ProfileImgDefault from "../../assets/profileIntro/ProfileImgDefault.png";
 export const NotificationArea = styled.div`
   display: flex;
   align-items: center;
+  margin-right: 20px;
 `;
 
 export const NotificationImage = styled.img`

@@ -7,6 +7,7 @@ import CustomModal from "./PinModal";
 import { emailCheck, nickNameCheck } from "../../api/join";
 import { httpStatusCode } from "../../util/http-status";
 
+
 export default function FormArea() {
   const [joinData, setJoinData] = useRecoilState(joinState);
   // const [inputValues, setInputValues] = useState({
@@ -126,7 +127,7 @@ export default function FormArea() {
     if (!validateNickName(joinData.nickname)) {
       setShowWarnings((prevWarnings) => ({
         ...prevWarnings,
-        nickname: { show: true, message: "불가능한 형식의 닉네임입니다." },
+        nickname: { show: true, message: "불가능한 형식입니다. (가능: 영문자, 숫자, -, .)" },
       }));
       return;
     }

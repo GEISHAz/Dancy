@@ -14,10 +14,10 @@ export default function PostModal({ articleId, beforeData, getData }) {
   const articleTitleInput = useRef();
   const articleContentInput = useRef();
   const [formData, setFormData] = useState({
-    'articleTitle': beforeData.articleTitle,
-    'articleContent': beforeData.articleContent,
-    'video': beforeData.video,
-    'thumbnailImageUrl': beforeData.thumbnailImageUrl,
+    articleTitle: beforeData.articleTitle,
+    articleContent: beforeData.articleContent,
+    video: beforeData.video,
+    thumbnailImageUrl: beforeData.thumbnailImageUrl,
   });
 
   const handleChange = (e) => {
@@ -34,16 +34,15 @@ export default function PostModal({ articleId, beforeData, getData }) {
       articleContentInput.current.focus();
       return;
     }
-		console.log(articleId)
-    UpdateArticle({articleId, formData})
-    .then ((res) => {
-      console.log(res)
-			window.location.reload()
-    })
-    .catch ((err) => {
-      console.error(err)
-    })
-
+    console.log(articleId);
+    UpdateArticle({ articleId, formData })
+      .then((res) => {
+        console.log(res);
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
@@ -81,13 +80,13 @@ export default function PostModal({ articleId, beforeData, getData }) {
                 </P.InputWrap>
               </P.Txt>
 
-              <P.InputWrap>
+              {/* <P.InputWrap>
                 <P.HashTitle>해시태그</P.HashTitle>
                 <P.Input />
-              </P.InputWrap>
+              </P.InputWrap> */}
             </P.Gap>
 
-            <P.RadioWrap>
+            {/* <P.RadioWrap>
               <P.RadioBox>
                 <P.SmallTitle>스켈레톤</P.SmallTitle>
                 <P.Radio />
@@ -97,7 +96,7 @@ export default function PostModal({ articleId, beforeData, getData }) {
                 <P.SmallTitle>평균 정확도</P.SmallTitle>
                 <P.Radio />
               </P.RadioBox>
-            </P.RadioWrap>
+            </P.RadioWrap> */}
           </P.GapRadio>
         </P.ModalView>
 

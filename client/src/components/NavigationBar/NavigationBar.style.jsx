@@ -98,7 +98,7 @@ export const NavLoginWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 150px;
+  width: auto;
   gap: 20px;
   margin: 0px 30px;
 `;

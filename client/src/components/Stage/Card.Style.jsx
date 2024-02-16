@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import DefaultImg from '../../assets/profileIntro/ProfileImgDefault.png'
+import DefaultImg from "../../assets/profileIntro/ProfileImgDefault.png";
 
 export const CardContainer = styled.div`
   border: none;
@@ -46,18 +46,26 @@ export const CardDetailArea = styled.div`
   flex-direction: column;
 `;
 
-export const CardProfileImage = styled.img.attrs(({src}) => ({
-  src: src || DefaultImg
+export const CardProfileImage = styled.img.attrs(({ src }) => ({
+  src: src || DefaultImg,
 }))`
   border-radius: 50%;
   margin-top: 5px;
   width: 32px;
-	height: 32px; 
+  height: 32px;
+  object-fit: cover;
+`;
+
+export const CardTitleDiv = styled.div`
+  width: 190px;
+  text-align: left;
+  overflow: hidden; // 내용이 넘칠 경우 숨김 처리
+  white-space: nowrap; // 텍스트를 한 줄로 표시
+  text-overflow: ellipsis; // 넘치는 텍스트를 "..."로 표시
 `;
 
 export const CardTitle = styled.span`
-  text-align: left;
-  font-family: "남양주 고딕 B", sans-serif;
+  font-family: "NYJ Gothic", sans-serif;
   font-size: 16px;
   color: #252525;
   font-weight: 550;

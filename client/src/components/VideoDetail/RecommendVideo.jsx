@@ -1,15 +1,7 @@
 import React from "react";
-import Card from '../Stage/Card';
+import Card from "../Stage/Card";
 import { useNavigate } from "react-router-dom";
-import {
-  RecommendVideoContainer,
-  RecommendVideoTitleContainer,
-  RecommendVideoTitle,
-  RecommendVideos,
-  RecommendVideoTitleLine,
-} from './RecommendVideo.style';
-
-
+import * as RV from "./RecommendVideo.style";
 
 export default function RecommendVideo() {
   // const navigate = useNavigate();
@@ -18,15 +10,14 @@ export default function RecommendVideo() {
   // };
 
   return (
-    <RecommendVideoContainer>
-      <RecommendVideoTitleContainer>
-        <RecommendVideoTitle>최신 영상</RecommendVideoTitle>
-        <RecommendVideoTitleLine />
-      </RecommendVideoTitleContainer>
-      <RecommendVideos >
-        <Card/>
-      </RecommendVideos>
-    </RecommendVideoContainer>
+    <RV.RecommendVideoContainer>
+      <RV.RecommendVideoTitleContainer>
+        <RV.RecommendVideoTitle>최신 영상</RV.RecommendVideoTitle>
+        <RV.RecommendVideoTitleLine />
+      </RV.RecommendVideoTitleContainer>
+      <RV.RecommendVideos>
+        <Card maxDisplay={8} />
+      </RV.RecommendVideos>
+    </RV.RecommendVideoContainer>
   );
 }
-

@@ -36,7 +36,7 @@ export default function Router({ cardDetails, videoDetails }) {
       location.pathname !== "/" &&
       location.pathname !== "/login" &&
       location.pathname !== "/signup" &&
-      location.pathname !== "/signup/joinform" &&
+      // location.pathname !== "/signup/joinform" &&
       location.pathname !== "/signup/joincomplete" &&
       location.pathname !== "/findpassword"
     ) {
@@ -49,7 +49,7 @@ export default function Router({ cardDetails, videoDetails }) {
     if (isLoggedIn) {
       const fetchSse = async () => {
         try {
-          const alarmConnectEndpoint = "http://i10d210.p.ssafy.io:8080/alarm/subscribe";
+          const alarmConnectEndpoint = "https://i10d210.p.ssafy.io/api/alarm/subscribe";
           eventSource = new ssePolyfill.EventSourcePolyfill(alarmConnectEndpoint, {
             headers: { "AUTH-TOKEN": `${localStorage.getItem("token")}` },
           });
@@ -117,8 +117,8 @@ export default function Router({ cardDetails, videoDetails }) {
           <>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/signup/joinform" element={<JoinForm />} />
+            <Route path="/signup" element={<JoinForm />} />
+            {/* <Route path="/signup/joinform" element={<JoinForm />} /> */}
             <Route path="/signup/joincomplete" element={<JoinComplete />} />
             <Route path="/findpassword" element={<SendPin />} />
             {/* <Route path="*" element={<Login />} /> */}

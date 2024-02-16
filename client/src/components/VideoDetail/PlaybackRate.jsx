@@ -1,50 +1,6 @@
 import React, { useState } from "react";
-import styled, { keyframes } from "styled-components";
+import * as PR from "./PlaybackRate.style"
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
-const PlaybackRateContainer = styled.div`
-  position: absolute;
-  top: -240px;
-  left: -20px;
-  background-color: #d3d3d34c;
-	border-radius: 20px;
-  color: white;
-  padding: 10px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  display: ${props => props.isOpen ? 'block' : 'none'};
-  animation: ${fadeIn} 0.5s ease-in-out;
-  flex-direction: column;
-  align-items: flex-end;
-`;
-
-const RateButton = styled.button`
-  display: block;
-  background-color: transparent;
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin: 5px 0;
-	text-align: center;
-	width: 100%;
-  &:hover {
-    color: #ff0000;
-  }
-`;
-
-
-
-const PlaybackRateButton = styled.div`
-  position: relative;
-  cursor: pointer;
-`;
 
 export default function PlaybackRate({ onChange }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,15 +17,15 @@ export default function PlaybackRate({ onChange }) {
   };
 
   return (
-    <PlaybackRateButton onClick={handleButtonClick}>
+    <PR.PlaybackRateButton onClick={handleButtonClick}>
       <img src="/src/assets/playspeed.png" alt="재생속도" />
-      <PlaybackRateContainer isOpen={isOpen}>
+      <PR.PlaybackRateContainer isOpen={isOpen}>
         {rates.map((rate, index) => (
-          <RateButton key={index} onClick={() => handleRateChange(rate)}>
+          <PR.RateButton key={index} onClick={() => handleRateChange(rate)}>
             {rate}x
-          </RateButton>
+          </PR.RateButton>
         ))}
-      </PlaybackRateContainer>
-    </PlaybackRateButton>
+      </PR.PlaybackRateContainer>
+    </PR.PlaybackRateButton>
   );
 }

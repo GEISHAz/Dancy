@@ -85,6 +85,7 @@ export default function Login() {
             placeholder="Email을 입력해주세요 ♬"
             value={formData.email}
             onChange={handleChange}
+            autoComplete="off"
           />
           {isEmailCorrect ? null : <L.ErrorEmail>이메일 형식이 올바르지 않습니다.</L.ErrorEmail>}
         </div>
@@ -101,22 +102,19 @@ export default function Login() {
             onKeyDown={handleEnter}
           />
         </div>
-
-        {/* 자동로그인 + 소셜로그인 */}
+{/* 
         <div className="flex flex-row justify-between">
-          {/* 자동로그인 체크박스 */}
           <div className="flex flex-row items-center gap-x-2">
             <L.AutoLoginChkBox id="autologin" />
             <L.AutoLogin htmlFor="autologin">자동 로그인</L.AutoLogin>
           </div>
 
-          {/* 소셜로그인 아이콘 */}
           <div className="flex flex-row gap-x-4">
             <L.SocialGoogle />
             <L.SocialKakao />
             <L.SocialNaver />
           </div>
-        </div>
+        </div> */}
 
         {/* 로그인 버튼 */}
         <L.LoginButton onClick={handleSubmit}>로그인</L.LoginButton>

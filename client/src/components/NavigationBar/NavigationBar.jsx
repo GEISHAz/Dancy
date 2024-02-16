@@ -43,10 +43,6 @@ export default function Navbar() {
         setAlarmList({});
         setIsConverted(null);
         setConvertStarted(null);
-        // 초기화
-        // setUserDetail({
-        //   profileImageUrl: null,
-        // });
         navigate("/");
       })
       .catch((err) => console.error(err));

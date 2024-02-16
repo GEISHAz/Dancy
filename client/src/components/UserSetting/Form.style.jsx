@@ -44,7 +44,8 @@ export const InputContainer = styled.div`
 // 라디오 버튼 커스텀
 export const RadioContainer = styled.div`
   display: flex;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 16px;
   gap: 12px;
   margin-right: ${(props) => props.margin || "0px"};
