@@ -29,17 +29,17 @@ Dancy로 어서와 ~~ 💃🕺
 <table>
     <tr>
         <td height="140px" align="center"> <a href="https://github.com/whalesBob">
-            <img src="https://avatars.githubusercontent.com/whalesBob" width="140px" /> <br><br> 👑 남동우 <br>(Back-End) </a> <br></td>
+            <img src="image/whalesbob.png" width="140px" /> <br><br> 👑 남동우 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/GEISHAz">
-            <img src="https://avatars.githubusercontent.com/GEISHAz" width="140px" /> <br><br> 🎮 정민호 <br>(Back-End) </a> <br></td>
+            <img src="image/mino.png" width="110px" /> <br><br> 🎮 정민호 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/cnh12">
-            <img src="https://avatars.githubusercontent.com/cnh12" width="140px" /> <br><br> 🐰 조남현 <br>(Back-End) </a> <br></td>
+            <img src="image/cnh.png" width="120px" /> <br><br> 🐰 조남현 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/kangjungsuu">
-            <img src="https://avatars.githubusercontent.com/kangjungsuu" width="140px" /> <br><br> ⚽ 강정수 <br>(Front-End) </a> <br></td>
+            <img src="image/bbbbqz.png" width="120px" /> <br><br> ⚽ 강정수 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/sunoftwilight">
-            <img src="https://avatars.githubusercontent.com/sunoftwilight" width="140px" /> <br><br> 💎 이해진 <br>(Front-End) </a> <br></td>
+            <img src="image/sun.png" width="140px" /> <br><br> 💎 이해진 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/seolyeonpark">
-            <img src="https://avatars.githubusercontent.com/seolyeonpark" width="140px" /> <br><br> 🥨 박설연 <br>(Front-End) </a> <br></td>
+            <img src="image/sy.png" width="110px" /> <br><br> 🥨 박설연 <br>(Front-End) </a> <br></td>
     </tr>
 </table>
 </div>
