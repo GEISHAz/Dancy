@@ -14,12 +14,16 @@
 - [기능소개](#기능소개)
 - [프로젝트 산출물](#프로젝트-산출물)
 
+
+
 ## 서비스 개요
 ```
 '누구나 어디서든'
 춤 연습을 할 수 있는 서비스
 Dancy로 어서와 ~~ 💃🕺
 ```
+
+
 ## 팀원소개
 <div align="middle">
 <table>
@@ -39,6 +43,7 @@ Dancy로 어서와 ~~ 💃🕺
     </tr>
 </table>
 </div>
+
 
 ## 기술스택
 
@@ -66,10 +71,10 @@ Dancy로 어서와 ~~ 💃🕺
 
 </div>
 
+
 ### 백엔드
 
 <div align="middle">
-
 
 <img src="https://img.shields.io/badge/java-3a75b0?style=for-the-badge&logo=java&logoColor=black"> <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
 <img src="https://img.shields.io/badge/spring boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
@@ -115,8 +120,34 @@ Dancy로 어서와 ~~ 💃🕺
 
 ## 기능소개
 
-(화면별 gif 만들어서 올리기)
-& 화면별 부가 설명
+<img src = "image/메인페이지.gif">
+
+- 메인페이지
+
+<img src = "image/CREATE.gif">
+
+- 영상 변환 페이지
+
+<img src = "image/PRACTICE.gif">
+
+- PRACTICE 페이지
+
+<img src = "image/STAGE (FEED).gif">
+
+- STAGE 페이지
+
+<img src = "image/PROFILE.gif">
+
+- PROFILE 페이지
+
+<img src = "image/DETAIL.gif">
+
+- 영상 상세 페이지
+
+<img src = "image/SEARCH.gif">
+
+- 검색 결과 페이지
+
 
 ## 프로젝트 산출물
 
@@ -124,6 +155,7 @@ Dancy로 어서와 ~~ 💃🕺
 
 <br>
 https://www.notion.so/API-a481909030e84aedb5ef9d27b407e68a?pvs=4
+</br>
 
 - ERD
 <div align="middle">
@@ -132,6 +164,10 @@ https://www.notion.so/API-a481909030e84aedb5ef9d27b407e68a?pvs=4
   <br />
 </div>
 - 와이어프레임
+
+<br>
+https://www.figma.com/file/H3b5XPTkYYCEY0vn283EsU/%EC%B5%9C%EA%B0%95D210%ED%94%BC%EA%B7%B8%EB%A7%88-(Copy)?type=design&node-id=2%3A2&mode=design&t=4V5T39w1D0HACvVE-1
+</br>
 
 - 컨벤션
 
