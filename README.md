@@ -60,7 +60,7 @@ Dancy로 어서와 ~~ 💃🕺
 <img src="https://img.shields.io/badge/recoil-000000?style=for-the-badge&logo=recoil&logoColor=white">
 <img src="https://img.shields.io/badge/yarn-3B9DC8?style=for-the-badge&logo=yarn&logoColor=white">
 
-**Language |** Javascript 5.0.2
+**Language |** Javascript(Node: 18.19.0)
 
 **Framework |** React 18.2.0
 
