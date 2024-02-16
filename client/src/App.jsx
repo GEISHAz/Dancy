@@ -15,8 +15,6 @@ import nyjB from "./fonts/남양주 고딕 B.otf";
 import nyjEB from "./fonts/남양주 고딕 EB.otf";
 import nyjL from "./fonts/남양주 고딕 L.otf";
 
-
-
 export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'BM JUA_TTF';
@@ -54,19 +52,19 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   @font-face {
-    font-family: 'NYJ Gothic B';
+    font-family: 'NYJ Gothic';
     src: url(${nyjB}) format('opentype');
     font-weight: bold;
   }
 
   @font-face {
-    font-family: 'NYJ Gothic EB';
+    font-family: 'NYJ Gothic';
     src: url(${nyjEB}) format('opentype');
     font-weight: 800; // Extra Bold
   }
 
   @font-face {
-    font-family: 'NYJ Gothic L';
+    font-family: 'NYJ Gothic';
     src: url(${nyjL}) format('opentype');
     font-weight: 300; // Light
   }
@@ -83,12 +81,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-`
+`;
 
 const Content = styled.div`
   flex: 1;
   margin-bottom: 7%;
-`
+`;
 
 export default function App() {
   return (

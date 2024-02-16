@@ -55,7 +55,8 @@ export const EnterArea = styled.div`
 `;
 
 export const QuitTitle = styled.div`
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 18px;
   color: black;
   margin-bottom: 5px;
@@ -92,6 +93,7 @@ export const ModalButton = styled.button`
   width: 523px;
   height: 66px;
   color: white;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 20px;
 `;

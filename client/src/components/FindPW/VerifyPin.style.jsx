@@ -17,7 +17,8 @@ export const InputArea = styled.div`
 
 // 제목
 export const FindPWTitle = styled.div`
-  font-family: "NYJ Gothic L";
+  font-family: "NYJ Gothic";
+  font-weight: 300;
   font-size: 36px;
   color: black;
   margin-bottom: 48px;
@@ -36,7 +37,8 @@ export const PinInput = styled.div`
   height: 75px;
   margin: 0 9px;
   text-align: center;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 48px;
   border: 1px solid black;
   border-radius: 5px;
@@ -52,7 +54,8 @@ export const SendPinButton = styled.button`
   border: 1px solid black;
   color: white;
   text-align: center;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 32px;
   background-color: ${(props) => (props.pinFull ? "#F9405E" : "#DFDFDF")};
   cursor: ${(props) => (props.pinFull ? "pointer" : "not-allowed")};
