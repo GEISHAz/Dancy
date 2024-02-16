@@ -103,6 +103,8 @@ Dancy로 어서와 ~~ 💃🕺
 
 **Build Tool |** Gradle 8.5.0
 
+**Library |** MediaPipe
+
 </div>
 
 <br>
