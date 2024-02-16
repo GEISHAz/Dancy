@@ -204,7 +204,7 @@ Dancy로 어서와 ~~ 💃🕺
 - ERD
 <div align="middle">
   <br />
-  <img src="image/erd.png" width="70%"/>
+  <img src="image/ERD_D210_FINAL.png.png" width="70%"/>
   <br />
 </div>
 <br>
