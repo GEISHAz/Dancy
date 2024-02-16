@@ -138,36 +138,57 @@ Dancy로 어서와 ~~ 💃🕺
 💛 영상 변환 페이지
 
 <img src = "image/CREATE.gif" width="600">
+
+- 안무 영상과 나의 영상을 첨부하고 변환 버튼을 클릭하면 상단 헤더에 로딩이 시작됩니다.
+- 안무 영상은 서비스에서 제공하는 가이드라인 영상을 선택하거나, 본인이 원하는 안무 영상을 첨부할 수 있습니다.
+
 <br>
 <br>
 
 💚 PRACTICE 페이지
 
 <img src = "image/PRACTICE.gif" width="600">
+
+- 구간 반복을 통해서 정확도가 떨어지는 안무를 연습할 수 있습니다.
+- 연속 재생을 통해서 전체 영상을 반복해서 연습할 수 있습니다.
+- 열심히 연습한 안무영상을 게시할 수 있습니다.
 <br>
 <br>
+
 
 💙 STAGE 페이지
 
 <img src = "image/STAGE (FEED).gif" width="600">
-<br>
-<br>
 
-💜 PROFILE 페이지
-
-<img src = "image/PROFILE.gif" width="600">
+- 유저들이 업로드한 영상들을 한눈에 볼 수 있습니다.
 <br>
 <br>
 
 🤎 영상 상세 페이지
 
 <img src = "image/DETAIL.gif" width="600">
+
+- STAGE 페이지에서 영상을 클릭하면 이동하는 페이지입니다.
+- 원하는 영상을 보관하고 좋아요를 누를 수 있습니다.
+- 유저들과 댓글을 통해 소통할 수 있습니다.
 <br>
 <br>
+
+💜 PROFILE 페이지
+
+<img src = "image/PROFILE.gif" width="600">
+
+- 유저가 업로드한 영상과 보관한 영상을 조회할 수 있습니다.
+- 다른 유저들을 팔로우 할 수 있습니다.
+<br>
+<br>
+
 
 🖤 검색 결과 페이지
 
 <img src = "image/SEARCH.gif" width="600">
+
+- 제목과 닉네임을 기준으로 검색한 영상들을 조회할 수 있습니다.
 <br>
 <br>
 
@@ -204,4 +225,4 @@ Dancy로 어서와 ~~ 💃🕺
 <br>
 - 포팅매뉴얼
 
-[포팅매뉴얼](https://lab.ssafy.com/s10-webmobile2-sub2/S10P12D210/exec)
+>[포팅매뉴얼](./exec/D210.docx)
