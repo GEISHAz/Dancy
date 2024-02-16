@@ -29,7 +29,8 @@ export const SearchHeader = styled.div`
 `;
 
 export const Archive = styled.div`
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 16px;
   color: #434343;
   display: flex;
@@ -55,7 +56,8 @@ export const TitleBtn = styled.button`
   position: relative;
   z-index: 1;
   background-color: #898989;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 16px;
   color: #ffffff;
 
@@ -88,7 +90,8 @@ export const ArchiveBtn = styled.button`
   position: relative;
   z-index: 1;
   background-color: #898989;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 16px;
   color: #ffffff;
 
@@ -137,7 +140,6 @@ export const FeedBody = styled.div`
   border-bottom-right-radius: 10px;
   background-color: #ffffff;
   padding: 40px;
-
 
   overflow-y: scroll;
   &::-webkit-scrollbar {

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-
 export const VideoListArea = styled.div`
   width: 772px;
   height: 770px;
@@ -14,7 +13,7 @@ export const NoResultMessage = styled.div`
   color: #888;
   text-align: center;
   padding-top: 50px;
-`
+`;
 
 // 검색 결과 컨테이너
 export const VideoContainer = styled.div`
@@ -22,7 +21,7 @@ export const VideoContainer = styled.div`
   flex-direction: row;
   margin: 15px 0px;
   gap: 36px;
-`
+`;
 
 // 검색 썸네일
 export const SearchThumbNail = styled.img`
@@ -55,7 +54,8 @@ export const SearchResultCount = styled.div`
 
 // 영상 제목
 export const SearchResultTitle = styled.div`
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 24px;
   color: #252525;
 `;
@@ -65,7 +65,7 @@ export const SearchViewCreated = styled.div`
   font-family: "NanumSquareRound";
   font-size: 12px;
   color: gray;
-`
+`;
 
 // // 내용
 // export const SearchResultContent = styled.div`
@@ -90,8 +90,6 @@ export const SearchResultAuthor = styled.div`
   font-size: 20px;
   color: #434343;
 `;
-
-
 
 export const UserContentArea = styled.div`
   height: 24px;

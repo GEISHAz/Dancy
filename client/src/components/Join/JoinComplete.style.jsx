@@ -25,7 +25,8 @@ export const GoLoginBtn = styled.button`
   border-radius: 50px;
   background-color: #e23e59;
   color: #ffffff;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 20px;
   margin-top: 40px;
   cursor: pointer;

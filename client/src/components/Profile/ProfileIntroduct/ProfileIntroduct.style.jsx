@@ -46,7 +46,8 @@ export const UserWrap = styled.div`
 `;
 
 export const UserName = styled.div`
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 30px;
 `;
 
@@ -65,13 +66,15 @@ export const FollowBox = styled.div`
 `;
 
 export const FollowTitle = styled.div`
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 18px;
   text-align: center;
 `;
 
 export const FollowNum = styled.div`
-  font-family: "NYJ Gothic L";
+  font-family: "NYJ Gothic";
+  font-weight: 400;
   font-size: 16px;
   text-align: center;
 `;
@@ -82,7 +85,8 @@ export const FollowBtn = styled.button`
   border: 1px solid black;
   border-radius: 30px;
   background-color: #aabbff;
-  font-family: "NYJ Gothic B";
+  font-family: "NYJ Gothic";
+  font-weight: bold;
   font-size: 16px;
   color: #ffffff;
   display: flex;

@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import DefaultProfileImg from '../../assets/profileIntro/ProfileImgDefault.png'
-import EditImg from '../../assets/editimage.png'
-import DeleteImg from '../../assets/deleteimage.png'
+import DefaultProfileImg from "../../assets/profileIntro/ProfileImgDefault.png";
+import EditImg from "../../assets/editimage.png";
+import DeleteImg from "../../assets/deleteimage.png";
 
 const hashTagColors = {
   "#FFF4B5": "#FFF4B5",
   "#C0FFF4": "#C0FFF4",
-  "#D4DCFF": "#D4DCFF"
+  "#D4DCFF": "#D4DCFF",
 };
 
 export const VideoPlayer = styled.div`
@@ -18,13 +18,13 @@ export const VideoPlayer = styled.div`
   border-radius: 20px;
   object-fit: contain;
   /* align-items: center; */
-`
+`;
 
 export const VideoDetailContainer = styled.div`
   margin-top: 20px;
   /* width: 900px; */
   /* height: 127px; */
-  font-family: 'NanumSquareRound', sans-serif;
+  font-family: "NanumSquareRound", sans-serif;
 `;
 
 export const VideoDetailArea = styled.div`
@@ -73,8 +73,9 @@ export const VideoFollower = styled.div`
   font-size: 16px;
 `;
 
-export const VideoUserProfileImage = styled.img.attrs(props => ({ 
-  src: props.src || DefaultProfileImg }))`
+export const VideoUserProfileImage = styled.img.attrs((props) => ({
+  src: props.src || DefaultProfileImg,
+}))`
   border: none;
   width: 60px;
   height: 60px;
@@ -83,7 +84,7 @@ export const VideoUserProfileImage = styled.img.attrs(props => ({
 `;
 
 export const VideoFollowBtn = styled.button`
-  background-color: ${props => props.$isFollow ? '#898989' : '#aabbff'};
+  background-color: ${(props) => (props.$isFollow ? "#898989" : "#aabbff")};
   border: 1px solid black;
   border-radius: 50px;
   width: 70px;
@@ -119,7 +120,7 @@ export const VideoLowerContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 5px 10px;
   /* width: 600px; */
   /* height: 68px; */
@@ -132,11 +133,9 @@ export const VideoLowerContainer = styled.div`
 export const VideoContent = styled.div`
   padding: 5px;
   padding-bottom: 15px;
-`
+`;
 
-export const VideoUserDetail = styled.div`
-	
-`
+export const VideoUserDetail = styled.div``;
 
 export const BtnContainer = styled.div`
   display: flex;
@@ -170,23 +169,21 @@ export const HashTagBtn = styled.button`
   color: black;
   font-size: 14px;
   font-weight: 600;
-  background-color: ${props => hashTagColors[props.color]};
+  background-color: ${(props) => hashTagColors[props.color]};
 `;
 
 export const HashTagContainer = styled.div``;
 
-
-
-export const FunctionWrapper = styled.div.attrs(({ isMyArticle}) => {
-	isMyArticle: isMyArticle
+export const FunctionWrapper = styled.div.attrs(({ isMyArticle }) => {
+  isMyArticle: isMyArticle;
 })`
   display: flex;
-	padding-left: 6px;
-	padding-right: 6px;
-  justify-content: ${(props) => (props.isMyArticle ? 'space-between' : 'end')};
+  padding-left: 6px;
+  padding-right: 6px;
+  justify-content: ${(props) => (props.isMyArticle ? "space-between" : "end")};
   gap: 15px;
   margin-bottom: 4px;
-`
+`;
 export const BtnWrap = styled.div`
   display: flex;
   align-items: center;
@@ -196,46 +193,44 @@ export const BtnWrap = styled.div`
   img {
     cursor: pointer;
   }
-  
+
   div {
     display: flex;
     font-size: 20px;
   }
-`
+`;
 
 export const SaveBtn = styled.img`
   width: 32px;
   height: 36px;
   padding-bottom: 1px;
-`
+`;
 
 export const WithBtn = styled.img`
   border: 1.5px solid black;
   border-radius: 50%;
   width: 40px;
   height: 40px;
-`
+`;
 
 export const WithArea = styled.div`
   width: 40px;
   height: 40px;
-`
+`;
 
 export const LikeBtn = styled.img`
   width: 40px;
   height: 40px;
   margin-left: -3px;
-	font-size: 16px;
-`
+  font-size: 16px;
+`;
 
-export const LikeRate = styled.div`
-	
-`
+export const LikeRate = styled.div``;
 
 export const DropdownToggle = styled.div`
   position: relative;
   cursor: pointer;
-`
+`;
 
 export const LikeUserList = styled.div`
   position: absolute;
@@ -259,22 +254,23 @@ export const LikeUserInfo = styled.div`
   align-items: center;
   column-gap: 30px;
   /* border-bottom: 1px solid #ddd; */
-`
+`;
 export const LikeUserImg = styled.img.attrs(({ src }) => ({ src: src || DefaultProfileImg }))`
   width: 28px;
   height: 28px;
   border-radius: 50%;
   object-fit: cover;
-`
+`;
 export const LikeUserNickName = styled.div`
-  font-family: 'NYJ Gothic L';
+  font-family: "NYJ Gothic";
+  font-weight: 400;
   font-size: 10px;
-`
+`;
 
 export const EditWrap = styled.div.attrs(({ isMyArticle }) => ({
-	isMyArticle: isMyArticle
+  isMyArticle: isMyArticle,
 }))`
-	display: ${(props) => (props.isMyArticle ? 'flex' : 'none')};
+  display: ${(props) => (props.isMyArticle ? "flex" : "none")};
   align-items: center;
   gap: 15px;
   margin-bottom: 4px;
@@ -282,18 +278,18 @@ export const EditWrap = styled.div.attrs(({ isMyArticle }) => ({
   img {
     cursor: pointer;
   }
-`
+`;
 
 export const EditBtn = styled.button`
-	width: 30px;
-	height: 30px;
-	background-image: url(${EditImg});
-	background-size: contain;
-`
+  width: 30px;
+  height: 30px;
+  background-image: url(${EditImg});
+  background-size: contain;
+`;
 
 export const DeleteBtn = styled.button`
-	width: 25px;
-	height: 30px;
-	background-image: url(${DeleteImg});
-	background-size: contain;
-`
+  width: 25px;
+  height: 30px;
+  background-image: url(${DeleteImg});
+  background-size: contain;
+`;
