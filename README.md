@@ -243,4 +243,4 @@ Dancy로 어서와 ~~ 💃🕺
 >[포팅매뉴얼](./exec/D210.docx)
 
 - Reference
-정확도 분석 : https://github.com/boostcampaitech2/final-project-level3-cv-08
+> 정확도 분석 : https://github.com/boostcampaitech2/final-project-level3-cv-08
